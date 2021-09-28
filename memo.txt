@@ -1,0 +1,33 @@
+1. 데이터
+나무위키 2020 3 02
+https://dump.thewiki.kr/
+
+전처리
+박규병 정규표현식
+
+
+
+
+
+2. 토크나이저
+mecab + jamo 버전
+
+
+mecab   4
+mecab + sp  2
+mecab_fixed + sp    3
+mecab_fixed+ jamo + sp  1
+
+vocab 32k
+
+
+
+나무위키 데이터 토큰화 ~ 9월 29일
+
+
+
+
+
+3. bert
+pre train 잘 작동하는지  한국어 임베딩 코드로 확인
+
