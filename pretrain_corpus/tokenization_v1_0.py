@@ -39,16 +39,16 @@ def preprocess(sent_lst):
     # # re.sub(p_num_string, "N", "1.000년의 세월 200년의 삶")
     # # re.sub(p_num_string, "N", "1.000년의 세월 2년의 삶")
 
-    # p_multiple_spaces = re.compile("\s+")   # 무의미한 공백
-    # sent_lst = [re.sub(p_multiple_spaces, " ", sent) for sent in sent_lst]  # 무의미한 공백을 스페이스(" ")로 치환
+    p_multiple_spaces = re.compile("\s+")   # 무의미한 공백
+    sent_lst = [re.sub(p_multiple_spaces, " ", sent) for sent in sent_lst]  # 무의미한 공백을 스페이스(" ")로 치환
 
     # p_only_N = re.compile("^N( N)*$")   # 숫자만 있는 문장 # 'N N N N'
     # sent_lst = [sent for sent in sent_lst if not p_only_N.search(sent)]   # 숫자만 있는 문장 제거
 
-    # sent_lst = [sent for sent in sent_lst if not re.search(r"^\s+$", sent)]    # 빈 문장 제거
-    # sent_lst = [sent.strip() for sent in sent_lst if sent != ""]    # 빈 문장 제거
+    sent_lst = [sent for sent in sent_lst if not re.search(r"^\s+$", sent)]    # 빈 문장 제거
+    sent_lst = [sent.strip() for sent in sent_lst if sent != ""]    # 빈 문장 제거
 
-    # sent_lst = [sent for sent in sent_lst if len(sent.split(" ")) > 1]  # 어절 길이가 1인 문장 제거. 학습할 이웃이 없을 것이라고 판단되므로. (형태소 분석하면 길이가 늘어날 수 있기는 함.)
+    sent_lst = [sent for sent in sent_lst if len(sent.split(" ")) > 1]  # 어절 길이가 1인 문장 제거. 학습할 이웃이 없을 것이라고 판단되므로. (형태소 분석하면 길이가 늘어날 수 있기는 함.)
 
     return sent_lst
 
