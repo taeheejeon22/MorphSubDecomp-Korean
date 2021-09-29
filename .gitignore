@@ -1,5 +1,6 @@
 # mac OS
 .DS_Store
+ee.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

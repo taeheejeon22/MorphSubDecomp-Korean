@@ -10,15 +10,22 @@ https://dump.thewiki.kr/
 
 
 2. 토크나이저
-mecab + jamo 버전
+baseline: eojeol
 
+mecab                           # kakao
+(mecab + decomp_pure)
+(mecab + decomp_morph)
+mecab_fixed
+mecab_fixed + decomp_pure
+mecab_fixed + decomp_morph
 
-mecab   4
-mecab + sp  2
-mecab_fixed + sp    3
-mecab_fixed+ jamo + sp  1
+mecab                           + sp    # kakao
+(mecab + decomp_pure)           + sp
+(mecab + decomp_morph)          + sp
+mecab_fixed                     + sp
+mecab_fixed + decomp_pure       + sp
+mecab_fixed + decomp_morph      + sp
 
-vocab 32k
 
 
 

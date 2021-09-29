@@ -13,6 +13,8 @@ from tqdm import tqdm
                                     # 나 --ㄴ 고양이 이 ㄷㅏ-
                                     # '준 사람' > '주 --ㄴ 사람'
 
+import scripts.tokenizers_acl as jamo
+
 from konlpy.tag import Mecab
 
 
@@ -48,7 +50,7 @@ def preprocess(sent_lst):
     sent_lst = [sent for sent in sent_lst if not re.search(r"^\s+$", sent)]    # 빈 문장 제거
     sent_lst = [sent.strip() for sent in sent_lst if sent != ""]    # 빈 문장 제거
 
-    sent_lst = [sent for sent in sent_lst if len(sent.split(" ")) > 1]  # 어절 길이가 1인 문장 제거. 학습할 이웃이 없을 것이라고 판단되므로. (형태소 분석하면 길이가 늘어날 수 있기는 함.)
+    # sent_lst = [sent for sent in sent_lst if len(sent.split(" ")) > 1]  # 어절 길이가 1인 문장 제거. 학습할 이웃이 없을 것이라고 판단되므로. (형태소 분석하면 길이가 늘어날 수 있기는 함.)
 
     return sent_lst
 
@@ -93,72 +95,89 @@ def load_corpus():
 
 
 
-def tokenization(sent_lst, token_type, composition_type, use_original):
-
-
+# def tokenization(sent_lst, token_type, composition_type, use_original):
+def tokenization(sent_lst,  analyzer, composition_type, use_original):
     p_multiple_spaces = re.compile("\s+")  # 무의미한 공백
 
-    # if morph_analysis == False: # 형태소 분석하지 않고 어절 그대로 쓴다면
-    if token_type == "eojeol": # 형태소 분석하지 않고 어절 그대로 쓴다면
-        if composition_type == "composed":
-            # tokenized_corpus = [sent.split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
-            tokenized_corpus = [re.sub(p_multiple_spaces, " ", sent).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
+    if analyzer == "none":  # 형태소 분석하지 않고 어절 그대로 쓴다면
+        tokenized_corpus = [re.sub(p_multiple_spaces, " ", sent).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
 
-        elif composition_type == "decomposed_pure":
-            tokenized_corpus = [jamo.str2jamo(sent).split(" ") for sent in tqdm(sent_lst, position=0, leave=True) ]
-
-        elif composition_type == "decomposed_morpheme": # 하셨다 > 하시었다
-            def morpheme_normalization(sentence):
-                mc = Mecab(use_original=use_original)
-                return ["".join([mor_pos[0] for mor_pos in word]) for word in mc.pos(sentence, flatten=False)]
-
-            tokenized_corpus = [morpheme_normalization(sentence=sent) for sent in tqdm(sent_lst, position=0, leave=True)]
-
-        elif "decomposed_morphological" in composition_type:    # 하셨다 > 하ㅅㅣㅇㅓㅆㄷㅏ
-            tokenized_corpus = [jamo.str2jamo_morphological(sent, morpheme_analysis=False, use_original=use_original).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
-
-
-            # tokenized_corpus = [jamo.str2jamo_morphological(sent, morpheme_analysis=False, use_original=use_original).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
-            #
-            # tc = list()
-            # for jx in tqdm(range(len(sent_lst)), position=0, leave=True):
-            #     tc.append( jamo.str2jamo_morphological(sent_lst[jx], morpheme_analysis=False, use_original=use_original).split(" ") )
-            #
-            # jx = 3470180
-            # jx = 3470774  # 영치기 영차
-            # jamo.str2jamo_morphological(sent_lst[jx], morpheme_analysis=False, use_original=use_original).split(" ")
-
-
-    # elif token_type == "morpheme":
-    elif "morpheme" in token_type:
-        if composition_type == "composed":
+    elif analyzer == "mecab":
+        if composition_type == "composed":  # mecab + 음절 수준 (kakao)
             mc = Mecab(use_original=use_original)
             # tokenized_corpus = [mc.morphs(sent_lst[ix]) for ix in tqdm( range(len(sent_lst)), position=0, leave=True )]
             tokenized_corpus = [mc.morphs(sent) for sent in tqdm(sent_lst, position=0, leave=True)]
 
-        elif composition_type == "decomposed_pure":
+        elif composition_type == "decomposed_pure":    # mecab + pure decomposition
             mc = Mecab(use_original=use_original)
             # tokenized_corpus = [jamo.str2jamo( " ".join(mc.morphs(sent_lst[ix]) ) ).split(" ") for ix in tqdm(range(len(sent_lst)), position=0, leave=True)]
-            tokenized_corpus = [jamo.str2jamo( " ".join(mc.morphs(sent) ) ).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
+            tokenized_corpus = [jamo.str2jamo(" ".join(mc.morphs(sent))).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
 
-        elif composition_type == "decomposed_morphological":
-            # tokenized_corpus = [jamo.str2jamo_morphological(sent_lst[ix], morpheme_analysis=True, use_original=use_original).split(" ") for ix in tqdm(range(len(sent_lst)), position=0, leave=True)]
+        elif composition_type == "decomposition_morphological": # mecab + morphological decomposition
             tokenized_corpus = [jamo.str2jamo_morphological(sent, morpheme_analysis=True, use_original=use_original).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
 
-            # [jamo.str2jamo_morphological(sent, morpheme_analysis=True, use_original=True).split(" ") for sent in tqdm(sent_lst[56:57], position=0, leave=True)][0][-24:-15]
-            # [jamo.str2jamo_morphological(sent, morpheme_analysis=True, use_original=False).split(" ") for sent in tqdm(sent_lst[56:57], position=0, leave=True)][0][-24:-15]
-            # # ['캐', 'ㅇㅓ-'],
-            # ['ㄴㅡㄴ'],
-            # [''],
-            # ['중'],
-            # ['에']]
 
-            # jamo v1
-            # 'ㅇㅡㄹ',
-            # '카',
-            # 'ㄴㅡㄴ',
-            # '중',
-            # 'ㅇㅔ-']]
+    # # if morph_analysis == False: # 형태소 분석하지 않고 어절 그대로 쓴다면
+    # if token_type == "eojeol": # 형태소 분석하지 않고 어절 그대로 쓴다면
+    #     if composition_type == "composed":
+    #         # tokenized_corpus = [sent.split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
+    #         tokenized_corpus = [re.sub(p_multiple_spaces, " ", sent).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
+    #
+    #     elif composition_type == "decomposed_pure":
+    #         tokenized_corpus = [jamo.str2jamo(sent).split(" ") for sent in tqdm(sent_lst, position=0, leave=True) ]
+    #
+    #     elif composition_type == "decomposed_morpheme": # 하셨다 > 하시었다
+    #         def morpheme_normalization(sentence):
+    #             mc = Mecab(use_original=use_original)
+    #             return ["".join([mor_pos[0] for mor_pos in word]) for word in mc.pos(sentence, flatten=False)]
+    #
+    #         tokenized_corpus = [morpheme_normalization(sentence=sent) for sent in tqdm(sent_lst, position=0, leave=True)]
+    #
+    #     elif "decomposed_morphological" in composition_type:    # 하셨다 > 하ㅅㅣㅇㅓㅆㄷㅏ
+    #         tokenized_corpus = [jamo.str2jamo_morphological(sent, morpheme_analysis=False, use_original=use_original).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
+    #
+    #
+    #         # tokenized_corpus = [jamo.str2jamo_morphological(sent, morpheme_analysis=False, use_original=use_original).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
+    #         #
+    #         # tc = list()
+    #         # for jx in tqdm(range(len(sent_lst)), position=0, leave=True):
+    #         #     tc.append( jamo.str2jamo_morphological(sent_lst[jx], morpheme_analysis=False, use_original=use_original).split(" ") )
+    #         #
+    #         # jx = 3470180
+    #         # jx = 3470774  # 영치기 영차
+    #         # jamo.str2jamo_morphological(sent_lst[jx], morpheme_analysis=False, use_original=use_original).split(" ")
+    #
+    #
+    # # elif token_type == "morpheme":
+    # elif "morpheme" in token_type:
+    #     if composition_type == "composed":
+    #         mc = Mecab(use_original=use_original)
+    #         # tokenized_corpus = [mc.morphs(sent_lst[ix]) for ix in tqdm( range(len(sent_lst)), position=0, leave=True )]
+    #         tokenized_corpus = [mc.morphs(sent) for sent in tqdm(sent_lst, position=0, leave=True)]
+    #
+    #     elif composition_type == "decomposed_pure":
+    #         mc = Mecab(use_original=use_original)
+    #         # tokenized_corpus = [jamo.str2jamo( " ".join(mc.morphs(sent_lst[ix]) ) ).split(" ") for ix in tqdm(range(len(sent_lst)), position=0, leave=True)]
+    #         tokenized_corpus = [jamo.str2jamo( " ".join(mc.morphs(sent) ) ).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
+    #
+    #     elif composition_type == "decomposed_morphological":
+    #         # tokenized_corpus = [jamo.str2jamo_morphological(sent_lst[ix], morpheme_analysis=True, use_original=use_original).split(" ") for ix in tqdm(range(len(sent_lst)), position=0, leave=True)]
+    #         tokenized_corpus = [jamo.str2jamo_morphological(sent, morpheme_analysis=True, use_original=use_original).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
+    #
+    #         # [jamo.str2jamo_morphological(sent, morpheme_analysis=True, use_original=True).split(" ") for sent in tqdm(sent_lst[56:57], position=0, leave=True)][0][-24:-15]
+    #         # [jamo.str2jamo_morphological(sent, morpheme_analysis=True, use_original=False).split(" ") for sent in tqdm(sent_lst[56:57], position=0, leave=True)][0][-24:-15]
+    #         # # ['캐', 'ㅇㅓ-'],
+    #         # ['ㄴㅡㄴ'],
+    #         # [''],
+    #         # ['중'],
+    #         # ['에']]
+    #
+    #         # jamo v1
+    #         # 'ㅇㅡㄹ',
+    #         # '카',
+    #         # 'ㄴㅡㄴ',
+    #         # '중',
+    #         # 'ㅇㅔ-']]
 
     return tokenized_corpus
 
@@ -242,12 +261,12 @@ if __name__ == "__main__":
     corpus_path = "/home/user/rsync/namuwiki_20200302.pkl"
 
     sent_lst = load_corpus()
-    
+
     with gzip.open("./namuwiki_20200302_preprocessed.pkl", "wb") as f:
         pickle.dump(sent_lst, f)
     # for saving time...
-    # with gzip.open(corpus_path + "namuwiki_20210301_preprocessed_no_1_sent_enter.pkl", 'rb') as f:
-    #     sent_lst = pickle.load(f)
+    with gzip.open("/Users/jth_mac/rsync/namuwiki_20200302_preprocessed.pkl", 'rb') as f:
+        sent_lst = pickle.load(f)
 
 
 
