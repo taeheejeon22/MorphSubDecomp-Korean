@@ -85,7 +85,8 @@ class tokenizers():
 
 
     # https://github.com/ratsgo/embedding/blob/master/preprocess/unsupervised_nlputils.py
-    def str2jamo(self, sent, jamo_morpheme=False):
+    # def str2jamo(self, sent, jamo_morpheme=False):
+    def str2jamo(self, sent, grammatical=False):
         def transform(char):
             if char == ' ':
                 return char
@@ -95,18 +96,55 @@ class tokenizers():
             cjj_ = ''.join(c if c != ' ' else self.dummy_letter for c in cjj)
             return cjj_
 
-        if jamo_morpheme == False:
-            sent_ = []
-            for char in sent:
-                if character_is_korean(char):
-                    sent_.append(transform(char))
-                else:
-                    sent_.append(char)
-            sent_ = doublespace_pattern.sub(' ', ''.join(sent_))
-            return sent_
+        def transform_grammatical(char, grammatical):
+            if char == ' ':
+                return char
+            cjj = decompose(char)
+            if len(cjj) == 1:
+                return cjj
 
-        if jamo_morpheme == True:   # for jamo morphemes like ㄴ, ㄹ, ...
-            return self.dummy_letter*2 + sent   # '##ㄴ'
+            if grammatical == False:
+                cjj_ = ''.join(c if c != ' ' else self.dummy_letter for c in cjj)
+                return cjj_
+
+            elif grammatical == True:
+                cjj_without_blank = [x for x in cjj if x != " "] # remove " " from cjj
+
+                if len(cjj_without_blank) == 1:   # if it is a jamo character (e.g. ㄴ, ㄹ, 'ㄴ'다)
+                    cjj_ = self.dummy_letter * 2 + cjj_without_blank[0]
+
+                elif len(cjj_without_blank) != 1:   # if it is a syllable character (e.g. 은, 을, 는다)
+                    cjj_ = ''.join(c if c != ' ' else self.dummy_letter for c in cjj)
+
+                return cjj_
+
+            # cjj_ = ''.join(c if c != ' ' else self.dummy_letter for c in cjj)
+            # return cjj_
+
+
+        # if jamo_morpheme == False:
+        #     sent_ = []
+        #     for char in sent:
+        #         if character_is_korean(char):
+        #             sent_.append(transform(char))
+        #         else:
+        #             sent_.append(char)
+        #     sent_ = doublespace_pattern.sub(' ', ''.join(sent_))
+        #     return sent_
+        #
+        # if jamo_morpheme == True:   # for jamo morphemes like ㄴ, ㄹ, ...
+        #     return self.dummy_letter*2 + sent   # '##ㄴ'
+
+
+        sent_ = []
+        for char in sent:
+            if character_is_korean(char):
+                sent_.append(transform_grammatical(char, grammatical=grammatical))
+            else:
+                sent_.append(char)
+        sent_ = doublespace_pattern.sub(' ', ''.join(sent_))
+        return sent_
+
 
 
     # https://github.com/ratsgo/embedding/blob/master/models/word_eval.py 참고
@@ -153,24 +191,25 @@ class tokenizers():
     ## 1. composed & decomposed_pure
 
     # mecab
-    def mecab_tokenizer(self, sent, use_original, pure_composition):
+    def mecab_tokenizer(self, sent, use_original, pure_decomposition):
         if use_original == True:
             mor_poss = self.mc_orig.pos(sent, flatten=False)  # [[('넌', 'NP+JX')], [('날', 'NNG')], [('좋', 'VA'), ('아', 'EC'), ('해', 'VV+EC')]]
         elif use_original == False:
             mor_poss = self.mc_fixed.pos(sent, flatten=False)  # [[('너', 'NP'), ('ㄴ', 'JX')], [('날', 'NNG')], [('좋', 'VA'), ('아', 'EC'), ('하', 'VV'), ('아', 'EC')]]
 
-        # if pure_composition == False:
+        # if pure_decomposition == False:
         #     pass
-        # elif pure_composition == True:
+        # elif pure_decomposition == True:
         #     [ [ self.str2jamo(mor_pos, jamo_morpheme=False) if not mor_poss[-1] in self.grammatical_pos else self.str2jamo(mor_pos, jamo_morpheme=True) for mor_pos in word] for word in mor_poss]
 
 
         # remove pos tags
-        if pure_composition == False:
+        if pure_decomposition == False:
             mors = [[mor_pos[0] for mor_pos in word] for word in mor_poss]  # [['너', 'ㄴ'], ['날'], ['좋', '아', '하', '아']]
-        elif pure_composition == True:
+        elif pure_decomposition == True:
             # mors = [ [ self.str2jamo(mor_pos[0], jamo_morpheme=False) if not mor_pos[-1] in self.grammatical_pos else self.str2jamo(mor_pos[0], jamo_morpheme=True) for mor_pos in word] for word in mor_poss]
-            mors = [ [ self.str2jamo(mor_pos[0], jamo_morpheme=True) if (mor_pos[-1] in self.grammatical_pos and len(mor_pos[0]) == 1 and character_is_jaum(mor_pos[0]) ) else self.str2jamo(mor_pos[0], jamo_morpheme=False) for mor_pos in word] for word in mor_poss]
+            # mors = [ [ self.str2jamo(mor_pos[0], jamo_morpheme=True) if (mor_pos[-1] in self.grammatical_pos and len(mor_pos[0]) == 1 and character_is_jaum(mor_pos[0]) ) else self.str2jamo(mor_pos[0], jamo_morpheme=False) for mor_pos in word] for word in mor_poss]
+            mors = [ [ self.str2jamo(mor_pos[0], grammatical=True) if (mor_pos[-1] in self.grammatical_pos ) else self.str2jamo(mor_pos[0], grammatical=False) for mor_pos in word] for word in mor_poss]
                                                                     # convert jamo morpheme like ㄴ, ㄹ into ##ㄴ, ##ㄹ
 
             # ee = list()
@@ -188,10 +227,10 @@ class tokenizers():
 
         return mecab_tokenized
 
-        # if pure_composition == False:
+        # if pure_decomposition == False:
         #     return mecab_tokenized  # ['너', 'ㄴ', '▃', '날', '▃', '좋', '아', '하', '아']
         #
-        # elif pure_composition == True:
+        # elif pure_decomposition == True:
         #     return [self.str2jamo(token) for token in mecab_tokenized]  # ['ㄴㅓ#', 'ㄴ##', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅏ#', 'ㅇㅏ#']
 
         ## decomposed_morphological용
@@ -483,23 +522,25 @@ sent = "재밌음ㅠㅠ"
 sent = "넌 날 좋아해"
 sent = "미궁에서 뜬 아앗"
 sent = "훌륭한 사망 플래그의 예시이다"
+sent = "수해에 입장한다"   # ['ㅅㅜ#ㅎㅐ#', 'ㅇㅔ#', '▃', 'ㅇㅣㅂㅈㅏㅇ', 'ㅎㅏ#', 'ㄴ##ㄷㅏ#']
+
 
 tok.str2jamo(sent)   # 'ㄴㅓㄴ ㄴㅏㄹ ㅈㅗㅎㅇㅏ#ㅎㅐ#'
 tok.jamo2str(tok.str2jamo(sent))
 
 # mecab original
     # composed
-tok.mecab_tokenizer(sent, use_original=True, pure_composition=False) # ['넌', '▃', '날', '▃', '좋', '아', '해']
+tok.mecab_tokenizer(sent, use_original=True, pure_decomposition=False) # ['넌', '▃', '날', '▃', '좋', '아', '해']
     # decomposed pure
-tok.mecab_tokenizer(sent, use_original=True, pure_composition=True)  # ['ㄴㅓㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅐ#']
+tok.mecab_tokenizer(sent, use_original=True, pure_decomposition=True)  # ['ㄴㅓㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅐ#']
     # decomposed morphological
 tok.mecab_with_morphological_decomposition(sent, use_original=True)  # ['ㄴㅓㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ#', 'ㅎㅐ#']
 
 # mecab fixed
     # composed
-tok.mecab_tokenizer(sent, use_original=False, pure_composition=False) # ['너', 'ㄴ', '▃', '날', '▃', '좋', '아', '하', '아']
+tok.mecab_tokenizer(sent, use_original=False, pure_decomposition=False) # ['너', 'ㄴ', '▃', '날', '▃', '좋', '아', '하', '아']
     # decomposed pure
-tok.mecab_tokenizer(sent, use_original=False, pure_composition=True)  # ['ㄴㅓ#', 'ㄴ##', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅏ#', 'ㅇㅏ#']
+tok.mecab_tokenizer(sent, use_original=False, pure_decomposition=True)  # ['ㄴㅓ#', 'ㄴ##', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅏ#', 'ㅇㅏ#']
     # decomposed morphological
 tok.mecab_with_morphological_decomposition(sent, use_original=False)  # ['너', '##ㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ#', '하', 'ㅇㅏ#']
 
