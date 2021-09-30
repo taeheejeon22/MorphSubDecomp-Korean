@@ -191,9 +191,11 @@ class tokenizers():
     ######## tokenizer ###############
     ## 0. eojeol
     def eojeol_tokenizer(self, sent):
-        tokenizer = MosesTokenizer()
+        # tokenizer = MosesTokenizer()
         p_multiple_spaces = re.compile("\s+")   # multiple blanks
-        eojeol_tokenized = tokenizer( re.sub(p_multiple_spaces, " ", sent).strip() )  # ['넌', '날', '좋아해']
+        # eojeol_tokenized = tokenizer( re.sub(p_multiple_spaces, " ", sent).strip() )  # ['넌', '날', '좋아해']
+        eojeol_tokenized = re.sub(p_multiple_spaces, " ", sent).split(" ")
+
         return eojeol_tokenized
         # eojeol_tokenized_with_space_symbol = self.intersperse(eojeol_tokenized, self.space_symbol)  # ['넌', '▃', '날', '▃', '좋아해']
         # return eojeol_tokenized_with_space_symbol
@@ -536,6 +538,8 @@ sent = "수해에 입장한다"   # ['ㅅㅜ#ㅎㅐ#', 'ㅇㅔ#', '▃', 'ㅇㅣ
 
 tok.str2jamo(sent)   # 'ㄴㅓㄴ ㄴㅏㄹ ㅈㅗㅎㅇㅏ#ㅎㅐ#'
 tok.jamo2str(tok.str2jamo(sent))
+
+tok.eojeol_tokenizer(sent)
 
 # mecab original
     # composed
