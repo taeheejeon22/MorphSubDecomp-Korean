@@ -202,7 +202,7 @@ if __name__ == "__main__":
 
     # len(sent_lst): 38,887,750 (2021-09-30)        34430142 (2021-09-29, 1어절 문장 삭제)
 
-    sent_lst = sent_lst[:10000]
+    sent_lst = sent_lst[:1000]
 
     with open("./pretrain_corpus/sample_ko-wiki-200420.txt", "r") as f:
         sent_lst = f.readlines()
