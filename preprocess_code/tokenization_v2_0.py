@@ -20,12 +20,15 @@ from scripts.tokenizers_acl import tokenizers
 
 # preprocess
 def preprocess(sent_lst):
-    p_kakao = re.compile(r"[^가-힣\x20-\x7F]*")
+    # our
+    p_paren_str = re.compile("\(.+?\)") # 괄호 문자열("(xxx)") 삭제용
+    sent_lst = [re.sub(p_paren_str, "", sent) for sent in sent_lst] # 사람(인간)은 짐승(동물)이다 > 사람은 짐승이다
 
+
+    # kortok
+    p_kakao = re.compile(r"[^가-힣\x20-\x7F]*") # 타언어 문자, 특수 기호 제거
     sent_lst = [re.sub(p_kakao, "", sent) for sent in sent_lst]
 
-    # p_paren_str = re.compile("\(.+?\)") # 괄호 문자열("(xxx)") 삭제용
-    # sent_lst = [re.sub(p_paren_str, "", sent) for sent in sent_lst] # 사람(인간)은 짐승(동물)이다 > 사람은 짐승이다
 
     # sent_lst = [re.sub(r"[^ㄱ-ㅎㅏ-ㅣ가-힣0-9 ]+", "", sent) for sent in sent_lst]   # only for Hanguls, numbers, space  # without punctuation
 
@@ -37,12 +40,16 @@ def preprocess(sent_lst):
     # # re.sub(p_num_string, "N", "1.000년의 세월 200년의 삶")
     # # re.sub(p_num_string, "N", "1.000년의 세월 2년의 삶")
 
+
+    # our
     p_multiple_spaces = re.compile("\s+")   # 무의미한 공백
     sent_lst = [re.sub(p_multiple_spaces, " ", sent) for sent in sent_lst]  # 무의미한 공백을 스페이스(" ")로 치환
 
     # p_only_N = re.compile("^N( N)*$")   # 숫자만 있는 문장 # 'N N N N'
     # sent_lst = [sent for sent in sent_lst if not p_only_N.search(sent)]   # 숫자만 있는 문장 제거
 
+
+    # our
     sent_lst = [sent for sent in sent_lst if not re.search(r"^\s+$", sent)]    # 빈 문장 제거
     sent_lst = [sent.strip() for sent in sent_lst if sent != ""]    # 빈 문장 제거
 
@@ -202,12 +209,12 @@ if __name__ == "__main__":
 
     # len(sent_lst): 38,887,750 (2021-09-30)        34430142 (2021-09-29, 1어절 문장 삭제)
 
-    sent_lst = sent_lst[:1000]
-
-    with open("./pretrain_corpus/sample_ko-wiki-200420.txt", "r") as f:
-        sent_lst = f.readlines()
-
-    sent_lst = [sent[:-1] for sent in sent_lst]
+    # sent_lst = sent_lst[:1000]
+    #
+    # with open("./pretrain_corpus/sample_ko-wiki-200420.txt", "r") as f:
+    #     sent_lst = f.readlines()
+    #
+    # sent_lst = [sent[:-1] for sent in sent_lst]
 
 
 

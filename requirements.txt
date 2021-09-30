@@ -16,6 +16,7 @@ konlpy==0.5.2
 lxml==4.6.3
 mecab-python @ git+https://bitbucket.org/eunjeon/mecab-python-0.996.git@ac44c1e23785be09bb60f29b83f2463848314796
 mosestokenizer==1.1.0
+namu-wiki-extractor==0.2.2
 numpy==1.21.2
 oauthlib==3.1.1
 openfile==0.0.7
