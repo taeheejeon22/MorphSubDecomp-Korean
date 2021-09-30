@@ -20,6 +20,7 @@ import re
 
 from itertools import chain
 from konlpy.tag import Mecab
+from mosestokenizer import MosesTokenizer
 from soynlp.hangle import compose, decompose, character_is_korean, character_is_complete_korean, character_is_moum, character_is_jaum
 
 
@@ -188,9 +189,17 @@ class tokenizers():
 
 
     ######## tokenizer ###############
-    ## 1. composed & decomposed_pure
+    ## 0. eojeol
+    def eojeol_tokenizer(self, sent):
+        tokenizer = MosesTokenizer()
+        p_multiple_spaces = re.compile("\s+")   # multiple blanks
+        eojeol_tokenized = tokenizer( re.sub(p_multiple_spaces, " ", sent).strip() )  # ['넌', '날', '좋아해']
+        return eojeol_tokenized
+        # eojeol_tokenized_with_space_symbol = self.intersperse(eojeol_tokenized, self.space_symbol)  # ['넌', '▃', '날', '▃', '좋아해']
+        # return eojeol_tokenized_with_space_symbol
 
-    # mecab
+
+    ## 1. composed & decomposed_pure
     def mecab_tokenizer(self, sent, use_original, pure_decomposition):
         if use_original == True:
             mor_poss = self.mc_orig.pos(sent, flatten=False)  # [[('넌', 'NP+JX')], [('날', 'NNG')], [('좋', 'VA'), ('아', 'EC'), ('해', 'VV+EC')]]

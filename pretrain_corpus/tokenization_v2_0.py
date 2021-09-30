@@ -67,13 +67,13 @@ def load_corpus():
 
 # def tokenization(sent_lst, token_type, composition_type, use_original):
 def tokenization(sent_lst, analyzer, composition_type, use_original):
-    p_multiple_spaces = re.compile("\s+")  # 무의미한 공백
+    tok = tokenizers(dummy_letter="-", space_symbol="▃")  # tokenizer instance
 
     if analyzer == "none":  # 형태소 분석하지 않고 어절 그대로 쓴다면
-        tokenized_corpus = [re.sub(p_multiple_spaces, " ", sent).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
+        # tokenized_corpus = [re.sub(p_multiple_spaces, " ", sent).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
+        tokenized_corpus = [tok.eojeol_tokenizer(sent) for sent in tqdm(sent_lst, position=0, leave=True)]
 
     elif "mecab" in analyzer:
-        tok = tokenizers(dummy_letter="#", space_symbol="▃")    # tokenizer instance
 
         if composition_type == "composed":  # mecab + 음절 수준 (kakao)
             tokenized_corpus = [tok.mecab_tokenizer(sent, use_original=use_original, pure_decomposition=False) for sent in tqdm(sent_lst, position=0, leave=True)]
@@ -203,6 +203,13 @@ if __name__ == "__main__":
     # len(sent_lst): 38,887,750 (2021-09-30)        34430142 (2021-09-29, 1어절 문장 삭제)
 
     sent_lst = sent_lst[:10000]
+
+    with open("./pretrain_corpus/sample_ko-wiki-200420.txt", "r") as f:
+        sent_lst = f.readlines()
+
+    sent_lst = [sent[:-1] for sent in sent_lst]
+
+
 
 
     ## 0. baseline: eojeol

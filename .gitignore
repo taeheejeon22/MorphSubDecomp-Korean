@@ -4,7 +4,7 @@ ee.py
 
 # corpus
 *.pkl
-pretrain_corpus/namuwiki*
+pretrain_corpus/namuwiki*/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
