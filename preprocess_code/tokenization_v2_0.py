@@ -26,11 +26,14 @@ def preprocess(sent_lst):
 
 
     # kortok
-    p_kakao = re.compile(r"[^가-힣\x20-\x7F]*") # 타언어 문자, 특수 기호 제거
+    # p_kakao = re.compile(r"[^가-힣\x20-\x7F]*") # 타 언어 문자, 특수 기호 제거
+    p_kakao = re.compile(r"[^ㄱ-ㅎㅏ-ㅣ가-힣\x20-\x7F]*")  # 타 언어 문자, 특수 기호 제거    # 자모 낱글자 살리기
     sent_lst = [re.sub(p_kakao, "", sent) for sent in sent_lst]
 
 
+    # our
     # sent_lst = [re.sub(r"[^ㄱ-ㅎㅏ-ㅣ가-힣0-9 ]+", "", sent) for sent in sent_lst]   # only for Hanguls, numbers, space  # without punctuation
+
 
     # # p_num_string = re.compile("[0-9,.]+")   # 숫자 string을 "N"으로 치환
     # p_num_string = re.compile("[0-9]+([,./]?[0-9])*")  # 숫자 string을 "N"으로 치환    # 1 2,000  3.5    2/3     2.2/4
@@ -74,11 +77,12 @@ def load_corpus():
 
 # def tokenization(sent_lst, token_type, composition_type, use_original):
 def tokenization(sent_lst, analyzer, composition_type, use_original):
-    tok = tokenizers(dummy_letter="-", space_symbol="▃")  # tokenizer instance
+    tok = tokenizers(dummy_letter=dummy_letter, space_symbol=space_symbol)  # tokenizer instance
 
     if analyzer == "none":  # 형태소 분석하지 않고 어절 그대로 쓴다면
-        # tokenized_corpus = [re.sub(p_multiple_spaces, " ", sent).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
-        tokenized_corpus = [tok.eojeol_tokenizer(sent) for sent in tqdm(sent_lst, position=0, leave=True)]
+        # tokenized_corpus = [tok.eojeol_tokenizer(sent) for sent in tqdm(sent_lst, position=0, leave=True)]
+
+        return sent_lst
 
     elif "mecab" in analyzer:
 
@@ -101,7 +105,7 @@ def tokenization(sent_lst, analyzer, composition_type, use_original):
 
             # tokenized_corpus = [jamo.str2jamo_morphological(sent, morpheme_analysis=True, use_original=use_original).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
 
-    return tokenized_corpus
+        return tokenized_corpus
 
 
 # tokenized_composed[:2]
@@ -144,53 +148,55 @@ def main(sent_lst, analyzer, composition_type, use_original):
     print(f"\ncomposition type: {composition_type}\n")
     print(f"\nuse original: {use_original}\n")
 
-    # tokenization
-    tokenized_corpus = tokenization(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)
+    # # tokenization
+    # tokenized_corpus = tokenization(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)
+    #
+    # # save
+    # make_directory(analyzer=analyzer, composition_type=composition_type)
+    #
+    # # save
+    # if use_original == True:
+    #     mecab_type = "mecab_orig"
+    # elif use_original == False:
+    #     mecab_type = "mecab_fixed"
+    #
+    # file_name = "namuwiki_20200302_tokenized_" + "_".join([analyzer, composition_type, mecab_type,]) + ".txt"
+    # save_decomposed_corpus(file_name=file_name, analyzer=analyzer, composition_type=composition_type, corpus=tokenized_corpus)
 
-    # save
-    make_directory(analyzer=analyzer, composition_type=composition_type)
-
-    # save
-    if use_original == True:
-        mecab_type = "mecab_orig"
-    elif use_original == False:
-        mecab_type = "mecab_fixed"
-
-    file_name = "namuwiki_20200302_tokenized_" + "_".join([analyzer, composition_type, mecab_type,]) + ".txt"
-    save_decomposed_corpus(file_name=file_name, analyzer=analyzer, composition_type=composition_type, corpus=tokenized_corpus)
 
 
-    # # iter = 5  # all
-    # iter = 4    # no_1_sent
-    #
-    # # for ix in range(iter):
-    # for ix in range(0,1):
-    #     print(f"\niteration: {ix}\n")
-    #     begin_idx = 10000000*ix
-    #     end_idx = 10000000 * (ix + 1)
-    #
-    #     # if token_type == "eojeol":
-    #     #     morph_analysis = False
-    #     # elif "morpheme" in token_type:
-    #     #     morph_analysis = True
-    #
-    #     if ix < iter-1:
-    #         tokenized_corpus = tokenization(sent_lst=sent_lst[begin_idx:end_idx], token_type=token_type, composition_type=composition_type, use_original=use_original)
-    #
-    #     elif ix == iter-1:
-    #         tokenized_corpus = tokenization(sent_lst=sent_lst[begin_idx:], token_type=token_type, composition_type=composition_type, use_original=use_original)
-    #
-    #     # make a directory to save the result
-    #     make_directory(token_type=token_type, composition_type=composition_type)
-    #
-    #     # save
-    #     if use_original == True:
-    #         mecab_type = "mecab_orig"
-    #     elif use_original == False:
-    #         mecab_type = "mecab_fixed"
-    #
-    #     file_name = "namuwiki_20210301_tokenized_" + "_".join([composition_type, token_type, mecab_type, str(ix)]) + ".txt"
-    #     save_decomposed_corpus(file_name=file_name, token_type=token_type, composition_type=composition_type, corpus=tokenized_corpus)
+    # memory 문제로 나눠서 처리
+    # iter = 5  # all
+    iter = 4    # no_1_sent
+
+    # for ix in range(iter):
+    for ix in range(0,1):
+        print(f"\niteration: {ix}\n")
+        begin_idx = 10000000*ix
+        end_idx = 10000000 * (ix + 1)
+
+        # if token_type == "eojeol":
+        #     morph_analysis = False
+        # elif "morpheme" in token_type:
+        #     morph_analysis = True
+
+        if ix < iter-1:
+            tokenized_corpus = tokenization(sent_lst=sent_lst[begin_idx:end_idx], analyzer=analyzer, composition_type=composition_type, use_original=use_original)
+
+        elif ix == iter-1:
+            tokenized_corpus = tokenization(sent_lst=sent_lst[begin_idx:], analyzer=analyzer, composition_type=composition_type, use_original=use_original)
+
+        # make a directory to save the result
+        make_directory(analyzer=analyzer, composition_type=composition_type)
+
+        # save
+        if use_original == True:
+            mecab_type = "mecab_orig"
+        elif use_original == False:
+            mecab_type = "mecab_fixed"
+
+        file_name = "namuwiki_20210301_tokenized_" + "_".join([analyzer, composition_type, mecab_type, str(ix)]) + ".txt"
+        save_decomposed_corpus(file_name=file_name, analyzer=analyzer, composition_type=composition_type, corpus=tokenized_corpus)
 
 
 
@@ -216,6 +222,24 @@ if __name__ == "__main__":
     #
     # sent_lst = [sent[:-1] for sent in sent_lst]
 
+
+
+    dummy_letter = "⊸"  # chr(8888)
+    space_symbol = "▃"  # chr(9603)
+
+
+    # p_kakao = re.compile(r"[^가-힣\x20-\x7F]*")  # 타 언어 문자, 특수 기호 제거
+    # # p_kakao = re.compile(r"[^a-z]")
+    # sent = 'ab⊸⊸c▃가d事'
+    # p_kakao.search(sent)
+    # p_kakao.sub("", sent)
+    # # re.sub(p_kakao, sent, "e")
+    # re.sub(p_kakao, "ㄸ", sent)
+    #
+    # p_asc = re.compile("[^\x20-\x7F]*")
+    # sent = 'abc가'
+    # p_asc.search(sent)
+    # re.sub(p_asc, sent, "")
 
 
 
