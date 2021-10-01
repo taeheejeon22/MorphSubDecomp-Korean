@@ -70,7 +70,7 @@ def load_corpus():
     del f, corpus
 
     sent_lst = preprocess(sent_lst=sent_lst)
-    print(len(sent_lst)) # 46,540,361 46,350,425 46,241,968 45,242,757  45,070,098  44,846,837  44,715,408  38,698,423  38,942,110
+    print(len(sent_lst)) # 46,540,361 46,350,425 46,241,968 45,242,757  45,070,098  44,846,837  44,715,408  38,698,423  38,942,110  38,756,655
 
     return sent_lst
 
@@ -136,8 +136,10 @@ def save_decomposed_corpus(file_name, analyzer, composition_type, corpus):
 
     with open(file_path, "w") as f:
         for ix in range(len(corpus)):
-            # f.write("".join(corpus[ix]) + "\n")
-            f.write(" ".join(corpus[ix]) + "\n")
+            if analyzer == "none":
+                f.write("".join(corpus[ix]) + "\n")
+            else:
+                f.write(" ".join(corpus[ix]) + "\n")
 
     print(f"saved in {file_path}")
 
@@ -148,45 +150,11 @@ def main(sent_lst, analyzer, composition_type, use_original):
     print(f"\ncomposition type: {composition_type}\n")
     print(f"\nuse original: {use_original}\n")
 
-    # # tokenization
-    # tokenized_corpus = tokenization(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)
-    #
-    # # save
-    # make_directory(analyzer=analyzer, composition_type=composition_type)
-    #
-    # # save
-    # if use_original == True:
-    #     mecab_type = "mecab_orig"
-    # elif use_original == False:
-    #     mecab_type = "mecab_fixed"
-    #
-    # file_name = "namuwiki_20200302_tokenized_" + "_".join([analyzer, composition_type, mecab_type,]) + ".txt"
-    # save_decomposed_corpus(file_name=file_name, analyzer=analyzer, composition_type=composition_type, corpus=tokenized_corpus)
+    if analyzer == "none":
+        # tokenization
+        tokenized_corpus = tokenization(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)
 
-
-
-    # memory 문제로 나눠서 처리
-    # iter = 5  # all
-    iter = 4    # no_1_sent
-
-    # for ix in range(iter):
-    for ix in range(0,1):
-        print(f"\niteration: {ix}\n")
-        begin_idx = 10000000*ix
-        end_idx = 10000000 * (ix + 1)
-
-        # if token_type == "eojeol":
-        #     morph_analysis = False
-        # elif "morpheme" in token_type:
-        #     morph_analysis = True
-
-        if ix < iter-1:
-            tokenized_corpus = tokenization(sent_lst=sent_lst[begin_idx:end_idx], analyzer=analyzer, composition_type=composition_type, use_original=use_original)
-
-        elif ix == iter-1:
-            tokenized_corpus = tokenization(sent_lst=sent_lst[begin_idx:], analyzer=analyzer, composition_type=composition_type, use_original=use_original)
-
-        # make a directory to save the result
+        # save
         make_directory(analyzer=analyzer, composition_type=composition_type)
 
         # save
@@ -195,8 +163,43 @@ def main(sent_lst, analyzer, composition_type, use_original):
         elif use_original == False:
             mecab_type = "mecab_fixed"
 
-        file_name = "namuwiki_20210301_tokenized_" + "_".join([analyzer, composition_type, mecab_type, str(ix)]) + ".txt"
+        file_name = "namuwiki_20200302_tokenized_" + "_".join([analyzer, composition_type, mecab_type,]) + ".txt"
         save_decomposed_corpus(file_name=file_name, analyzer=analyzer, composition_type=composition_type, corpus=tokenized_corpus)
+
+
+    else:
+        # memory 문제로 나눠서 처리
+        # iter = 5  # all
+        iter = 4    # no_1_sent
+
+        for ix in range(iter):
+        # for ix in range(0, 1):
+            print(f"\niteration: {ix}\n")
+            begin_idx = 10000000*ix
+            end_idx = 10000000 * (ix + 1)
+
+            # if token_type == "eojeol":
+            #     morph_analysis = False
+            # elif "morpheme" in token_type:
+            #     morph_analysis = True
+
+            if ix < iter-1:
+                tokenized_corpus = tokenization(sent_lst=sent_lst[begin_idx:end_idx], analyzer=analyzer, composition_type=composition_type, use_original=use_original)
+
+            elif ix == iter-1:
+                tokenized_corpus = tokenization(sent_lst=sent_lst[begin_idx:], analyzer=analyzer, composition_type=composition_type, use_original=use_original)
+
+            # make a directory to save the result
+            make_directory(analyzer=analyzer, composition_type=composition_type)
+
+            # save
+            if use_original == True:
+                mecab_type = "mecab_orig"
+            elif use_original == False:
+                mecab_type = "mecab_fixed"
+
+            file_name = "namuwiki_20200302_tokenized_" + "_".join([analyzer, composition_type, mecab_type, str(ix)]) + ".txt"
+            save_decomposed_corpus(file_name=file_name, analyzer=analyzer, composition_type=composition_type, corpus=tokenized_corpus)
 
 
 

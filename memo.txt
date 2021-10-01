@@ -33,6 +33,9 @@ mecab_fixed + decomp_morph      + sp
 
 
 
+10월 2일: 토크나이저로 단어 목록 만들기
+SentencePiece 훈련
+
 
 
 3. bert
