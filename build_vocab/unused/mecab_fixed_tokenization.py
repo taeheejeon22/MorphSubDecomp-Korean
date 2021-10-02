@@ -10,7 +10,16 @@ from itertools import chain
 from konlpy.tag import Mecab
 # import MeCab
 
-INPUT_CORPUS = "./pretrain_corpus/namuwiki/sample_namuwiki_20200302.txt"
+# INPUT_CORPUS = "./pretrain_corpus/namuwiki/sample_namuwiki_20200302.txt"
+INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/composed/namuwiki_20200302_tokenized_mecab_orig_composed_mecab_orig.txt" # orig / composed
+INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/decomposed_pure/namuwiki_20200302_tokenized_mecab_orig_decomposed_pure_mecab_orig.txt" # orig / decomposed_pure
+INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/decomposed_morphological/namuwiki_20200302_tokenized_mecab_orig_decomposed_morphological_mecab_orig.txt" # orig / decomposed_morphological
+
+INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/composed/namuwiki_20200302_tokenized_mecab_fixed_composed_mecab_fixed.txt"   # fixed /composed
+INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_pure/namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure_mecab_fixed.txt" # fixed / decomposed_pure
+INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_morphological/namuwiki_20200302_tokenized_mecab_fixed_decomposed_morphological_mecab_fixed.txt" # fixed / decomposed_morphological
+
+
 OUTPUT_DIR = "./dataset/wiki/mecab_tokenized_fixed"
 
 # TOKENIZER = MeCab.Tagger(f"--dicdir /usr/local/lib/mecab/dic/mecab-ko-dic")
