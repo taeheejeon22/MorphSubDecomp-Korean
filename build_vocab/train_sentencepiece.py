@@ -5,7 +5,17 @@ import os
 import sentencepiece as spm
 
 # INPUT_KO_CORPUS = "./dataset/wiki/sample_ko-wiki-200420.txt"
-INPUT_KO_CORPUS = "./pretrain_corpus/tokenized/namuwiki_none/composed/namuwiki_20200302_tokenized_none_composed_mecab_orig_sample.txt"
+# INPUT_KO_CORPUS = "./pretrain_corpus/tokenized/namuwiki_none/composed/namuwiki_20200302_tokenized_none_composed_mecab_orig_sample.txt"
+INPUT_KO_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/composed/namuwiki_20200302_tokenized_mecab_orig_composed_mecab_orig.txt" # orig / composed
+INPUT_KO_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/decomposed_pure/namuwiki_20200302_tokenized_mecab_orig_decomposed_pure_mecab_orig.txt" # orig / decomposed_pure
+INPUT_KO_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/decomposed_morphological/namuwiki_20200302_tokenized_mecab_orig_decomposed_morphological_mecab_orig.txt" # orig / decomposed_morphological
+
+INPUT_KO_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/composed/namuwiki_20200302_tokenized_mecab_fixed_composed_mecab_fixed.txt"   # fixed /composed
+INPUT_KO_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_pure/namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure_mecab_fixed.txt" # fixed / decomposed_pure
+INPUT_KO_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_morphological/namuwiki_20200302_tokenized_mecab_fixed_decomposed_morphological_mecab_fixed.txt" # fixed / decomposed_morphological
+
+
+
 INPUT_EN_CORPUS = "./dataset/wiki/sample_en-wiki-200420.txt"  # for English SentencePiece(BPE) Tokenizer
 # INPUT_MECAB_TOKENIZED_CORPUS = "./dataset/wiki/mecab_tokenized/sample_ko-wiki-200420.txt"  # for MeCab-SentencePiece Tokenizer
 INPUT_MECAB_TOKENIZED_CORPUS = "./dataset/wiki/mecab_tokenized_fixed/sample_ko-wiki-200420.txt"  # for MeCab-SentencePiece Tokenizer
