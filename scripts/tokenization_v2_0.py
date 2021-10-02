@@ -124,14 +124,14 @@ def tokenization(sent_lst, analyzer, composition_type, use_original):
 
 # make directory
 def make_directory(analyzer, composition_type):
-    save_dir = "./pretrain_corpus/" + "namuwiki_" + analyzer + "/" + composition_type
+    save_dir = "./pretrain_corpus/tokenized/" + "namuwiki_" + analyzer + "/" + composition_type
     if not os.path.exists(save_dir):
         os.makedirs(save_dir, exist_ok=True) # a Python version of $mkdir -p
 
 
 # save as a txt
 def save_decomposed_corpus(file_name, analyzer, composition_type, corpus):
-    save_path = "./pretrain_corpus/" + "namuwiki_" + "/".join([analyzer, composition_type])
+    save_path = "./pretrain_corpus/tokenized/" + "namuwiki_" + "/".join([analyzer, composition_type])
     file_path = save_path + "/" + file_name
 
     with open(file_path, "w") as f:

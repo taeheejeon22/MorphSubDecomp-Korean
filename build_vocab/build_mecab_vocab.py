@@ -10,7 +10,10 @@ from typing import List
 
 import MeCab
 
-INPUT_CORPUS = "./dataset/wiki/sample_ko-wiki-200420.txt"
+# INPUT_CORPUS = "./pretrain_corpus/sample_namuwiki_20200302.txt"
+INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_none/composed/namuwiki_20200302_tokenized_none_composed_mecab_orig_sample.txt"
+# INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/composed/namuwiki_20200302_tokenized_mecab_orig_composed_mecab_orig.txt"
+# INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/composed/namuwiki_20200302_tokenized_mecab_fixed_composed_mecab_fixed.txt"
 OUTPUT_DIR = "./resources"
 
 TOKENIZER = MeCab.Tagger(f"--dicdir /usr/local/lib/mecab/dic/mecab-ko-dic")

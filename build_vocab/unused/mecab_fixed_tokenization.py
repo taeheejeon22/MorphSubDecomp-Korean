@@ -10,7 +10,7 @@ from itertools import chain
 from konlpy.tag import Mecab
 # import MeCab
 
-INPUT_CORPUS = "./dataset/wiki/sample_ko-wiki-200420.txt"
+INPUT_CORPUS = "./pretrain_corpus/namuwiki/sample_namuwiki_20200302.txt"
 OUTPUT_DIR = "./dataset/wiki/mecab_tokenized_fixed"
 
 # TOKENIZER = MeCab.Tagger(f"--dicdir /usr/local/lib/mecab/dic/mecab-ko-dic")

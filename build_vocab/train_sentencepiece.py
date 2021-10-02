@@ -4,7 +4,8 @@ import os
 
 import sentencepiece as spm
 
-INPUT_KO_CORPUS = "./dataset/wiki/sample_ko-wiki-200420.txt"
+# INPUT_KO_CORPUS = "./dataset/wiki/sample_ko-wiki-200420.txt"
+INPUT_KO_CORPUS = "./pretrain_corpus/tokenized/namuwiki_none/composed/namuwiki_20200302_tokenized_none_composed_mecab_orig_sample.txt"
 INPUT_EN_CORPUS = "./dataset/wiki/sample_en-wiki-200420.txt"  # for English SentencePiece(BPE) Tokenizer
 # INPUT_MECAB_TOKENIZED_CORPUS = "./dataset/wiki/mecab_tokenized/sample_ko-wiki-200420.txt"  # for MeCab-SentencePiece Tokenizer
 INPUT_MECAB_TOKENIZED_CORPUS = "./dataset/wiki/mecab_tokenized_fixed/sample_ko-wiki-200420.txt"  # for MeCab-SentencePiece Tokenizer
