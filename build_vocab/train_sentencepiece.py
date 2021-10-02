@@ -52,10 +52,16 @@ if __name__ == "__main__":
     args = vars(parser.parse_args())
     print(args)
 
+    tokenizer_type = args["tokenizer_type"]
+    composition_type = args["composition_type"]
+
     # set a input path automatically
     if "mecab" in args["tokenizer_type"]:
-        INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwik_" + args["tokenizer_type"] + "/" + args["composition_type"] + "/" + \
-                                       "namuwiki_20200302_tokenized_" + args["tokenizer_type"] + "_" + args["composition_type"] + ".txt"
+        # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwik_" + args["tokenizer_type"] + "/" + args["composition_type"] + "/" + \
+        #                                "namuwiki_20200302_tokenized" + "_" + args["tokenizer_type"] + "_" + args["composition_type"] + ".txt"
+
+        # INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{args["tokenizer_type"]}/{args["composition_type"]}/namuwiki_20200302_tokenized_{args["tokenizer_type"]}_{args["composition_type"]}.txt"
+        INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}.txt"
 
         # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwik_" + args[tokenizer_]  mecab_orig/composed/namuwiki_20200302_tokenized_mecab_orig_composed.txt"  # orig / composed
         # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/decomposed_pure/namuwiki_20200302_tokenized_mecab_orig_decomposed_pure.txt"  # orig / decomposed_pure
@@ -76,6 +82,10 @@ if __name__ == "__main__":
     elif args["tokenizer_type"] == "mecab_tokenized":
         input_corpus = INPUT_MECAB_TOKENIZED_CORPUS
         output_dir = os.path.join(OUTPUT_DIR, f"mecab_sp-{int(args['vocab_size'])//1000}k")
+    elif "mecab" in args["tokenizer_type"]:
+        input_corpus = INPUT_MECAB_TOKENIZED_CORPUS
+        output_dir = os.path.join(OUTPUT_DIR, f"mecab_{tokenizer_type}_{composition_type}_sp-{int(args['vocab_size'])//1000}k")
+
     else:
         raise ValueError
     os.makedirs(output_dir, exist_ok=True)
