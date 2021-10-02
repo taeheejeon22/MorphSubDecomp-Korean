@@ -193,12 +193,12 @@ def main(sent_lst, analyzer, composition_type, use_original):
             make_directory(analyzer=analyzer, composition_type=composition_type)
 
             # save
-            if use_original == True:
-                mecab_type = "mecab_orig"
-            elif use_original == False:
-                mecab_type = "mecab_fixed"
+            # if use_original == True:
+            #     mecab_type = "mecab_orig"
+            # elif use_original == False:
+            #     mecab_type = "mecab_fixed"
 
-            file_name = "namuwiki_20200302_tokenized_" + "_".join([analyzer, composition_type, mecab_type, str(ix)]) + ".txt"
+            file_name = "namuwiki_20200302_tokenized_" + "_".join([analyzer, composition_type, str(ix)]) + ".txt"
             save_decomposed_corpus(file_name=file_name, analyzer=analyzer, composition_type=composition_type, corpus=tokenized_corpus)
 
 

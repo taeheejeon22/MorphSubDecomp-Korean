@@ -11,13 +11,13 @@ from typing import List
 import MeCab
 
 # INPUT_CORPUS = "./pretrain_corpus/sample_namuwiki_20200302.txt"
-INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/composed/namuwiki_20200302_tokenized_mecab_orig_composed_mecab_orig_sample.txt" # orig / composed
-INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/decomposed_pure/namuwiki_20200302_tokenized_mecab_orig_decomposed_pure_mecab_orig_sample.txt" # orig / decomposed_pure
-INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/decomposed_morphological/namuwiki_20200302_tokenized_mecab_orig_decomposed_morphological_mecab_orig_sample.txt" # orig / decomposed_morphological
+INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/composed/namuwiki_20200302_tokenized_mecab_orig_composed_sample.txt" # orig / composed
+INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/decomposed_pure/namuwiki_20200302_tokenized_mecab_orig_decomposed_pure_sample.txt" # orig / decomposed_pure
+INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/decomposed_morphological/namuwiki_20200302_tokenized_mecab_orig_decomposed_morphological_sample.txt" # orig / decomposed_morphological
 
-INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/composed/namuwiki_20200302_tokenized_mecab_fixed_composed_mecab_fixed_sample.txt"   # fixed /composed
-INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_pure/namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure_mecab_fixed_sample.txt" # fixed / decomposed_pure
-INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_morphological/namuwiki_20200302_tokenized_mecab_fixed_decomposed_morphological_mecab_fixed_sample.txt" # fixed / decomposed_morphological
+INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/composed/namuwiki_20200302_tokenized_mecab_fixed_composed_sample.txt"   # fixed /composed
+INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_pure/namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure_sample.txt" # fixed / decomposed_pure
+INPUT_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_morphological/namuwiki_20200302_tokenized_mecab_fixed_decomposed_morphological_sample.txt" # fixed / decomposed_morphological
 
 OUTPUT_DIR = "./resources"
 
