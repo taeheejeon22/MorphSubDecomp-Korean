@@ -87,21 +87,22 @@ def tokenization(sent_lst, analyzer, composition_type, use_original):
     elif "mecab" in analyzer:
 
         if composition_type == "composed":  # mecab + 음절 수준 (kakao)
-            tokenized_corpus = [tok.mecab_tokenizer(sent, use_original=use_original, pure_decomposition=False) for sent in tqdm(sent_lst, position=0, leave=True)]
+            tokenized_corpus = [tok.mecab_tokenizer(sent, use_original=use_original, pure_decomposition=False, morphological=False) for sent in tqdm(sent_lst, position=0, leave=True)]
 
             # mc = Mecab(use_original=use_original)
             # # tokenized_corpus = [mc.morphs(sent_lst[ix]) for ix in tqdm( range(len(sent_lst)), position=0, leave=True )]
             # tokenized_corpus = [mc.morphs(sent) for sent in tqdm(sent_lst, position=0, leave=True)]
 
         elif composition_type == "decomposed_pure":    # mecab + pure decomposition
-            tokenized_corpus = [tok.mecab_tokenizer(sent, use_original=use_original, pure_decomposition=True) for sent in tqdm(sent_lst, position=0, leave=True)]
+            tokenized_corpus = [tok.mecab_tokenizer(sent, use_original=use_original, pure_decomposition=True, morphological=False) for sent in tqdm(sent_lst, position=0, leave=True)]
 
             # mc = Mecab(use_original=use_original)
             # # tokenized_corpus = [jamo.str2jamo( " ".join(mc.morphs(sent_lst[ix]) ) ).split(" ") for ix in tqdm(range(len(sent_lst)), position=0, leave=True)]
             # tokenized_corpus = [jamo.str2jamo(" ".join(mc.morphs(sent))).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
 
         elif composition_type == "decomposed_morphological": # mecab + morphological decomposition
-            tokenized_corpus = [tok.mecab_with_morphological_decomposition(sent, use_original=use_original) for sent in tqdm(sent_lst, position=0, leave=True)]
+            # tokenized_corpus = [tok.mecab_with_morphological_decomposition(sent, use_original=use_original) for sent in tqdm(sent_lst, position=0, leave=True)]
+            tokenized_corpus = [tok.mecab_tokenizer(sent, use_original=use_original, morphological=True) for sent in tqdm(sent_lst, position=0, leave=True)]
 
             # tokenized_corpus = [jamo.str2jamo_morphological(sent, morpheme_analysis=True, use_original=use_original).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
 

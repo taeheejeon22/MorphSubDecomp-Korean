@@ -181,7 +181,14 @@ class tokenizers():
                 if jamo_char.count(self.dummy_letter) == 1:  # 일반적인 음절 문자 (ㅅㅏ-)
                     word += compose(jamo_char[0], jamo_char[1], " ")
                 elif jamo_char.count(self.dummy_letter) == 2:  # 자모 하나만 있는 경우 (ㅋ--)
-                    word += jamo_char.replace(self.dummy_letter, "")  # coda letter 삭제하고 더하기
+                    word += jamo_char.replace(self.dummy_letter, "")  # dummy letter 삭제하고 더하기
+            elif (jamo_char[0] == self.dummy_letter) and (jamo_char[1] == self.dummy_letter):   # 문법 형태소 (--ㄹ, --ㄴ(다))
+                previous_syllable = decompose(word[-1])
+              
+                word = word[:-1] + compose(previous_syllable[0], previous_syllable[1], jamo_char.replace(self.dummy_letter, "")) # dummy letter 삭제하고 앞 음절과 합치기
+                # word += jamo_char.replace(self.dummy_letter, "")    # dummy letter 삭제하고 더하기
+
+
             else:
                 word += compose(jamo_char[0], jamo_char[1], jamo_char[2])
         return word
@@ -201,8 +208,18 @@ class tokenizers():
         # return eojeol_tokenized_with_space_symbol
 
 
-    ## 1. composed & decomposed_pure
-    def mecab_tokenizer(self, sent, use_original, pure_decomposition):
+    ## 1. morpheme
+    def mecab_tokenizer(self, sent: str, use_original: bool, pure_decomposition: bool, morphological: bool = False):
+        if morphological == False:
+            mecab_tokenized = self.mecab_composed_decomposed_pure(sent=sent, use_original=use_original, pure_decomposition=pure_decomposition)
+        elif morphological == True:
+            mecab_tokenized = self.mecab_with_morphological_decomposition(sent=sent, use_original=use_original)
+
+        return mecab_tokenized
+
+
+    # 1-1. composed & decomposed_pure
+    def mecab_composed_decomposed_pure(self, sent, use_original, pure_decomposition):
         if use_original == True:
             mor_poss = self.mc_orig.pos(sent, flatten=False)  # [[('넌', 'NP+JX')], [('날', 'NNG')], [('좋', 'VA'), ('아', 'EC'), ('해', 'VV+EC')]]
         elif use_original == False:
@@ -248,7 +265,7 @@ class tokenizers():
         # 형태소 분석 과정이 있기 때문에 조금씩 노이즈 발생
 
 
-    ## 2. decomposition morphological
+    ## 1-2. decomposition morphological
     def mecab_with_morphological_decomposition(self, sent, use_original):
         '''
         :param sent: 자모 변환할 문장      '너를 좋아해'

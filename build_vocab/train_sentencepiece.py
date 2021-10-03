@@ -84,7 +84,7 @@ if __name__ == "__main__":
         output_dir = os.path.join(OUTPUT_DIR, f"mecab_sp-{int(args['vocab_size'])//1000}k")
     elif "mecab" in args["tokenizer_type"]:
         input_corpus = INPUT_MECAB_TOKENIZED_CORPUS
-        output_dir = os.path.join(OUTPUT_DIR, f"mecab_{tokenizer_type}_{composition_type}_sp-{int(args['vocab_size'])//1000}k")
+        output_dir = os.path.join(OUTPUT_DIR, f"{tokenizer_type}_{composition_type}_sp-{int(args['vocab_size'])//1000}k")
 
     else:
         raise ValueError
@@ -109,6 +109,7 @@ if __name__ == "__main__":
     cmd += f"--unk_surface={args['unk_surface']} "
     cmd += f"--user_defined_symbols={args['special_symbols']} "
 
+    # train sentencepiece
     spm.SentencePieceTrainer.Train(cmd)
 
     # fairseq vocab
@@ -118,3 +119,34 @@ if __name__ == "__main__":
             for line in fin.readlines()[start_idx:]:
                 splitted = line.split("\t")
                 fout.write(f"{' '.join(splitted)}")
+
+
+
+    # mecab config
+    tok_json = dict()
+    tok_json["dummy_letter"] = "⊸"
+    tok_json["space_symbol"] = "▃"
+    # tok_json["n_jobs"] =
+    if "orig" in tokenizer_type:
+        tok_json["use_original"] = True
+    elif "fixed" in tokenizer_type:
+        tok_json["use_original"] = False
+
+    if composition_type == "composed":
+        tok_json["pure_decomposition"] = False
+        tok_json["morphological"] = False
+
+    elif composition_type == "decomposed_pure":
+        tok_json["pure_decomposition"] = True
+        tok_json["morphological"] = False
+
+    elif composition_type == "decomposed_morphological":
+        tok_json["pure_decomposition"] = False
+        tok_json["morphological"] = True
+    else:
+        tok_json["pure_decomposition"] = None
+        tok_json["morphological"] = None
+
+
+    with open(os.path.join(output_dir, "tok.json"), "w") as f:
+        json.dump(tok_json, f, indent=4)
