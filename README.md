@@ -13,11 +13,34 @@ acl
 
 
 # 2. Sentencepiece 학습
-## mecab 토큰화
-./build_vocab/build_mecab_vocab_our.py
+
+[comment]: <> (## mecab 토큰화)
+
+[comment]: <> (./build_vocab/build_mecab_vocab_our.py &#40;자동화 위해 코드 수정 필요&#41;)
+
+[comment]: <> (```bash)
+
+[comment]: <> (python build_vocab/build_mecab_vocab_our.py --vocab_size=64000)
+
+[comment]: <> (```)
+
 
 ## sentencepiece
 ./build_vocab/train_sentencepiece.py
+```bash
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="orig" --composition_type="composed"
+
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="orig" --composition_type="decomposed_pure"
+
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="orig" --composition_type="decomposed_morphological"
+
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="fixed" --composition_type="composed"
+
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="fixed" --composition_type="decomposed_pure"
+
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="fixed" --composition_type="decomposed_morphological"
+
+```
 
 
 # 3. pretrain BERT

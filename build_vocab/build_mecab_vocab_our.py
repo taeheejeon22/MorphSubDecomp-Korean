@@ -1,3 +1,5 @@
+# tokenization_v2_0.py로 먼저 토큰화를 하기 때문에 안 써도 됨.
+
 import argparse
 import json
 import os
