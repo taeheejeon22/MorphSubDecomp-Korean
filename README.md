@@ -28,6 +28,8 @@ acl
 ## sentencepiece
 ./build_vocab/train_sentencepiece.py
 ```bash
+python build_vocab/train_sentencepiece.py --vocab_size=64000
+
 python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="mecab_orig" --composition_type="composed"
 
 python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="mecab_orig" --composition_type="decomposed_pure"
@@ -48,4 +50,4 @@ python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="m
 - tokenized corpus:
 - tok.vocab: ./resources/xx/
 - bert_config.json: ./resources/xx/
-   kortok에 생성 코드가 없어서 그냥 복붙
+   kortok에 생성 코드가 없어서 그냥 복붙. 자동 생성 코드 추가해야 함.
