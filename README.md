@@ -28,17 +28,17 @@ acl
 ## sentencepiece
 ./build_vocab/train_sentencepiece.py
 ```bash
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="orig" --composition_type="composed"
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="mecab_orig" --composition_type="composed"
 
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="orig" --composition_type="decomposed_pure"
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="mecab_orig" --composition_type="decomposed_pure"
 
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="orig" --composition_type="decomposed_morphological"
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="mecab_orig" --composition_type="decomposed_morphological"
 
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="fixed" --composition_type="composed"
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="mecab_fixed" --composition_type="composed"
 
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="fixed" --composition_type="decomposed_pure"
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="mecab_fixed" --composition_type="decomposed_pure"
 
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="fixed" --composition_type="decomposed_morphological"
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="mecab_fixed" --composition_type="decomposed_morphological"
 
 ```
 
