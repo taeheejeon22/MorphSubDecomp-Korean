@@ -214,7 +214,7 @@ if __name__ == "__main__":
     with gzip.open("./namuwiki_20200302_preprocessed.pkl", "wb") as f:
         pickle.dump(sent_lst, f)
     # for saving time...
-    with gzip.open("/Users/jth_mac/rsync/namuwiki_20200302_preprocessed.pkl", 'rb') as f:
+    with gzip.open("./namuwiki_20200302_preprocessed.pkl", 'rb') as f:
         sent_lst = pickle.load(f)
 
     # len(sent_lst): 38,887,750 (2021-09-30)        34430142 (2021-09-29, 1어절 문장 삭제)
@@ -225,6 +225,13 @@ if __name__ == "__main__":
     #     sent_lst = f.readlines()
     #
     # sent_lst = [sent[:-1] for sent in sent_lst]
+
+    len_sent = [len(txt.splitlines()) for txt in sent_lst]
+
+    len_ej =  [len(txt.split(" ")) for txt in sent_lst]
+
+    sum(len_sent)   # 38,756,655
+    sum(len_ej) # 566,414,570
 
 
 
