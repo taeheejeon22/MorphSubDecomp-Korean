@@ -61,7 +61,7 @@ def main(args):
     #     tokenizer = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
     if config.tokenizer.startswith("sp-"):
         tokenizer = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
-    elif config.tokenizer.startswith("mecab_-"):
+    elif config.tokenizer.startswith("mecab_"):
         mecab = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
         # mecab = MeCabTokenizer(use_original=True, pure_decompostion=True, morphological=False)
 
