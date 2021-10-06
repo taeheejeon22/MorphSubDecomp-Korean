@@ -23,6 +23,9 @@ from konlpy.tag import Mecab
 from mosestokenizer import MosesTokenizer
 from soynlp.hangle import compose, decompose, character_is_korean, character_is_complete_korean, character_is_moum, character_is_jaum
 
+from scripts.jamo2str import moasseugi
+
+
 
 
 doublespace_pattern = re.compile('\s+')
@@ -544,6 +547,7 @@ class tokenizers():
 
 
 tok = tokenizers(dummy_letter="#", space_symbol="▃")
+tok2 = tokenizers(dummy_letter="", space_symbol=" ")
 sent = "이것이 아니다"
 sent = "재밌음ㅋㅋ"
 sent = "재밌음ㅠㅠ"
@@ -556,6 +560,14 @@ sent = "수해에 입장한다"   # ['ㅅㅜ#ㅎㅐ#', 'ㅇㅔ#', '▃', 'ㅇㅣ
 tok.str2jamo(sent)   # 'ㄴㅓㄴ ㄴㅏㄹ ㅈㅗㅎㅇㅏ#ㅎㅐ#'
 tok.jamo2str(tok.str2jamo(sent))
 
+tok2.str2jamo(sent)   # 'ㄴㅓㄴ ㄴㅏㄹ ㅈㅗㅎㅇㅏㅎㅐ'
+# tok2.jamo2str(tok2.str2jamo(sent))  # '넌 날 좋앟ㅐ'
+moasseugi(tok2.str2jamo(sent))  # '넌 날 좋아해'
+# moasseugi('들어가ㄴ다')
+
+
+
+
 tok.eojeol_tokenizer(sent)
 
 # mecab original
@@ -563,16 +575,20 @@ tok.eojeol_tokenizer(sent)
 tok.mecab_tokenizer(sent, use_original=True, pure_decomposition=False) # ['넌', '▃', '날', '▃', '좋', '아', '해']
     # decomposed pure
 tok.mecab_tokenizer(sent, use_original=True, pure_decomposition=True)  # ['ㄴㅓㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅐ#']
+tok2.mecab_tokenizer(sent, use_original=True, pure_decomposition=True)  # ['ㄴㅓㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ', 'ㅎㅐ']
     # decomposed morphological
 tok.mecab_with_morphological_decomposition(sent, use_original=True)  # ['ㄴㅓㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ#', 'ㅎㅐ#']
+tok2.mecab_with_morphological_decomposition(sent, use_original=True)  # ['ㄴㅓㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ', 'ㅎㅐ']
 
 # mecab fixed
     # composed
 tok.mecab_tokenizer(sent, use_original=False, pure_decomposition=False) # ['너', 'ㄴ', '▃', '날', '▃', '좋', '아', '하', '아']
     # decomposed pure
 tok.mecab_tokenizer(sent, use_original=False, pure_decomposition=True)  # ['ㄴㅓ#', 'ㄴ##', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅏ#', 'ㅇㅏ#']
+tok2.mecab_tokenizer(sent, use_original=False, pure_decomposition=True)  # ['ㄴㅓ', 'ㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ', 'ㅎㅏ', 'ㅇㅏ']
     # decomposed morphological
 tok.mecab_with_morphological_decomposition(sent, use_original=False)  # ['너', '##ㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ#', '하', 'ㅇㅏ#']
+tok2.mecab_with_morphological_decomposition(sent, use_original=False)  # ['너', 'ㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ', '하', 'ㅇㅏ']
 
 
 # 자음 문법 형태소 처리: ##ㄴ

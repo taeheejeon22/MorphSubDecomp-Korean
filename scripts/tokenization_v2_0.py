@@ -102,7 +102,7 @@ def tokenization(sent_lst, analyzer, composition_type, use_original):
 
         elif composition_type == "decomposed_morphological": # mecab + morphological decomposition
             # tokenized_corpus = [tok.mecab_with_morphological_decomposition(sent, use_original=use_original) for sent in tqdm(sent_lst, position=0, leave=True)]
-            tokenized_corpus = [tok.mecab_tokenizer(sent, use_original=use_original, morphological=True) for sent in tqdm(sent_lst, position=0, leave=True)]
+            tokenized_corpus = [tok.mecab_tokenizer(sent, use_original=use_original, pure_decomposition=False, morphological=True) for sent in tqdm(sent_lst, position=0, leave=True)]
 
             # tokenized_corpus = [jamo.str2jamo_morphological(sent, morpheme_analysis=True, use_original=use_original).split(" ") for sent in tqdm(sent_lst, position=0, leave=True)]
 
@@ -211,13 +211,16 @@ if __name__ == "__main__":
 
     sent_lst = load_corpus()
 
-    with gzip.open("./namuwiki_20200302_preprocessed.pkl", "wb") as f:
-        pickle.dump(sent_lst, f)
+    # # save a preprocessed corpus
+    # with gzip.open("./namuwiki_20200302_preprocessed.pkl", "wb") as f:
+    #     pickle.dump(sent_lst, f)
+
     # for saving time...
     with gzip.open("./namuwiki_20200302_preprocessed.pkl", 'rb') as f:
         sent_lst = pickle.load(f)
 
     # len(sent_lst): 38,887,750 (2021-09-30)        34430142 (2021-09-29, 1어절 문장 삭제)
+
 
     # sent_lst = sent_lst[:1000]
     #
@@ -226,16 +229,19 @@ if __name__ == "__main__":
     #
     # sent_lst = [sent[:-1] for sent in sent_lst]
 
-    len_sent = [len(txt.splitlines()) for txt in sent_lst]
 
-    len_ej =  [len(txt.split(" ")) for txt in sent_lst]
-
-    sum(len_sent)   # 38,756,655
-    sum(len_ej) # 566,414,570
+    # # corpuse size check
+    # len_sent = [len(txt.splitlines()) for txt in sent_lst]
+    #
+    # len_ej =  [len(txt.split(" ")) for txt in sent_lst]
+    #
+    # sum(len_sent)   # 38,756,655
+    # sum(len_ej) # 566,414,570
 
 
 
     dummy_letter = "⊸"  # chr(8888)
+    # dummy_letter = ""  # none
     space_symbol = "▃"  # chr(9603)
 
 
@@ -283,10 +289,10 @@ if __name__ == "__main__":
     composition_type = "composed"
     main(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)
 
-    # 2) decomposed pure # ['ㄴㅓ#', 'ㄴ##', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅏ#', 'ㅇㅏ#']
+    # 2) decomposed pure # ['ㄴㅓ#', '##ㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅏ#', 'ㅇㅏ#']
     composition_type = "decomposed_pure"
     main(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)
 
-    # 3) decomposed morphological # ['너', '##ㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ#', '하', 'ㅇㅏ#']
+    # 3) decomposed morphological # ['너', '##ㄴ', '▃', '나', '##ㄹ', '▃', '좋', 'ㅇㅏ#', '하', 'ㅇㅏ#']
     composition_type = "decomposed_morphological"
     main(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)

@@ -16,13 +16,13 @@ from tasks.korsts.model import KorSTSModel
 from tasks.korsts.trainer import Trainer
 from tasks.logger import get_logger
 from tokenizer import (
-    CharTokenizer,
-    JamoTokenizer,
+    # CharTokenizer,
+    # JamoTokenizer,
     MeCabSentencePieceTokenizer,
     MeCabTokenizer,
     SentencePieceTokenizer,
     Vocab,
-    WordTokenizer,
+    # WordTokenizer,
 )
 
 
@@ -57,20 +57,22 @@ def main(args):
     tokenizer_dir = os.path.join(config.resource_dir, config.tokenizer)
     logger.info(f"get vocab and tokenizer from {tokenizer_dir}")
     vocab = Vocab(os.path.join(tokenizer_dir, "tok.vocab"))
-    if config.tokenizer.startswith("mecab-"):
-        tokenizer = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
-    elif config.tokenizer.startswith("sp-"):
+    # if config.tokenizer.startswith("mecab-"):
+    #     tokenizer = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
+    if config.tokenizer.startswith("sp-"):
         tokenizer = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
-    elif config.tokenizer.startswith("mecab_sp-"):
+    elif config.tokenizer.startswith("mecab_"):
         mecab = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
+        # mecab = MeCabTokenizer(use_original=True, pure_decompostion=True, morphological=False)
+
         sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
         tokenizer = MeCabSentencePieceTokenizer(mecab, sp)
-    elif config.tokenizer.startswith("char-"):
-        tokenizer = CharTokenizer()
-    elif config.tokenizer.startswith("word-"):
-        tokenizer = WordTokenizer()
-    elif config.tokenizer.startswith("jamo-"):
-        tokenizer = JamoTokenizer()
+    # elif config.tokenizer.startswith("char-"):
+    #     tokenizer = CharTokenizer()
+    # elif config.tokenizer.startswith("word-"):
+    #     tokenizer = WordTokenizer()
+    # elif config.tokenizer.startswith("jamo-"):
+    #     tokenizer = JamoTokenizer()
     else:
         raise ValueError("Wrong tokenizer name.")
 

@@ -1,3 +1,7 @@
+# 수정한 부분
+# from tokenizer import
+# def main()의 if config.tokenzer.startswith("mecab-"): 부분
+
 import argparse
 import os
 import random
