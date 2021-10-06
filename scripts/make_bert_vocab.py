@@ -1,14 +1,16 @@
 # BERT pretrain용 vocab 파일 자동 생성
 import os
 
-os.listdir("./resources/with_dummy_letter")
+path = "./resources/with_dummy_letter_v1"
 
-os.walk("./resources/with_dummy_letter")
+os.listdir(path)
+
+os.walk(path)
 
 
 # all sub-paths
 listOfFiles = list()
-for (dirpath, dirnames, filenames) in os.walk("./resources/with_dummy_letter"):
+for (dirpath, dirnames, filenames) in os.walk(path):
     listOfFiles += [os.path.join(dirpath, file) for file in filenames]
 
 # all paths of "tok.vocab"

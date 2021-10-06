@@ -60,7 +60,7 @@ if __name__ == "__main__":
         # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwik_" + args["tokenizer_type"] + "/" + args["composition_type"] + "/" + \
         #                                "namuwiki_20200302_tokenized" + "_" + args["tokenizer_type"] + "_" + args["composition_type"] + ".txt"
 
-        INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}.txt"  # all
+        INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_all.txt"  # all
         # INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_half.txt" # half
 
         # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwik_" + args[tokenizer_]  mecab_orig/composed/namuwiki_20200302_tokenized_mecab_orig_composed.txt"  # orig / composed
@@ -71,7 +71,7 @@ if __name__ == "__main__":
         # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_pure/namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure.txt"  # fixed / decomposed_pure
         # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_morphological/namuwiki_20200302_tokenized_mecab_fixed_decomposed_morphological.txt"  # fixed / decomposed_morphological
     else:
-        INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}.txt"  # all
+        INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_all.txt"  # all
         # INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_half.txt" # half
 
 
