@@ -97,5 +97,9 @@ for ix in tqdm.tqdm( range(len(namu_wiki)) ):
 
 
 # save as a pickle
-with gzip.open("./pretrain_corpus/namuwiki_20200302.pkl", "wb") as f:
+with gzip.open("../namuwiki_20200302_with_preprocessing.pkl", "wb") as f:
     pickle.dump(all_texts, f)
+
+# save as a txt
+with open("../namuwiki_20200302_with_preprocessing.txt", "w") as f:
+    f.write(all_texts)

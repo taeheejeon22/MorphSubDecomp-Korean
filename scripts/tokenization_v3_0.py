@@ -20,127 +20,27 @@ from scripts.tokenizers_acl import tokenizers
 
 
 
-# preprocess
-def preprocess(sent_lst):
-    # our
-    p_paren_str = re.compile("\(.+?\)") # 괄호 문자열("(xxx)") 삭제용
-    sent_lst = [re.sub(p_paren_str, "", sent) for sent in sent_lst] # 사람(인간)은 짐승(동물)이다 > 사람은 짐승이다
-
-
-    # kortok
-    # p_kakao = re.compile(r"[^가-힣\x20-\x7F]*") # 타 언어 문자, 특수 기호 제거
-    p_kakao = re.compile(r"[^ㄱ-ㅎㅏ-ㅣ가-힣\x20-\x7F]*")  # 타 언어 문자, 특수 기호 제거    # 자모 낱글자 살리기
-    sent_lst = [re.sub(p_kakao, "", sent) for sent in sent_lst]
-
-
-    # our
-    # sent_lst = [re.sub(r"[^ㄱ-ㅎㅏ-ㅣ가-힣0-9 ]+", "", sent) for sent in sent_lst]   # only for Hanguls, numbers, space  # without punctuation
-
-
-    # # p_num_string = re.compile("[0-9,.]+")   # 숫자 string을 "N"으로 치환
-    # p_num_string = re.compile("[0-9]+([,./]?[0-9])*")  # 숫자 string을 "N"으로 치환    # 1 2,000  3.5    2/3     2.2/4
-    # sent_lst = [re.sub(p_num_string, "N", sent) for sent in sent_lst]   # 1,000년 > N년       2.3회 > N회
-
-    # # re.sub(p_num_string, "N", "1,000년의 세월")
-    # # re.sub(p_num_string, "N", "1.000년의 세월 200년의 삶")
-    # # re.sub(p_num_string, "N", "1.000년의 세월 2년의 삶")
-
-
-    # our
-    # p_multiple_spaces = re.compile("\s+")   # 무의미한 공백
-    # sent_lst = [re.sub(p_multiple_spaces, " ", sent) for sent in sent_lst]  # 무의미한 공백을 스페이스(" ")로 치환
-    sent_lst = [re.sub("  ", " ", sent) for sent in sent_lst]  # 무의미한 공백을 스페이스(" ")로 치환
-
-    # p_only_N = re.compile("^N( N)*$")   # 숫자만 있는 문장 # 'N N N N'
-    # sent_lst = [sent for sent in sent_lst if not p_only_N.search(sent)]   # 숫자만 있는 문장 제거
-
-
-    # our
-    # sent_lst = [sent for sent in sent_lst if not re.search(r"^\s+$", sent)]    # 빈 문장 제거
-    # sent_lst = [sent.strip() for sent in sent_lst if sent != ""]    # 빈 문장 제거
-
-    # sent_lst = [sent for sent in sent_lst if len(sent.split(" ")) > 1]  # 어절 길이가 1인 문장 제거. 학습할 이웃이 없을 것이라고 판단되므로. (형태소 분석하면 길이가 늘어날 수 있기는 함.)
-
-    return sent_lst
-
-
-def preprocess_v2(txt):
-    # our
-    p_paren_str = re.compile("\(.+?\)") # 괄호 문자열("(xxx)") 삭제용
-    # txt = [re.sub(p_paren_str, "", sent) for sent in txt] # 사람(인간)은 짐승(동물)이다 > 사람은 짐승이다
-    txt = re.sub(p_paren_str, "", txt)  # 사람(인간)은 짐승(동물)이다 > 사람은 짐승이다
-
-
-    # kortok
-    # p_kakao = re.compile(r"[^가-힣\x20-\x7F]*") # 타 언어 문자, 특수 기호 제거
-    p_kakao = re.compile(r"[^ㄱ-ㅎㅏ-ㅣ가-힣\x20-\x7F]*")  # 타 언어 문자, 특수 기호 제거    # 자모 낱글자 살리기
-    # txt = [re.sub(p_kakao, "", sent) for sent in txt]
-    txt = re.sub(p_kakao, "", txt)
-
-
-    # our
-    # txt = [re.sub(r"[^ㄱ-ㅎㅏ-ㅣ가-힣0-9 ]+", "", sent) for sent in txt]   # only for Hanguls, numbers, space  # without punctuation
-
-
-    # # p_num_string = re.compile("[0-9,.]+")   # 숫자 string을 "N"으로 치환
-    # p_num_string = re.compile("[0-9]+([,./]?[0-9])*")  # 숫자 string을 "N"으로 치환    # 1 2,000  3.5    2/3     2.2/4
-    # txt = [re.sub(p_num_string, "N", sent) for sent in txt]   # 1,000년 > N년       2.3회 > N회
-
-    # # re.sub(p_num_string, "N", "1,000년의 세월")
-    # # re.sub(p_num_string, "N", "1.000년의 세월 200년의 삶")
-    # # re.sub(p_num_string, "N", "1.000년의 세월 2년의 삶")
-
-
-    # our
-    # p_multiple_spaces = re.compile("\s+")   # 무의미한 공백
-    # txt = [re.sub(p_multiple_spaces, " ", sent) for sent in txt]  # 무의미한 공백을 스페이스(" ")로 치환
-    # txt = [re.sub("  ", " ", sent) for sent in txt]  # 무의미한 공백을 스페이스(" ")로 치환
-    txt = re.sub("  ", " ", txt)  # 무의미한 공백을 스페이스(" ")로 치환
-
-    # p_only_N = re.compile("^N( N)*$")   # 숫자만 있는 문장 # 'N N N N'
-    # txt = [sent for sent in txt if not p_only_N.search(sent)]   # 숫자만 있는 문장 제거
-
-
-    # our
-    # txt = [sent for sent in txt if not re.search(r"^\s+$", sent)]    # 빈 문장 제거
-    # txt = [sent.strip() for sent in txt if sent != ""]    # 빈 문장 제거
-
-    # txt = [sent for sent in txt if len(sent.split(" ")) > 1]  # 어절 길이가 1인 문장 제거. 학습할 이웃이 없을 것이라고 판단되므로. (형태소 분석하면 길이가 늘어날 수 있기는 함.)
-
-    return txt
-
-
-
-
 # load corpus
-def load_corpus():
-    with gzip.open(corpus_path, "rb") as f:
-        corpus = pickle.load(f)
-        sent_lst = corpus.split("\n")   # 문장 단위로 분절
+def load_corpus(corpus_path):
+    # with gzip.open(corpus_path, "rb") as f:
+    #     corpus = pickle.load(f)
+    #     sent_lst = corpus.split("\n")   # 문장 단위로 분절
 
-    del f, corpus
+    # del f, corpus
 
-    sent_lst = preprocess(sent_lst=sent_lst)
-    print(len(sent_lst)) # 46,540,361 46,350,425 46,241,968 45,242,757  45,070,098  44,846,837  44,715,408  38,698,423  38,942,110  38,756,655
+    with open(corpus_path, "r") as f:
+        sent_lst = f.readlines()
 
-    preprocessed_corpus = preprocess_v2(txt=corpus)
-
-
-
-    return sent_lst
+    sent_lst = [sent[:-1] if sent != "\n" else sent for sent in sent_lst]
 
 
-def load_corpus():
-    with gzip.open(corpus_path, "rb") as f:
-        corpus = pickle.load(f)
-        sent_lst = corpus.split("\n")   # 문장 단위로 분절
 
-    del f, corpus
-
-    sent_lst = preprocess(sent_lst=sent_lst)
-    print(len(sent_lst)) # 46,540,361 46,350,425 46,241,968 45,242,757  45,070,098  44,846,837  44,715,408  38,698,423  38,942,110  38,756,655
+    print(len(sent_lst))    # 62,481,588
+    # 46,540,361 46,350,425 46,241,968 45,242,757  45,070,098  44,846,837  44,715,408  38,698,423  38,942,110  38,756,655
 
     return sent_lst
+
+
 
 
 
@@ -209,9 +109,15 @@ def save_decomposed_corpus(file_name, analyzer, composition_type, corpus):
     with open(file_path, "w") as f:
         for ix in range(len(corpus)):
             if analyzer == "none":
-                f.write("".join(corpus[ix]) + "\n")
+                if corpus[ix] != "\n":  # 문서 사이 공백 아니면
+                    f.write("".join(corpus[ix]) + "\n")
+                elif corpus[ix] == "\n":  # 문서 사이 공백이면
+                    f.write("".join(corpus[ix]))
             else:
-                f.write(" ".join(corpus[ix]) + "\n")
+                if corpus[ix] != "\n":  # 문서 사이 공백 아니면
+                    f.write("".join(corpus[ix]) + "\n")
+                elif corpus[ix] == "\n":  # 문서 사이 공백이면
+                    f.write(" ".join(corpus[ix]))
 
     print(f"saved in {file_path}")
 
@@ -242,7 +148,7 @@ def main(sent_lst, analyzer, composition_type, use_original):
     # else:
     # memory 문제로 나눠서 처리
     # iter = 5  # all
-    iter = 4    # no_1_sent
+    iter = 7    # no_1_sent
 
     for ix in range(iter):
     # for ix in range(0, 1):
@@ -277,21 +183,11 @@ def main(sent_lst, analyzer, composition_type, use_original):
 
 
 if __name__ == "__main__":
-    corpus_path = "/home/user/rsync/namuwiki_20200302.pkl"
-    corpus_path = "/home/user/rsync/namuwiki_20200302_empty_line.pkl"
+    corpus_path = "../namuwiki_20200302_with_preprocessing.txt"
 
-    sent_lst = load_corpus()
-    sent_lst = sent_lst[3:]
+    sent_lst = load_corpus(corpus_path=corpus_path) # 62,481,588
+    print(sent_lst[58:62])  # 문서 사이 공백 확인
 
-    # # save a preprocessed corpus
-    # with gzip.open("./namuwiki_20200302_preprocessed.pkl", "wb") as f:
-    #     pickle.dump(sent_lst, f)
-
-    # for saving time...
-    with gzip.open("./namuwiki_20200302_preprocessed.pkl", 'rb') as f:
-        sent_lst = pickle.load(f)
-
-    # len(sent_lst): 38,887,750 (2021-09-30)        34430142 (2021-09-29, 1어절 문장 삭제)
 
 
     # sent_lst = sent_lst[:1000]
@@ -307,8 +203,8 @@ if __name__ == "__main__":
     #
     # len_ej =  [len(txt.split(" ")) for txt in sent_lst]
     #
-    # sum(len_sent)   # 38,756,655
-    # sum(len_ej) # 566,414,570
+    # sum(len_sent)   # 62,481,588
+    # sum(len_ej) # 607,037,254
 
 
 
