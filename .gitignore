@@ -7,7 +7,7 @@ ee.py
 pretrain_corpus/tokenized/*
 
 # java
-.java
+.java/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
