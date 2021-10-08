@@ -96,14 +96,16 @@ def tokenization(sent_lst, analyzer, composition_type, use_original):
 
 # make directory
 def make_directory(analyzer, composition_type):
-    save_dir = "./pretrain_corpus/tokenized/" + "namuwiki_" + analyzer + "/" + composition_type
+    # save_dir = "./pretrain_corpus/tokenized/" + "namuwiki_" + analyzer + "/" + composition_type
+    save_dir = "../tokenized/" + "namuwiki_" + analyzer + "/" + composition_type
     if not os.path.exists(save_dir):
         os.makedirs(save_dir, exist_ok=True) # a Python version of $mkdir -p
 
 
 # save as a txt
 def save_decomposed_corpus(file_name, analyzer, composition_type, corpus):
-    save_path = "./pretrain_corpus/tokenized/" + "namuwiki_" + "/".join([analyzer, composition_type])
+    # save_path = "./pretrain_corpus/tokenized/" + "namuwiki_" + "/".join([analyzer, composition_type])
+    save_path = "../tokenized/" + "namuwiki_" + "/".join([analyzer, composition_type])
     file_path = save_path + "/" + file_name
 
     with open(file_path, "w") as f:
@@ -115,7 +117,7 @@ def save_decomposed_corpus(file_name, analyzer, composition_type, corpus):
                     f.write("".join(corpus[ix]))
             else:
                 if corpus[ix] != "\n":  # 문서 사이 공백 아니면
-                    f.write("".join(corpus[ix]) + "\n")
+                    f.write(" ".join(corpus[ix]) + "\n")
                 elif corpus[ix] == "\n":  # 문서 사이 공백이면
                     f.write(" ".join(corpus[ix]))
 
@@ -148,7 +150,7 @@ def main(sent_lst, analyzer, composition_type, use_original):
     # else:
     # memory 문제로 나눠서 처리
     # iter = 5  # all
-    iter = 7    # no_1_sent
+    iter = 6
 
     for ix in range(iter):
     # for ix in range(0, 1):

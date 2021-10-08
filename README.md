@@ -2,6 +2,7 @@
 acl
 
 ![mecab_fixed](https://github.com/taeheejeon22/konlpy-mecab-fixed)
+<br>
 ![kortok](https://github.com/kakaobrain/kortok)
 
 
@@ -46,9 +47,23 @@ python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="m
 ```
 
 
-# 3. pretrain BERT
+# 3. make BERT files 
+```buildoutcfg
+python scripts/make_bert_files.py --root_path=resources/with_dummy_letter_v1/ --vocab_size=64000 
+```
+
+
+# 4. pretrain BERT
+파일 분할 by size (https://stackoverflow.com/questions/17592725/get-file-size-and-split-the-file-based-on-size)
+```bash
+split -d -b2G namuwiki_20200302_tokenized_mecab_orig_decomposed_pure_all.txt ./split/namuwiki_20200302_tokenized_mecab_orig_decomposed_pure_
+
+split -d -b2G namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure_all.txt ./split/namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure_
+
+```
+
+
 ## input 
 - tokenized corpus:
 - tok.vocab: ./resources/xx/
 - bert_config.json: ./resources/xx/
-   kortok에 생성 코드가 없어서 그냥 복붙. 자동 생성 코드 추가해야 함.

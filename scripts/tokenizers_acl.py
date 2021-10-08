@@ -19,7 +19,8 @@
 import re
 
 from itertools import chain
-from konlpy.tag import Mecab
+# from konlpy.tag import Mecab
+from scripts._mecab import Mecab
 from mosestokenizer import MosesTokenizer
 from soynlp.hangle import compose, decompose, character_is_korean, character_is_complete_korean, character_is_moum, character_is_jaum
 
