@@ -1,0 +1,55 @@
+1. Introduction
+- importance of tokenization: 2018년 이후 BERT, 기계 번역 연구들 참조
+    - subword information의 대두: Senrich2015 neural machine translation of rare words with subword units 이후 BPE 널리 쓰임.
+- issue in Korean language: character-level만으로 접근 불가. 모아쓰기. not language universal
+    - not only different from many other languages in terms of morphology, syntax, ..., but also different in terms of writing system
+- how to improve the performance of tokenization language-specifically
+
+
+2. Related work     # 분량이 너무 많다면 Related work를 1.에 통합
+- BERT 연구: 다른 언어 + 한국어
+- Subword information: BPE 알고리즘 + 한국어의 특수성(음절 수준, 자모 수준, 전태희 논문 참조)
+    - 한국어 자모 수준 정보 효과 있음: 단어 임베딩(Stratos, 2017; Park et al., 2018 ...), BERT 등의 언어 모델(Moon and Okazaki, 2020; Lee et al, 2020, ...)
+- tokenization: Park et al. 2020
+
+
+3. Proposed Method
+- morpheme-aware subword tokenization with morphological jamo decomposition
+
+- Korean 모아쓰기
+
+- 2 types of morpheme (Korean): grammatical vs. lexical
+
+- why jamo decomposition works?
+    - in some cases, it does morphological decomposition: 난 = ㄴㅏ + ㄴ
+    - only grammatical morphemes 섞여 있는 경우
+    - phonological allomorphs in Korean: simple and regular  는/은  어서/서
+
+- why not simple jamo decomposition?
+    - there are no advanatages to decompose lexical morphemes
+    - although some morphemes share many subwords, they do not share any semantic, syntantic similarities usually
+
+- jamo-decompose only grammatical morpheme
+
+- morpheme analyzer: MeCab-Ko
+    - It does not do morpheme tokenization, but subword tokenization based on morpheme analysis
+    - we customize the code to make it do morpheme tokenization
+
+
+4. Experiment
+4.1 Dataset
+- namuwiki 2020. 03. 02.
+
+4.2 Pre-training
+- BERT 학습 방법, GCP TPU
+
+4.3 Fine-tuning
+    4.3.1 ~ 4.3.5: KorQuAD ~ PAWS-X
+    - 각 데이터 간략히 소개
+
+
+5. Results & Discussion     # Results를 4.4로 넣고 5.는 Discussion만 다룰 수 있음.
+    5.1 ~ 5.5: KorQuAD ~ PAWS-X
+    
+
+6. Conclusion
