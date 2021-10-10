@@ -25,9 +25,15 @@ class Trainer:
         summary_writer: SummaryWriter,
     ):
         self.config = config
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-        self.model = model
+        # multi gpu(4)
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        if (self.device == 'cuda') and (torch.cuda.device_count() > 1):
+            print('Multi GPU({}) activate'.format(torch.cuda.device_count()))
+            self.model = nn.DataParallel(model, device_ids=[0,1,2,3])
+        else:
+            self.model = model
+
         self.model.to(self.device)
 
         self.train_data_loader = train_data_loader
