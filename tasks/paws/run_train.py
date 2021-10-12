@@ -141,3 +141,11 @@ if __name__ == "__main__":
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 
     main(args)
+
+
+    # args = {"tokenizer":'mecab_fixed_decomposed_morphological_sp-64k'}
+    # px = PAWSDataset(dev_sentence_as, dev_sentence_bs, dev_labels, vocab, tokenizer, config.max_sequence_length)
+    # sentence_as = dev_sentence_as
+    # sentence_bs = dev_sentence_bs
+    # labels = dev_labels
+    # max_sequence_length = 128

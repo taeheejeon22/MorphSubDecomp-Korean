@@ -1,13 +1,10 @@
 from typing import List, Tuple
 
-import re
 import torch
 from torch.utils.data import Dataset
 
 from tasks.bert_utils import convert_pair_to_feature, pad_sequences
 from tokenizer import BaseTokenizer, Vocab
-
-
 
 
 class PAWSDataset(Dataset):
@@ -36,50 +33,53 @@ class PAWSDataset(Dataset):
         self.tokenizer = tokenizer
         self.max_sequence_length = max_sequence_length
 
-        self.bert_inputs = self._prepare_data(sentence_as, sentence_bs)
+        bert_inputs = _prepare_data(sentence_as, sentence_bs)
 
-    def __len__(self) -> int:
-        return self.labels.size(0)
+    def __len__() -> int:
+        return labels.size(0)
 
-    def __getitem__(self, item) -> Tuple[torch.Tensor, ...]:
+    def __getitem__(item) -> Tuple[torch.Tensor, ...]:
         batch = (
-            self.bert_inputs[0][item],
-            self.bert_inputs[1][item],
-            self.bert_inputs[2][item],
-            self.labels[item],
+            bert_inputs[0][item],
+            bert_inputs[1][item],
+            bert_inputs[2][item],
+            labels[item],
         )
         return batch
 
-    def _prepare_data(self, sentence_as: List[str], sentence_bs: List[str]) -> Tuple[torch.Tensor, ...]:
+    def _prepare_data(sentence_as: List[str], sentence_bs: List[str]) -> Tuple[torch.Tensor, ...]:
         input_features = [
-            convert_pair_to_feature(sentence_a, sentence_b, self.tokenizer, self.vocab, self.max_sequence_length)
+            convert_pair_to_feature(sentence_a, sentence_b, tokenizer, vocab, max_sequence_length)
             for sentence_a, sentence_b in zip(sentence_as, sentence_bs)
         ]
 
-        # input_features = list()
-        # for sentence_a, sentence_b in zip(sentence_as, sentence_bs):
-        #     print(sentence_a, sentence_b, sep="\n")
-        #     input_features.append(convert_pair_to_feature(sentence_a, sentence_b, self.tokenizer, self.vocab, self.max_sequence_length))
-        #
-        #
+        ee = list(zip(sentence_as, sentence_bs))
+        # for ix in range(len(ee)):   # 823
+        for ix in range(824, len(ee)):  # 823
+            convert_pair_to_feature(ee[ix][0], re.sub(p_kakao, "EE", ee[ix][1]), tokenizer, vocab, 128)
+
+
+
+
+
 
         padded_token_ids = torch.tensor(
             pad_sequences(
                 [feature[0] for feature in input_features],
-                padding_value=self.vocab.pad_token_id,
-                max_length=self.max_sequence_length,
+                padding_value=vocab.pad_token_id,
+                max_length=max_sequence_length,
             ),
             dtype=torch.long,
         )
         padded_attention_mask = torch.tensor(
             pad_sequences(
-                [feature[1] for feature in input_features], padding_value=0, max_length=self.max_sequence_length
+                [feature[1] for feature in input_features], padding_value=0, max_length=max_sequence_length
             ),
             dtype=torch.long,
         )
         padded_token_type_ids = torch.tensor(
             pad_sequences(
-                [feature[2] for feature in input_features], padding_value=0, max_length=self.max_sequence_length
+                [feature[2] for feature in input_features], padding_value=0, max_length=max_sequence_length
             ),
             dtype=torch.long,
         )
@@ -89,3 +89,6 @@ class PAWSDataset(Dataset):
             padded_attention_mask,
             padded_token_type_ids,
         )
+
+# px = PAWSDataset()
+self = px
