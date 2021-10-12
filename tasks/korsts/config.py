@@ -8,7 +8,7 @@ class TrainConfig(NamedTuple):
     Model Hyperparameters
     """
     #: vocab, tokenizer, bert config and model 파일이 저장된 경로. join(resource_dir, tokenizer)로 합쳐서 사용
-    resource_dir: str = "./resources"
+    resource_dir: str = "./resources/with_dummy_letter_v1/namuwiki_all_64k"
     #: tokenizer_name
     tokenizer: str = ""
     #: bert 설정 파일 이름
@@ -40,11 +40,11 @@ class TrainConfig(NamedTuple):
     Data Hyperparameters
     """
     #: training data 파일 경로
-    train_path: str = "./dataset/nlu_tasks/korsts/sample_sts-train.tsv"
+    train_path: str = "./dataset/nlu_tasks/korsts/sts-train.tsv"
     #: dev data 파일 경로
-    dev_path: str = "./dataset/nlu_tasks/korsts/sample_sts-dev.tsv"
+    dev_path: str = "./dataset/nlu_tasks/korsts/sts-dev.tsv"
     #: test data 파일 경로
-    test_path: str = "./dataset/nlu_tasks/korsts/sample_sts-test.tsv"
+    test_path: str = "./dataset/nlu_tasks/korsts/sts-test.tsv"
     #: output dir
     log_dir: str = "./run_outputs/{}/korsts/logs"
     summary_dir: str = "./run_outputs/{}/korsts/summaries"
