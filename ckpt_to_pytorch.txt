@@ -1,0 +1,6 @@
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./bert_model_all_orig_decomposed_pure_model.ckpt-600000 \
+  --config=./resources/with_dummy_letter_v1/namuwiki_all_64k/mecab_orig_decomposed_pure_sp-64k/bert_config.json \
+  --pytorch_dump_output=./bert_model.pth
+
+# 결과물 파일은 해당 모델의 토크나이저에 해당하는 resource로 이동해야 함.
