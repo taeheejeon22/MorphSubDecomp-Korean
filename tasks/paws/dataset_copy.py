@@ -35,6 +35,12 @@ class PAWSDataset(Dataset):
 
         bert_inputs = _prepare_data(sentence_as, sentence_bs)
 
+
+        sentence_as = train_sentence_as[:]
+        sentence_bs = train_sentence_bs[:]
+
+
+
     def __len__() -> int:
         return labels.size(0)
 
@@ -56,7 +62,11 @@ class PAWSDataset(Dataset):
         ee = list(zip(sentence_as, sentence_bs))
         # for ix in range(len(ee)):   # 823
         for ix in range(824, len(ee)):  # 823
-            convert_pair_to_feature(ee[ix][0], re.sub(p_kakao, "EE", ee[ix][1]), tokenizer, vocab, 128)
+            # convert_pair_to_feature(ee[ix][0], re.sub(p_kakao, "EE", ee[ix][1]), tokenizer, vocab, 128)
+            convert_pair_to_feature(ee[ix][0], ee[ix][1], tokenizer, vocab, 128)
+
+            sentence_a = ee[ix][0]
+            sentence_b = ee[ix][1]
 
 
 

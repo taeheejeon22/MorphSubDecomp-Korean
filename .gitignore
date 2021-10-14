@@ -6,6 +6,9 @@ ee.py
 *.pkl
 pretrain_corpus/tokenized/*
 
+# log
+run_outputs/*
+
 # java
 .java/*
 
