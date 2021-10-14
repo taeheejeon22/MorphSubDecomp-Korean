@@ -1,7 +1,7 @@
 from logging import Logger
 
 import torch
-from sklearn.metrics import accuracy_score, classification_report
+from scipy.stats import spearmanr
 from torch import nn
 from torch.optim.adamw import AdamW
 from torch.utils.data.dataloader import DataLoader
@@ -35,14 +35,14 @@ class Trainer:
             self.model = model
 
         self.model.to(self.device)
-     
+
         self.train_data_loader = train_data_loader
         self.dev_data_loader = dev_data_loader
         self.test_data_loader = test_data_loader
         self.logger = logger
         self.summary_writer = summary_writer
 
-        self.criterion = nn.CrossEntropyLoss()
+        self.criterion = nn.MSELoss()
         self.optimizer = AdamW(model.parameters(), lr=config.learning_rate)
 
         # total step 계산
@@ -89,15 +89,18 @@ class Trainer:
 
                 running_loss += loss
                 train_targets.extend(labels.tolist())
-                train_predictions.extend(outputs.argmax(-1).tolist())
+                train_predictions.extend(outputs.tolist())
 
                 if (step + 1) % self.config.logging_interval == 0:
                     train_loss = running_loss / self.config.logging_interval
-                    train_acc = accuracy_score(train_targets, train_predictions)
-                    self.logger.info(f"Epoch {epoch}, Step {step + 1}\t| Loss {train_loss:.4f}  Acc {train_acc:.4f}")
+                    train_corr = spearmanr(train_targets, train_predictions)[0]
+                    self.logger.info(
+                        f"Epoch {epoch}, Step {step + 1}\t| Loss {train_loss:.4f}  "
+                        f"Spearman Correlation {train_corr:.4f}"
+                    )
 
                     self.summary_writer.add_scalar("cola/train/loss", train_loss, self.global_step)
-                    self.summary_writer.add_scalar("cola/train/accuracy", train_acc, self.global_step)
+                    self.summary_writer.add_scalar("cola/train/spearman", train_corr, self.global_step)
 
                     running_loss = 0.0
                     train_targets = []
@@ -105,25 +108,23 @@ class Trainer:
 
             # dev every epoch
             dev_loss, dev_targets, dev_predictions = self._validation(self.dev_data_loader)
-            dev_report = classification_report(dev_targets, dev_predictions, digits=4)
+            dev_corr = spearmanr(dev_targets, dev_predictions)[0]
             self.logger.info(f"######### DEV REPORT #EP{epoch} #########")
             self.logger.info(f"Loss {dev_loss:.4f}")
-            self.logger.info(f"\n{dev_report}")
+            self.logger.info(f"Spearman Correlation {dev_corr:.4f}\n")
 
-            dev_acc = accuracy_score(dev_targets, dev_predictions)
             self.summary_writer.add_scalar("cola/dev/loss", dev_loss, self.global_step)
-            self.summary_writer.add_scalar("cola/dev/accuracy", dev_acc, self.global_step)
+            self.summary_writer.add_scalar("cola/dev/spearman", dev_corr, self.global_step)
 
             # test every epoch
             test_loss, test_targets, test_predictions = self._validation(self.test_data_loader)
-            test_report = classification_report(test_targets, test_predictions, digits=4)
+            test_corr = spearmanr(test_targets, test_predictions)[0]
             self.logger.info(f"######### TEST REPORT #EP{epoch} #########")
             self.logger.info(f"Loss {test_loss:.4f}")
-            self.logger.info(f"\n{test_report}")
+            self.logger.info(f"Spearman Correlation {test_corr:.4f}\n")
 
-            test_acc = accuracy_score(test_targets, test_predictions)
             self.summary_writer.add_scalar("cola/test/loss", test_loss, self.global_step)
-            self.summary_writer.add_scalar("cola/test/accuracy", test_acc, self.global_step)
+            self.summary_writer.add_scalar("cola/test/spearman", test_corr, self.global_step)
 
             # output_path = os.path.join(self.config.checkpoint_dir, f"model-epoch-{epoch}.pth")
             # torch.save(self.model.state_dict(), output_path)
@@ -133,6 +134,7 @@ class Trainer:
         self.optimizer.zero_grad()
 
         outputs = self.model(input_token_ids, attention_mask, token_type_ids)
+        outputs = outputs.view(-1)
 
         loss = self.criterion(outputs, labels)
         loss.backward()
@@ -158,12 +160,13 @@ class Trainer:
                 labels = data[3].to(self.device)
 
                 outputs = self.model(input_token_ids, attention_mask, token_type_ids)
+                outputs = outputs.view(-1)
 
                 loss = self.criterion(outputs, labels)
 
                 running_loss += loss.item()
                 targets.extend(labels.tolist())
-                predictions.extend(outputs.argmax(-1).tolist())
+                predictions.extend(outputs.tolist())
 
         assert len(targets) == len(predictions)
 

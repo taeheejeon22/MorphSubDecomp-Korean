@@ -10,11 +10,11 @@ class COLAModel(nn.Module):
 
         self.bert = BertModel(bert_config)
         self.dropout = nn.Dropout(dropout_prob)
-        self.classifier = nn.Linear(bert_config.hidden_size, 2)
+        self.classifier = nn.Linear(bert_config.hidden_size, 1)
 
     def forward(self, input_token_ids: torch.Tensor, attention_mask: torch.Tensor, token_type_ids: torch.Tensor):
-        _, pooled_outputs = self.bert.forward(input_token_ids, attention_mask, token_type_ids)
-        outputs_drop = self.dropout(pooled_outputs)
-        logits = self.classifier(outputs_drop)
+        _, pooled_output = self.bert.forward(input_token_ids, attention_mask, token_type_ids)
+        output_drop = self.dropout(pooled_output)
+        logits = self.classifier(output_drop)
 
         return logits

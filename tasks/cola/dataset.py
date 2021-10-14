@@ -11,13 +11,18 @@ class COLADataset(Dataset):
     """
     Dataset은 아래와 같은 Input 튜플을 가지고 있습니다.
     Index 0: input token ids
-    Index 1: attention mask
+    Index 1: attentio mask
     Index 2: token type ids
     Index 3: labels
     """
 
     def __init__(
-        self, sentences: List[str], labels: List[int], vocab: Vocab, tokenizer: BaseTokenizer, max_sequence_length: int
+        self,
+        sentences: List[str],
+        labels: List[int],
+        vocab: Vocab,
+        tokenizer: BaseTokenizer,
+        max_sequence_length: int,
     ):
         self.sentences = sentences
         self.labels = torch.tensor(labels)
@@ -42,6 +47,7 @@ class COLADataset(Dataset):
 
     def _prepare_data(self, sentences: List[str]) -> Tuple[torch.Tensor, ...]:
         input_features = [
+            # pair -> single
             convert_single_to_feature(sentence, self.tokenizer, self.vocab, self.max_sequence_length)
             for sentence in sentences
         ]

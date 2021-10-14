@@ -22,7 +22,7 @@ class TrainConfig(NamedTuple):
     #: random seed
     seed: int = 42
     #: epoch 도는 횟수
-    num_epochs: int = 3
+    num_epochs: int = 5
     #: 훈련 시의 batch size
     batch_size: int = 64
     #: learning rate
@@ -34,21 +34,21 @@ class TrainConfig(NamedTuple):
     #: max sequence length
     max_sequence_length: int = 128
     #: logging을 진행할 단위 step
-    logging_interval: int = 100
+    logging_interval: int = 10
 
     """
     Data Hyperparameters
     """
-    #: train data 파일 경로
-    train_path: str = "./dataset/nlu_tasks/cola/cola_train.tsv"
+    #: training data 파일 경로
+    train_path: str = "./dataset/nlu_tasks/cola/cola_mean_train.tsv"
+    #: dev data 파일 경로
+    dev_path: str = "./dataset/nlu_tasks/cola/cola_mean_domain_dev.tsv"
     #: test data 파일 경로
-    dev_path: str = "./dataset/nlu_tasks/cola/cola_domain_dev.tsv"
-    #: test data 파일 경로
-    test_path: str = "./dataset/nlu_tasks/cola/cola_out_of_domain_dev.tsv"
+    test_path: str = "./dataset/nlu_tasks/cola/cola_mean_out_of_domain_dev.tsv"
     #: output dir
     log_dir: str = "./run_outputs/{}/cola/logs"
     summary_dir: str = "./run_outputs/{}/cola/summaries"
-    # checkpoint_dir: str = "./run_outputs/{}/cola/checkpoints"
+    # checkpoint_dir: str = "./run_outputs/{}/korsts/checkpoints"
 
     def __repr__(self):
         _repr_str = "Training Configuration:\n{\n"
