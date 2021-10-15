@@ -130,11 +130,11 @@ for ix in tqdm( range(len(all_docs)) ):
 
 
 # save as a pickle
-with gzip.open("../wiki_20210901_with_preprocessing.pkl", "wb") as f:
+with gzip.open("../wikiko_20210901_with_preprocessing.pkl", "wb") as f:
     pickle.dump(all_texts, f)
 
 # save as a txt
-with open("../wiki_20210901_with_preprocessing.txt", "w") as f:
+with open("../wikiko_20210901_with_preprocessing.txt", "w") as f:
     f.write(all_texts)
 
 

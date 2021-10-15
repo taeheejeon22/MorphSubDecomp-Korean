@@ -4,8 +4,11 @@ import os
 
 import sentencepiece as spm
 
-# INPUT_KO_CORPUS = "./dataset/wiki/sample_ko-wiki-200420.txt"
-INPUT_KO_CORPUS = "./pretrain_corpus/tokenized/namuwiki_none/composed/namuwiki_20200302_tokenized_none_composed_mecab_orig.txt"
+# namuwiki
+# INPUT_KO_CORPUS = "./pretrain_corpus/tokenized/namuwiki_none/composed/namuwiki_20200302_tokenized_none_composed_mecab_orig.txt"
+# wiki ko
+INPUT_KO_CORPUS = "../tokenized/wikiko_20210901_none/composed//home/user/Desktop/git/acl_tokenization/tokenized/wikiko_20210901_none/composed/wikiko_20210901_tokenized_none_composed.txt.txt"
+
 INPUT_EN_CORPUS = "./dataset/wiki/sample_en-wiki-200420.txt"  # for English SentencePiece(BPE) Tokenizer
 # INPUT_MECAB_TOKENIZED_CORPUS = "./dataset/wiki/mecab_tokenized/sample_ko-wiki-200420.txt"  # for MeCab-SentencePiece Tokenizer
 # INPUT_MECAB_TOKENIZED_CORPUS = "./dataset/wiki/mecab_tokenized_fixed/sample_ko-wiki-200420.txt"  # for MeCab-SentencePiece Tokenizer
@@ -56,12 +59,16 @@ if __name__ == "__main__":
     composition_type = args["composition_type"]
 
     # set a input path automatically
-    if "mecab" in args["tokenizer_type"]:
-        # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwik_" + args["tokenizer_type"] + "/" + args["composition_type"] + "/" + \
-        #                                "namuwiki_20200302_tokenized" + "_" + args["tokenizer_type"] + "_" + args["composition_type"] + ".txt"
+    # corpus = "namuwiki_20200302"  # namuwiki
+    corpus = "wikiko_20210901"  # wiki ko
 
-        INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_all.txt"  # all
+    if "mecab" in args["tokenizer_type"]:
+        INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_tokenized_{tokenizer_type}_{composition_type}.txt"  # all
         # INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_half.txt" # half
+
+        # namuwiki
+        # INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_all.txt"  # all
+        # # INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_half.txt" # half
 
         # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwik_" + args[tokenizer_]  mecab_orig/composed/namuwiki_20200302_tokenized_mecab_orig_composed.txt"  # orig / composed
         # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/decomposed_pure/namuwiki_20200302_tokenized_mecab_orig_decomposed_pure.txt"  # orig / decomposed_pure
@@ -71,7 +78,7 @@ if __name__ == "__main__":
         # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_pure/namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure.txt"  # fixed / decomposed_pure
         # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_morphological/namuwiki_20200302_tokenized_mecab_fixed_decomposed_morphological.txt"  # fixed / decomposed_morphological
     else:
-        INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_all.txt"  # all
+        INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_tokenized_{tokenizer_type}_{composition_type}.txt"  # all
         # INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_half.txt" # half
 
 

@@ -31,7 +31,7 @@ def load_corpus(corpus_path):
     with open(corpus_path, "r") as f:
         sent_lst = f.readlines()
 
-    sent_lst = [sent[:-1] if sent != "\n" else sent for sent in sent_lst]
+    sent_lst = [sent[:-1] if sent != "\n" else sent for sent in sent_lst]   # remove "\n"s created by readlines()
 
 
 
@@ -97,7 +97,7 @@ def tokenization(sent_lst, analyzer, composition_type, use_original):
 # make directory
 def make_directory(analyzer, composition_type):
     # save_dir = "./pretrain_corpus/tokenized/" + "namuwiki_" + analyzer + "/" + composition_type
-    save_dir = "../tokenized/" + "namuwiki_" + analyzer + "/" + composition_type
+    save_dir = "../tokenized/" + corpus_name + "_" + analyzer + "/" + composition_type
     if not os.path.exists(save_dir):
         os.makedirs(save_dir, exist_ok=True) # a Python version of $mkdir -p
 
@@ -105,7 +105,7 @@ def make_directory(analyzer, composition_type):
 # save as a txt
 def save_decomposed_corpus(file_name, analyzer, composition_type, corpus):
     # save_path = "./pretrain_corpus/tokenized/" + "namuwiki_" + "/".join([analyzer, composition_type])
-    save_path = "../tokenized/" + "namuwiki_" + "/".join([analyzer, composition_type])
+    save_path = "../tokenized/" + corpus_name + "_" + analyzer + "/" + composition_type
     file_path = save_path + "/" + file_name
 
     with open(file_path, "w") as f:
@@ -150,7 +150,12 @@ def main(sent_lst, analyzer, composition_type, use_original):
     # else:
     # memory 문제로 나눠서 처리
     # iter = 5  # all
-    iter = 6
+
+
+    if "namu" in corpus_name:
+        iter = 6
+    elif "ko" in corpus_name:
+        iter = 1
 
     for ix in range(iter):
     # for ix in range(0, 1):
@@ -178,14 +183,21 @@ def main(sent_lst, analyzer, composition_type, use_original):
         # elif use_original == False:
         #     mecab_type = "mecab_fixed"
 
-        file_name = "namuwiki_20200302_tokenized_" + "_".join([analyzer, composition_type, str(ix)]) + ".txt"
+        if "namu" in corpus_name:
+            file_name = corpus_name + "_tokenized_" + "_".join([analyzer, composition_type, str(ix)]) + ".txt"
+        elif "ko" in corpus_name:
+            file_name = corpus_name + "_tokenized_" + "_".join([analyzer, composition_type]) + ".txt"
+
         save_decomposed_corpus(file_name=file_name, analyzer=analyzer, composition_type=composition_type, corpus=tokenized_corpus)
 
 
 
-
 if __name__ == "__main__":
-    corpus_path = "../namuwiki_20200302_with_preprocessing.txt"
+    corpus_path = "../namuwiki_20200302_with_preprocessing.txt" # namuwiki
+    corpus_name = "namuwiki_20200302"
+
+    corpus_path = "../wikiko_20210901_with_preprocessing.txt"  # wikiko
+    corpus_name = "wikiko_20210901"
 
     sent_lst = load_corpus(corpus_path=corpus_path) # 62,481,588
     print(sent_lst[58:62])  # 문서 사이 공백 확인

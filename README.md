@@ -49,7 +49,7 @@ python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="m
 
 # 3. make BERT files 
 ```buildoutcfg
-python scripts/make_bert_files.py --root_path=resources/with_dummy_letter_v1/ --vocab_size=64000 
+python scripts/make_bert_files.py --root_path=resources/with_dummy_letter_v2/ --vocab_size=64000 
 ```
 
 
