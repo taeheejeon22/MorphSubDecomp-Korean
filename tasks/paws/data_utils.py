@@ -26,10 +26,10 @@ def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str]
             if splitted[1] == "" or splitted[2] == "":
                 print(f"[ERROR] {repr(line)}, line {i}")
                 continue
-            # 문장이 "NS"로만 표기된 라인 제외
-            if splitted[1] == "NS" or splitted[2] == "NS":
-                print(f"[ERROR] {repr(line)}, line {i}")
-                continue
+            # # 문장이 "NS"로만 표기된 라인 제외
+            # if splitted[1] == "NS" or splitted[2] == "NS":
+            #     print(f"[ERROR] {repr(line)}, line {i}")
+            #     continue
             sentence_as.append(splitted[1])
             sentence_bs.append(splitted[2])
             labels.append(label_to_index[splitted[3]])
