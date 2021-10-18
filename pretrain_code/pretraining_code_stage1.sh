@@ -95,11 +95,10 @@ echo 코퍼스 파일 수: $file_count
 
 for file in $corpus_files
 do
-
     output_filename=`echo $file | cut -d'.' -f1`
     python3 bert/create_pretraining_data.py \
       --input_file=$wiki_corpus_dir/$file \
-      --output_file=output_dir/$file.tfrecord \
+      --output_file=output_dir/$output_filename.tfrecord \
       --vocab_file=$resource_dir/vocab.txt \
       --do_lower_case=True \
       --max_predictions_per_seq=20 \
@@ -125,7 +124,7 @@ do
     output_filename=`echo $file | cut -d'.' -f1`
     python3 bert/create_pretraining_data.py \
       --input_file=$namuwiki_corpus_dir/$file \
-      --output_file=output_dir/$file.tfrecord \
+      --output_file=output_dir/$output_filename.tfrecord \
       --vocab_file=$resource_dir/vocab.txt \
       --do_lower_case=True \
       --max_predictions_per_seq=20 \
