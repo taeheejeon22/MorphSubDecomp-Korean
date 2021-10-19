@@ -59,8 +59,8 @@ if __name__ == "__main__":
     composition_type = args["composition_type"]
 
     # set a input path automatically
-    # corpus = "namuwiki_20200302"  # namuwiki
-    corpus = "wikiko_20210901"  # wiki ko
+    corpus = "namuwiki_20200302"  # namuwiki
+    # corpus = "wikiko_20210901"  # wiki ko
 
     if "mecab" in args["tokenizer_type"]:
         INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_tokenized_{tokenizer_type}_{composition_type}.txt"  # all
