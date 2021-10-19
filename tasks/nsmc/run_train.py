@@ -74,6 +74,7 @@ def main(args):
             tokenizer = MeCabSentencePieceTokenizer(mecab, sp)
 
         elif args["use_kortok"] == True:
+            print("use_kortok: ", args["use_kortok"])
             mecab = MeCabTokenizer_kortok(os.path.join(tokenizer_dir, "tok.json"))
             sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
             tokenizer = MeCabSentencePieceTokenizer_kortok(mecab, sp)
