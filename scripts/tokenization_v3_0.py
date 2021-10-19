@@ -251,15 +251,15 @@ if __name__ == "__main__":
     ## 1. mecab original
     analyzer = "mecab_orig"
     use_original = True
-    # 1) composed # ['넌', '▃', '날', '▃', '좋', '아', '해']
+    # 1) composed # ['난', '▃', '널', '▃', '좋', '아', '해']
     composition_type = "composed"
     main(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)
 
-    # 2) decomposed pure # ['ㄴㅓㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅐ#']
+    # 2) decomposed pure # ['ㄴㅏㄴ', '▃', 'ㄴㅓㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅐ#']
     composition_type = "decomposed_pure"
     main(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)
 
-    # 3) decomposed morphological # ['ㄴㅓㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ#', 'ㅎㅐ#']
+    # 3) decomposed morphological # ['ㄴㅏㄴ', '▃', 'ㄴㅓㄹ', '▃', '좋', 'ㅇㅏ#', 'ㅎㅐ#']
     composition_type = "decomposed_morphological"
     main(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)
 
@@ -267,14 +267,14 @@ if __name__ == "__main__":
     ## 2. mecab fixed
     analyzer = "mecab_fixed"
     use_original = False
-    # 1) composed # ['너', 'ㄴ', '▃', '날', '▃', '좋', '아', '하', '아']
+    # 1) composed # ['나', 'ㄴ', '▃', '너', 'ㄹ', '▃', '좋아하', '아']
     composition_type = "composed"
     main(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)
 
-    # 2) decomposed pure # ['ㄴㅓ#', '##ㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅏ#', 'ㅇㅏ#']
+    # 2) decomposed pure # ['ㄴㅏ#', '##ㄴ', '▃', 'ㄴㅓ#', '##ㄹ', '▃', 'ㅈㅗㅎㅇㅏ#ㅎㅏ#', 'ㅇㅏ#']
     composition_type = "decomposed_pure"
     main(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)
 
-    # 3) decomposed morphological # ['너', '##ㄴ', '▃', '나', '##ㄹ', '▃', '좋', 'ㅇㅏ#', '하', 'ㅇㅏ#']
+    # 3) decomposed morphological # ['나', '##ㄴ', '▃', '너', '##ㄹ', '▃', '좋아하', 'ㅇㅏ#']
     composition_type = "decomposed_morphological"
     main(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)
