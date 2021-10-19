@@ -1,12 +1,12 @@
 from typing import List
 
 from tokenizer.base import BaseTokenizer
-from tokenizer.mecab_kortok import MeCabTokenizer
+from tokenizer.mecab_kortok import MeCabTokenizer_kortok
 from tokenizer.sentencepiece import SentencePieceTokenizer
 
 
-class MeCabSentencePieceTokenizer(BaseTokenizer):
-    def __init__(self, mecab: MeCabTokenizer, sp: SentencePieceTokenizer):
+class MeCabSentencePieceTokenizer_kortok(BaseTokenizer):
+    def __init__(self, mecab: MeCabTokenizer_kortok, sp: SentencePieceTokenizer):
         self.mecab = mecab
         self.sp = sp
 

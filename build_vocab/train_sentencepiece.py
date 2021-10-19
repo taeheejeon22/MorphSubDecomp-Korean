@@ -22,7 +22,8 @@ INPUT_EN_CORPUS = "./dataset/wiki/sample_en-wiki-200420.txt"  # for English Sent
 
 
 
-OUTPUT_DIR = "./resources"
+# OUTPUT_DIR = "./resources"
+OUTPUT_DIR = "./output_sp"
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -102,6 +103,9 @@ if __name__ == "__main__":
 
     else:
         raise ValueError
+
+
+
     os.makedirs(output_dir, exist_ok=True)
 
     # save arguments info

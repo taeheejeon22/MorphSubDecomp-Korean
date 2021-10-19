@@ -8,10 +8,13 @@ from tokenizer.base import BaseTokenizer
 # from tokenizer.mecab_orig_decomposed_morphological import MeCabOrigDecompMorTokenizer   # mecab orig / decomposed morphological
 
 from tokenizer.mecab import MeCabTokenizer   # mecab fixed (with decomposed pure)
+from tokenizer.mecab_kortok import MeCabTokenizer_kortok   # mecab orig (kortok)
+
 # from tokenizer.mecab_fixed_decomposed_morphological import MeCabOrigDecompMorTokenizer  # mecab fixed / decomposed morphological
 
 
 from tokenizer.mecab_sp import MeCabSentencePieceTokenizer
+from tokenizer.mecab_sp_kortok import MeCabSentencePieceTokenizer_kortok
 
 
 
@@ -26,6 +29,8 @@ __all__ = [
     # "JamoTokenizer",
     "MeCabSentencePieceTokenizer",
     "MeCabTokenizer",
+    "MeCabSentencePieceTokenizer_kortok",
+    "MeCabTokenizer_kortok",
     # "MeCabFixedTokenizer",
     "SentencePieceTokenizer",
     "Vocab",

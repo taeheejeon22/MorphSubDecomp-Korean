@@ -20,6 +20,8 @@ from tokenizer import (
     # JamoTokenizer,
     MeCabSentencePieceTokenizer,
     MeCabTokenizer,
+    MeCabSentencePieceTokenizer_kortok,
+    MeCabTokenizer_kortok,
     SentencePieceTokenizer,
     Vocab,
     # WordTokenizer,
@@ -62,11 +64,17 @@ def main(args):
     if config.tokenizer.startswith("sp-"):
         tokenizer = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
     elif config.tokenizer.startswith("mecab_"):
-        mecab = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
-        # mecab = MeCabTokenizer(use_original=True, pure_decompostion=True, morphological=False)
+        if args["use_kortok"] == False:
+            mecab = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
+            sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
+            tokenizer = MeCabSentencePieceTokenizer(mecab, sp)
 
-        sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
-        tokenizer = MeCabSentencePieceTokenizer(mecab, sp)
+        elif args["use_kortok"] == True:
+            mecab = MeCabTokenizer_kortok(os.path.join(tokenizer_dir, "tok.json"))
+            sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
+            tokenizer = MeCabSentencePieceTokenizer_kortok(mecab, sp)
+
+
     # elif config.tokenizer.startswith("char-"):
     #     tokenizer = CharTokenizer()
     # elif config.tokenizer.startswith("word-"):
@@ -137,6 +145,8 @@ if __name__ == "__main__":
     parser.add_argument("--train_path", type=str)
     parser.add_argument("--dev_path", type=str)
     parser.add_argument("--test_path", type=str)
+
+    parser.add_arguement("--use_kortok", nargs="?", const=False, type=bool, default=False)  # kortok 토크나이저 사용 여부
 
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 

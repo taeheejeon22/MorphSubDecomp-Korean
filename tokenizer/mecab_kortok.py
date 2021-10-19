@@ -7,7 +7,7 @@ import MeCab
 from tokenizer.base import BaseTokenizer
 
 
-class MeCabTokenizer(BaseTokenizer):
+class MeCabTokenizer_kortok(BaseTokenizer):
     # def __init__(self, config_path: str):
     def __init__(self, ):
         self.mecab = MeCab.Tagger(f"--dicdir /usr/local/lib/mecab/dic/mecab-ko-dic")

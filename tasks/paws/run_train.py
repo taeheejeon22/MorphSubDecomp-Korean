@@ -20,6 +20,8 @@ from tokenizer import (
     # JamoTokenizer,
     MeCabSentencePieceTokenizer,
     MeCabTokenizer,
+    MeCabSentencePieceTokenizer_kortok,
+    MeCabTokenizer_kortok,
     SentencePieceTokenizer,
     Vocab,
     # WordTokenizer,
@@ -62,11 +64,16 @@ def main(args):
     if config.tokenizer.startswith("sp-"):
         tokenizer = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
     elif config.tokenizer.startswith("mecab_"):
-        mecab = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
-        # mecab = MeCabTokenizer(use_original=True, pure_decompostion=True, morphological=False)
+        if args["use_kortok"] == False:
+            mecab = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
+            sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
+            tokenizer = MeCabSentencePieceTokenizer(mecab, sp)
 
-        sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
-        tokenizer = MeCabSentencePieceTokenizer(mecab, sp)
+        elif args["use_kortok"] == True:
+            mecab = MeCabTokenizer_kortok(os.path.join(tokenizer_dir, "tok.json"))
+            sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
+            tokenizer = MeCabSentencePieceTokenizer_kortok(mecab, sp)
+
     # elif config.tokenizer.startswith("char-"):
     #     tokenizer = CharTokenizer()
     # elif config.tokenizer.startswith("word-"):
@@ -138,30 +145,32 @@ if __name__ == "__main__":
     parser.add_argument("--dev_path", type=str)
     parser.add_argument("--test_path", type=str)
 
+    parser.add_arguement("--use_kortok", nargs="?", const=False, type=bool, default=False)  # kortok 토크나이저 사용 여부
+
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 
     main(args)
 
 
-    # args = {"tokenizer":'mecab_fixed_decomposed_morphological_sp-64k'}
-    args = {"tokenizer":'mecab_orig_decomposed_morphological_sp-64k'}
-    args = {"tokenizer":'mecab_orig_composed_sp-64k'}
-    # px = PAWSDataset(dev_sentence_as, dev_sentence_bs, dev_labels, vocab, tokenizer, config.max_sequence_length)
-    # sentence_as = dev_sentence_as
-    # sentence_bs = dev_sentence_bs
-    # labels = dev_labels
-
-
-    # args = {"tokenizer":'mecab_sp-64k'}
-    max_length = 128
-
-    sentence_as = train_sentence_as[:]
-    sentence_bs = train_sentence_bs[:]
-
-    sentence_a = sentence_as[0]
-    sentence_b = sentence_bs[0]
-
-
-    # bert_utils.py
-    token_ids
-    vocab.convert_ids_to_tokens(token_ids)
+    # # args = {"tokenizer":'mecab_fixed_decomposed_morphological_sp-64k'}
+    # args = {"tokenizer":'mecab_orig_decomposed_morphological_sp-64k'}
+    # args = {"tokenizer":'mecab_orig_composed_sp-64k'}
+    # # px = PAWSDataset(dev_sentence_as, dev_sentence_bs, dev_labels, vocab, tokenizer, config.max_sequence_length)
+    # # sentence_as = dev_sentence_as
+    # # sentence_bs = dev_sentence_bs
+    # # labels = dev_labels
+    #
+    #
+    # # args = {"tokenizer":'mecab_sp-64k'}
+    # max_length = 128
+    #
+    # sentence_as = train_sentence_as[:]
+    # sentence_bs = train_sentence_bs[:]
+    #
+    # sentence_a = sentence_as[0]
+    # sentence_b = sentence_bs[0]
+    #
+    #
+    # # bert_utils.py
+    # token_ids
+    # vocab.convert_ids_to_tokens(token_ids)
