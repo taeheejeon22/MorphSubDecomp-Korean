@@ -22,7 +22,7 @@ class TrainConfig(NamedTuple):
     #: random seed
     seed: int = 42
     #: epoch 도는 횟수
-    num_epochs: int = 3
+    num_epochs: int = 5
     #: 훈련 시의 batch size
     batch_size: int = 64
     #: learning rate
