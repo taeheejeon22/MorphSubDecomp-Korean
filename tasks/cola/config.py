@@ -4,6 +4,8 @@ from typing import NamedTuple
 class TrainConfig(NamedTuple):
     desc: str = ""
 
+    use_kortok: bool = False
+
     """
     Model Hyperparameters
     """
