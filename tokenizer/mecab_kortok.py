@@ -1,3 +1,4 @@
+
 import json
 import os
 from typing import List
@@ -8,11 +9,10 @@ from tokenizer.base import BaseTokenizer
 
 
 class MeCabTokenizer_kortok(BaseTokenizer):
-    # def __init__(self, config_path: str):
-    def __init__(self, ):
+    def __init__(self, config_path: str):
         self.mecab = MeCab.Tagger(f"--dicdir /usr/local/lib/mecab/dic/mecab-ko-dic")
-        # with open(config_path) as f:
-        #     self.config: dict = json.load(f)
+        with open(config_path) as f:
+            self.config: dict = json.load(f)
 
     def tokenize(self, text: str) -> List[str]:
         text = text.strip()
@@ -28,10 +28,10 @@ class MeCabTokenizer_kortok(BaseTokenizer):
                     while text[text_ptr] == " ":
                         text_ptr += 1
                     assert (
-                        text[text_ptr] == token[0]
+                            text[text_ptr] == token[0]
                     ), f"{repr(text)}//{text_ptr}//{text[text_ptr]}//{token}//{token[0]}\n"
 
-                    # tokenized.append(self.config["space_symbol"])
+                    tokenized.append(self.config["space_symbol"])
 
                 tokenized.append(token)
                 text_ptr += len(token)
