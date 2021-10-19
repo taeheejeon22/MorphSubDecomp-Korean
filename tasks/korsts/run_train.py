@@ -143,7 +143,7 @@ if __name__ == "__main__":
     parser.add_argument("--dev_path", type=str)
     parser.add_argument("--test_path", type=str)
 
-    parser.add_arguement("--use_kortok", nargs="?", const=False, type=bool, default=False)  # kortok 토크나이저 사용 여부
+    parser.add_argument("--use_kortok", nargs="?", const=False, type=bool, default=False)  # kortok 토크나이저 사용 여부
 
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 
