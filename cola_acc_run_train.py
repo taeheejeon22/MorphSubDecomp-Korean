@@ -1,3 +1,7 @@
+# 수정한 부분
+# from tokenizer import
+# def main()의 if config.tokenzer.startswith("mecab-"): 부분
+
 import argparse
 import os
 import random
@@ -9,12 +13,12 @@ from torch.utils.tensorboard import SummaryWriter
 from transformers import BertConfig
 
 from tasks.bert_utils import load_pretrained_bert
+from tasks.logger import get_logger
 from tasks.cola.config import TrainConfig
 from tasks.cola.data_utils import load_data
 from tasks.cola.dataset import COLADataset
 from tasks.cola.model import COLAModel
 from tasks.cola.trainer import Trainer
-from tasks.logger import get_logger
 from tokenizer import (
     # CharTokenizer,
     # JamoTokenizer,
@@ -77,35 +81,31 @@ def main(args):
         raise ValueError("Wrong tokenizer name.")
 
     # 모델에 넣을 데이터 준비
+    # label-to-index
+    label_to_index = {"0": 0, "1": 1}
     # Train
-    logger.info(f"read training data from {config.train_path}")
-    train_sentences, train_labels = load_data(config.train_path)
+    logger.info(f"read train data from {config.train_path}")
+    train_sentences, train_labels = load_data(config.train_path, label_to_index)
     # Dev
     logger.info(f"read dev data from {config.dev_path}")
-    dev_sentences, dev_labels = load_data(config.dev_path)
+    dev_sentences, dev_labels = load_data(config.dev_path, label_to_index)
     # Test
     logger.info(f"read test data from {config.test_path}")
-    test_sentences, test_labels = load_data(config.test_path)
+    test_sentences, test_labels = load_data(config.test_path, label_to_index)
 
     # 데이터로 dataloader 만들기
     # Train
-    logger.info("create data loader using training data")
-    train_dataset = COLADataset(
-        train_sentences, train_labels, vocab, tokenizer, config.max_sequence_length
-    )
+    logger.info("create data loader using train data")
+    train_dataset = COLADataset(train_sentences, train_labels, vocab, tokenizer, config.max_sequence_length)
     train_random_sampler = RandomSampler(train_dataset)
     train_data_loader = DataLoader(train_dataset, sampler=train_random_sampler, batch_size=config.batch_size)
     # Dev
     logger.info("create data loader using dev data")
-    dev_dataset = COLADataset(
-        dev_sentences, dev_labels, vocab, tokenizer, config.max_sequence_length
-    )
+    dev_dataset = COLADataset(dev_sentences, dev_labels, vocab, tokenizer, config.max_sequence_length)
     dev_data_loader = DataLoader(dev_dataset, batch_size=1024)
     # Test
     logger.info("create data loader using test data")
-    test_dataset = COLADataset(
-        test_sentences, test_labels, vocab, tokenizer, config.max_sequence_length
-    )
+    test_dataset = COLADataset(test_sentences, test_labels, vocab, tokenizer, config.max_sequence_length)
     test_data_loader = DataLoader(test_dataset, batch_size=1024)
 
     # Summary Writer 준비

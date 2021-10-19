@@ -5,6 +5,9 @@ ee.py
 # corpus
 *.pkl
 pretrain_corpus/tokenized/*
+dataset/nlu_tasks
+*.pth
+*ckpt
 
 # log
 run_outputs/*

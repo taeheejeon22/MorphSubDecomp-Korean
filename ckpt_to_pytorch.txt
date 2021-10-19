@@ -4,3 +4,8 @@ transformers-cli convert --model_type bert\
   --pytorch_dump_output=./bert_model.pth
 
 # 결과물 파일은 해당 모델의 토크나이저에 해당하는 resource로 이동해야 함.
+
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./bert_model_fixed_composed_model.ckpt-400000 \
+  --config=./resources/mecab_fixed_composed_sp-64k/bert_config.json \
+  --pytorch_dump_output=./bert_model.pth
