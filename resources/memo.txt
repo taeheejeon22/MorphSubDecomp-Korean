@@ -1,3 +1,5 @@
+# 현재 버전: ./v2_with_dummy_letter/wikiko_all_64k
+
 v1
 namuwiki로 vocab 생성
 

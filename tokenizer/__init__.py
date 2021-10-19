@@ -21,7 +21,7 @@ from tokenizer.vocab import Vocab
 # from tokenizer.word import WordTokenizer
 
 __all__ = [
-    "BaseTokenizer",
+    # "BaseTokenizer",
     # "CharTokenizer",
     # "JamoTokenizer",
     "MeCabSentencePieceTokenizer",

@@ -58,8 +58,21 @@ class MeCabTokenizer(BaseTokenizer):
     #     return text
 
 
-    def tokenize(self, text: str):
+    # def tokenize(self, text: str):
+    #     return self.tok.mecab_tokenizer(text, use_original=self.use_original, pure_decomposition=self.pure_decomposition, morphological=self.morphological)
+
+
+    def tokenize(self, text: str) -> List[str]:
+        text = text.strip()
+        # text_ptr = 0
+        # tokenized = list()
+
         return self.tok.mecab_tokenizer(text, use_original=self.use_original, pure_decomposition=self.pure_decomposition, morphological=self.morphological)
+
+
+
+
+
 
 
 #     def detokenize(self, tokens: List[str]) -> str:
@@ -83,13 +96,25 @@ class MeCabTokenizer(BaseTokenizer):
 #
 #
 
-# config_path = "/Users/jth_mac/Desktop/git/acl_tokenization/resources/mecab_fixed_decomposed_pure_sp-64k/tok.json"
-# mc = MeCabTokenizer(config_path=config_path)
 
+
+# config_path = "./resources/v2_with_dummy_letter/wikiko_all_64k/mecab_orig_composed_sp-64k/tok.json"
+# config_path = "./resources/v2_with_dummy_letter/wikiko_all_64k/mecab_orig_decomposed_pure_sp-64k/tok.json"
+# config_path = "./resources/v2_with_dummy_letter/wikiko_all_64k/mecab_orig_decomposed_morphological_sp-64k/tok.json"
+#
+# config_path = "./resources/v2_with_dummy_letter/wikiko_all_64k/mecab_fixed_composed_sp-64k/tok.json"
+# config_path = "./resources/v2_with_dummy_letter/wikiko_all_64k/mecab_fixed_decomposed_pure_sp-64k/tok.json"
+# config_path = "./resources/v2_with_dummy_letter/wikiko_all_64k/mecab_fixed_decomposed_morphological_sp-64k/tok.json"
+#
+# mc = MeCabTokenizer(config_path=config_path)
+#
 # text = "사람은 널 원해.\n"
 # text = "사람은 너를 원해.\n아파르트헤이트는 큰 문제였다.\n"
 # text = "사람은 너를 원해.\n너를 죽이겠다.\n"
+# text = "난 널 진짜 원한다"
 #
-#
-# mc.tokenize(text)   # ['ㅅㅏ⊸ㄹㅏㅁ', 'ㅇㅡㄴ', '▃', 'ㄴㅓㄹ', '▃', 'ㅇㅝㄴㅎㅐ⊸', '.']
-# mc.detokenize( mc.tokenize(text))
+# mc.tokenize(text)   # ['ㅅㅏ⊸ㄹㅏㅁ', 'ㅇㅡㄴ', '▃', 'ㄴㅓㄹ', '▃', 'ㅇㅝㄴㅎㅐ⊸', '.']     # ['나', '⊸⊸ㄴ', '▃', '너', '⊸⊸ㄹ', '▃', '진짜', '▃', '원하', '⊸⊸ㄴㄷㅏ⊸']
+
+
+# tok = tok.tokenizers(dummy_letter="⊸", space_symbol="▃")
+# tok.mecab_tokenizer(text, use_original=True, pure_decomposition=False, morphological=False)

@@ -26,6 +26,12 @@ class SentencePieceTokenizer(BaseTokenizer):
 
 
 
-# sp = SentencePieceTokenizer(model_path="./resources/sp-64k/tok.model",)
+# sp_config_path = "./resources/v2_with_dummy_letter/wikiko_all_64k/mecab_orig_composed_sp-64k/tok.model"
+# sp_config_path = "./resources/v2_with_dummy_letter/wikiko_all_64k/mecab_fixed_composed_sp-64k/tok.model"
+#
+#
+# sp = SentencePieceTokenizer(model_path=sp_config_path,)
 # text = "대한민국에 우리끼리 살아보자"    # ['▁대한민국에', '▁우리', '끼리', '▁살아', '보자']
+# text = "난 널 좋아해"
+#
 # sp.tokenize(text)

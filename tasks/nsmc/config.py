@@ -8,7 +8,7 @@ class TrainConfig(NamedTuple):
     Model Hyperparameters
     """
     #: vocab, tokenizer, bert config and model 파일이 저장된 경로. join(resource_dir, tokenizer)로 합쳐서 사용
-    resource_dir: str = "./resources/with_dummy_letter_v1/namuwiki_all_64k"
+    resource_dir: str = "./resources"
     #: tokenizer_name
     tokenizer: str = ""
     #: bert 설정 파일 이름
