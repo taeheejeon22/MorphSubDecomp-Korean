@@ -13,13 +13,16 @@ import pickle
 import re
 from tqdm import tqdm
 
-from koalanlp import API
-from koalanlp.proc import SentenceSplitter
-from koalanlp.Util import initialize
+# from koalanlp import API
+# from koalanlp.proc import SentenceSplitter
+# from koalanlp.Util import initialize
+
+import kss
+
+# initialize(hnn='LATEST')
+# splitter = SentenceSplitter(API.HNN)
 
 
-initialize(hnn='LATEST')
-splitter = SentenceSplitter(API.HNN)
 
 
 # get the full path of files
@@ -117,9 +120,15 @@ for ix in tqdm( range(len(above_paths)) ):
 # generate a corpus
 all_texts = ""
 
+p_punct = re.compile("[.!?]")
+
 for ix in tqdm( range(len(all_docs)) ):
-    split_text = all_docs[ix].splitlines()
-    preprocessed_text = preprocess(split_text)
+# for ix in tqdm(range( 100 )):
+    split_text0 = all_docs[ix].splitlines() # "\n" 단위로 분리
+    split_text1 = [kss.split_sentences(split) if p_punct.search(split) else [split] for split in split_text0 ]  # 문장 분리기로 분리
+    split_text2 = [sent for sent_lst in split_text1 for sent in sent_lst] # flatten
+
+    preprocessed_text = preprocess(split_text2)
 
     concat_text = "\n".join(preprocessed_text)
 

@@ -11,15 +11,18 @@ import pickle
 import re
 import tqdm
 
-from koalanlp import API
-from koalanlp.proc import SentenceSplitter
-from koalanlp.Util import initialize
-
 from namuwiki.extractor import extract_text
 
+# from koalanlp import API
+# from koalanlp.proc import SentenceSplitter
+# from koalanlp.Util import initialize
 
-initialize(hnn='LATEST')
-splitter = SentenceSplitter(API.HNN)
+import kss
+
+
+
+# initialize(hnn='LATEST')
+# splitter = SentenceSplitter(API.HNN)
 
 
 # load the raw corpus
@@ -84,7 +87,8 @@ for ix in tqdm.tqdm( range(len(namu_wiki)) ):
 
     # split_text = plain_text.splitlines()        # 28
     # split_text = kss.split_sentences(plain_text)  # 36
-    split_text = splitter(plain_text)   # 60
+    # split_text = splitter(plain_text)   # 60
+    split_text = kss.split_sentences(plain_text)
 
     preprocessed_text = preprocess(sent_lst=split_text) # 59
 
