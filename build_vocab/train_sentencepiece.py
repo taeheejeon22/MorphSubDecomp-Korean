@@ -3,6 +3,7 @@ import json
 import os
 
 import sentencepiece as spm
+spm.set_random_generator_seed(42)
 
 # namuwiki
 # INPUT_KO_CORPUS = "./pretrain_corpus/tokenized/namuwiki_none/composed/namuwiki_20200302_tokenized_none_composed_mecab_orig.txt"
