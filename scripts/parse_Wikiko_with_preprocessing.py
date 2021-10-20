@@ -119,6 +119,7 @@ for ix in tqdm( range(len(above_paths)) ):
 
 # generate a corpus
 all_texts = ""
+all_texts_list = list()
 
 p_punct = re.compile("[.!?]")
 
@@ -127,6 +128,8 @@ for ix in tqdm( range(len(all_docs)) ):
     split_text0 = all_docs[ix].splitlines() # "\n" 단위로 분리
     split_text1 = [kss.split_sentences(split) if p_punct.search(split) else [split] for split in split_text0 ]  # 문장 분리기로 분리
     split_text2 = [sent for sent_lst in split_text1 for sent in sent_lst] # flatten
+
+    # all_texts_list += split_text2
 
     preprocessed_text = preprocess(split_text2)
 
