@@ -11,6 +11,7 @@ dataset/nlu_tasks
 
 # log
 run_outputs/*
+output_sp/*
 
 # java
 .java/*

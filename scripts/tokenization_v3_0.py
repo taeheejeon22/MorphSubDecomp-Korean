@@ -196,7 +196,7 @@ if __name__ == "__main__":
     corpus_path = "../namuwiki_20200302_with_preprocessing.txt" # namuwiki
     corpus_name = "namuwiki_20200302"
 
-    corpus_path = "../wikiko_20210901_with_preprocessing.txt"  # wikiko
+    corpus_path = "../wikiko_20210901_with_preprocessing_v2.txt"  # wikiko
     corpus_name = "wikiko_20210901"
 
     sent_lst = load_corpus(corpus_path=corpus_path) # 62,481,588
