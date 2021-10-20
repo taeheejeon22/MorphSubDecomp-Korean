@@ -119,7 +119,7 @@ for ix in tqdm( range(len(above_paths)) ):
 
 # generate a corpus
 all_texts = ""
-all_texts_list = list()
+# all_texts_list = list()
 
 p_punct = re.compile("[.!?]")
 
@@ -140,10 +140,12 @@ for ix in tqdm( range(len(all_docs)) ):
 
 
 
+# all_texts_list_preprocessed = preprocess(all_texts_list)
+
 
 # save as a pickle
 with gzip.open("../wikiko_20210901_with_preprocessing.pkl", "wb") as f:
-    pickle.dump(all_texts, f)
+    pickle.dump(all_texts_list, f)
 
 # save as a txt
 with open("../wikiko_20210901_with_preprocessing_v2.txt", "w") as f:

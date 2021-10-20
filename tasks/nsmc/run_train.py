@@ -69,15 +69,15 @@ def main(args):
         tokenizer = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
     elif config.tokenizer.startswith("mecab_"):
         # if args["use_kortok"] == False:
-        #     mecab = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
-        #     sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
-        #     tokenizer = MeCabSentencePieceTokenizer(mecab, sp)
+        mecab = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
+        sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
+        tokenizer = MeCabSentencePieceTokenizer(mecab, sp)
 
         # elif args["use_kortok"] == True:
-        print("use_kortok: ", args["use_kortok"])
-        mecab = MeCabTokenizer_kortok(os.path.join(tokenizer_dir, "tok.json"))
-        sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
-        tokenizer = MeCabSentencePieceTokenizer_kortok(mecab, sp)
+        #     print("use_kortok: ", args["use_kortok"])
+        #     mecab = MeCabTokenizer_kortok(os.path.join(tokenizer_dir, "tok.json"))
+        #     sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
+        #     tokenizer = MeCabSentencePieceTokenizer_kortok(mecab, sp)
 
     # elif config.tokenizer.startswith("char-"):
     #     tokenizer = CharTokenizer()

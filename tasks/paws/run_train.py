@@ -64,16 +64,16 @@ def main(args):
     if config.tokenizer.startswith("sp-"):
         tokenizer = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
     elif config.tokenizer.startswith("mecab_"):
-        if args["use_kortok"] == False:
-            mecab = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
-            sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
-            tokenizer = MeCabSentencePieceTokenizer(mecab, sp)
+        # if args["use_kortok"] == False:
+        mecab = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
+        sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
+        tokenizer = MeCabSentencePieceTokenizer(mecab, sp)
 
-        elif args["use_kortok"] == True:
-            print("use_kortok: ", args["use_kortok"])
-            mecab = MeCabTokenizer_kortok(os.path.join(tokenizer_dir, "tok.json"))
-            sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
-            tokenizer = MeCabSentencePieceTokenizer_kortok(mecab, sp)
+        # elif args["use_kortok"] == True:
+        #     print("use_kortok: ", args["use_kortok"])
+        #     mecab = MeCabTokenizer_kortok(os.path.join(tokenizer_dir, "tok.json"))
+        #     sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
+        #     tokenizer = MeCabSentencePieceTokenizer_kortok(mecab, sp)
 
     # elif config.tokenizer.startswith("char-"):
     #     tokenizer = CharTokenizer()
@@ -146,7 +146,7 @@ if __name__ == "__main__":
     parser.add_argument("--dev_path", type=str)
     parser.add_argument("--test_path", type=str)
 
-    parser.add_argument("--use_kortok", nargs="?", const=False, type=bool, default=False)  # kortok 토크나이저 사용 여부
+    # parser.add_argument("--use_kortok", nargs="?", const=False, type=bool, default=False)  # kortok 토크나이저 사용 여부
 
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 
