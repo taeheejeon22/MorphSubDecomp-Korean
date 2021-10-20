@@ -30,26 +30,26 @@ acl
 ## sentencepiece
 ./build_vocab/train_sentencepiece.py
 ```bash
-python build_vocab/train_sentencepiece.py --vocab_size=64000
+python build_vocab/train_sentencepiece.py --vocab_size=32000
 
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="mecab_orig" --composition_type="composed"
+python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_orig" --composition_type="composed"
 
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="mecab_orig" --composition_type="decomposed_pure"
+python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_orig" --composition_type="decomposed_pure"
 
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="mecab_orig" --composition_type="decomposed_morphological"
+python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_orig" --composition_type="decomposed_morphological"
 
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="mecab_fixed" --composition_type="composed"
+python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_fixed" --composition_type="composed"
 
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="mecab_fixed" --composition_type="decomposed_pure"
+python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_fixed" --composition_type="decomposed_pure"
 
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --tokenizer_type="mecab_fixed" --composition_type="decomposed_morphological"
+python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_fixed" --composition_type="decomposed_morphological"
 
 ```
 
 
 # 3. make BERT files 
 ```buildoutcfg
-python scripts/make_bert_files.py --root_path=resources/with_dummy_letter_v2/ --vocab_size=64000 
+python scripts/make_bert_files.py --root_path=resources/with_dummy_letter_v2/ --vocab_size=32000 
 ```
 
 
