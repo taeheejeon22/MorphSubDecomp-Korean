@@ -24,8 +24,8 @@ from tokenizer import (
     # JamoTokenizer,
     MeCabSentencePieceTokenizer,
     MeCabTokenizer,
-    MeCabSentencePieceTokenizer_kortok,
-    MeCabTokenizer_kortok,
+    # MeCabSentencePieceTokenizer_kortok,
+    # MeCabTokenizer_kortok,
     SentencePieceTokenizer,
     Vocab,
     # WordTokenizer,
@@ -65,6 +65,13 @@ def main(args):
     vocab = Vocab(os.path.join(tokenizer_dir, "tok.vocab"))
     # if config.tokenizer.startswith("mecab-"):
     #     tokenizer = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
+
+
+    # resource 경로 확인용
+    print("\ntokenizer:", config.tokenizer)
+    print("resources path:", tokenizer_dir, "\n")
+
+
     if config.tokenizer.startswith("sp-"):
         tokenizer = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
     elif config.tokenizer.startswith("mecab_"):
