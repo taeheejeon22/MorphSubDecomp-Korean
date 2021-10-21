@@ -11,7 +11,7 @@ git clone https://github.com/google-research/bert.git
 
 
 # google storage 주소
-$GCS = gs://kist_bert
+GCS=gs://kist_bert
 
 
 # tokenizer를 사용자로부터 입력 받기
@@ -46,40 +46,45 @@ if [ $TOKENIZER == none_composed ]; then
 
 #orig_composed
 elif [ $TOKENIZER == orig_composed ]; then
-    $tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
-    $resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'/
-    $model_dir=$GCS/bert_model/v2/$TOKENIZER
+    tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
+    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'/
+    model_dir=$GCS/bert_model/v2/$TOKENIZER
 
 # orig_decomposed_pure
 elif [ $TOKENIZER == orig_decomposed_pure ]; then
-    $tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
-    $resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    $model_dir=$GCS/bert_model/v2/$TOKENIZER
+    tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
+    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
+    model_dir=$GCS/bert_model/v2/$TOKENIZER
 
 # orig_decomposed_morphological
 elif [ $TOKENIZER == orig_deocomposed_morphological ]; then
-    $tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
-    $resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    $model_dir=$GCS/bert_model/v2/$TOKENIZER
+    tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
+    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
+    model_dir=$GCS/bert_model/v2/$TOKENIZER
 
 #fixed_composed
 elif [ $TOKENIZER == fixed_composed ] ; then
-    $tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
-    $resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    $model_dir=$GCS/bert_model/v2/$TOKENIZER
+    tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
+    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
+    model_dir=$GCS/bert_model/v2/$TOKENIZER
 
 #fixed_decomposed_pure
 elif [ $TOKENIZER == fixed_decomposed_pure ] ; then
-    $tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
-    $resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    $model_dir=$GCS/bert_model/v2/$TOKENIZER
+    tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
+    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
+    model_dir=$GCS/bert_model/v2/$TOKENIZER
 
 #fixed_decomposed_morphological
 elif [ $TOKENIZER == fixed_decomposed_morphological ] ; then
-    $tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
-    $resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    $model_dir=$GCS/bert_model/v2/$TOKENIZER
+    tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
+    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
+    model_dir=$GCS/bert_model/v2/$TOKENIZER
 fi
+
+echo tfrecode_dir == $tfrecord_dir
+echo resource_dir == $resource_dir
+echo model_dir == $model_dir
+
 
 
 
