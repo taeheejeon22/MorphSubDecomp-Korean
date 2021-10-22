@@ -40,4 +40,3 @@ class MeCabSentencePieceTokenizer_kortok(BaseTokenizer):
 # # text = "사망 플래그의 좋은 예시이다."
 # # text = "나는 장풍을 했다."
 # text = "난 널 좋아해"    # ['▁난', '▃', '▁널', '▃', '▁좋아해']
-# mc.tokenize(text)
