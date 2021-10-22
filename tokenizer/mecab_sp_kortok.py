@@ -10,8 +10,8 @@ class MeCabSentencePieceTokenizer_kortok(BaseTokenizer):
         self.mecab = mecab
         self.sp = sp
 
-        self.mecab = MeCabTokenizer_kortok(config_path="./resources/mecab_orig_composed_sp-64k/tok.json")
-        self.sp = SentencePieceTokenizer(model_path="./resources/mecab_orig_composed_sp-64k/tok.model")
+        # self.mecab = MeCabTokenizer_kortok(config_path="./resources/mecab_orig_composed_sp-64k/tok.json")
+        # self.sp = SentencePieceTokenizer(model_path="./resources/mecab_orig_composed_sp-64k/tok.model")
 
 
     def tokenize(self, text: str) -> List[str]:

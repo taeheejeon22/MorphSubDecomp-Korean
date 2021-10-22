@@ -1,6 +1,7 @@
 # mac OS
 .DS_Store
 ee.py
+ee2.py
 
 # corpus
 *.pkl
