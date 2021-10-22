@@ -1,9 +1,21 @@
-# 현재 버전: ./v2_with_dummy_letter/wikiko_all_64k
+# 현재 ./resources/에 놓여 있는 버전: ./v2_with_dummy_letter/wikiko_all_64k
 
 v1
 namuwiki로 vocab 생성
 
 v2
-wiki ko로 vocab 생성
+wiki ko로 vocab 생성 64k
 
 without_dummy_letter	초/중/종성 더미 레터 없는 버전
+
+
+
+v2_1 wikiko_20210901
+
+
+v2_2
+wikoko_20211021 이기창 코드 prerprocessing
+
+
+
+# 위키 테스트 이후에 v2_1 (32k)로 교체할 것

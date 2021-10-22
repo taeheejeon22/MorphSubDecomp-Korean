@@ -8,7 +8,8 @@ INPUT_KO_CORPUS = "./dataset/wiki/kowiki-200420.txt"
 INPUT_EN_CORPUS = "./dataset/wiki/sample_en-wiki-200420.txt"  # for English SentencePiece(BPE) Tokenizer
 # INPUT_MECAB_TOKENIZED_CORPUS = "./dataset/wiki/mecab_tokenized/mecab/kowiki-200420.txt"  # for MeCab-SentencePiece Tokenizer
 
-INPUT_MECAB_TOKENIZED_CORPUS = "../tokenized/wikiko_20210901_mecab_orig/composed/wikiko_20210901_tokenized_mecab_orig_composed_kortok.txt"
+# INPUT_MECAB_TOKENIZED_CORPUS = "../tokenized/wikiko_20210901_mecab_orig/composed/wikiko_20210901_tokenized_mecab_orig_composed_kortok.txt"
+INPUT_MECAB_TOKENIZED_CORPUS = "../tokenized/wikiko_20211021_mecab_orig/composed/wikiko_20211021_tokenized_mecab_orig_composed.txt"
 
 
 OUTPUT_DIR = "./resources"

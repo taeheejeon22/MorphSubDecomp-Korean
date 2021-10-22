@@ -6,7 +6,7 @@ ee2.py
 # corpus
 *.pkl
 pretrain_corpus/tokenized/*
-dataset/nlu_tasks
+dataset/nlu_tasks/*
 *.pth
 *ckpt
 
