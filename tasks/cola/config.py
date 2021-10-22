@@ -36,7 +36,7 @@ class TrainConfig(NamedTuple):
     #: max sequence length
     max_sequence_length: int = 128
     #: logging을 진행할 단위 step
-    logging_interval: int = 100
+    logging_interval: int = 10
 
     """
     Data Hyperparameters
@@ -44,9 +44,9 @@ class TrainConfig(NamedTuple):
     #: train data 파일 경로
     train_path: str = "./dataset/nlu_tasks/cola/cola_train.tsv"
     #: test data 파일 경로
-    dev_path: str = "./dataset/nlu_tasks/cola/cola_domain_dev.tsv"
+    dev_path: str = "./dataset/nlu_tasks/cola/cola_dev.tsv"
     #: test data 파일 경로
-    test_path: str = "./dataset/nlu_tasks/cola/cola_out_of_domain_dev.tsv"
+    test_path: str = "./dataset/nlu_tasks/cola/cola_test.tsv"
     #: output dir
     log_dir: str = "./run_outputs/{}/cola/logs"
     summary_dir: str = "./run_outputs/{}/cola/summaries"
