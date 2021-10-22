@@ -15,7 +15,7 @@ git clone https://github.com/google-research/bert.git
 
 
 # google storage 주소
-$GCS = gs://kist_bert
+GCS = gs://kist_bert
 
 
 # tokenizer를 사용자로부터 입력 받기
@@ -33,52 +33,52 @@ echo "tokenizer == $TOKENIZER"
 
 # none_composed
 if [ $TOKENIZER == none_composed ]; then
-    $wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
-    $namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
-    $resource_dir=$GCS/resources/with_dummy_letter_v2/sp-64k
-    $output_dir=$GCS/tfrecord/v2/$TOKENIZER
+    wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
+    namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
+    resource_dir=$GCS/resources/with_dummy_letter_v2/sp-64k
+    output_dir=$GCS/tfrecord/v2/$TOKENIZER
 
 #orig_composed
 elif [ $TOKENIZER == orig_composed ]; then
-    $wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
-    $namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
-    $resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'/
-    $output_dir=$GCS/tfrecord/v2/$TOKENIZER
+    wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
+    namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
+    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'/
+    output_dir=$GCS/tfrecord/v2/$TOKENIZER
 
 # orig_decomposed_pure
 elif [ $TOKENIZER == orig_decomposed_pure ]; then
-    $wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
-    $namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
-    $resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    $output_dir=$GCS/tfrecord/v2/$TOKENIZER
+    wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
+    namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
+    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
+    output_dir=$GCS/tfrecord/v2/$TOKENIZER
 
 # orig_decomposed_morphological
 elif [ $TOKENIZER == orig_deocomposed_morphological ]; then
-    $wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
-    $namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
-    $resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    $output_dir=$GCS/tfrecord/v2/$TOKENIZER
+    wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
+    namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
+    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
+    output_dir=$GCS/tfrecord/v2/$TOKENIZER
 
 #fixed_composed
 elif [ $TOKENIZER == fixed_composed ] ; then
-    $wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
-    $namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
-    $resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    $output_dir=$GCS/tfrecord/v2/$TOKENIZER
+    wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
+    namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
+    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
+    output_dir=$GCS/tfrecord/v2/$TOKENIZER
 
 #fixed_decomposed_pure
 elif [ $TOKENIZER == fixed_decomposed_pure ] ; then
-    $wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
-    $namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
-    $resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    $output_dir=$GCS/tfrecord/v2/$TOKENIZER
+    wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
+    namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
+    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
+    output_dir=$GCS/tfrecord/v2/$TOKENIZER
 
 #fixed_decomposed_morphological
 elif [ $TOKENIZER == fixed_decomposed_morphological ] ; then
-    $wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
-    $namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
-    $resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    $output_dir=$GCS/tfrecord/v2/$TOKENIZER
+    wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
+    namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
+    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
+    output_dir=$GCS/tfrecord/v2/$TOKENIZER
 
 fi
 
