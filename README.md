@@ -10,8 +10,18 @@ acl
 
 # 1. 코퍼스 토큰화
 ./scripts/tokenization_v2_0.py
-
 ./pretrain_corpus/tokenized 에 저장
+
+```bash
+python scripts/mecab_tokenization.py --tokenizer_type=mecab_orig --decomposition_type=composed
+python scripts/mecab_tokenization.py --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure
+python scripts/mecab_tokenization.py --tokenizer_type=mecab_orig --decomposition_type=decomposed_morphological
+python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decomposition_type=composed
+python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
+python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological
+
+```
+
 
 
 # 2. Sentencepiece 학습

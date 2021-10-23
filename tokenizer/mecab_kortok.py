@@ -43,7 +43,9 @@ class MeCabTokenizer_kortok(BaseTokenizer):
         return text
 
 
-# mc = MeCabTokenizer()
+
+# config_path = "./resources/v2_with_dummy_letter/wikiko_all_64k/mecab_fixed_decomposed_morphological_sp-64k/tok.json"
+# mc = MeCabTokenizer_kortok(config_path)
 # #
 # mc.tokenize("사람은 너를 원해.\n아파르트헤이트는 큰 문제였다.\n너를 죽이겠다.")
 # mc.tokenize("사람은 너를 원해.\n아파르트헤이트는 큰 문제였다.\n")

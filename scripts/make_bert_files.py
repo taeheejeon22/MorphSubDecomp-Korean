@@ -53,7 +53,7 @@ def main(root_path: str, vocab_size: int):
         # make a "bert_config.json"
         # with open(output_dir + "bert_config.json", "w") as json_file:
         with open(os.path.join(output_dir, "bert_config.json"), "w") as json_file:
-            json.dump(bert_config, json_file)
+            json.dump(bert_config, json_file, indent=4)
 
     print("Done!")
 
@@ -61,7 +61,7 @@ def main(root_path: str, vocab_size: int):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--root_path", type=str, required=True)
-    parser.add_argument("--vocab_size", type=int, default=64000)
+    parser.add_argument("--vocab_size", type=int, default=32000)
 
     args = vars(parser.parse_args())
     print(args)

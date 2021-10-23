@@ -10,10 +10,13 @@ without_dummy_letter	초/중/종성 더미 레터 없는 버전
 
 
 
-v2_1 wikiko_20210901
+# v2_1_with_dummy_letter
+wikiko_20210901
+
+# v2_1_without_dummy_letter
 
 
-v2_2
+# v2_2
 wikoko_20211021 이기창 코드 prerprocessing
 
 

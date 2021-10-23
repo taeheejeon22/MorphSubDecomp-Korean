@@ -18,6 +18,9 @@ from tokenizer.mecab_sp_kortok import MeCabSentencePieceTokenizer_kortok
 
 
 
+from tokenizer.mecab_fixed import MeCabTokenizer_fixed
+
+
 
 from tokenizer.sentencepiece import SentencePieceTokenizer
 from tokenizer.vocab import Vocab
@@ -31,6 +34,7 @@ __all__ = [
     "MeCabTokenizer",
     "MeCabSentencePieceTokenizer_kortok",
     "MeCabTokenizer_kortok",
+    "MeCabTokenizer_fixed",
     # "MeCabFixedTokenizer",
     "SentencePieceTokenizer",
     "Vocab",

@@ -1,3 +1,6 @@
+# resources 만드는 코드
+# kortok과 달리 tok.json 여기서 만들도록 수정
+
 import argparse
 import json
 import os
@@ -8,9 +11,11 @@ spm.set_random_generator_seed(42)
 # namuwiki
 # INPUT_KO_CORPUS = "./pretrain_corpus/tokenized/namuwiki_none/composed/namuwiki_20200302_tokenized_none_composed_mecab_orig.txt"
 # wiki ko
-INPUT_KO_CORPUS = "../tokenized/wikiko_20210901_none/composed//home/user/Desktop/git/acl_tokenization/tokenized/wikiko_20210901_none/composed/wikiko_20210901_tokenized_none_composed.txt.txt"
+# INPUT_KO_CORPUS = "../tokenized/wikiko_20210901_none/composed//home/user/Desktop/git/acl_tokenization/tokenized/wikiko_20210901_none/composed/wikiko_20210901_tokenized_none_composed.txt.txt"
+#
+# INPUT_EN_CORPUS = "./dataset/wiki/sample_en-wiki-200420.txt"  # for English SentencePiece(BPE) Tokenizer
 
-INPUT_EN_CORPUS = "./dataset/wiki/sample_en-wiki-200420.txt"  # for English SentencePiece(BPE) Tokenizer
+
 # INPUT_MECAB_TOKENIZED_CORPUS = "./dataset/wiki/mecab_tokenized/sample_ko-wiki-200420.txt"  # for MeCab-SentencePiece Tokenizer
 # INPUT_MECAB_TOKENIZED_CORPUS = "./dataset/wiki/mecab_tokenized_fixed/sample_ko-wiki-200420.txt"  # for MeCab-SentencePiece Tokenizer
 # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/composed/namuwiki_20200302_tokenized_mecab_orig_composed.txt" # orig / composed
@@ -54,6 +59,15 @@ if __name__ == "__main__":
         "--composition_type", type=str, default="composed", choices=["composed", "decomposed_pure", "decomposed_morphological"]
     )  # composed: syllable-level   decomposed_pure: jamo-level     decomposed_morphological: syllable+jamo-level
 
+
+    # args = {"vocab_size": 32000, "character_coverage": 1.0, "normalization_rule_name": "identity",
+    #         "pad_piece": "[PAD]", "unk_piece": "[UNK]", "bos_piece": "[BOS]", "eos_piece": "[EOS]", "unk_surface": "[UNK]",
+    #         "special_symbols": "[CLS],[SEP],[MASK]",
+    #         "tokenizer_type": "mecab_orig",
+    #         "composition_type": "composed"
+    #         }
+
+
     args = vars(parser.parse_args())
     print(args)
 
@@ -62,12 +76,12 @@ if __name__ == "__main__":
 
     # set a input path automatically
     # corpus = "namuwiki_20200302"  # namuwiki
-    # corpus = "wikiko_20210901"  # wiki ko
-    corpus = "wikiko_20211021"  # wiki ko
+    corpus = "wikiko_20210901"  # wiki ko
+    # corpus = "wikiko_20211021"  # wiki ko
 
 
     if "mecab" in args["tokenizer_type"]:
-        INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_tokenized_{tokenizer_type}_{composition_type}.txt"  # all
+        INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_{tokenizer_type}_{composition_type}.txt"  # all
         # INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_half.txt" # half
 
         # namuwiki
@@ -82,7 +96,7 @@ if __name__ == "__main__":
         # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_pure/namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure.txt"  # fixed / decomposed_pure
         # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_morphological/namuwiki_20200302_tokenized_mecab_fixed_decomposed_morphological.txt"  # fixed / decomposed_morphological
     else:
-        INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_tokenized_{tokenizer_type}_{composition_type}.txt"  # all
+        INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_{tokenizer_type}_{composition_type}.txt"  # all
         # INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_half.txt" # half
 
 
@@ -91,15 +105,17 @@ if __name__ == "__main__":
     if args["tokenizer_type"] == "none":
         input_corpus = INPUT_MECAB_TOKENIZED_CORPUS
         output_dir = os.path.join(OUTPUT_DIR, f"sp-{int(args['vocab_size']) // 1000}k")
-    elif args["tokenizer_type"] == "ko":
-        input_corpus = INPUT_KO_CORPUS
-        output_dir = os.path.join(OUTPUT_DIR, f"sp-{int(args['vocab_size'])//1000}k")
-    elif args["tokenizer_type"] == "en":
-        input_corpus = INPUT_EN_CORPUS
-        output_dir = os.path.join(OUTPUT_DIR, f"en_sp-{int(args['vocab_size'])//1000}k")
-    elif args["tokenizer_type"] == "mecab_tokenized":
-        input_corpus = INPUT_MECAB_TOKENIZED_CORPUS
-        output_dir = os.path.join(OUTPUT_DIR, f"mecab_sp-{int(args['vocab_size'])//1000}k")
+    # elif args["tokenizer_type"] == "ko":
+    #     input_corpus = INPUT_KO_CORPUS
+    #     output_dir = os.path.join(OUTPUT_DIR, f"sp-{int(args['vocab_size'])//1000}k")
+    # elif args["tokenizer_type"] == "en":
+    #     input_corpus = INPUT_EN_CORPUS
+    #     output_dir = os.path.join(OUTPUT_DIR, f"en_sp-{int(args['vocab_size'])//1000}k")
+
+    # elif "mecab" in args["tokenizer_type"]:
+    #     input_corpus = INPUT_MECAB_TOKENIZED_CORPUS
+    #     output_dir = os.path.join(OUTPUT_DIR, f"mecab_sp-{int(args['vocab_size'])//1000}k")
+    #
     elif "mecab" in args["tokenizer_type"]:
         input_corpus = INPUT_MECAB_TOKENIZED_CORPUS
         output_dir = os.path.join(OUTPUT_DIR, f"{tokenizer_type}_{composition_type}_sp-{int(args['vocab_size'])//1000}k")
@@ -143,31 +159,34 @@ if __name__ == "__main__":
 
 
 
-    # mecab config
-    tok_json = dict()
-    tok_json["dummy_letter"] = "⊸"
-    tok_json["space_symbol"] = "▃"
-    # tok_json["n_jobs"] =
-    if "orig" in tokenizer_type:
-        tok_json["use_original"] = True
-    elif "fixed" in tokenizer_type:
-        tok_json["use_original"] = False
-
-    if composition_type == "composed":
-        tok_json["pure_decomposition"] = False
-        tok_json["morphological"] = False
-
-    elif composition_type == "decomposed_pure":
-        tok_json["pure_decomposition"] = True
-        tok_json["morphological"] = False
-
-    elif composition_type == "decomposed_morphological":
-        tok_json["pure_decomposition"] = False
-        tok_json["morphological"] = True
-    else:
-        tok_json["pure_decomposition"] = None
-        tok_json["morphological"] = None
-
-
-    with open(os.path.join(output_dir, "tok.json"), "w") as f:
-        json.dump(tok_json, f, indent=4)
+    # # mecab config
+    # tok_json = dict()
+    # tok_json["dummy_letter"] = "⊸"
+    # tok_json["space_symbol"] = "▃"
+    # # tok_json["n_jobs"] =
+    # # if "orig" in tokenizer_type:
+    # #     tok_json["use_original"] = True
+    # # elif "fixed" in tokenizer_type:
+    # #     tok_json["use_original"] = False
+    #
+    # tok_json["tokenizer_type"] = tokenizer_type
+    # tok_json["composition_type"] = composition_type
+    #
+    # if composition_type == "composed":
+    #     tok_json["pure_decomposition"] = False
+    #     tok_json["morphological"] = False
+    #
+    # elif composition_type == "decomposed_pure":
+    #     tok_json["pure_decomposition"] = True
+    #     tok_json["morphological"] = False
+    #
+    # elif composition_type == "decomposed_morphological":
+    #     tok_json["pure_decomposition"] = False
+    #     tok_json["morphological"] = True
+    # else:
+    #     tok_json["pure_decomposition"] = None
+    #     tok_json["morphological"] = None
+    #
+    #
+    # with open(os.path.join(output_dir, "tok.json"), "w") as f:
+    #     json.dump(tok_json, f, indent=4)
