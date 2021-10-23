@@ -1,23 +1,39 @@
-# 현재 ./resources/에 놓여 있는 버전: ./v2_with_dummy_letter/wikiko_all_64k
+## v1
+vocab: namuwiki_20200302	64k
+corpus: namuwiki_20200302
 
-v1
-namuwiki로 vocab 생성
 
-v2
-wiki ko로 vocab 생성 64k
+## v2
+vocab: wikiko_20210901		64k
+corpus: namuwiki_20200302
 
 without_dummy_letter	초/중/종성 더미 레터 없는 버전
 
 
 
+## v2_1
+vocab: wikiko_20210901		32k
+corpus: wikiko_20210901
+
 # v2_1_with_dummy_letter
 wikiko_20210901
+
 
 # v2_1_without_dummy_letter
 
 
-# v2_2
-wikoko_20211021 이기창 코드 prerprocessing
+# v2_1_kortok_reproduced
+전처리만 우리 방식 쓰고 kortok으로 토크나이즈, 보캡 생성한 버전
+
+
+
+## v2_2
+vocab: wikoko_20211021		32k
+corpus: wikoko_20211021
+
+이기창 코드 prerprocessing
+
+
 
 
 
