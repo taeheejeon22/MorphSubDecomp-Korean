@@ -1,7 +1,7 @@
 {
     "space_symbol": "\u2583",
     "n_jobs": 16,
-    "tokenizer_type": "none",
+    "tokenizer_type": "mecab_orig",
     "decomposition_type": "composed",
     "dummy_letter": "\u22b8"
 }
