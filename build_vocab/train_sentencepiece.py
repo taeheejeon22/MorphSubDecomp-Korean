@@ -32,6 +32,12 @@ spm.set_random_generator_seed(42)
 OUTPUT_DIR = "./output_sp"
 
 if __name__ == "__main__":
+    # set a input path automatically
+    # corpus = "namuwiki_20200302"  # namuwiki
+    corpus = "wikiko_20210901"  # wiki ko
+    # corpus = "wikiko_20211021"  # wiki ko
+
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--vocab_size", type=int, required=True)
     parser.add_argument("--character_coverage", type=str, default=1.0)
@@ -74,10 +80,7 @@ if __name__ == "__main__":
     tokenizer_type = args["tokenizer_type"]
     composition_type = args["composition_type"]
 
-    # set a input path automatically
-    # corpus = "namuwiki_20200302"  # namuwiki
-    corpus = "wikiko_20210901"  # wiki ko
-    # corpus = "wikiko_20211021"  # wiki ko
+
 
 
     if "mecab" in args["tokenizer_type"]:
@@ -156,6 +159,15 @@ if __name__ == "__main__":
             for line in fin.readlines()[start_idx:]:
                 splitted = line.split("\t")
                 fout.write(f"{' '.join(splitted)}")
+
+
+
+    # mecab config  (tok.json) mecab_tokenization.py로 토큰화한 코퍼스 경로에서 있는 것 그대로 복사해서 저장
+    with open(f"../tokenized/{corpus}_{tokenizer_type}/{composition_type}/tok.json") as f:
+        tok_json = json.load(f)
+
+    with open(os.path.join(output_dir, "tok.json"), "w") as f:
+        json.dump(tok_json, f, indent=4)
 
 
 

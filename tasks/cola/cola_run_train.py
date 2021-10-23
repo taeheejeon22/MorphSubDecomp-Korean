@@ -12,6 +12,10 @@ from torch.utils.data import DataLoader, RandomSampler
 from torch.utils.tensorboard import SummaryWriter
 from transformers import BertConfig
 
+import json
+import sys
+sys.path.insert(0, '.')
+
 from tasks.bert_utils import load_pretrained_bert
 from tasks.logger import get_logger
 from tasks.cola.config import TrainConfig
@@ -32,9 +36,6 @@ from tokenizer import (
     # WordTokenizer,
 )
 
-import json
-import sys
-sys.path.insert(0, '.')
 
 
 

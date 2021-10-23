@@ -107,7 +107,15 @@ def tokenize(text: str, tokenizer_type: str, decomposition_type: str, space_symb
 
 
 if __name__ == "__main__":
-    INPUT_CORPUS = "../wikiko_20210901_with_preprocessing_v2.txt"
+    # # wiki ko
+    # corpus = "wikiko_20210901"
+    # INPUT_CORPUS = "../wikiko_20210901_with_preprocessing_v2.txt"
+
+    # namuwiki
+    corpus = "namuwiki_20200302"
+    INPUT_CORPUS = "../namuwiki_20200302_with_preprocessing.txt"
+
+
     OUTPUT_DIR = "../tokenized/"
 
     parser = argparse.ArgumentParser()
@@ -133,11 +141,8 @@ if __name__ == "__main__":
 
     # set tokenizing func
     # tokenize_fn = partial(tokenize, space_symbol=args["space_symbol"])
-
         # mc = MeCabTokenizer_fixed(use_original=args["use_original"], decomposition_type=args["decomposition_type"], space_symbol=args["space_symbol"], dummy_letter=args["dummy_letter"])
         # tokenize_fn = partial(mc.tokenize)
-
-    # tokenize_fn = partial(tokenize, use_original=args["use_original"], decomposition_type=args["decomposition_type"], space_symbol=args["space_symbol"], dummy_letter=args["dummy_letter"] )
     tokenize_fn = partial(tokenize, tokenizer_type=args["tokenizer_type"], decomposition_type=args["decomposition_type"], space_symbol=args["space_symbol"], dummy_letter=args["dummy_letter"] )
 
     start_time = time.time()
@@ -156,7 +161,7 @@ if __name__ == "__main__":
     #
 
     # set a input path automatically
-    corpus = "wikiko_20210901"  # wiki ko
+
 
     file_name = "_".join([corpus, args["tokenizer_type"], args["decomposition_type"] ]) + ".txt"
     OUTPUT_DIR_sub = OUTPUT_DIR + "_".join([corpus, args["tokenizer_type"] ]) + "/" + args["decomposition_type"]
