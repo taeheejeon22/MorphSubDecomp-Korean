@@ -7,6 +7,8 @@ acl
 
 
 # 0. raw 코퍼스 만들기
+parse_Wikiko_with_preprocessing_v0.py
+
 
 # 1. 코퍼스 토큰화
 ./scripts/tokenization_v2_0.py
@@ -21,6 +23,10 @@ python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decompositio
 python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological
 
 ```
+wiki: --n_job=16
+namuwiki_orig: --n_job=16
+namuwiki_fixed_composed: --n_job=8
+namuwiki_fixed_decomposed_pure: --n_job=2
 
 
 

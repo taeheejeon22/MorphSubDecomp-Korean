@@ -86,7 +86,13 @@ def preprocess(sent_lst):
     sent_lst = [sent for sent in sent_lst if not re.search(r"^\s+$", sent)]    # 빈 문장 제거
     sent_lst = [sent.strip() for sent in sent_lst if sent != ""]    # 빈 문장 제거
 
+
+
+
     # sent_lst = [sent for sent in sent_lst if len(sent.split(" ")) > 1]  # 어절 길이가 1인 문장 제거. 학습할 이웃이 없을 것이라고 판단되므로. (형태소 분석하면 길이가 늘어날 수 있기는 함.)
+
+    sent_lst = [sent for sent in sent_lst if not (sent.endswith(".") and len(sent.split(" ")) <= 3) ]   # 퇴임 이후.    어린 시절.  생애 후반.  등등의 짧은 라인 없애기
+
 
     return sent_lst
 
@@ -126,29 +132,35 @@ p_punct = re.compile("[.!?]")
 for ix in tqdm( range(len(all_docs)) ):
 # for ix in tqdm(range( 100 )):
     split_text0 = all_docs[ix].splitlines() # "\n" 단위로 분리
-    split_text1 = [kss.split_sentences(split) if p_punct.search(split) else [split] for split in split_text0 ]  # 문장 분리기로 분리
-    split_text2 = [sent for sent_lst in split_text1 for sent in sent_lst] # flatten
 
-    # all_texts_list += split_text2
 
-    preprocessed_text = preprocess(split_text2)
+    # split_text1 = [kss.split_sentences(split) if p_punct.search(split) else [split] for split in split_text0 ]  # 문장 분리기로 분리
+    # split_text2 = [sent for sent_lst in split_text1 for sent in sent_lst] # flatten
+    #
+    # # all_texts_list += split_text2
+    #
+    # preprocessed_text = preprocess(split_text2)
+
+
+    preprocessed_text = preprocess(split_text0)
+
 
     concat_text = "\n".join(preprocessed_text)
 
     if concat_text != "":    # 빈 문서가 아닌 경우만 저장
-        all_texts += (concat_text + "\n\n")
+        all_texts += (concat_text + "\n")
 
 
 
 # all_texts_list_preprocessed = preprocess(all_texts_list)
 
 
-# save as a pickle
-with gzip.open("../wikiko_20210901_with_preprocessing.pkl", "wb") as f:
-    pickle.dump(all_texts_list, f)
+# # save as a pickle
+# with gzip.open("../wikiko_20210901_with_preprocessing.pkl", "wb") as f:
+#     pickle.dump(all_texts_list, f)
 
 # save as a txt
-with open("../wikiko_20210901_with_preprocessing_v2.txt", "w") as f:
+with open("../wikiko_20210901_with_preprocessing_v3.txt", "w") as f:    # v3: 짧은 행 제거. 문장 분리 x
     f.write(all_texts)
 
 

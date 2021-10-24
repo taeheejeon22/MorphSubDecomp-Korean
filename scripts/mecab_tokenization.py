@@ -107,13 +107,14 @@ def tokenize(text: str, tokenizer_type: str, decomposition_type: str, space_symb
 
 
 if __name__ == "__main__":
-    # # wiki ko
-    # corpus = "wikiko_20210901"
+    # wiki ko
+    corpus = "wikiko_20210901"
     # INPUT_CORPUS = "../wikiko_20210901_with_preprocessing_v2.txt"
+    INPUT_CORPUS = "../wikiko_20210901_with_preprocessing_v3.txt"
 
-    # namuwiki
-    corpus = "namuwiki_20200302"
-    INPUT_CORPUS = "../namuwiki_20200302_with_preprocessing.txt"
+    # # namuwiki
+    # corpus = "namuwiki_20200302"
+    # INPUT_CORPUS = "../namuwiki_20200302_with_preprocessing.txt"
 
 
     OUTPUT_DIR = "../tokenized/"
