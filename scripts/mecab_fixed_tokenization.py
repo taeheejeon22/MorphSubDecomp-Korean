@@ -18,8 +18,6 @@ from tokenizer.mecab_fixed import str2jamo, mecab_tokenize
 # from tokenizer.mecab_fixed import str2jamo as str2jamo
 
 
-# from tokenizer.mecab_fixed_v2 import MeCabTokenizer_fixed
-import scripts.tokenizers_acl_v2 as tok
 
 
 import MeCab
@@ -33,8 +31,14 @@ TOKENIZER = MeCab.Tagger(f"--dicdir /usr/local/lib/mecab/dic/mecab-ko-dic")
 grammatical_pos = ["JKS", "JKC", "JKG", "JKO", "JKB", "JKV", "JKQ", "JX", "JC", "EP", "EF", "EC", "ETN", "ETM"]    # 어미, 조사
 
 
-# kortok API based
-def tokenize_kortok(text: str, tokenizer_type: str, decomposition_type: str, space_symbol: str = "▃", dummy_letter: str = "") -> List[str]:
+
+
+
+
+
+
+# def tokenize(text: str, space_symbol: str = "▃", use) -> List[str]:
+def tokenize(text: str, tokenizer_type: str, decomposition_type: str, space_symbol: str = "▃", dummy_letter: str = "") -> List[str]:
     assert (tokenizer_type in ["mecab_orig", "mecab_fixed"] ), 'check the tokenizer type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
     assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 
@@ -82,17 +86,6 @@ def tokenize_kortok(text: str, tokenizer_type: str, decomposition_type: str, spa
             text_ptr += len(token)
 
     return tokenized
-
-
-# our (konlpy based)
-def tokenize_our(text: str, tokenizer_type: str, decomposition_type: str, space_symbol: str = "▃", dummy_letter: str = "") -> List[str]:
-    text = text.strip()
-
-    # return self.tok.mecab_tokenizer(text, use_original=self.use_original, pure_decomposition=self.pure_decomposition, morphological=self.morphological)
-    return tok.mecab_tokenizer(text, tokenizer_type=tokenizer_type, decomposition_type=decomposition_type)
-
-
-
 
 
 # tokenize("안녕? 뭐 해!", use_original=False, decomposition_type="composed")
@@ -151,32 +144,13 @@ if __name__ == "__main__":
     # tokenize_fn = partial(tokenize, space_symbol=args["space_symbol"])
         # mc = MeCabTokenizer_fixed(use_original=args["use_original"], decomposition_type=args["decomposition_type"], space_symbol=args["space_symbol"], dummy_letter=args["dummy_letter"])
         # tokenize_fn = partial(mc.tokenize)
-
-    tok = tok.tokenizers(dummy_letter=args["dummy_letter"], space_symbol=args["space_symbol"])
-
-    if "orig" in args["tokenizer_type"]:
-        tokenize_fn = partial(tokenize_kortok, tokenizer_type=args["tokenizer_type"], decomposition_type=args["decomposition_type"], space_symbol=args["space_symbol"], dummy_letter=args["dummy_letter"] )
-    elif "fixed" in args["tokenizer_type"]:
-        tokenize_fn = partial(tokenize_our, tokenizer_type=args["tokenizer_type"], decomposition_type=args["decomposition_type"], space_symbol=args["space_symbol"], dummy_letter=args["dummy_letter"] )
-
-
-
-    # tokenization
-    print(f"tokenizer_type: {args["tokenizer_type"]}\n")
-    print(f"deocmposition_type: {args["decomposition_type"]}\n")
+    tokenize_fn = partial(tokenize, tokenizer_type=args["tokenizer_type"], decomposition_type=args["decomposition_type"], space_symbol=args["space_symbol"], dummy_letter=args["dummy_letter"] )
 
     start_time = time.time()
     print(f"start tokenization ...")
-
-    if args["tokenizer_type"] == "none":    # 형태소 분석하지 않고 원문 그대로 이용
-        with open(INPUT_CORPUS, "r", encoding="utf-8") as f:
-            tokenized = f.read()
-
-    else:   # 형태소 분석할 경우
-        with open(INPUT_CORPUS, "r", encoding="utf-8") as f:
-            with Pool(args["n_jobs"]) as p:
-                tokenized = p.map(tokenize_fn, f)
-
+    with open(INPUT_CORPUS, "r", encoding="utf-8") as f:
+        with Pool(args["n_jobs"]) as p:
+            tokenized = p.map(tokenize_fn, f)
     elapsed_time = time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time))
     print(f"complete tokenization for all files. (elapsed time: {elapsed_time})")
 

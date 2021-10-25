@@ -1,4 +1,6 @@
-# ours
+# ours_v0
+# konlpy 기반
+
 import json
 import os
 from typing import List
