@@ -58,15 +58,15 @@ def tokenize_kortok(text: str, tokenizer_type: str, decomposition_type: str, spa
             # tokenized.append(token)
 
             if tokenizer_type == "mecab_orig":   # mecab original
-                    if decomposition_type == "composed":
-                        tokenized.append(token)
-                    elif decomposition_type == "decomposed_pure":
+                if decomposition_type == "composed":
+                    tokenized.append(token)
+                elif decomposition_type == "decomposed_pure":
+                    tokenized.append(str2jamo(token, grammatical=False, dummy_letter=dummy_letter))   # 자모 분해 후 추가
+                elif decomposition_type == "decomposed_morphological":
+                    if sum([1 for pos in pos.split("+") if pos in grammatical_pos]) < 1:  # VV+EC 등 고려해도 문법 형태소 없으면
+                        tokenized.append(token) # 그대로 추가
+                    elif sum([1 for pos in pos.split("+") if pos in grammatical_pos]) >= 1:  # VV+EC 등 고려해서 문법 형태소 있으면
                         tokenized.append(str2jamo(token, grammatical=False, dummy_letter=dummy_letter))   # 자모 분해 후 추가
-                    elif decomposition_type == "decomposed_morphological":
-                        if sum([1 for pos in pos.split("+") if pos in grammatical_pos]) < 1:  # VV+EC 등 고려해도 문법 형태소 없으면
-                            tokenized.append(token) # 그대로 추가
-                        elif sum([1 for pos in pos.split("+") if pos in grammatical_pos]) >= 1:  # VV+EC 등 고려해서 문법 형태소 있으면
-                            tokenized.append(str2jamo(token, grammatical=False, dummy_letter=dummy_letter))   # 자모 분해 후 추가
 
             elif tokenizer_type == "mecab_fixed":    # mecab fixed
                 if decomposition_type == "composed":
@@ -152,11 +152,12 @@ if __name__ == "__main__":
         # mc = MeCabTokenizer_fixed(use_original=args["use_original"], decomposition_type=args["decomposition_type"], space_symbol=args["space_symbol"], dummy_letter=args["dummy_letter"])
         # tokenize_fn = partial(mc.tokenize)
 
-    tok = tok.tokenizers(dummy_letter=args["dummy_letter"], space_symbol=args["space_symbol"])
+
 
     if "orig" in args["tokenizer_type"]:
         tokenize_fn = partial(tokenize_kortok, tokenizer_type=args["tokenizer_type"], decomposition_type=args["decomposition_type"], space_symbol=args["space_symbol"], dummy_letter=args["dummy_letter"] )
     elif "fixed" in args["tokenizer_type"]:
+        tok = tok.tokenizers(dummy_letter=args["dummy_letter"], space_symbol=args["space_symbol"])
         tokenize_fn = partial(tokenize_our, tokenizer_type=args["tokenizer_type"], decomposition_type=args["decomposition_type"], space_symbol=args["space_symbol"], dummy_letter=args["dummy_letter"] )
 
 

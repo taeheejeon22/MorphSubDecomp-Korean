@@ -190,6 +190,8 @@ def main(sent_lst, analyzer, composition_type, use_original):
 
         save_decomposed_corpus(file_name=file_name, analyzer=analyzer, composition_type=composition_type, corpus=tokenized_corpus)
 
+        del tokenized_corpus
+
 
 
 if __name__ == "__main__":

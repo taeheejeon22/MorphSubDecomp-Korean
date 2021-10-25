@@ -155,11 +155,12 @@ def main(sent_lst, analyzer, composition_type, use_original):
 
 
     if "namu" in corpus_name:
-        iter = 6
+        iter = 3
     elif "ko" in corpus_name:
         iter = 1
 
     for ix in range(iter):
+    # for ix in range(2, iter):
     # for ix in range(0, 1):
         print(f"\niteration: {ix}\n")
         begin_idx = 10000000*ix
@@ -191,6 +192,8 @@ def main(sent_lst, analyzer, composition_type, use_original):
             file_name = corpus_name + "_tokenized_" + "_".join([analyzer, composition_type]) + ".txt"
 
         save_decomposed_corpus(file_name=file_name, analyzer=analyzer, composition_type=composition_type, corpus=tokenized_corpus)
+
+        del tokenized_corpus
 
 
 

@@ -51,3 +51,9 @@ corpus: wikiko_20210901	# 나무위키 추가 예정
 masked lm만 학습하도록, 문서 사이 안 띔.
 문장 분리기 안 써서 한 행 길어지도록 함.
 짧은 행 삭제.
+
+
+# without dummy letter
+
+# with dummy letter
+	decomposed pure/morphological만 있음

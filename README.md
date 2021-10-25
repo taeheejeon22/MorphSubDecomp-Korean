@@ -23,6 +23,11 @@ python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decompositio
 python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
 python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological
 
+python scripts/mecab_tokenization.py --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --dummy_letter=⊸
+python scripts/mecab_tokenization.py --tokenizer_type=mecab_orig --decomposition_type=decomposed_morphological --dummy_letter=⊸
+python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
+python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
+
 ```
 
 namuwiki
@@ -79,7 +84,7 @@ python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="m
 
 # 3. make BERT files 
 ```buildoutcfg
-python scripts/make_bert_files.py --root_path=output_sp/ --vocab_size=32000 
+python scripts/make_bert_files.py --root_path=output_sp/ --vocab_size=32000
 ```
 실행 후 파일들 resources로 옮기기. 수동으로.
 
