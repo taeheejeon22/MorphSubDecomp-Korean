@@ -10,12 +10,14 @@ set -e
 # 필요한 도구 받기
 #pip install tensorflow==1.14
 pip install -U gast==0.2.2
-git clone https://github.com/google-research/bert.git
+#git clone https://github.com/google-research/bert.git
+# bert-sentencepiece version
+git clone https://github.com/raymondhs/bert-sentencepiece.git
 
 
 
 # google storage 주소
-GCS = gs://kist_bert
+GCS=gs://kist_bert
 
 
 # tokenizer를 사용자로부터 입력 받기
@@ -24,7 +26,7 @@ echo "none_composed"
 echo "orig_composed    orig_decomposed_pure    orig_deocomposed_morphological"
 echo "fixed_composed    fixed_decomposed_pure    fixed_decomposed_morphological"
 
-echo -e "tokenizer:  c " 
+echo -e "tokenizer: " 
 read TOKENIZER
 echo "tokenizer == $TOKENIZER"
 
@@ -98,7 +100,7 @@ do
     output_filename=`echo $file | cut -d'.' -f1`
     python3 bert/create_pretraining_data.py \
       --input_file=$wiki_corpus_dir/$file \
-      --output_file=output_dir/$output_filename.tfrecord \
+      --output_file=$output_dir/$output_filename.tfrecord \
       --vocab_file=$resource_dir/vocab.txt \
       --do_lower_case=True \
       --max_predictions_per_seq=20 \
@@ -106,6 +108,7 @@ do
       --masked_lm_prob=0.15 \
       --random_seed=12345 \
       --dupe_factor=5 2>&1 |tee -a $file'_'log.txt
+    gsutil mv $file'_'log.txt output_dir/$file'_'log.txt
 done
 
 
@@ -124,7 +127,7 @@ do
     output_filename=`echo $file | cut -d'.' -f1`
     python3 bert/create_pretraining_data.py \
       --input_file=$namuwiki_corpus_dir/$file \
-      --output_file=output_dir/$output_filename.tfrecord \
+      --output_file=$output_dir/$output_filename.tfrecord \
       --vocab_file=$resource_dir/vocab.txt \
       --do_lower_case=True \
       --max_predictions_per_seq=20 \
@@ -132,5 +135,6 @@ do
       --masked_lm_prob=0.15 \
       --random_seed=12345 \
       --dupe_factor=5 2>&1 |tee -a $file'_'log.txt
+    gsutil mv $file'_'log.txt output_dir/$file'_'log.txt
 done
 
