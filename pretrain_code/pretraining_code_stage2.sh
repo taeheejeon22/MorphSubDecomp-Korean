@@ -7,8 +7,9 @@
 
 #pip install tensorflow==1.14
 pip install -U gast==0.2.2
-git clone https://github.com/google-research/bert.git
-
+#git clone https://github.com/google-research/bert.git
+# bert-sentencepiece version
+git clone https://github.com/raymondhs/bert-sentencepiece.git
 
 # google storage 주소
 GCS=gs://kist_bert
@@ -20,19 +21,19 @@ echo "none_composed"
 echo "orig_composed    orig_decomposed_pure    orig_deocomposed_morphological"
 echo "fixed_composed    fixed_decomposed_pure    fixed_decomposed_morphological"
 
-echo -e "tokenizer:  c " 
+echo -e "tokenizer: " 
 read TOKENIZER
 echo "tokenizer == $TOKENIZER"
 
 
 # tpu name, region 입력 받기
 echo "tpu name을 입력하세요."
-echo -e "tpu_name: c "
+echo -e "tpu_name: "
 read TPU_NAME
 echo "TPU_NAME == $TPU_NAME"
 
 echo "region을 입력하세요."
-echo -e "region: c "
+echo -e "region: "
 read REGION
 echo "region == $REGION"
 
@@ -86,11 +87,12 @@ echo resource_dir == $resource_dir
 echo model_dir == $model_dir
 
 
-
+# tok.model 불러오기(run_pretraining.py를 통해 GCS에서 tok.model을 접근하려면 안 됨.)
+gsutil cp $resource_dir/tok.model $TOKENIZER'_'tok.model
 
 # run_pretraining.py 실행
 
-python3 bert/run_pretraining.py \
+python3 bert-sentencepiece/run_pretraining_data.py \
 --input_file=$tfrecord_dir/*.tfrecord \
 --output_dir=$model_dir \
 --do_train=True \
@@ -106,5 +108,7 @@ python3 bert/run_pretraining.py \
 --use_tpu=True \
 --tpu_name=$TPU_NAME \
 --tpu_zone=$REGION \
+--piece=sentence \
+--piece_model=$TOKENIZER'_'tok.model \
 --gcp_project=smooth-loop-327807 \
 --num_tpu_cores=8 2>&1 |tee -a $TOKENIZER'_'pretrain_log.txt
