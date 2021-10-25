@@ -1,8 +1,11 @@
+# mecab_fixed_v2
+# konlpy 방식. OS마다 결과 다른 거 땜에 어쩔 수 없이 내 버전 써야 됨.
+# mecab.py + mecab_fixed.py 합친 것
+
+
 # mecab fixed decomposition pure (추후 simple로 교체 예정)
 # _init_에 추가하기, 아니면 걍 mecab_fixed에 통합하는 게 나을 듯.
 
-# mecab fixed
-# konlpy 버리고 kortok 방식 따라 하기
 
 
 import json

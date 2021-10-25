@@ -1,3 +1,5 @@
+# v4: tokenizers_acl_v2 연동
+
 # v2_1: 문서 간 띄어쓰기 2회 하기
 
 # tokenizers_acl 이용하는 버전 (개인 논문도 이 방식으로 교체해야)
@@ -224,8 +226,8 @@ if __name__ == "__main__":
 
 
 
-    dummy_letter = "⊸"  # chr(8888)
-    # dummy_letter = ""  # none
+    # dummy_letter = "⊸"  # chr(8888)
+    dummy_letter = ""  # none
     space_symbol = "▃"  # chr(9603)
 
 
@@ -257,11 +259,11 @@ if __name__ == "__main__":
     composition_type = "composed"
     main(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)
 
-    # 2) decomposed pure # ['ㄴㅏㄴ', '▃', 'ㄴㅓㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅐ#']
+    # 2) decomposed pure # ['ㄴㅏㄴ', '▃', 'ㄴㅓㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ', 'ㅎㅐ']
     composition_type = "decomposed_pure"
     main(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)
 
-    # 3) decomposed morphological # ['ㄴㅏㄴ', '▃', 'ㄴㅓㄹ', '▃', '좋', 'ㅇㅏ#', 'ㅎㅐ#']
+    # 3) decomposed morphological # ['ㄴㅏㄴ', '▃', 'ㄴㅓㄹ', '▃', '좋', 'ㅇㅏ', 'ㅎㅐ']
     composition_type = "decomposed_morphological"
     main(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)
 
@@ -273,10 +275,10 @@ if __name__ == "__main__":
     composition_type = "composed"
     main(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)
 
-    # 2) decomposed pure # ['ㄴㅏ#', '##ㄴ', '▃', 'ㄴㅓ#', '##ㄹ', '▃', 'ㅈㅗㅎㅇㅏ#ㅎㅏ#', 'ㅇㅏ#']
+    # 2) decomposed pure # ['ㄴㅏ', 'ㄴ', '▃', 'ㄴㅓ', 'ㄹ', '▃', 'ㅈㅗㅎㅇㅏㅎㅏ', 'ㅇㅏ']
     composition_type = "decomposed_pure"
     main(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)
 
-    # 3) decomposed morphological # ['나', '##ㄴ', '▃', '너', '##ㄹ', '▃', '좋아하', 'ㅇㅏ#']
+    # 3) decomposed morphological # ['나', 'ㄴ', '▃', '너', 'ㄹ', '▃', '좋아하', 'ㅇㅏ']
     composition_type = "decomposed_morphological"
     main(sent_lst=sent_lst, analyzer=analyzer, composition_type=composition_type, use_original=use_original)

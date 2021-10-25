@@ -114,14 +114,14 @@ def tokenize_our(text: str, tokenizer_type: str, decomposition_type: str, space_
 
 
 if __name__ == "__main__":
-    # # wiki ko
-    # corpus = "wikiko_20210901"
-    # # INPUT_CORPUS = "../wikiko_20210901_with_preprocessing_v2.txt"
-    # INPUT_CORPUS = "../wikiko_20210901_with_preprocessing_v3_nn.txt"
+    # wiki ko
+    corpus = "wikiko_20210901"
+    # INPUT_CORPUS = "../wikiko_20210901_with_preprocessing_v2.txt"
+    INPUT_CORPUS = "../wikiko_20210901_with_preprocessing_v3_nn.txt"
 
-    # namuwiki
-    corpus = "namuwiki_20200302"
-    INPUT_CORPUS = "../namuwiki_20200302_with_preprocessing_v3_nn.txt"
+    # # namuwiki
+    # corpus = "namuwiki_20200302"
+    # INPUT_CORPUS = "../namuwiki_20200302_with_preprocessing_v3_nn.txt"
 
 
     OUTPUT_DIR = "../tokenized/"
@@ -162,8 +162,10 @@ if __name__ == "__main__":
 
 
     # tokenization
-    print(f"tokenizer_type: {args["tokenizer_type"]}\n")
-    print(f"deocmposition_type: {args["decomposition_type"]}\n")
+    str_tokenizer_type = args["tokenizer_type"]
+    str_decomposition_type = args["decomposition_type"]
+    print(f"tokenizer_type: {str_tokenizer_type}\n")
+    print(f"deocmposition_type: {str_decomposition_type}\n")
 
     start_time = time.time()
     print(f"start tokenization ...")
@@ -195,9 +197,16 @@ if __name__ == "__main__":
 
     os.makedirs(OUTPUT_DIR_sub, exist_ok=True)
 
-    with open(os.path.join(OUTPUT_DIR_sub, os.path.basename(file_name)), "w", encoding="utf-8") as f:
-        for tokens in tokenized:
-            f.write(" ".join(tokens) + "\n")
+
+    # 저장
+    if args["tokenizer_type"] == "none":  # 형태소 분석하지 않고 원문 그대로 이용
+        with open(os.path.join(OUTPUT_DIR_sub, os.path.basename(file_name)), "w", encoding="utf-8") as f:
+            f.write(tokenized)
+
+    else:  # 형태소 분석할 경우
+        with open(os.path.join(OUTPUT_DIR_sub, os.path.basename(file_name)), "w", encoding="utf-8") as f:
+            for tokens in tokenized:
+                f.write(" ".join(tokens) + "\n")
 
     # mecab config
     print("write mecab config file...")

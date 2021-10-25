@@ -588,9 +588,9 @@ class tokenizers():
 #
 # tok.eojeol_tokenizer(sent)
 #
-# # mecab original
-#     # composed
-# tok.mecab_tokenizer(sent, use_original=True, pure_decomposition=False) # ['넌', '▃', '날', '▃', '좋', '아', '해']
+# mecab original
+    # composed
+# tok.mecab_tokenizer(sent, tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological") # ['넌', '▃', '날', '▃', '좋', '아', '해']
 #     # decomposed pure
 # tok.mecab_tokenizer(sent, use_original=True, pure_decomposition=True)  # ['ㄴㅓㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅐ#']
 # tok2.mecab_tokenizer(sent, use_original=True, pure_decomposition=True)  # ['ㄴㅓㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ', 'ㅎㅐ']
@@ -617,3 +617,8 @@ class tokenizers():
 
 
 
+
+mc = Mecab(use_original=False)
+sent = "미궁에서 뜬 아앗"
+mc.pos(sent, join=False)
+mc.pos(sent, join=True)

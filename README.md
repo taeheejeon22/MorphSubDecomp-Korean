@@ -24,21 +24,23 @@ python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decompositio
 python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological
 
 ```
-wiki: --n_job=16
-namuwiki_orig: --n_job=16
-namuwiki_fixed_composed: --n_job=8
-namuwiki_fixed_decomposed_pure: --n_job=2
 
 namuwiki
-'''bash
+```bash
+python scripts/mecab_tokenization.py --tokenizer_type=none
+
 python scripts/mecab_tokenization.py --tokenizer_type=mecab_orig --decomposition_type=composed
 python scripts/mecab_tokenization.py --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --n_job=10
 python scripts/mecab_tokenization.py --tokenizer_type=mecab_orig --decomposition_type=decomposed_morphological --n_job=10
-python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decomposition_type=composed --n_job=8
+python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decomposition_type=composed --n_job=4
 python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --n_job=1
 python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --n_job=6
+```
 
-'''
+
+
+
+
 
 
 
@@ -84,12 +86,19 @@ python scripts/make_bert_files.py --root_path=output_sp/ --vocab_size=32000
 
 # 4. pretrain BERT
 파일 분할 by size (https://stackoverflow.com/questions/17592725/get-file-size-and-split-the-file-based-on-size)
-```bash
-split -d -b2G namuwiki_20200302_tokenized_mecab_orig_decomposed_pure_all.txt ./split/namuwiki_20200302_tokenized_mecab_orig_decomposed_pure_
 
-split -d -b2G namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure_all.txt ./split/namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure_
+namuwiki split
+```bash
+split -d -l 8000000 namuwiki_20200302_none_composed.txt namuwiki_20200302_none_composed_
+
+split -d -l 6000000 namuwiki_20200302_mecab_orig_composed.txt namuwiki_20200302_mecab_orig_composed_
+split -d -l 3300000 namuwiki_20200302_mecab_orig_decomposed_pure.txt namuwiki_20200302_mecab_orig_decomposed_pure_
+split -d -l 4000000 namuwiki_20200302_mecab_orig_decomposed_morphological.txt namuwiki_20200302_mecab_orig_decomposed_morphological_
+
 
 ```
+
+
 
 
 ## input 

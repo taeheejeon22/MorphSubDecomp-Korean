@@ -27,7 +27,7 @@ from tokenizer import (
     # CharTokenizer,
     # JamoTokenizer,
     MeCabSentencePieceTokenizer,
-    MeCabTokenizer,
+    # MeCabTokenizer,
     MeCabTokenizer_fixed,
     # MeCabSentencePieceTokenizer_kortok,
     # MeCabTokenizer_kortok,
@@ -86,7 +86,13 @@ def main(args):
         # mecab = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
         mecab = MeCabTokenizer_fixed(tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"])
         sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
-        tokenizer = MeCabSentencePieceTokenizer(mecab, sp)
+
+        if "orig" in config.tokenizer:
+            tokenizer = MeCabSentencePieceTokenizer(mecab, sp, use_fixed=False)
+        elif "fixed" in config.tokenizer:
+            tokenizer = MeCabSentencePieceTokenizer(mecab, sp, use_fixed=True)
+
+
 
         # elif args["use_kortok"] == True:
         #     print("use_kortok: ", args["use_kortok"])

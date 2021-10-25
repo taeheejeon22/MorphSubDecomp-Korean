@@ -1,3 +1,6 @@
+# mecab orig / fixed 선택
+# use_fixed: bool
+
 from typing import List
 
 from tokenizer.base import BaseTokenizer
@@ -6,9 +9,10 @@ from tokenizer.sentencepiece import SentencePieceTokenizer
 
 
 class MeCabSentencePieceTokenizer(BaseTokenizer):
-    def __init__(self, mecab: MeCabTokenizer, sp: SentencePieceTokenizer):
+    def __init__(self, mecab: MeCabTokenizer, sp: SentencePieceTokenizer, use_fixed: bool):
         self.mecab = mecab
         self.sp = sp
+        self.use_fixed = use_fixed
 
         # self.mecab = MeCabTokenizer(config_path="./resources/mecab_orig_composed_sp-64k/tok.json")
         # self.sp = SentencePieceTokenizer(model_path="./resources/mecab_orig_composed_sp-64k/tok.model")
@@ -17,7 +21,11 @@ class MeCabSentencePieceTokenizer(BaseTokenizer):
 
 
     def tokenize(self, text: str) -> List[str]:
-        tokenized = self.mecab.tokenize(text)   # ['나', 'ㄴ', '▃', '너', 'ㄹ', '▃', '좋아하', '아']
+        if self.use_fixed == False: # kortok API based tokenizer
+            tokenized = self.mecab.tokenize(text)   # ['나', 'ᆫ', '▃', '너', 'ᆯ', '▃', '좋아하', '아']
+        elif self.use_fixed == True:  # our tokenizer (konlpy based)
+            tokenized = self.mecab.tokenize(text)  # ['나', 'ᆫ', '▃', '너', 'ᆯ', '▃', '좋아하', '아']
+
         tokenized = self.sp.tokenize(" ".join(tokenized))   # ['▁나', '▁ㄴ', '▁▃', '▁너', '▁ㄹ', '▁▃', '▁좋아하', '▁아']
 
         output = []
