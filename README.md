@@ -14,6 +14,7 @@ parse_Wikiko_with_preprocessing_v0.py
 ./scripts/tokenization_v2_0.py
 ./pretrain_corpus/tokenized 에 저장
 
+wikiko
 ```bash
 python scripts/mecab_tokenization.py --tokenizer_type=mecab_orig --decomposition_type=composed
 python scripts/mecab_tokenization.py --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure
@@ -27,6 +28,17 @@ wiki: --n_job=16
 namuwiki_orig: --n_job=16
 namuwiki_fixed_composed: --n_job=8
 namuwiki_fixed_decomposed_pure: --n_job=2
+
+namuwiki
+'''bash
+python scripts/mecab_tokenization.py --tokenizer_type=mecab_orig --decomposition_type=composed
+python scripts/mecab_tokenization.py --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --n_job=10
+python scripts/mecab_tokenization.py --tokenizer_type=mecab_orig --decomposition_type=decomposed_morphological --n_job=10
+python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decomposition_type=composed --n_job=8
+python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --n_job=1
+python scripts/mecab_tokenization.py --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --n_job=6
+
+'''
 
 
 
@@ -67,6 +79,7 @@ python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="m
 ```buildoutcfg
 python scripts/make_bert_files.py --root_path=output_sp/ --vocab_size=32000 
 ```
+실행 후 파일들 resources로 옮기기. 수동으로.
 
 
 # 4. pretrain BERT

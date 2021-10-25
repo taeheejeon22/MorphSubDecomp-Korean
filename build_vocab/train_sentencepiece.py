@@ -34,6 +34,7 @@ OUTPUT_DIR = "./output_sp"
 if __name__ == "__main__":
     # set a input path automatically
     # corpus = "namuwiki_20200302"  # namuwiki
+
     corpus = "wikiko_20210901"  # wiki ko
     # corpus = "wikiko_20211021"  # wiki ko
 

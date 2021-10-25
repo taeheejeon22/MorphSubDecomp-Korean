@@ -148,7 +148,8 @@ for ix in tqdm( range(len(all_docs)) ):
     concat_text = "\n".join(preprocessed_text)
 
     if concat_text != "":    # 빈 문서가 아닌 경우만 저장
-        all_texts += (concat_text + "\n")
+        # all_texts += (concat_text + "\n") # 문서 사이 안 띄우기. 즉 masked LM만 학습
+        all_texts += (concat_text + "\n\n") # 문서 사이 띄우기
 
 
 
@@ -159,8 +160,11 @@ for ix in tqdm( range(len(all_docs)) ):
 # with gzip.open("../wikiko_20210901_with_preprocessing.pkl", "wb") as f:
 #     pickle.dump(all_texts_list, f)
 
-# save as a txt
-with open("../wikiko_20210901_with_preprocessing_v3.txt", "w") as f:    # v3: 짧은 행 제거. 문장 분리 x
-    f.write(all_texts)
+# # save as a txt
+# with open("../wikiko_20210901_with_preprocessing_v3_n.txt", "w") as f:    # v3: 짧은 행 제거. 문장 분리 x
+#     f.write(all_texts)
 
+# save as a txt
+with open("../wikiko_20210901_with_preprocessing_v3_nn.txt", "w") as f:    # v3: 짧은 행 제거. 문장 분리 x   + 문서 사이 띄우기
+    f.write(all_texts)
 

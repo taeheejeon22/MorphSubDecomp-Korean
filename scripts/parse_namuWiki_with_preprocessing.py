@@ -26,7 +26,8 @@ import kss
 
 
 # load the raw corpus
-file_path = "/home/kist/rsync/namuwiki_20200302.json"
+# file_path = "/home/kist/rsync/namuwiki_20200302.json"
+file_path = "../docData200302.json"
 
 with open(file_path, 'r', encoding='utf-8') as input_file:
     namu_wiki = json.load(input_file)
@@ -71,6 +72,10 @@ def preprocess(sent_lst):
 
     # sent_lst = [sent for sent in sent_lst if len(sent.split(" ")) > 1]  # 어절 길이가 1인 문장 제거. 학습할 이웃이 없을 것이라고 판단되므로. (형태소 분석하면 길이가 늘어날 수 있기는 함.)
 
+
+    sent_lst = [sent for sent in sent_lst if len(sent.split(" ")) >= 3 ]   # 퇴임 이후.    어린 시절.  생애 후반.  등등의 짧은 라인 없애기
+
+
     return sent_lst
 
 
@@ -84,19 +89,23 @@ all_texts = ""
 for ix in tqdm.tqdm( range(len(namu_wiki)) ):
     document = namu_wiki[ix]
     plain_text = extract_text(document['text'])
+    split_text = plain_text.splitlines()        # 28
 
-    # split_text = plain_text.splitlines()        # 28
+    # # 문장 분리
     # split_text = kss.split_sentences(plain_text)  # 36
     # split_text = splitter(plain_text)   # 60
-    split_text = kss.split_sentences(plain_text)
+    # split_text = kss.split_sentences(plain_text)
 
-    preprocessed_text = preprocess(sent_lst=split_text) # 59
+    # preprocessed_text = preprocess(sent_lst=split_text) # 59
+
+    preprocessed_text = preprocess(sent_lst=split_text)  # 59
 
     concat_text = "\n".join(preprocessed_text)
 
 
     if concat_text != "":    # 빈 문서가 아닌 경우만 저장
-        all_texts += (concat_text + "\n\n")
+        # all_texts += (concat_text + "\n") # 문서 사이 안 띄우기. 즉 masked LM만 학습
+        all_texts += (concat_text + "\n\n")  # 문서 사이 띄우기
 
 
 
@@ -104,6 +113,11 @@ for ix in tqdm.tqdm( range(len(namu_wiki)) ):
 with gzip.open("../namuwiki_20200302_with_preprocessing.pkl", "wb") as f:
     pickle.dump(all_texts, f)
 
+
+# # save as a txt
+# with open("../namuwiki_20200302_with_preprocessing_v3_n.txt", "w") as f:    # v3: 짧은 행 제거. 문장 분리 x
+#     f.write(all_texts)
+
 # save as a txt
-with open("../namuwiki_20200302_with_preprocessing.txt", "w") as f:
+with open("../namuwiki_20200302_with_preprocessing_v3_nn.txt", "w") as f:    # v3: 짧은 행 제거. 문장 분리 x   + 문서 사이 띄우기
     f.write(all_texts)
