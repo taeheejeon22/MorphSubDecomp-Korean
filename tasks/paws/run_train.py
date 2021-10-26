@@ -81,12 +81,14 @@ def main(args):
             tokenizer_config: dict = json.load(f)
 
         # mecab = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
-        mecab = MeCabTokenizer_fixed(tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"])
+        # mecab = MeCabTokenizer_fixed(tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"])
         sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
 
         if "orig" in config.tokenizer:
+            mecab = MeCabTokenizer_orig(tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"])
             tokenizer = MeCabSentencePieceTokenizer_orig(mecab, sp, use_fixed=False)
         elif "fixed" in config.tokenizer:
+            mecab = MeCabTokenizer_fixed(tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"])
             tokenizer = MeCabSentencePieceTokenizer_fixed(mecab, sp, use_fixed=True)
 
         # elif args["use_kortok"] == True:
