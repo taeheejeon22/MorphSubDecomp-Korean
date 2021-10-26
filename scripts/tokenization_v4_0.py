@@ -159,8 +159,8 @@ def main(sent_lst, analyzer, composition_type, use_original):
     elif "ko" in corpus_name:
         iter = 1
 
-    for ix in range(iter):
-    # for ix in range(2, iter):
+    # for ix in range(iter):
+    for ix in range(2, iter):
     # for ix in range(0, 1):
         print(f"\niteration: {ix}\n")
         begin_idx = 10000000*ix
