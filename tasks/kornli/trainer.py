@@ -111,8 +111,8 @@ class Trainer:
             self.logger.info(f"\n{dev_report}\n")
 
             dev_acc = accuracy_score(dev_targets, dev_predictions)
-            self.summary_writer.add_scalar("kornli/test/loss", dev_loss, self.global_step)
-            self.summary_writer.add_scalar("kornli/test/accuracy", dev_acc, self.global_step)
+            self.summary_writer.add_scalar("kornli/dev/loss", dev_loss, self.global_step)
+            self.summary_writer.add_scalar("kornli/dev/accuracy", dev_acc, self.global_step)
 
             # test every epoch
             test_loss, test_targets, test_predictions = self._validation(self.test_data_loader)
