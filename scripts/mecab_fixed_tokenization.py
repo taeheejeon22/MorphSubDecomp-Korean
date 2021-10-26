@@ -14,7 +14,7 @@ from typing import List
 import sys
 sys.path.insert(0, '.')
 
-from tokenizer.mecab_fixed import str2jamo, mecab_tokenize
+from tokenizer.old.mecab_fixed import str2jamo, mecab_tokenize
 # from tokenizer.mecab_fixed import str2jamo as str2jamo
 
 

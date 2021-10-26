@@ -234,7 +234,7 @@ def str2jamo(text, grammatical=False, dummy_letter=""):
 
 
 
-class MeCabTokenizer_fixed(BaseTokenizer):
+class MeCabTokenizer_orig(BaseTokenizer):
     def __init__(self, tokenizer_type: str, decomposition_type: str, space_symbol: str = "▃", dummy_letter: str = ""):
         assert (tokenizer_type in ["mecab_orig", "mecab_fixed"] ), 'check the tokenizer type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
         assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
@@ -253,7 +253,7 @@ class MeCabTokenizer_fixed(BaseTokenizer):
 
 
     # kortok API based
-    def tokenize_kortok(self, text: str) -> List[str]:
+    def tokenize(self, text: str) -> List[str]:
         text = text.strip()
         text_ptr = 0    # 3
         tokenized = []  # ['나', 'ᆫ', '▃', '너', 'ᆯ']
@@ -306,12 +306,12 @@ class MeCabTokenizer_fixed(BaseTokenizer):
         return tokenized
 
 
-    # our (konlpy based)
-    def tokenize_our(self, text: str) -> List[str]:
-        text = text.strip()
-
-        # return self.tok.mecab_tokenizer(text, use_original=self.use_original, pure_decomposition=self.pure_decomposition, morphological=self.morphological)
-        return self.tok.mecab_tokenizer(text, tokenizer_type=self.tokenizer_type, decomposition_type=self.decomposition_type)
+    # # our (konlpy based)
+    # def tokenize_our(self, text: str) -> List[str]:
+    #     text = text.strip()
+    #
+    #     # return self.tok.mecab_tokenizer(text, use_original=self.use_original, pure_decomposition=self.pure_decomposition, morphological=self.morphological)
+    #     return self.tok.mecab_tokenizer(text, tokenizer_type=self.tokenizer_type, decomposition_type=self.decomposition_type)
 
 
 

@@ -26,8 +26,10 @@ from tasks.cola.trainer import Trainer
 from tokenizer import (
     # CharTokenizer,
     # JamoTokenizer,
-    MeCabSentencePieceTokenizer,
+    MeCabSentencePieceTokenizer_orig,
+    MeCabSentencePieceTokenizer_fixed,
     # MeCabTokenizer,
+    MeCabTokenizer_orig,
     MeCabTokenizer_fixed,
     # MeCabSentencePieceTokenizer_kortok,
     # MeCabTokenizer_kortok,
@@ -88,9 +90,9 @@ def main(args):
         sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
 
         if "orig" in config.tokenizer:
-            tokenizer = MeCabSentencePieceTokenizer(mecab, sp, use_fixed=False)
+            tokenizer = MeCabSentencePieceTokenizer_orig(mecab, sp, use_fixed=False)
         elif "fixed" in config.tokenizer:
-            tokenizer = MeCabSentencePieceTokenizer(mecab, sp, use_fixed=True)
+            tokenizer = MeCabSentencePieceTokenizer_fixed(mecab, sp, use_fixed=True)
 
 
 

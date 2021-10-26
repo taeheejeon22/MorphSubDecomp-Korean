@@ -4,12 +4,15 @@
 from typing import List
 
 from tokenizer.base import BaseTokenizer
-from tokenizer.mecab import MeCabTokenizer
+
+# from tokenizer.mecab import MeCabTokenizer
+from tokenizer.mecab_fixed import MeCabTokenizer_fixed
+
 from tokenizer.sentencepiece import SentencePieceTokenizer
 
 
-class MeCabSentencePieceTokenizer(BaseTokenizer):
-    def __init__(self, mecab: MeCabTokenizer, sp: SentencePieceTokenizer, use_fixed: bool):
+class MeCabSentencePieceTokenizer_fixed(BaseTokenizer):
+    def __init__(self, mecab: MeCabTokenizer_fixed, sp: SentencePieceTokenizer, use_fixed: bool):
         self.mecab = mecab
         self.sp = sp
         self.use_fixed = use_fixed

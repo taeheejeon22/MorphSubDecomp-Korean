@@ -1,11 +1,8 @@
-# mecab_fixed_v2
-# konlpy 방식. OS마다 결과 다른 거 땜에 어쩔 수 없이 내 버전 써야 됨.
-# mecab.py + mecab_fixed.py 합친 것
-
-
 # mecab fixed decomposition pure (추후 simple로 교체 예정)
-# _init_에 추가하기, 아니면 걍 mecab_fixed에 통합하는 게 나을 듯.
+# _init_에 추가하기, 아니면 걍 mecab_fixed에 통합하는 게 날 듯.
 
+# mecab fixed
+# konlpy 버리고 kortok 방식 따라 하기
 
 
 import json
@@ -17,10 +14,6 @@ import MeCab
 
 from soynlp.hangle import compose, decompose, character_is_korean, character_is_complete_korean, character_is_moum, character_is_jaum
 from tokenizer.base import BaseTokenizer
-
-
-import scripts.tokenizers_acl_v2 as tok
-
 
 
 regexp = re.compile(".+(?=/[^A-Z])") # a pattern for only morphemes and their POS (e.g. 불태워/VV/* > 불태워/VV)
@@ -249,73 +242,61 @@ class MeCabTokenizer_fixed(BaseTokenizer):
 
         self.grammatical_pos = ["JKS", "JKC", "JKG", "JKO", "JKB", "JKV", "JKQ", "JX", "JC", "EP", "EF", "EC", "ETN", "ETM"]    # 어미, 조사
 
-        self.tok = tok.tokenizers(dummy_letter=self.dummy_letter , space_symbol=self.space_symbol)
 
 
-    # # kortok API based
-    # def tokenize(self, text: str) -> List[str]:
-    #     text = text.strip()
-    #     text_ptr = 0    # 3
-    #     tokenized = []  # ['나', 'ᆫ', '▃', '너', 'ᆯ']
-    #     for ix in range(len(self.mecab.parse(text).split("\n"))) :
-    #     # for ix in range(0,2 ):
-    #         mor = self.mecab.parse(text).split("\n")[ix]
-    #
-    #         if "\t" in mor:
-    #             splitted = mor.split("\t") # 형태소 토큰과 나머지 부분 분리  # '난\t', 'NP+JX,*,T,난,Inflect,NP,JX,나/NP/*+ᆫ/JX/*'
-    #             token = splitted[0] # 형태소 토큰    # '난\t'
-    #             pos = splitted[1].split(",", 1)[0]
-    #
-    #             if text[text_ptr] == " ":   # 현재 인덱스(text_ptr) character 가 스페이스라면
-    #                 while text[text_ptr] == " ":    # 스페이스(띄어쓰기) 나타나는 부분까지 인덱스(text_ptr) 이동시킨 후 space symbol 삽입
-    #                     text_ptr += 1
-    #                 assert (
-    #                         text[text_ptr] == token[0]
-    #                 ), f"{repr(text)}//{text_ptr}//{text[text_ptr]}//{token}//{token[0]}\n"
-    #
-    #                 tokenized.append(self.space_symbol)
-    #
-    #             # tokenized.append(token)  # 토큰화해서 결과 저장
-    #
-    #             # if self.use_original == True:   # mecab original
-    #             if self.tokenizer_type == "mecab_orig":  # mecab original
-    #                 if self.decomposition_type == "composed":
-    #                     tokenized.append(token)
-    #                 elif self.decomposition_type == "decomposed_pure":
-    #                     tokenized.append(str2jamo(token, grammatical=False, dummy_letter=self.dummy_letter))   # 자모 분해 후 추가
-    #                 elif self.decomposition_type == "decomposed_morphological":
-    #                     if sum([1 for pos in pos.split("+") if pos in self.grammatical_pos]) < 1:  # VV+EC 등 고려해도 문법 형태소 없으면
-    #                         tokenized.append(token) # 그대로 추가
-    #                     elif sum([1 for pos in pos.split("+") if pos in self.grammatical_pos]) >= 1:  # VV+EC 등 고려해서 문법 형태소 있으면
-    #                         tokenized.append(str2jamo(token, grammatical=False, dummy_letter=self.dummy_letter))   # 자모 분해 후 추가
-    #
-    #             # elif self.use_original == False:    # mecab fixed
-    #             elif self.tokenizer_type == "mecab_fixed":  # mecab fixed
-    #                 if self.decomposition_type == "composed":
-    #                     mecab_tokenized = [mor_pos[0] for mor_pos in mecab_tokenize(mor)]  # ['나', 'ᆫ'] 진짜 형태소로 쪼개진 토큰들 저장
-    #                     tokenized += mecab_tokenized
-    #                 elif self.decomposition_type == "decomposed_pure":
-    #                     mecab_tokenized = [mor_pos[0] for mor_pos in mecab_tokenize(mor)]  # ['나', 'ᆫ'] 진짜 형태소로 쪼개진 토큰들 저장
-    #                     tokenized += [str2jamo(token, grammatical=False, dummy_letter=self.dummy_letter) for token in mecab_tokenized] # 자모 분해 후 추가
-    #                 elif self.decomposition_type == "decomposed_morphological":
-    #                     mecab_tokenized_with_pos = mecab_tokenize(mor)[:]  # [('나', 'NP'), ('ᆫ', 'JX')] 진짜 형태소로 쪼개진 토큰들 저장 with POS tag
-    #                     tokenized += [mor_pos[0] if (not mor_pos[-1] in self.grammatical_pos) else str2jamo(mor_pos[0], grammatical=False, dummy_letter=self.dummy_letter) for mor_pos in mecab_tokenized_with_pos]    # 어휘 형태소는 그대로, 문법 형태소는 자모 분해 후 추가
-    #
-    #             text_ptr += len(token)
-    #
-    #     return tokenized
 
-
-    # our (konlpy based)
     def tokenize(self, text: str) -> List[str]:
         text = text.strip()
+        text_ptr = 0    # 3
+        tokenized = []  # ['나', 'ᆫ', '▃', '너', 'ᆯ']
+        for ix in range(len(self.mecab.parse(text).split("\n"))) :
+        # for ix in range(0,2 ):
+            mor = self.mecab.parse(text).split("\n")[ix]
 
-        # return self.tok.mecab_tokenizer(text, use_original=self.use_original, pure_decomposition=self.pure_decomposition, morphological=self.morphological)
-        return self.tok.mecab_tokenizer(text, tokenizer_type=self.tokenizer_type, decomposition_type=self.decomposition_type)
+            if "\t" in mor:
+                splitted = mor.split("\t") # 형태소 토큰과 나머지 부분 분리  # '난\t', 'NP+JX,*,T,난,Inflect,NP,JX,나/NP/*+ᆫ/JX/*'
+                token = splitted[0] # 형태소 토큰    # '난\t'
+                pos = splitted[1].split(",", 1)[0]
 
+                if text[text_ptr] == " ":   # 현재 인덱스(text_ptr) character 가 스페이스라면
+                    while text[text_ptr] == " ":    # 스페이스(띄어쓰기) 나타나는 부분까지 인덱스(text_ptr) 이동시킨 후 space symbol 삽입
+                        text_ptr += 1
+                    assert (
+                            text[text_ptr] == token[0]
+                    ), f"{repr(text)}//{text_ptr}//{text[text_ptr]}//{token}//{token[0]}\n"
 
+                    tokenized.append(self.space_symbol)
 
-    # orig composed에 대해서만 작동
+                # tokenized.append(token)  # 토큰화해서 결과 저장
+
+                # if self.use_original == True:   # mecab original
+                if self.tokenizer_type == "mecab_orig":  # mecab original
+                    if self.decomposition_type == "composed":
+                        tokenized.append(token)
+                    elif self.decomposition_type == "decomposed_pure":
+                        tokenized.append(str2jamo(token, grammatical=False, dummy_letter=self.dummy_letter))   # 자모 분해 후 추가
+                    elif self.decomposition_type == "decomposed_morphological":
+                        if sum([1 for pos in pos.split("+") if pos in self.grammatical_pos]) < 1:  # VV+EC 등 고려해도 문법 형태소 없으면
+                            tokenized.append(token) # 그대로 추가
+                        elif sum([1 for pos in pos.split("+") if pos in self.grammatical_pos]) >= 1:  # VV+EC 등 고려해서 문법 형태소 있으면
+                            tokenized.append(str2jamo(token, grammatical=False, dummy_letter=self.dummy_letter))   # 자모 분해 후 추가
+
+                # elif self.use_original == False:    # mecab fixed
+                elif self.tokenizer_type == "mecab_fixed":  # mecab fixed
+                    if self.decomposition_type == "composed":
+                        mecab_tokenized = [mor_pos[0] for mor_pos in mecab_tokenize(mor)]  # ['나', 'ᆫ'] 진짜 형태소로 쪼개진 토큰들 저장
+                        tokenized += mecab_tokenized
+                    elif self.decomposition_type == "decomposed_pure":
+                        mecab_tokenized = [mor_pos[0] for mor_pos in mecab_tokenize(mor)]  # ['나', 'ᆫ'] 진짜 형태소로 쪼개진 토큰들 저장
+                        tokenized += [str2jamo(token, grammatical=False, dummy_letter=self.dummy_letter) for token in mecab_tokenized] # 자모 분해 후 추가
+                    elif self.decomposition_type == "decomposed_morphological":
+                        mecab_tokenized_with_pos = mecab_tokenize(mor)[:]  # [('나', 'NP'), ('ᆫ', 'JX')] 진짜 형태소로 쪼개진 토큰들 저장 with POS tag
+                        tokenized += [mor_pos[0] if (not mor_pos[-1] in self.grammatical_pos) else str2jamo(mor_pos[0], grammatical=False, dummy_letter=self.dummy_letter) for mor_pos in mecab_tokenized_with_pos]    # 어휘 형태소는 그대로, 문법 형태소는 자모 분해 후 추가
+
+                text_ptr += len(token)
+
+        return tokenized
+
     def detokenize(self, tokens: List[str]) -> str:
         text = "".join(tokens).replace("▃", " ").strip()
         return text
