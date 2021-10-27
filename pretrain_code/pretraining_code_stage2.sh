@@ -10,6 +10,7 @@ pip install -U gast==0.2.2
 #git clone https://github.com/google-research/bert.git
 # bert-sentencepiece version
 git clone https://github.com/raymondhs/bert-sentencepiece.git
+pip install sentencepiece==0.1.96
 
 # google storage 주소
 GCS=gs://kist_bert
@@ -25,6 +26,21 @@ echo -e "tokenizer: "
 read TOKENIZER
 echo "tokenizer == $TOKENIZER"
 
+# tfrecord dir, resource_dir, model_dir 입력 받기
+echo "tfrecord_dir을 입력하세요."
+echo -e "tfrocord_dir: "
+read TFRECORD_DIR
+echo "tfrecord_dir == $TFRECORD_DIR"
+
+echo "resource_dir을 입력하세요. "
+echo -e "resource_dir: "
+read RESOURCE_DIR
+echo "resource_dir == $RESOURCE_DIR"
+
+echo "bert_model_dir을 입력하세요."
+echo -e "bert_model_dir: "
+read MODEL_DIR
+echo "bert_model_dir == $MODEL_DIR"
 
 # tpu name, region 입력 받기
 echo "tpu name을 입력하세요."
@@ -37,78 +53,66 @@ echo -e "region: "
 read REGION
 echo "region == $REGION"
 
-# 입력 받은 tokenizer의 tfrecord_dir, resource_dir, output_dir, model_dir을 정하기
-
-# none_composed
-if [ $TOKENIZER == none_composed ]; then
-    $tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
-    $resource_dir=$GCS/resources/with_dummy_letter_v2/sp-64k\
-    $model_dir=$GCS/bert_model/v2/$TOKENIZER
-
-#orig_composed
-elif [ $TOKENIZER == orig_composed ]; then
-    tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
-    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'/
-    model_dir=$GCS/bert_model/v2/$TOKENIZER
-
-# orig_decomposed_pure
-elif [ $TOKENIZER == orig_decomposed_pure ]; then
-    tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
-    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    model_dir=$GCS/bert_model/v2/$TOKENIZER
-
-# orig_decomposed_morphological
-elif [ $TOKENIZER == orig_deocomposed_morphological ]; then
-    tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
-    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    model_dir=$GCS/bert_model/v2/$TOKENIZER
-
-#fixed_composed
-elif [ $TOKENIZER == fixed_composed ] ; then
-    tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
-    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    model_dir=$GCS/bert_model/v2/$TOKENIZER
-
-#fixed_decomposed_pure
-elif [ $TOKENIZER == fixed_decomposed_pure ] ; then
-    tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
-    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    model_dir=$GCS/bert_model/v2/$TOKENIZER
-
-#fixed_decomposed_morphological
-elif [ $TOKENIZER == fixed_decomposed_morphological ] ; then
-    tfrecord_dir=$GCS/tfrecord/v2/$TOKENIZER
-    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    model_dir=$GCS/bert_model/v2/$TOKENIZER
+# init_checkpoints의 여부
+echo "init_checkpoints 쓰면 T, 안 쓰면 F"
+echo -e "T or F: "
+read INIT
+echo "init == $INIT"
+if [ $INIT=='T' ]; then
+    echo -e "init_checkpoints를 입력하세요: "
+    read INIT_CHECKPOINTS
+    echo "init_checkpoints == $INIT_CHECKPOINTS"
 fi
 
-echo tfrecode_dir == $tfrecord_dir
-echo resource_dir == $resource_dir
-echo model_dir == $model_dir
 
 
-# tok.model 불러오기(run_pretraining.py를 통해 GCS에서 tok.model을 접근하려면 안 됨.)
-gsutil cp $resource_dir/tok.model $TOKENIZER'_'tok.model
+echo tfrecode_dir == $TFRECORD_DIR
+echo resource_dir == $RESOURCE_DIR
+echo model_dir == $MODEL_DIR
 
-# run_pretraining.py 실행
 
-python3 bert-sentencepiece/run_pretraining_data.py \
---input_file=$tfrecord_dir/*.tfrecord \
---output_dir=$model_dir \
---do_train=True \
---do_eval=True \
---bert_config_file=$resource_dir/bert_config.json \
---train_batch_size=1024 \
---max_seq_length=128 \
---max_predictions_per_seq=20 \
---num_train_steps=1000000 \
---num_warmup_steps=10000 \
---learning_rate=5e-5 \
---save_checkpoints_steps=10000 \
---use_tpu=True \
---tpu_name=$TPU_NAME \
---tpu_zone=$REGION \
---piece=sentence \
---piece_model=$TOKENIZER'_'tok.model \
---gcp_project=smooth-loop-327807 \
---num_tpu_cores=8 2>&1 |tee -a $TOKENIZER'_'pretrain_log.txt
+# run_pretraining.py 실행 (백그라운드)
+
+if [ $INIT=='T' ]; then
+
+    nohup \
+    python3 bert-sentencepiece/run_pretraining.py \
+    --input_file=gs://$TFRECORD_DIR/*.tfrecord \
+    --output_dir=gs://$MODEL_DIR \
+    --do_train=True \
+    --do_eval=True \
+    --bert_config_file=gs://$RESOURCE_DIR/bert_config.json \
+    --train_batch_size=1024 \
+    --max_seq_length=128 \
+    --max_predictions_per_seq=20 \
+    --num_train_steps=1000000 \
+    --num_warmup_steps=10000 \
+    --learning_rate=5e-5 \
+    --save_checkpoints_steps=10000 \
+    --use_tpu=True \
+    --tpu_name=$TPU_NAME \
+    --tpu_zone=$REGION \
+    --gcp_project=smooth-loop-327807 \
+    --num_tpu_cores=8 > $TOKENIZER'_'.log 2> $TOKENIZER'_'.err &
+else
+    nohup \
+    python3 bert-sentencepiece/run_pretraining.py \
+    --input_file=gs://$TFRECORD_DIR/*.tfrecord \
+    --output_dir=gs://$MODEL_DIR \
+    --do_train=True \
+    --do_eval=True \
+    --bert_config_file=gs://$RESOURCE_DIR/bert_config.json \
+    --train_batch_size=1024 \
+    --max_seq_length=128 \
+    --max_predictions_per_seq=20 \
+    --num_train_steps=1000000 \
+    --num_warmup_steps=10000 \
+    --learning_rate=5e-5 \
+    --save_checkpoints_steps=10000 \
+    --init_checkpoints=$INIT_CHECKPOINTS
+    --use_tpu=True \
+    --tpu_name=$TPU_NAME \
+    --tpu_zone=$REGION \
+    --gcp_project=smooth-loop-327807 \
+    --num_tpu_cores=8 > $TOKENIZER'_'.log 2> $TOKENIZER'_'.err &
+fi

@@ -8,16 +8,12 @@
 set -e
 
 # 필요한 도구 받기
-#pip install tensorflow==1.14
+pip install tensorflow==1.14
 pip install -U gast==0.2.2
 #git clone https://github.com/google-research/bert.git
-# bert-sentencepiece version
+bert-sentencepiece version
+pip install sentencepiece==0.1.96
 git clone https://github.com/raymondhs/bert-sentencepiece.git
-
-
-
-# google storage 주소
-GCS=gs://kist_bert
 
 
 # tokenizer를 사용자로부터 입력 받기
@@ -30,111 +26,65 @@ echo -e "tokenizer: "
 read TOKENIZER
 echo "tokenizer == $TOKENIZER"
 
+echo "corpus_dir을 입력하세요."
+echo -e "corpus_dir: "
+read CORPUS_DIR
+echo "corpus_dir == $CORPUS_DIR"
 
-# 입력 받은 tokenizer의 wiki_corpus_dir, namuwiki_corpus_dir, resource_dir, output_dir을 정하기
+echo "resource_dir을 입력하세요. "
+echo -e "resource_dir: "
+read RESOURCE_DIR
+echo "resource_dir == $RESOURCE_DIR"
 
-# none_composed
-if [ $TOKENIZER == none_composed ]; then
-    wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
-    namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
-    resource_dir=$GCS/resources/with_dummy_letter_v2/sp-64k
-    output_dir=$GCS/tfrecord/v2/$TOKENIZER
 
-#orig_composed
-elif [ $TOKENIZER == orig_composed ]; then
-    wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
-    namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
-    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'/
-    output_dir=$GCS/tfrecord/v2/$TOKENIZER
+# 입력 받은 tokenizer, corpus의 output_dir
 
-# orig_decomposed_pure
-elif [ $TOKENIZER == orig_decomposed_pure ]; then
-    wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
-    namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
-    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    output_dir=$GCS/tfrecord/v2/$TOKENIZER
+OUTPUT_DIR=`echo $CORPUS_DIR | tr 'tokenizerGCP' 'tokenizer'`
 
-# orig_decomposed_morphological
-elif [ $TOKENIZER == orig_deocomposed_morphological ]; then
-    wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
-    namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
-    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    output_dir=$GCS/tfrecord/v2/$TOKENIZER
-
-#fixed_composed
-elif [ $TOKENIZER == fixed_composed ] ; then
-    wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
-    namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
-    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    output_dir=$GCS/tfrecord/v2/$TOKENIZER
-
-#fixed_decomposed_pure
-elif [ $TOKENIZER == fixed_decomposed_pure ] ; then
-    wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
-    namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
-    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    output_dir=$GCS/tfrecord/v2/$TOKENIZER
-
-#fixed_decomposed_morphological
-elif [ $TOKENIZER == fixed_decomposed_morphological ] ; then
-    wiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/wiki
-    namuwiki_corpus_dir=$GCS/tokenized_GCP/with_dummy_letter/namuwiki/$TOKENIZER
-    resource_dir=$GCS/resources/with_dummy_letter_v2/mecab_$TOKENIZER'_sp-64k'
-    output_dir=$GCS/tfrecord/v2/$TOKENIZER
-
-fi
 
 
 # 각 코퍼스 파일에 대해서 tfrecord 만들기
 
-# wiki
-corpus_files=`ls $wiki_corpus_dir | grep *\.txt$`
-file_count=`ls $wiki_corpus_dir -l | grep ^-.*\.txt$ | wc -l`
+# corpus_files=`gsutil ls gs://$CORPUS_DIR`
+# file_count=`gsutil ls gs://$CORPUS_DIR | wc -l`
 
-echo corpus files: $corpus_files
-echo 코퍼스 파일 수: $file_count
+# echo corpus files: $corpus_files
+# echo 코퍼스 파일 수: $file_count
 
+# tok.model을 vm으로 불러오기
+gsutil cp gs://$RESOURCE_DIR/tok.model $TOKENIZER'_'tok.model
 
-for file in $corpus_files
+file_num=0
+
+for file in `gsutil ls gs://$CORPUS_DIR`
 do
-    output_filename=`echo $file | cut -d'.' -f1`
-    python3 bert/create_pretraining_data.py \
-      --input_file=$wiki_corpus_dir/$file \
-      --output_file=$output_dir/$output_filename.tfrecord \
-      --vocab_file=$resource_dir/vocab.txt \
-      --do_lower_case=True \
-      --max_predictions_per_seq=20 \
-      --max_seq_length=128 \
-      --masked_lm_prob=0.15 \
-      --random_seed=12345 \
-      --dupe_factor=5 2>&1 |tee -a $file'_'log.txt
-    gsutil mv $file'_'log.txt output_dir/$file'_'log.txt
+    if [ `echo $file | grep '_[0-9][0-9]$'` -n ] 
+    then
+        # 코퍼스 조각 -> tfrecord로 만드는 작업을 백그라운드에서 실행
+        nohup \
+        python3 bert-sentencepiece/create_pretraining_data.py \
+        --input_file=gs://$CORPUS_DIR/$file \
+        --output_file=gs://$OUTPUT_DIR/$file'_'$file_num.tfrecord \
+        --vocab_file=gs://$RESOURCE_DIR/vocab.txt \
+        --do_lower_case=True \
+        --max_predictions_per_seq=20 \
+        --max_seq_length=128 \
+        --masked_lm_prob=0.15 \
+        --random_seed=12345 \
+        --piece=sentence \
+        --piece_model=$TOKENIZER'_'tok.model \
+        --dupe_factor=5 > $TOKENIZER'_'$file_num'_'$file_num.log 2> $TOKENIZER'_'$file_num.err &
+
+        file_num=$((file_num +1))
+        echo $file_num
+        # 백그라운드에서 실행 중인 파일의 실시간 메시지 보기
+        #tail -f $file_num'_'$file_num.err
+
+        # log를 gcs로 전송
+        #gsutil mv $file_name'_'$file_num.err $OUTPUT_DIR/$file_name'_'$file_num.err
+    fi
+    
 done
 
 
-# namuwiki
-
-corpus_files=`ls $namuwiki_corpus_dir | grep *\.txt$`
-file_count=`ls $namuwiki_corpus_dir -l | grep ^-.*\.txt$ | wc -l`
-
-echo corpus files: $corpus_files
-echo 코퍼스 파일 수: $file_count
-
-
-for file in $corpus_files
-do
-
-    output_filename=`echo $file | cut -d'.' -f1`
-    python3 bert/create_pretraining_data.py \
-      --input_file=$namuwiki_corpus_dir/$file \
-      --output_file=$output_dir/$output_filename.tfrecord \
-      --vocab_file=$resource_dir/vocab.txt \
-      --do_lower_case=True \
-      --max_predictions_per_seq=20 \
-      --max_seq_length=128 \
-      --masked_lm_prob=0.15 \
-      --random_seed=12345 \
-      --dupe_factor=5 2>&1 |tee -a $file'_'log.txt
-    gsutil mv $file'_'log.txt output_dir/$file'_'log.txt
-done
 
