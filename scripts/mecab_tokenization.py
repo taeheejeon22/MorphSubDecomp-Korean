@@ -5,6 +5,7 @@
 import argparse
 import json
 import os
+import re
 import time
 from functools import partial
 from multiprocessing import Pool
@@ -33,7 +34,7 @@ TOKENIZER = MeCab.Tagger(f"--dicdir /usr/local/lib/mecab/dic/mecab-ko-dic")
 grammatical_pos = ["JKS", "JKC", "JKG", "JKO", "JKB", "JKV", "JKQ", "JX", "JC", "EP", "EF", "EC", "ETN", "ETM"]    # 어미, 조사
 
 
-# kortok API based
+# kortok API based (tokenizer/mecab_orig.py)
 def tokenize_kortok(text: str, tokenizer_type: str, decomposition_type: str, space_symbol: str = "▃", dummy_letter: str = "") -> List[str]:
     assert (tokenizer_type in ["mecab_orig", "mecab_fixed"] ), 'check the tokenizer type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
     assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
@@ -68,16 +69,16 @@ def tokenize_kortok(text: str, tokenizer_type: str, decomposition_type: str, spa
                     elif sum([1 for pos in pos.split("+") if pos in grammatical_pos]) >= 1:  # VV+EC 등 고려해서 문법 형태소 있으면
                         tokenized.append(str2jamo(token, grammatical=False, dummy_letter=dummy_letter))   # 자모 분해 후 추가
 
-            elif tokenizer_type == "mecab_fixed":    # mecab fixed
-                if decomposition_type == "composed":
-                    mecab_tokenized = [mor_pos[0] for mor_pos in mecab_tokenize(mor)]  # ['나', 'ᆫ'] 진짜 형태소로 쪼개진 토큰들 저장
-                    tokenized += mecab_tokenized
-                elif decomposition_type == "decomposed_pure":
-                    mecab_tokenized = [mor_pos[0] for mor_pos in mecab_tokenize(mor)]  # ['나', 'ᆫ'] 진짜 형태소로 쪼개진 토큰들 저장
-                    tokenized += [str2jamo(token, grammatical=False, dummy_letter=dummy_letter) for token in mecab_tokenized] # 자모 분해 후 추가
-                elif decomposition_type == "decomposed_morphological":
-                    mecab_tokenized_with_pos = mecab_tokenize(mor)[:]  # [('나', 'NP'), ('ᆫ', 'JX')] 진짜 형태소로 쪼개진 토큰들 저장 with POS tag
-                    tokenized += [mor_pos[0] if (not mor_pos[-1] in grammatical_pos) else str2jamo(mor_pos[0], grammatical=False, dummy_letter=dummy_letter) for mor_pos in mecab_tokenized_with_pos]    # 어휘 형태소는 그대로, 문법 형태소는 자모 분해 후 추가
+            # elif tokenizer_type == "mecab_fixed":    # mecab fixed
+            #     if decomposition_type == "composed":
+            #         mecab_tokenized = [mor_pos[0] for mor_pos in mecab_tokenize(mor)]  # ['나', 'ᆫ'] 진짜 형태소로 쪼개진 토큰들 저장
+            #         tokenized += mecab_tokenized
+            #     elif decomposition_type == "decomposed_pure":
+            #         mecab_tokenized = [mor_pos[0] for mor_pos in mecab_tokenize(mor)]  # ['나', 'ᆫ'] 진짜 형태소로 쪼개진 토큰들 저장
+            #         tokenized += [str2jamo(token, grammatical=False, dummy_letter=dummy_letter) for token in mecab_tokenized] # 자모 분해 후 추가
+            #     elif decomposition_type == "decomposed_morphological":
+            #         mecab_tokenized_with_pos = mecab_tokenize(mor)[:]  # [('나', 'NP'), ('ᆫ', 'JX')] 진짜 형태소로 쪼개진 토큰들 저장 with POS tag
+            #         tokenized += [mor_pos[0] if (not mor_pos[-1] in grammatical_pos) else str2jamo(mor_pos[0], grammatical=False, dummy_letter=dummy_letter) for mor_pos in mecab_tokenized_with_pos]    # 어휘 형태소는 그대로, 문법 형태소는 자모 분해 후 추가
 
             text_ptr += len(token)
 
@@ -114,17 +115,18 @@ def tokenize_our(text: str, tokenizer_type: str, decomposition_type: str, space_
 
 
 if __name__ == "__main__":
-    # wiki ko
-    corpus = "wikiko_20210901"
-    # INPUT_CORPUS = "../wikiko_20210901_with_preprocessing_v2.txt"
-    INPUT_CORPUS = "../wikiko_20210901_with_preprocessing_v3_nn.txt"
+    # # wiki ko
+    # corpus = "wikiko_20210901"
+    # # INPUT_CORPUS = "../wikiko_20210901_with_preprocessing_v2.txt"
+    # INPUT_CORPUS = "../wikiko_20210901_with_preprocessing_v3_nn.txt"
+    #
+    # # # namuwiki
+    # # corpus = "namuwiki_20200302"
+    # # INPUT_CORPUS = "../namuwiki_20200302_with_preprocessing_v3_nn.txt"
 
-    # # namuwiki
-    # corpus = "namuwiki_20200302"
-    # INPUT_CORPUS = "../namuwiki_20200302_with_preprocessing_v3_nn.txt"
 
+    # OUTPUT_DIR = "../tokenized/"
 
-    OUTPUT_DIR = "../tokenized/"
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--space_symbol", type=str, default="▃")
@@ -137,6 +139,9 @@ if __name__ == "__main__":
     parser.add_argument("--decomposition_type", type=str, default="composed")   # "composed", "decomposed_pure", "decomposed_morphological"
     parser.add_argument("--dummy_letter", type=str, default="") # 초성/중성/종성 자리 채우기용 더미 문자. default는 없음("").
 
+    # parser.add_argument("--corpus", type=str)   # "wikiko", "namuwiki"
+    parser.add_argument("--corpus_path", type=str)
+
 
     # args = {"space_symbol": "▃", "n_jobs": 16, "use_original": True, "decomposition_type": "composed", "dummy_letter": ""}
     # args = {"space_symbol": "▃", "n_jobs": 16, "use_original": False, "decomposition_type": "decomposed_morphological", "dummy_letter": ""}
@@ -145,12 +150,44 @@ if __name__ == "__main__":
     args = vars(parser.parse_args())
     print(args)
 
+
+    # 출력 디렉토리 생성
+    if args["dummy_letter"] == "":  # 초성/중성/종성 자리 채우기용 더미 문자 안 쓰면
+        OUTPUT_DIR = "./corpus/tokenized/" + "without_dummy_letter/"
+    else:
+        OUTPUT_DIR = "./corpus/tokenized/" + "with_dummy_letter/"
+
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     # set tokenizing func
     # tokenize_fn = partial(tokenize, space_symbol=args["space_symbol"])
         # mc = MeCabTokenizer_fixed(use_original=args["use_original"], decomposition_type=args["decomposition_type"], space_symbol=args["space_symbol"], dummy_letter=args["dummy_letter"])
         # tokenize_fn = partial(mc.tokenize)
+
+
+    # if args["corpus"] == "wikiko":
+    #     # wiki ko
+    #     corpus = "wikiko_20210901"
+    #     # INPUT_CORPUS = "../wikiko_20210901_with_preprocessing_v2.txt"
+    #     INPUT_CORPUS = "../wikiko_20210901_with_preprocessing_v3_nn.txt"
+    # elif args["corpus"] == "namuwiki":
+    #     # namuwiki
+    #     corpus = "namuwiki_20200302"
+    #     INPUT_CORPUS = "../namuwiki_20200302_with_preprocessing_v3_nn.txt"
+
+
+    INPUT_CORPUS = args["corpus_path"]
+    corpus = "_".join(INPUT_CORPUS.split("/")[-1].split("_")[:2])
+
+    p_endswith_num = re.compile("\d+$") # split 커맨드로 나눈 후 생기는 번호 검색용
+
+    if p_endswith_num.search(INPUT_CORPUS): # 숫자로 끝나면. 즉 split 커맨드로 나뉜 파일이라면
+        part_num = p_endswith_num.search(INPUT_CORPUS).group()
+        file_name = "_".join([corpus, args["tokenizer_type"], args["decomposition_type"], part_num]) + ".txt"
+    else:
+        file_name = "_".join([corpus, args["tokenizer_type"], args["decomposition_type"]]) + ".txt"
+
+
 
 
 
@@ -163,10 +200,13 @@ if __name__ == "__main__":
 
 
     # tokenization
+    # str_corpus = args["corpus"]
     str_tokenizer_type = args["tokenizer_type"]
     str_decomposition_type = args["decomposition_type"]
+    print(f"corpus: {INPUT_CORPUS}\n")
     print(f"tokenizer_type: {str_tokenizer_type}\n")
     print(f"deocmposition_type: {str_decomposition_type}\n")
+
 
     start_time = time.time()
     print(f"start tokenization ...")
@@ -179,6 +219,9 @@ if __name__ == "__main__":
         with open(INPUT_CORPUS, "r", encoding="utf-8") as f:
             with Pool(args["n_jobs"]) as p:
                 tokenized = p.map(tokenize_fn, f)
+
+
+
 
     elapsed_time = time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time))
     print(f"complete tokenization for all files. (elapsed time: {elapsed_time})")
@@ -193,7 +236,9 @@ if __name__ == "__main__":
     # set a input path automatically
 
 
-    file_name = "_".join([corpus, args["tokenizer_type"], args["decomposition_type"] ]) + ".txt"
+
+
+
     OUTPUT_DIR_sub = OUTPUT_DIR + "_".join([corpus, args["tokenizer_type"] ]) + "/" + args["decomposition_type"]
 
     os.makedirs(OUTPUT_DIR_sub, exist_ok=True)
@@ -215,4 +260,6 @@ if __name__ == "__main__":
     with open(output_config_path, "w", encoding="utf-8") as f:
         json.dump(args, f, indent=4)
 
+
+    print("saved in:", os.path.join(OUTPUT_DIR_sub, os.path.basename(file_name)) )
     print("done.")

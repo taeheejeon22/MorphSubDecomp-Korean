@@ -24,10 +24,12 @@ class MeCabSentencePieceTokenizer_orig(BaseTokenizer):
 
 
     def tokenize(self, text: str) -> List[str]:
-        if self.use_fixed == False: # kortok API based tokenizer
-            tokenized = self.mecab.tokenize(text)   # ['나', 'ᆫ', '▃', '너', 'ᆯ', '▃', '좋아하', '아']
-        elif self.use_fixed == True:  # our tokenizer (konlpy based)
-            tokenized = self.mecab.tokenize(text)  # ['나', 'ᆫ', '▃', '너', 'ᆯ', '▃', '좋아하', '아']
+        # if self.use_fixed == False: # kortok API based tokenizer
+        #     tokenized = self.mecab.tokenize(text)   # ['나', 'ᆫ', '▃', '너', 'ᆯ', '▃', '좋아하', '아']
+        # elif self.use_fixed == True:  # our tokenizer (konlpy based)
+        #     tokenized = self.mecab.tokenize(text)  # ['나', 'ᆫ', '▃', '너', 'ᆯ', '▃', '좋아하', '아']
+
+        tokenized = self.mecab.tokenize(text)  # ['나', 'ᆫ', '▃', '너', 'ᆯ', '▃', '좋아하', '아']
 
         tokenized = self.sp.tokenize(" ".join(tokenized))   # ['▁나', '▁ㄴ', '▁▃', '▁너', '▁ㄹ', '▁▃', '▁좋아하', '▁아']
 

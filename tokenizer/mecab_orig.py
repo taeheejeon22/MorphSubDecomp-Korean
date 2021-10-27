@@ -1,3 +1,7 @@
+# mecab_orig
+# kortok API 이용해 자모 분해까지 덧붙인 버전
+
+
 # mecab_fixed_v2
 # konlpy 방식. OS마다 결과 다른 거 땜에 어쩔 수 없이 내 버전 써야 됨.
 # mecab.py + mecab_fixed.py 합친 것
@@ -289,17 +293,17 @@ class MeCabTokenizer_orig(BaseTokenizer):
                         elif sum([1 for pos in pos.split("+") if pos in self.grammatical_pos]) >= 1:  # VV+EC 등 고려해서 문법 형태소 있으면
                             tokenized.append(str2jamo(token, grammatical=False, dummy_letter=self.dummy_letter))   # 자모 분해 후 추가
 
-                # elif self.use_original == False:    # mecab fixed
-                elif self.tokenizer_type == "mecab_fixed":  # mecab fixed
-                    if self.decomposition_type == "composed":
-                        mecab_tokenized = [mor_pos[0] for mor_pos in mecab_tokenize(mor)]  # ['나', 'ᆫ'] 진짜 형태소로 쪼개진 토큰들 저장
-                        tokenized += mecab_tokenized
-                    elif self.decomposition_type == "decomposed_pure":
-                        mecab_tokenized = [mor_pos[0] for mor_pos in mecab_tokenize(mor)]  # ['나', 'ᆫ'] 진짜 형태소로 쪼개진 토큰들 저장
-                        tokenized += [str2jamo(token, grammatical=False, dummy_letter=self.dummy_letter) for token in mecab_tokenized] # 자모 분해 후 추가
-                    elif self.decomposition_type == "decomposed_morphological":
-                        mecab_tokenized_with_pos = mecab_tokenize(mor)[:]  # [('나', 'NP'), ('ᆫ', 'JX')] 진짜 형태소로 쪼개진 토큰들 저장 with POS tag
-                        tokenized += [mor_pos[0] if (not mor_pos[-1] in self.grammatical_pos) else str2jamo(mor_pos[0], grammatical=False, dummy_letter=self.dummy_letter) for mor_pos in mecab_tokenized_with_pos]    # 어휘 형태소는 그대로, 문법 형태소는 자모 분해 후 추가
+                # # elif self.use_original == False:    # mecab fixed
+                # elif self.tokenizer_type == "mecab_fixed":  # mecab fixed
+                #     if self.decomposition_type == "composed":
+                #         mecab_tokenized = [mor_pos[0] for mor_pos in mecab_tokenize(mor)]  # ['나', 'ᆫ'] 진짜 형태소로 쪼개진 토큰들 저장
+                #         tokenized += mecab_tokenized
+                #     elif self.decomposition_type == "decomposed_pure":
+                #         mecab_tokenized = [mor_pos[0] for mor_pos in mecab_tokenize(mor)]  # ['나', 'ᆫ'] 진짜 형태소로 쪼개진 토큰들 저장
+                #         tokenized += [str2jamo(token, grammatical=False, dummy_letter=self.dummy_letter) for token in mecab_tokenized] # 자모 분해 후 추가
+                #     elif self.decomposition_type == "decomposed_morphological":
+                #         mecab_tokenized_with_pos = mecab_tokenize(mor)[:]  # [('나', 'NP'), ('ᆫ', 'JX')] 진짜 형태소로 쪼개진 토큰들 저장 with POS tag
+                #         tokenized += [mor_pos[0] if (not mor_pos[-1] in self.grammatical_pos) else str2jamo(mor_pos[0], grammatical=False, dummy_letter=self.dummy_letter) for mor_pos in mecab_tokenized_with_pos]    # 어휘 형태소는 그대로, 문법 형태소는 자모 분해 후 추가
 
                 text_ptr += len(token)
 

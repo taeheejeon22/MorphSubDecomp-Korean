@@ -1,3 +1,6 @@
+# https://bitbucket.org/eunjeon/mecab-python-0.996/src/master/
+# the minamoto of MeCab
+
 # based on KoNLPy _mecab.py
 # requirements
     # KoNLPy 0.5.2

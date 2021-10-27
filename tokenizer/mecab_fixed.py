@@ -1,3 +1,7 @@
+# mecab fixed
+# 전태희 방식의 형태소 분석
+
+
 # mecab_fixed_v2
 # konlpy 방식. OS마다 결과 다른 거 땜에 어쩔 수 없이 내 버전 써야 됨.
 # mecab.py + mecab_fixed.py 합친 것
