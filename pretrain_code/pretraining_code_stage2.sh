@@ -6,11 +6,11 @@
 # 필요한 도구 받기
 
 #pip install tensorflow==1.14
-pip install -U gast==0.2.2
+#pip install -U gast==0.2.2
 #git clone https://github.com/google-research/bert.git
 # bert-sentencepiece version
-git clone https://github.com/raymondhs/bert-sentencepiece.git
-pip install sentencepiece==0.1.96
+#git clone https://github.com/raymondhs/bert-sentencepiece.git
+#pip install sentencepiece==0.1.96
 
 # google storage 주소
 GCS=gs://kist_bert
@@ -58,10 +58,12 @@ echo "init_checkpoints 쓰면 T, 안 쓰면 F"
 echo -e "T or F: "
 read INIT
 echo "init == $INIT"
-if [ $INIT=='T' ]; then
+if [ $INIT==T ]; then
     echo -e "init_checkpoints를 입력하세요: "
     read INIT_CHECKPOINTS
     echo "init_checkpoints == $INIT_CHECKPOINTS"
+else
+    echo "pass"
 fi
 
 
@@ -73,7 +75,7 @@ echo model_dir == $MODEL_DIR
 
 # run_pretraining.py 실행 (백그라운드)
 
-if [ $INIT=='T' ]; then
+if [ $INIT==T ]; then
 
     nohup \
     python3 bert-sentencepiece/run_pretraining.py \
@@ -88,7 +90,7 @@ if [ $INIT=='T' ]; then
     --num_train_steps=1000000 \
     --num_warmup_steps=10000 \
     --learning_rate=5e-5 \
-    --save_checkpoints_steps=10000 \
+    --save_checkpoints_steps=20000 \
     --use_tpu=True \
     --tpu_name=$TPU_NAME \
     --tpu_zone=$REGION \
@@ -108,7 +110,7 @@ else
     --num_train_steps=1000000 \
     --num_warmup_steps=10000 \
     --learning_rate=5e-5 \
-    --save_checkpoints_steps=10000 \
+    --save_checkpoints_steps=20000 \
     --init_checkpoints=$INIT_CHECKPOINTS
     --use_tpu=True \
     --tpu_name=$TPU_NAME \

@@ -80,11 +80,12 @@ do
         # 백그라운드에서 실행 중인 파일의 실시간 메시지 보기
         #tail -f $file_num'_'$file_num.err
 
-        # log를 gcs로 전송
-        #gsutil mv $file_name'_'$file_num.err $OUTPUT_DIR/$file_name'_'$file_num.err
+
     fi
     
 done
 
+# log를 gcs로 전송
+gsutil mv *.err
 
 
