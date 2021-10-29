@@ -72,8 +72,6 @@ def main(args):
 
     assert (len(pretrained_bert_files) == 1), 'There are more than one bert model files!!!!!!!'
 
-    pretrained_bert_file_path = os.path.join(tokenizer_dir, pretrained_bert_files[0])
-
 
     # logger
     # logger = get_logger(log_path=os.path.join(config.log_dir, "logs.txt"))
@@ -139,6 +137,12 @@ def main(args):
     # Test
     logger.info(f"read test data from {config.test_path}")
     test_sentences, test_labels = load_data(config.test_path, label_to_index)
+
+
+    # 토큰화 데모
+    print(f"tokenization sample 1: {tokenizer.tokenize(train_sentences[0])}")
+    print(f"tokenization sample 2: {tokenizer.tokenize(train_sentences[0])}")
+
 
     # 데이터로 dataloader 만들기
     # Train

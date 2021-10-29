@@ -66,7 +66,6 @@ def main(args):
 
     assert (len(pretrained_bert_files) == 1), 'There are more than one bert model files!!!!!!!'
 
-    pretrained_bert_file_path = os.path.join(tokenizer_dir, pretrained_bert_files[0])
 
     # logger
     # logger = get_logger(log_path=os.path.join(config.log_dir, "logs.txt"))
@@ -132,6 +131,12 @@ def main(args):
     logger.info(f"read test data from {config.test_path}")
     test_sentence_as, test_sentence_bs, test_labels = load_data(config.test_path, label_to_index)
 
+
+    # 토큰화 데모
+    print(f"tokenization sample 1: {tokenizer.tokenize(train_sentence_as[0])}")
+    print(f"tokenization sample 2: {tokenizer.tokenize(train_sentence_bs[0])}")
+
+
     # 데이터로 dataloader 만들기
     # Train
     logger.info("create data loader using training data")
@@ -192,25 +197,29 @@ if __name__ == "__main__":
     main(args)
 
 
-    # args = {"tokenizer":'mecab_fixed_decomposed_morphological_sp-64k'}
-    args = {"tokenizer":'mecab_orig_decomposed_morphological_sp-64k'}
-    args = {"tokenizer":'mecab_orig_composed_sp-64k'}
-    # px = PAWSDataset(dev_sentence_as, dev_sentence_bs, dev_labels, vocab, tokenizer, config.max_sequence_length)
-    # sentence_as = dev_sentence_as
-    # sentence_bs = dev_sentence_bs
-    # labels = dev_labels
-
-
-    # args = {"tokenizer":'mecab_sp-64k'}
-    max_length = 128
-
-    sentence_as = train_sentence_as[:]
-    sentence_bs = train_sentence_bs[:]
-
-    sentence_a = sentence_as[0]
-    sentence_b = sentence_bs[0]
-
-
-    # bert_utils.py
-    token_ids
-    vocab.convert_ids_to_tokens(token_ids)
+    # # args = {"tokenizer":'mecab_fixed_decomposed_morphological_sp-64k'}
+    # args = {"tokenizer":'mecab_orig_decomposed_morphological_sp-32k'}
+    # args = {"tokenizer": 'mecab_fixed_decomposed_morphological_sp-32k'}
+    # args = {"tokenizer":'mecab_orig_composed_sp-32k'}
+    # args = {"tokenizer":'mecab_fixed_decomposed_morphological_sp-32k', "resource_dir": './resources/v3_without_dummy_letter'}
+    #
+    #
+    # # px = PAWSDataset(dev_sentence_as, dev_sentence_bs, dev_labels, vocab, tokenizer, config.max_sequence_length)
+    # # sentence_as = dev_sentence_as
+    # # sentence_bs = dev_sentence_bs
+    # # labels = dev_labels
+    #
+    #
+    # # args = {"tokenizer":'mecab_sp-64k'}
+    # max_length = 128
+    #
+    # sentence_as = train_sentence_as[:]
+    # sentence_bs = train_sentence_bs[:]
+    #
+    # sentence_a = sentence_as[0]
+    # sentence_b = sentence_bs[0]
+    #
+    #
+    # # bert_utils.py
+    # token_ids
+    # vocab.convert_ids_to_tokens(token_ids)

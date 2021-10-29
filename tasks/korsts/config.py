@@ -10,13 +10,15 @@ class TrainConfig(NamedTuple):
     Model Hyperparameters
     """
     #: vocab, tokenizer, bert config and model 파일이 저장된 경로. join(resource_dir, tokenizer)로 합쳐서 사용
-    resource_dir: str = "./resources"
+    # resource_dir: str = "./resources"
+    resource_dir: str = ""
     #: tokenizer_name
     tokenizer: str = ""
     #: bert 설정 파일 이름
     bert_config_file_name: str = "bert_config.json"
     #: pretrained bert 모델 파일 이름
-    pretrained_bert_file_name: str = "bert_model.pth"
+    # pretrained_bert_file_name: str = "bert_model.pth"
+    pretrained_bert_file_name: str = ""
 
     """
     Training Hyperparameters
