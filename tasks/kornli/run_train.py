@@ -69,9 +69,10 @@ def main(args):
 
     pretrained_bert_file_path = os.path.join(tokenizer_dir, pretrained_bert_files[0])
 
+
     # logger
     # logger = get_logger(log_path=os.path.join(config.log_dir, "logs.txt"))
-    pretrained_bert_file_name = pretrained_bert_files[0].split(".pth")[0]
+    pretrained_bert_file_name = pretrained_bert_files[0]
     logger = get_logger(log_path=os.path.join(config.log_dir, f"logs_{pretrained_bert_file_name}.txt"))
     logger.info(config)
 
@@ -166,7 +167,7 @@ def main(args):
     #     bert_config, os.path.join(config.resource_dir, config.tokenizer, config.pretrained_bert_file_name)
     # )
     model.bert = load_pretrained_bert(
-        bert_config, os.path.join(config.resource_dir, config.tokenizer, pretrained_bert_file_path)
+        bert_config, os.path.join(config.resource_dir, config.tokenizer, pretrained_bert_file_name)
     )
 
     trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
