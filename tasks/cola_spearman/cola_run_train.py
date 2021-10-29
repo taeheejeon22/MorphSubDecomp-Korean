@@ -59,14 +59,27 @@ def main(args):
     os.makedirs(config.summary_dir, exist_ok=True)
     # os.makedirs(config.checkpoint_dir, exist_ok=True)
 
+
+    # bert 모델 경로 자동 지정
+    tokenizer_dir = os.path.join(config.resource_dir, config.tokenizer)
+    pretrained_bert_files = [file for file in os.listdir(tokenizer_dir) if file.endswith("pth")]
+
+    assert (len(pretrained_bert_files) == 1), 'There are more than one bert model files!!!!!!!'
+
+    pretrained_bert_file_path = os.paht.join(tokenizer_dir, pretrained_bert_files[0])
+
+
     # logger
-    logger = get_logger(log_path=os.path.join(config.log_dir, "logs.txt"))
+    # logger = get_logger(log_path=os.path.join(config.log_dir, "logs.txt"))
+    pretrained_bert_file_name = pretrained_bert_files[0].split(".pth")[0]
+    logger = get_logger(log_path=os.path.join(config.log_dir, f"logs_{pretrained_bert_file_name}.txt"))
     logger.info(config)
 
     # 기본적인 모듈들 생성 (vocab, tokenizer)
-    tokenizer_dir = os.path.join(config.resource_dir, config.tokenizer)
     logger.info(f"get vocab and tokenizer from {tokenizer_dir}")
     vocab = Vocab(os.path.join(tokenizer_dir, "tok.vocab"))
+    # if config.tokenizer.startswith("mecab-"):
+    #     tokenizer = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
 
 
         # resource 경로 확인용
@@ -147,8 +160,11 @@ def main(args):
         os.path.join(config.resource_dir, config.tokenizer, config.bert_config_file_name)
     )
     model = COLAModel(bert_config, config.dropout_prob)
+    # model.bert = load_pretrained_bert(
+    #     bert_config, os.path.join(config.resource_dir, config.tokenizer, config.pretrained_bert_file_name)
+    # )
     model.bert = load_pretrained_bert(
-        bert_config, os.path.join(config.resource_dir, config.tokenizer, config.pretrained_bert_file_name)
+        bert_config, os.path.join(config.resource_dir, config.tokenizer, pretrained_bert_file_path)
     )
 
     trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
