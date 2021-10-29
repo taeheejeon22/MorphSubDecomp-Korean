@@ -70,9 +70,8 @@ def preprocess(sent_lst):
     sent_lst = [sent for sent in sent_lst if not re.search(r"^\s+$", sent)]    # 빈 문장 제거
     sent_lst = [sent.strip() for sent in sent_lst if sent != ""]    # 빈 문장 제거
 
-    # sent_lst = [sent for sent in sent_lst if len(sent.split(" ")) > 1]  # 어절 길이가 1인 문장 제거. 학습할 이웃이 없을 것이라고 판단되므로. (형태소 분석하면 길이가 늘어날 수 있기는 함.)
 
-
+    # our
     sent_lst = [sent for sent in sent_lst if len(sent.split(" ")) >= 3 ]   # 퇴임 이후.    어린 시절.  생애 후반.  등등의 짧은 라인 없애기
 
 

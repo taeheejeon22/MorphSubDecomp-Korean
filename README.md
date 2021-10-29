@@ -34,8 +34,10 @@ python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/wikiko_
 
 
 
-- namuwiki 분할
+- namuwiki 분할 <br>
+```bash
 split -d -l 5000000 namuwiki_20200302_with_preprocessing_v3_nn.txt namuwiki_20200302_with_preprocessing_v3_nn_
+```
 
 
 namuwiki (without dummy letter)
@@ -45,6 +47,7 @@ python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwik
 python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --n_job=6
 python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_morphological --n_job=10
 
+
 python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_00 --tokenizer_type=mecab_fixed --decomposition_type=composed
 python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_01 --tokenizer_type=mecab_fixed --decomposition_type=composed
 python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_02 --tokenizer_type=mecab_fixed --decomposition_type=composed
@@ -52,49 +55,56 @@ python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwik
 python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_04 --tokenizer_type=mecab_fixed --decomposition_type=composed
 python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_05 --tokenizer_type=mecab_fixed --decomposition_type=composed
 
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_00 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_01 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_02 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_03 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_04 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_05 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
 
-
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_00 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_01 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_02 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_03 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_04 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_05 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological
 ```
 orig decomposed pure 25분
-orig decomposed morphoological 15분
+orig decomposed morphological 15분
+
 
 namuwiki (with dummy letter)
 ```bash
-python scripts/mecab_tokenization.py --corpus=namuwiki --tokenizer_type=mecab_orig --decomposition_type=decomposed_morphological --n_job=6 --dummy_letter=⊸
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_00 --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --dummy_letter=⊸
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_01 --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --dummy_letter=⊸
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_02 --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --dummy_letter=⊸
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_03 --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --dummy_letter=⊸
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_04 --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --dummy_letter=⊸
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_05 --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --dummy_letter=⊸
 
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_morphological --n_job=6 --dummy_letter=⊸
+
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_00 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_01 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_02 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_03 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_04 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_05 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
+
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_00 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_01 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_02 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_03 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_04 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
+python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_05 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
 ```
+orig decomposed morphological 20:12
 
 
-
+- 도저히 안 되면 tokenization_v4.0.py 이용해서 할 것. 128G로도 메모리 터짐.
 
 * namuwiki fixed 모든 세팅
 * namuwiki (with dummy letter) orig decompsed pure 
-
-```bash
-python scripts/mecab_tokenization.py --corpus_path=namuwiki --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
-
-
-
-python scripts/mecab_tokenization.py --corpus_path=../namu/namuwiki_20200302_with_preprocessing_v3_nn_00 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=../namu/namuwiki_20200302_with_preprocessing_v3_nn_01 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=../namu/namuwiki_20200302_with_preprocessing_v3_nn_02 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=../namu/namuwiki_20200302_with_preprocessing_v3_nn_03 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=../namu/namuwiki_20200302_with_preprocessing_v3_nn_04 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=../namu/namuwiki_20200302_with_preprocessing_v3_nn_05 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
-
-python scripts/mecab_tokenization.py --corpus_path=../namu/namuwiki_20200302_with_preprocessing_v3_nn_00 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=../namu/namuwiki_20200302_with_preprocessing_v3_nn_01 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=../namu/namuwiki_20200302_with_preprocessing_v3_nn_02 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=../namu/namuwiki_20200302_with_preprocessing_v3_nn_03 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=../namu/namuwiki_20200302_with_preprocessing_v3_nn_04 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=../namu/namuwiki_20200302_with_preprocessing_v3_nn_05 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
-
-```
-
-- 아래는 tokenization_v4.0.py 이용해서 할 것. 128G로도 메모리 터짐.
-* namuwiki fixed 모든 세팅
-* namuwiki (with dummy letter) orig decompsed pure 
-
 
 
 

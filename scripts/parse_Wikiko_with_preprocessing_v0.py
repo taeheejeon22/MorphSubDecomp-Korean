@@ -35,7 +35,7 @@ def listdir_fullpath(d):
 
 
 def preprocess(sent_lst):
-    # for wiki ko
+    # https://github.com/ratsgo/embedding/blob/master/preprocess/dump.py 참조
     p_email =  re.compile("(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", re.UNICODE)
     p_url = re.compile("(ftp|http|https)?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", re.UNICODE)
     p_wiki_char = re.compile("(\\*$|:$|^파일:.+|^;)", re.UNICODE)
@@ -87,10 +87,7 @@ def preprocess(sent_lst):
     sent_lst = [sent.strip() for sent in sent_lst if sent != ""]    # 빈 문장 제거
 
 
-
-
-    # sent_lst = [sent for sent in sent_lst if len(sent.split(" ")) > 1]  # 어절 길이가 1인 문장 제거. 학습할 이웃이 없을 것이라고 판단되므로. (형태소 분석하면 길이가 늘어날 수 있기는 함.)
-
+    # our
     sent_lst = [sent for sent in sent_lst if not (sent.endswith(".") and len(sent.split(" ")) <= 3) ]   # 퇴임 이후.    어린 시절.  생애 후반.  등등의 짧은 라인 없애기
 
 
