@@ -1,5 +1,4 @@
-# 결과물 파일은 해당 모델의 토크나이저에 해당하는 resource로 이동해야 함.
-
+# convert_bert 폴더에 버트 파일 3개 넣고 돌리기
 transformers-cli convert --model_type bert\
   --tf_checkpoint=./convert_bert/*.data* \
   --config=./resources/v3_without_dummy_letter/sp-32k/bert_config.json \
@@ -7,7 +6,7 @@ transformers-cli convert --model_type bert\
 
 
 
-
+# 결과물 파일은 해당 모델의 토크나이저에 해당하는 resource로 이동해야 함.
 
 # v3
 transformers-cli convert --model_type bert\
