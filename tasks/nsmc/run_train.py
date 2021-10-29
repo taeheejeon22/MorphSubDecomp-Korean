@@ -72,7 +72,7 @@ def main(args):
 
     assert (len(pretrained_bert_files) == 1), 'There are more than one bert model files!!!!!!!'
 
-    pretrained_bert_file_path = os.paht.join(tokenizer_dir, pretrained_bert_files[0])
+    pretrained_bert_file_path = os.path.join(tokenizer_dir, pretrained_bert_files[0])
 
 
     # logger
