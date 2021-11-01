@@ -39,7 +39,7 @@ echo "resource_dir == $RESOURCE_DIR"
 
 # 입력 받은 tokenizer, corpus의 output_dir
 
-OUTPUT_DIR=`echo $CORPUS_DIR | tr 'tokenizerGCP' 'tokenizer'`
+#OUTPUT_DIR=`echo $CORPUS_DIR | tr 'tokenizerGCP' 'tfrecord'`
 
 
 
@@ -52,7 +52,7 @@ OUTPUT_DIR=`echo $CORPUS_DIR | tr 'tokenizerGCP' 'tokenizer'`
 # echo 코퍼스 파일 수: $file_count
 
 # tok.model을 vm으로 불러오기
-#gsutil cp gs://$RESOURCE_DIR/tok.model $TOKENIZER'_'tok.model
+gsutil cp gs://$RESOURCE_DIR/tok.model $TOKENIZER'_'tok.model
 
 file_num=0
 
@@ -64,7 +64,7 @@ do
     nohup \
     python3 bert-sentencepiece/create_pretraining_data.py \
     --input_file=$file \
-    --output_file=gs://$OUTPUT_DIR/$file'_'$file_num.tfrecord \
+    --output_file=./$TOKENIER/$file'_'$file_num.tfrecord \
     --vocab_file=gs://$RESOURCE_DIR/vocab.txt \
     --do_lower_case=True \
     --max_predictions_per_seq=20 \
@@ -87,4 +87,4 @@ done
 #gsutil mv *.err gs://$OUTPUT_DIR
 
 
-# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_mecab_fixed/decomposed_pure
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_mecab_fixed/decomposed_morphological
