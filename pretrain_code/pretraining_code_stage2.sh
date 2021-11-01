@@ -75,7 +75,7 @@ echo model_dir == $MODEL_DIR
 
 # run_pretraining.py 실행 (백그라운드)
 
-if [[ $INIT == "T" ]]; then
+if [[ $INIT == "F" ]]; then
 
     nohup \
     python3 bert-sentencepiece/run_pretraining.py \
@@ -111,7 +111,7 @@ else
     --num_warmup_steps=10000 \
     --learning_rate=5e-5 \
     --save_checkpoints_steps=20000 \
-    --init_checkpoints=$INIT_CHECKPOINTS
+    --init_checkpoints=$INIT_CHECKPOINTS \
     --use_tpu=True \
     --tpu_name=$TPU_NAME \
     --tpu_zone=$REGION \
