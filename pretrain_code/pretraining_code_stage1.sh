@@ -66,7 +66,7 @@ do
     nohup \
     python3 bert-sentencepiece/create_pretraining_data.py \
     --input_file=$file \
-    --output_file=gs://$OUTPUT_DIR/$TOKENIZER/$file_num.tfrecord \
+    --output_file=gs://$OUTPUT_DIR/$TOKENIZER'_'$file_num.tfrecord \
     --vocab_file=gs://$RESOURCE_DIR/vocab.txt \
     --do_lower_case=True \
     --max_predictions_per_seq=20 \
