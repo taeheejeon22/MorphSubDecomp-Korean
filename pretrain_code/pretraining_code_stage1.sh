@@ -8,12 +8,12 @@
 set -e
 
 # 필요한 도구 받기
-pip install tensorflow==1.14
-pip install -U gast==0.2.2
+#pip install tensorflow==1.14
+#pip install -U gast==0.2.2
 #git clone https://github.com/google-research/bert.git
-bert-sentencepiece version
-pip install sentencepiece==0.1.96
-git clone https://github.com/raymondhs/bert-sentencepiece.git
+#bert-sentencepiece version
+#pip install sentencepiece==0.1.96
+#git clone https://github.com/raymondhs/bert-sentencepiece.git
 
 
 # tokenizer를 사용자로부터 입력 받기
@@ -58,8 +58,9 @@ file_num=0
 
 for file in `gsutil ls gs://$CORPUS_DIR`
 do
-    if [ `echo $file | grep '_[0-9][0-9]$'` -n ] 
+    if [ "$file" =~ "_[0-9][0-9]$" ] || [ "$file" =~ ".txt$" ] 
     then
+        echo "코퍼스: $file" 
         # 코퍼스 조각 -> tfrecord로 만드는 작업을 백그라운드에서 실행
         nohup \
         python3 bert-sentencepiece/create_pretraining_data.py \
@@ -80,12 +81,11 @@ do
         # 백그라운드에서 실행 중인 파일의 실시간 메시지 보기
         #tail -f $file_num'_'$file_num.err
 
-
     fi
-    
+  
 done
 
 # log를 gcs로 전송
-gsutil mv *.err
+#gsutil mv *.err gs://$OUTPUT_DIR
 
 
