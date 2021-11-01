@@ -39,7 +39,7 @@ echo "resource_dir == $RESOURCE_DIR"
 
 # 입력 받은 tokenizer, corpus의 output_dir
 
-OUTPUT_DIR=`echo $CORPUS_DIR | tr 'tokenizerGCP' 'tokenizer'`
+OUTPUT_DIR=`echo ${CORPUS_DIR//tokenizedGCP/tfrecord}`
 
 
 
@@ -56,32 +56,30 @@ gsutil cp gs://$RESOURCE_DIR/tok.model $TOKENIZER'_'tok.model
 
 file_num=0
 
-for file in `gsutil ls gs://$CORPUS_DIR`
+for file in `gsutil ls gs://$CORPUS_DIR/*`
 do
-    if [ "$file" =~ "_[0-9][0-9]$" ] || [ "$file" =~ ".txt$" ] 
-    then
-        echo "코퍼스: $file" 
-        # 코퍼스 조각 -> tfrecord로 만드는 작업을 백그라운드에서 실행
-        nohup \
-        python3 bert-sentencepiece/create_pretraining_data.py \
-        --input_file=gs://$CORPUS_DIR/$file \
-        --output_file=gs://$OUTPUT_DIR/$file'_'$file_num.tfrecord \
-        --vocab_file=gs://$RESOURCE_DIR/vocab.txt \
-        --do_lower_case=True \
-        --max_predictions_per_seq=20 \
-        --max_seq_length=128 \
-        --masked_lm_prob=0.15 \
-        --random_seed=12345 \
-        --piece=sentence \
-        --piece_model=$TOKENIZER'_'tok.model \
-        --dupe_factor=5 > $TOKENIZER'_'$file_num'_'$file_num.log 2> $TOKENIZER'_'$file_num.err &
+    # if [ "${file}" == "*_[0-9][0-9]" ] || [ "${file}" == "*.txt" ] 
+    # then
+    echo "코퍼스 파일: ${file}" 
+    echo "OUTPUT_DIR: ${OUTPUT_DIR}"
+    echo "RESORCE_DIR: ${RESOURCE_DIR}"
+    # 코퍼스 조각 -> tfrecord로 만드는 작업을 백그라운드에서 실행
+    nohup \
+    python3 bert-sentencepiece/create_pretraining_data.py \
+    --input_file=$file \
+    --output_file=gs://$OUTPUT_DIR/$file'_'$file_num.tfrecord \
+    --vocab_file=gs://$RESOURCE_DIR/vocab.txt \
+    --do_lower_case=True \
+    --max_predictions_per_seq=20 \
+    --max_seq_length=128 \
+    --masked_lm_prob=0.15 \
+    --random_seed=12345 \
+    --piece=sentence \
+    --piece_model=$TOKENIZER'_'tok.model \
+    --dupe_factor=5 > $TOKENIZER'_'$file_num'_'$file_num.log 2> $TOKENIZER'_'$file_num.err &
 
-        file_num=$((file_num +1))
-        echo $file_num
-        # 백그라운드에서 실행 중인 파일의 실시간 메시지 보기
-        #tail -f $file_num'_'$file_num.err
-
-    fi
+    file_num=$((file_num +1))
+    echo $file_num
   
 done
 
