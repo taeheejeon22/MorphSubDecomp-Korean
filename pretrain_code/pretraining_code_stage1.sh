@@ -39,8 +39,7 @@ echo "resource_dir == $RESOURCE_DIR"
 
 # 입력 받은 tokenizer, corpus의 output_dir
 
-OUTPUT_DIR=`echo ${CORPUS_DIR//tokenizedGCP/tfrecord}`
-
+OUTPUT_DIR=`echo ${CORPUS_DIR//"tokenized_GCP"/"tfrecord"}`
 
 
 # 각 코퍼스 파일에 대해서 tfrecord 만들기
@@ -67,7 +66,7 @@ do
     nohup \
     python3 bert-sentencepiece/create_pretraining_data.py \
     --input_file=$file \
-    --output_file=gs://$OUTPUT_DIR/$file'_'$file_num.tfrecord \
+    --output_file=gs://$OUTPUT_DIR/$TOKENIZER/$file_num.tfrecord \
     --vocab_file=gs://$RESOURCE_DIR/vocab.txt \
     --do_lower_case=True \
     --max_predictions_per_seq=20 \
