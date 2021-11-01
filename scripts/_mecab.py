@@ -255,7 +255,7 @@ class Mecab():
 
 
     # TODO: check whether flattened results equal non-flattened
-    def pos(self, phrase, flatten=True, join=False, coda_normalization=False):
+    def pos(self, phrase, flatten=True, join=False, coda_normalization=True):
         if self.use_original == False:  # If we use the fixed version
             """POS tagger.
 

@@ -6,6 +6,45 @@ transformers-cli convert --model_type bert\
 
 
 
+
+  # none
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./convert_bert/bert_model_v3_none_composed_total_model.ckpt-1000000 \
+  --config=./resources/v3_without_dummy_letter/sp-32k/bert_config.json \
+  --pytorch_dump_output=./bert_model_v3_none_composed_total_model.ckpt-1000000.pth
+
+
+  # orig
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./convert_bert/bert_model_v3_orig_composed_total_model.ckpt-1000000 \
+  --config=./resources/v3_without_dummy_letter/mecab_orig_composed_sp-32k/bert_config.json \
+  --pytorch_dump_output=./bert_model_v3_orig_composed_total_model.ckpt-1000000.pth
+
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./convert_bert/bert_model_v3_orig_decomposed_pure_model.ckpt-800000 \
+  --config=./resources/v3_without_dummy_letter/mecab_orig_decomposed_pure_sp-32k/bert_config.json \
+  --pytorch_dump_output=./bert_model_v3_orig_decomposed_pure_model.ckpt-800000.pth
+
+
+
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./convert_bert/bert_model_v3_fixed_composed_model.ckpt-800000 \
+  --config=./resources/v3_without_dummy_letter/mecab_fixed_composed_sp-32k/bert_config.json \
+  --pytorch_dump_output=./bert_model_v3_fixed_composed_model.ckpt-800000.pth
+
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./convert_bert/bert_model_v3_fixed_decomposed_pure_model.ckpt-600000 \
+  --config=./resources/v3_without_dummy_letter/mecab_fixed_decomposed_pure_sp-32k/bert_config.json \
+  --pytorch_dump_output=./bert_model_v3_fixed_decomposed_pure_model.ckpt-600000.pth
+
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./convert_bert/bert_model_v3_fixed_decomposed_morph_model.ckpt-600000 \
+  --config=./resources/v3_without_dummy_letter/mecab_fixed_decomposed_morphological_sp-32k/bert_config.json \
+  --pytorch_dump_output=./bert_model_v3_fixed_decomposed_morph_model.ckpt-600000.pth
+
+
+
+
 # 결과물 파일은 해당 모델의 토크나이저에 해당하는 resource로 이동해야 함.
 
 # v3
