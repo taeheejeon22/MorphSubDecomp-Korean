@@ -118,3 +118,7 @@ else
     --gcp_project=smooth-loop-327807 \
     --num_tpu_cores=8 > $TOKENIZER'_'.log 2> $TOKENIZER'_'.err &
 fi
+
+
+
+
