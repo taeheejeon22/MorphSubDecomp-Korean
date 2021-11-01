@@ -39,7 +39,8 @@ echo "resource_dir == $RESOURCE_DIR"
 
 # 입력 받은 tokenizer, corpus의 output_dir
 
-OUTPUT_DIR=`echo ${CORPUS_DIR//"tokenized_GCP"/"tfrecord"}`
+#OUTPUT_DIR=`echo $CORPUS_DIR | tr 'tokenizerGCP' 'tfrecord'`
+
 
 
 # 각 코퍼스 파일에 대해서 tfrecord 만들기
@@ -55,18 +56,15 @@ gsutil cp gs://$RESOURCE_DIR/tok.model $TOKENIZER'_'tok.model
 
 file_num=0
 
-for file in `gsutil ls gs://$CORPUS_DIR/*`
+for file in $CORPUS_DIR/*
 do
-    # if [ "${file}" == "*_[0-9][0-9]" ] || [ "${file}" == "*.txt" ] 
-    # then
-    echo "코퍼스 파일: ${file}" 
-    echo "OUTPUT_DIR: ${OUTPUT_DIR}"
-    echo "RESORCE_DIR: ${RESOURCE_DIR}"
+    # if [[ "$file" == "*_[0-9][0-9]" ]] || [[ "$file" == "*.txt" ]]; then
+    echo "코퍼스: ${file}" 
     # 코퍼스 조각 -> tfrecord로 만드는 작업을 백그라운드에서 실행
     nohup \
     python3 bert-sentencepiece/create_pretraining_data.py \
     --input_file=$file \
-    --output_file=gs://$OUTPUT_DIR/$TOKENIZER'_'$file_num.tfrecord \
+    --output_file=./$TOKENIER/$file'_'$file_num.tfrecord \
     --vocab_file=gs://$RESOURCE_DIR/vocab.txt \
     --do_lower_case=True \
     --max_predictions_per_seq=20 \
@@ -79,10 +77,14 @@ do
 
     file_num=$((file_num +1))
     echo $file_num
-  
+    # 백그라운드에서 실행 중인 파일의 실시간 메시지 보기
+    #tail -f $file_num'_'$file_num.err
+ 
 done
+
 
 # log를 gcs로 전송
 #gsutil mv *.err gs://$OUTPUT_DIR
 
 
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_mecab_fixed/decomposed_morphological

@@ -11,7 +11,7 @@ import tarfile
 
 import torch
 from dataset import KlueReDataLoader
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
+from transformers import AutoModelForSequenceClassification, AutoTokenizer, BertModel, BertConfig
 
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
@@ -23,15 +23,21 @@ logger = logging.getLogger(__name__)
 KLUE_RE_OUTPUT = "output.csv"
 
 
-def load_model(model_dir, model_tar_path):
-    """load model from tar file pre-fetched from s3
+# def load_model(model_dir, model_tar_path):
+#     """load model from tar file pre-fetched from s3
 
-    Args:
-        model_dir: str: the directory of tar file
-        model_tar_path: str: the name of tar file
-    """
-    tar = tarfile.open(model_tar_path, "r:gz")
-    tar.extractall(path=model_dir)
+#     Args:
+#         model_dir: str: the directory of tar file
+#         model_tar_path: str: the name of tar file
+#     """
+#     tar = tarfile.open(model_tar_path, "r:gz")
+#     tar.extractall(path=model_dir)
+#     # model = AutoModelForSequenceClassification.from_pretrained(model_dir)
+#     model = BertModel.from_pretrained(model_dir)
+#     return model
+
+def load_model(model_dir):
+    #model = BertModel.from_pretrained(model_dir, config=config, from_tf=True)
     model = AutoModelForSequenceClassification.from_pretrained(model_dir)
     return model
 
@@ -41,7 +47,7 @@ def inference(args) -> None:
 
     data_dir = args.data_dir
     model_dir = args.model_dir
-    model_tar_path = os.path.join(model_dir, args.model_tarname)
+    #model_tar_path = os.path.join(model_dir, args.model_tarname)
     output_dir = args.output_dir
 
     assert os.path.exists(
@@ -58,9 +64,12 @@ def inference(args) -> None:
 
     logger.info("Loading model via transformer.AutoModelForSequenceClassification")
     # load model
-    model = load_model(model_dir, model_tar_path).to(device)
+    #model = load_model(model_dir, model_tar_path).to(device)
+    model = load_model(model_dir).to(device)
+
     if num_gpus > 1:
-        model = torch.nn.DataParallel(model)
+        # multi gpu(3)
+        model = torch.nn.DataParallel(model, device_ids=[0,1,3])
     model.eval()
 
     # load tokenizer
@@ -107,12 +116,12 @@ def main():
         help="input batch size for inference (default: 32)",
     )
     parser.add_argument(
-        "--data_dir", type=str, default=os.environ.get("SM_CHANNEL_EVAL", "/data")
+        "--data_dir", type=str, default=os.environ.get("SM_CHANNEL_EVAL", "./dataset/nlu_tasks/klue-re")
     )
     parser.add_argument(
         "--model_dir",
         type=str,
-        default="./model",
+        default="./bert-base",
     )
     parser.add_argument(
         "--model_tarname",
@@ -125,7 +134,7 @@ def main():
     parser.add_argument(
         "--output_dir",
         type=str,
-        default=os.environ.get("SM_OUTPUT_DATA_DIR", "/output"),
+        default=os.environ.get("SM_OUTPUT_DATA_DIR", "./run_outputs/klue-re"),
     )
     parser.add_argument(
         "--max_seq_length",
@@ -141,7 +150,7 @@ def main():
     )
     parser.add_argument(
         "--test_filename",
-        default="klue-re-v1.1_test.json",
+        default="klue-re-v1.1_dev.json",
         type=str,
         help="Name of the test file (default: klue-re-v1.1_test.json)",
     )

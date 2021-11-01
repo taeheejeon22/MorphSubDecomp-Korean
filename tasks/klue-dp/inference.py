@@ -19,14 +19,14 @@ KLUE_DP_OUTPUT = "output.csv"  # the name of output file should be output.csv
 
 def load_model(model_dir, args):
     # extract tar.gz
-    model_name = args.model_tar_file
-    tarpath = os.path.join(model_dir, model_name)
-    tar = tarfile.open(tarpath, "r:gz")
-    tar.extractall(path=model_dir)
+    #model_name = args.model_tar_file
+    #tarpath = os.path.join(model_dir, model_name)
+    #tar = tarfile.open(tarpath, "r:gz")
+    #tar.extractall(path=model_dir)
 
     config = AutoConfig.from_pretrained(os.path.join(model_dir, "config.json"))
     model = AutoModelforKlueDp(config, args)
-    model.load_state_dict(torch.load(os.path.join(model_dir, "dp-model.bin"), map_location='cpu'))
+    model.load_state_dict(torch.load(os.path.join(model_dir, "pytorch_model.bin"), map_location='cpu'))
     return model
 
 
@@ -39,6 +39,9 @@ def inference(data_dir, model_dir, output_dir, args):
 
     # load model
     model = load_model(model_dir, args)
+    if num_gpus > 1:
+        # multi gpu(3)
+        model = torch.nn.DataParallel(model, device_ids=[0,1,3])
     model.to(device)
     model.eval()
 
@@ -100,15 +103,15 @@ if __name__ == "__main__":
 
     # Container environment
     parser.add_argument(
-        "--data_dir", type=str, default=os.environ.get("SM_CHANNEL_EVAL", "/data")
+        "--data_dir", type=str, default=os.environ.get("SM_CHANNEL_EVAL", "./dataset/nlu_tasks")
     )
     parser.add_argument(
-        "--model_dir", type=str, default="./model"
+        "--model_dir", type=str, default="./bert-base"
     )
     parser.add_argument(
         "--output_dir",
         type=str,
-        default=os.environ.get("SM_OUTPUT_DATA_DIR", "/output"),
+        default=os.environ.get("SM_OUTPUT_DATA_DIR", "./run_outputs"),
     )
 
     # inference arguments
@@ -122,7 +125,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--test_filename",
-        default="klue-dp-v1.1_test.tsv",
+        default="klue-dp-v1.1_dev.tsv",
         type=str,
         help="Name of the test file (default: klue-dp-v1.1_test.tsv)",
     )

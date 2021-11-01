@@ -30,7 +30,7 @@ class Trainer:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         if (self.device.type == 'cuda') and (torch.cuda.device_count() > 1):
             print('Multi GPU({}) activate'.format(torch.cuda.device_count()))
-            self.model = nn.DataParallel(model, device_ids=[0,1,2])
+            self.model = nn.DataParallel(model, device_ids=[0,1,3])
         else:
             self.model = model
    
