@@ -1,3 +1,7 @@
+# 다음 경로 수정해서 with / without 폴더 잘 설정해야.
+# INPUT_MECAB_TOKENIZED_CORPUS = f"./corpus/tokenized/with_dummy_letter/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_{tokenizer_type}_{composition_type}.txt"  # all
+
+
 # resources 만드는 코드
 # kortok과 달리 tok.json 여기서 만들도록 수정
 
@@ -66,6 +70,8 @@ if __name__ == "__main__":
         "--composition_type", type=str, default="composed", choices=["composed", "decomposed_pure", "decomposed_morphological"]
     )  # composed: syllable-level   decomposed_pure: jamo-level     decomposed_morphological: syllable+jamo-level
 
+    parser.add_argument("--with_dummy_letter", type=bool, default=False)    # 자모 더미 문자 사용 여부: True, False
+
 
     # args = {"vocab_size": 32000, "character_coverage": 1.0, "normalization_rule_name": "identity",
     #         "pad_piece": "[PAD]", "unk_piece": "[UNK]", "bos_piece": "[BOS]", "eos_piece": "[EOS]", "unk_surface": "[UNK]",
@@ -82,10 +88,18 @@ if __name__ == "__main__":
     composition_type = args["composition_type"]
 
 
+    # 자모 더미 문자 사용 여부에 따른 경로 설정
+    if args["with_dummy_letter"] == False:
+        with_dummy_letter = "without_dummy_letter"
+    elif args["with_dummy_letter"] == True:
+        with_dummy_letter = "with_dummy_letter"
 
 
     if "mecab" in args["tokenizer_type"]:
-        INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_{tokenizer_type}_{composition_type}.txt"  # all
+        # INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_{tokenizer_type}_{composition_type}.txt"  # all
+        INPUT_MECAB_TOKENIZED_CORPUS = f"./corpus/tokenized/{with_dummy_letter}/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_{tokenizer_type}_{composition_type}.txt"  # all
+
+
         # INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_half.txt" # half
 
         # namuwiki
@@ -100,9 +114,13 @@ if __name__ == "__main__":
         # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_pure/namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure.txt"  # fixed / decomposed_pure
         # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_morphological/namuwiki_20200302_tokenized_mecab_fixed_decomposed_morphological.txt"  # fixed / decomposed_morphological
     else:
-        INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_{tokenizer_type}_{composition_type}.txt"  # all
+        # INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_{tokenizer_type}_{composition_type}.txt"  # all
+        INPUT_MECAB_TOKENIZED_CORPUS = f"./corpus/tokenized/{with_dummy_letter}/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_{tokenizer_type}_{composition_type}.txt"  # all
+
         # INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_half.txt" # half
 
+
+    print(f"\n\nINPUT_MECAB_TOKENIZED_CORPUS: {INPUT_MECAB_TOKENIZED_CORPUS}\n\n")
 
 
     # set output dir
