@@ -57,3 +57,10 @@ masked lm만 학습하도록, 문서 사이 안 띔.
 
 # with dummy letter
 	decomposed pure/morphological만 있음
+
+
+
+## v4
+coda normalized
+종성 ㄴ, ㄹ 등 그냥 타이핑 가능한 일반 문자로 변환
+fixed 버전에만 해당
