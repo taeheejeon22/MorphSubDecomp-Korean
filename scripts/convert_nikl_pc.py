@@ -1,4 +1,5 @@
 # 모두의 말뭉치 유사 문장 판단 코퍼스를 tsv로 변환
+# 1: human  0: machine
 
 import json
 import pandas as pd
