@@ -60,11 +60,12 @@ for file in $CORPUS_DIR/*
 do
     # if [[ "$file" == "*_[0-9][0-9]" ]] || [[ "$file" == "*.txt" ]]; then
     echo "코퍼스: ${file}" 
+    echo "OUTPUT_DIR: ${OUTPUT_DIR}"
     # 코퍼스 조각 -> tfrecord로 만드는 작업을 백그라운드에서 실행
     nohup \
     python3 bert-sentencepiece/create_pretraining_data.py \
     --input_file=$file \
-    --output_file=./$TOKENIER/$file'_'$file_num.tfrecord \
+    --output_file=./$TOKENIZER/$TOKENIZER'_'$file_num.tfrecord \
     --vocab_file=gs://$RESOURCE_DIR/vocab.txt \
     --do_lower_case=True \
     --max_predictions_per_seq=20 \
@@ -86,5 +87,3 @@ done
 # log를 gcs로 전송
 #gsutil mv *.err gs://$OUTPUT_DIR
 
-
-# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_mecab_fixed/decomposed_morphological

@@ -1,23 +1,31 @@
-# coding=utf-8
-
+import argparse
 import json
 import logging
 import os
-from typing import List, Tuple
+from typing import Any, List, Optional, Tuple
 
 import torch
-import transformers
-from torch.utils.data import DataLoader, Dataset, TensorDataset
-from utils import InputExample, InputFeatures
+from overrides import overrides
+from torch.utils.data import TensorDataset
+from transformers import PreTrainedTokenizer
+
+from klue_baseline.data.base import DataProcessor, InputExample, InputFeatures, KlueDataModule
+from klue_baseline.data.utils import check_tokenizer_type
 
 logger = logging.getLogger(__name__)
 
 
-class KlueReProcessor:
-    def __init__(self, args, tokenizer) -> None:
+class KlueREProcessor(DataProcessor):
 
-        self.hparams = args
-        self.tokenizer = tokenizer
+    origin_train_file_name = "klue-re-v1.1_train.json"
+    origin_dev_file_name = "klue-re-v1.1_dev.json"
+    origin_test_file_name = "klue-re-v1.1_test.json"
+    origin_relation_file_name = "relation_list.json"
+
+    datamodule_type = KlueDataModule
+
+    def __init__(self, args: argparse.Namespace, tokenizer: PreTrainedTokenizer) -> None:
+        super().__init__(args, tokenizer)
 
         # special tokens to mark the subject/object entity boundaries
         self.subject_start_marker = "<subj>"
@@ -37,27 +45,44 @@ class KlueReProcessor:
         )
 
         # Load relation class
-        relation_class_file_path = os.path.join(
-            self.hparams.data_dir, self.hparams.relation_filename
-        )
+        relation_class_file_path = os.path.join(args.data_dir, args.relation_filename or self.origin_relation_file_name)
 
         with open(relation_class_file_path, "r", encoding="utf-8") as f:
             self.relation_class = json.load(f)["relations"]
 
-    def get_test_dataset(self, data_dir: str, file_name: str = None) -> Dataset:
-        file_path = os.path.join(data_dir, file_name)
+        # Check type of tokenizer
+        self.tokenizer_type = check_tokenizer_type(tokenizer)
 
-        assert os.path.exists(
-            file_path
-        ), "KlueReProcessor tries to open test file, but test dataset doesn't exists."
+    @overrides
+    def get_train_dataset(self, data_dir: str, file_name: Optional[str] = None) -> TensorDataset:
+        file_path = os.path.join(data_dir, file_name or self.origin_train_file_name)
 
         logger.info(f"Loading from {file_path}")
-        return self._create_dataset(file_path)
+        return self._create_dataset(file_path, "train")
 
-    def get_labels(self):
+    @overrides
+    def get_dev_dataset(self, data_dir: str, file_name: Optional[str] = None) -> TensorDataset:
+        file_path = os.path.join(data_dir, file_name or self.origin_dev_file_name)
+
+        logger.info(f"Loading from {file_path}")
+        return self._create_dataset(file_path, "dev")
+
+    @overrides
+    def get_test_dataset(self, data_dir: str, file_name: Optional[str] = None) -> TensorDataset:
+        file_path = os.path.join(data_dir, file_name or self.origin_test_file_name)
+
+        if not os.path.exists(file_path):
+            logger.info("Test dataset doesn't exists. So loading dev dataset instead.")
+            file_path = os.path.join(data_dir, self.hparams.dev_file_name or self.origin_dev_file_name)
+
+        logger.info(f"Loading from {file_path}")
+        return self._create_dataset(file_path, "test")
+
+    @overrides
+    def get_labels(self) -> Any:
         return self.relation_class
 
-    def _create_examples(self, file_path: str) -> List[InputExample]:
+    def _create_examples(self, file_path: str, dataset_type: str) -> List[InputExample]:
         examples = []
         with open(file_path, "r", encoding="utf-8") as f:
             data_lst = json.load(f)
@@ -71,14 +96,8 @@ class KlueReProcessor:
 
             text = self._mark_entity_spans(
                 text=text,
-                subject_range=(
-                    int(subject_entity["start_idx"]),
-                    int(subject_entity["end_idx"]),
-                ),
-                object_range=(
-                    int(object_entity["start_idx"]),
-                    int(object_entity["end_idx"]),
-                ),
+                subject_range=(int(subject_entity["start_idx"]), int(subject_entity["end_idx"])),
+                object_range=(int(object_entity["start_idx"]), int(object_entity["end_idx"])),
             )
             examples.append(InputExample(guid=guid, text_a=text, label=label))
 
@@ -90,8 +109,7 @@ class KlueReProcessor:
         subject_range: Tuple[int, int],
         object_range: Tuple[int, int],
     ) -> str:
-        """
-        Add entity markers to the text to identify the subject/object entities.
+        """Adds entity markers to the text to identify the subject/object entities.
 
         Args:
             text: Original sentence
@@ -132,8 +150,7 @@ class KlueReProcessor:
 
         return marked_text
 
-    # copied from klue_baseline.data.utils.convert_examples_to_features
-    def _convert_features(self, examples: List[InputExample]) -> List[InputFeatures]:
+    def _convert_example_to_features(self, examples: List[InputExample]) -> List[InputFeatures]:
         max_length = self.hparams.max_seq_length
         if max_length is None:
             max_length = self.tokenizer.max_len
@@ -141,39 +158,19 @@ class KlueReProcessor:
         label_map = {label: i for i, label in enumerate(self.get_labels())}
         labels = [label_map[example.label] for example in examples]
 
-        def check_tokenizer_type():
-            """
-            Check tokenizer type.
-            In KLUE paper, we only support wordpiece (BERT, KLUE-RoBERTa, ELECTRA) & sentencepiece (XLM-R).
-            Will give warning if you use other tokenization. (e.g. bbpe)
-            """
-            if isinstance(self.tokenizer, transformers.XLMRobertaTokenizer):
-                logger.info(
-                    f"Using {type(self.tokenizer).__name__} for fixing tokenization result"
-                )
-                return "xlm-sp"  # Sentencepiece
-            elif isinstance(self.tokenizer, transformers.BertTokenizer) or isinstance(
-                self.tokenizer, transformers.BertTokenizerFast
-            ):
-                logger.info(
-                    f"Using {type(self.tokenizer).__name__} for fixing tokenization result"
-                )
-                return (
-                    "bert-wp"  # Wordpiece (including BertTokenizer & ElectraTokenizer)
-                )
-            else:
-                logger.warn(
-                    f"your tokenizer : {type(self.tokenizer).__name__}, If you are using other tokenizer (e.g. bbpe), you should change code in `fix_tokenization_error()`"
-                )
-                return "other"
+        def fix_tokenization_error(text: str, tokenizer_type: str) -> Any:
+            """Fix the tokenization due to the `obj` and `subj` marker inserted
+            in the middle of a word.
 
-        def fix_tokenization_error(text, tokenizer_type):
+            Example:
+                >>> text = "<obj>조지 해리슨</obj>이 쓰고 <subj>비틀즈</subj>가"
+                >>> tokens = ['<obj>', '조지', '해리', '##슨', '</obj>', '이', '쓰', '##고', '<subj>', '비틀즈', '</subj>', '가']
+                >>> fix_tokenization_error(text, tokenizer_type="bert-wp")
+                ['<obj>', '조지', '해리', '##슨', '</obj>', '##이', '쓰', '##고', '<subj>', '비틀즈', '</subj>', '##가']
+            """
             tokens = self.tokenizer.tokenize(text)
             # subject
-            if (
-                text[text.find(self.subject_end_marker) + len(self.subject_end_marker)]
-                != " "
-            ):
+            if text[text.find(self.subject_end_marker) + len(self.subject_end_marker)] != " ":
                 space_idx = tokens.index(self.subject_end_marker) + 1
                 if tokenizer_type == "xlm-sp":
                     if tokens[space_idx] == "▁":
@@ -181,17 +178,11 @@ class KlueReProcessor:
                     elif tokens[space_idx].startswith("▁"):
                         tokens[space_idx] = tokens[space_idx][1:]
                 elif tokenizer_type == "bert-wp":
-                    if (
-                        not tokens[space_idx].startswith("##")
-                        and "가" <= tokens[space_idx][0] <= "힣"
-                    ):
+                    if not tokens[space_idx].startswith("##") and "가" <= tokens[space_idx][0] <= "힣":
                         tokens[space_idx] = "##" + tokens[space_idx]
 
             # object
-            if (
-                text[text.find(self.object_end_marker) + len(self.object_end_marker)]
-                != " "
-            ):
+            if text[text.find(self.object_end_marker) + len(self.object_end_marker)] != " ":
                 space_idx = tokens.index(self.object_end_marker) + 1
                 if tokenizer_type == "xlm-sp":
                     if tokens[space_idx] == "▁":
@@ -199,24 +190,14 @@ class KlueReProcessor:
                     elif tokens[space_idx].startswith("▁"):
                         tokens[space_idx] = tokens[space_idx][1:]
                 elif tokenizer_type == "bert-wp":
-                    if (
-                        not tokens[space_idx].startswith("##")
-                        and "가" <= tokens[space_idx][0] <= "힣"
-                    ):
+                    if not tokens[space_idx].startswith("##") and "가" <= tokens[space_idx][0] <= "힣":
                         tokens[space_idx] = "##" + tokens[space_idx]
 
             return tokens
 
-        tokenizer_type = check_tokenizer_type()
-        tokenized_examples = [
-            fix_tokenization_error(example.text_a, tokenizer_type)
-            for example in examples
-        ]
+        tokenized_examples = [fix_tokenization_error(example.text_a, self.tokenizer_type) for example in examples]
         batch_encoding = self.tokenizer.batch_encode_plus(
-            [
-                (self.tokenizer.convert_tokens_to_ids(tokens), None)
-                for tokens in tokenized_examples
-            ],
+            [(self.tokenizer.convert_tokens_to_ids(tokens), None) for tokens in tokenized_examples],
             max_length=max_length,
             padding="max_length",
             truncation=True,
@@ -233,47 +214,40 @@ class KlueReProcessor:
             logger.info("*** Example ***")
             logger.info("guid: %s" % (examples[i].guid))
             logger.info("origin example: %s" % examples[i])
-            logger.info(
-                "origin tokens: %s" % self.tokenizer.tokenize(examples[i].text_a)
-            )
+            logger.info("origin tokens: %s" % self.tokenizer.tokenize(examples[i].text_a))
             logger.info("fixed tokens: %s" % tokenized_examples[i])
             logger.info("features: %s" % features[i])
 
         return features
 
-    def _create_dataset(self, file_path: str) -> Dataset:
-        examples = self._create_examples(file_path)
-        features = self._convert_features(examples)
+    def _create_dataset(self, file_path: str, dataset_type: str) -> TensorDataset:
+        examples = self._create_examples(file_path, dataset_type)
+        features = self._convert_example_to_features(examples)
 
         all_input_ids = torch.tensor([f.input_ids for f in features], dtype=torch.long)
-        all_attention_mask = torch.tensor(
-            [f.attention_mask for f in features], dtype=torch.long
-        )
+        all_attention_mask = torch.tensor([f.attention_mask for f in features], dtype=torch.long)
         # Some model does not make use of token type ids (e.g. RoBERTa)
         all_token_type_ids = torch.tensor(
-            [0 if f.token_type_ids is None else f.token_type_ids for f in features],
-            dtype=torch.long,
+            [0 if f.token_type_ids is None else f.token_type_ids for f in features], dtype=torch.long
         )
         all_labels = torch.tensor([f.label for f in features], dtype=torch.long)
 
-        return TensorDataset(
-            all_input_ids, all_attention_mask, all_token_type_ids, all_labels
+        return TensorDataset(all_input_ids, all_attention_mask, all_token_type_ids, all_labels)
+
+    @staticmethod
+    def add_specific_args(parser: argparse.ArgumentParser, root_dir: str) -> argparse.ArgumentParser:
+        parser = KlueREProcessor.datamodule_type.add_specific_args(parser, root_dir)
+        parser.add_argument(
+            "--max_seq_length",
+            default=128,
+            type=int,
+            help="The maximum total input sequence length after tokenization. Sequences longer "
+            "than this will be truncated, sequences shorter will be padded.",
         )
-
-
-class KlueReDataLoader:
-    def __init__(self, args, tokenizer):
-        self.hparams = args
-        self.processor = KlueReProcessor(args, tokenizer)
-
-    def get_dataloader(
-        self, batch_size: int, shuffle: bool = False, num_workers: int = 0
-    ):
-        return DataLoader(
-            self.processor.get_test_dataset(
-                self.hparams.data_dir, self.hparams.test_filename
-            ),
-            batch_size=batch_size,
-            shuffle=shuffle,
-            num_workers=num_workers,
+        parser.add_argument(
+            "--relation_filename",
+            default="relation_list.json",
+            type=str,
+            help="File name of list of relation classes",
         )
+        return parser
