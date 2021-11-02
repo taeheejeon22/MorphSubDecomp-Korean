@@ -2,9 +2,9 @@
 
 set +x
 
-OUTPUT_DIR="klue_output"
-DATA_DIR="data/klue_benchmark"  # default submodule for data from https://github.com/KLUE-benchmark/KLUE
-VERSION="v1.1"
+# OUTPUT_DIR="klue_output"
+# DATA_DIR="data/klue_benchmark"  # default submodule for data from https://github.com/KLUE-benchmark/KLUE
+# VERSION="v1.1"
 
 # # YNAT
 # task="ynat"
@@ -41,21 +41,26 @@ VERSION="v1.1"
 
 # python run_klue.py train --task ${task} --output_dir ${OUTPUT_DIR} --data_dir ${DATA_DIR}/${task}-${VERSION}  --model_name_or_path klue/roberta-large --learning_rate 1e-5 --num_train_epochs 3 --train_batch_size 8 --max_seq_length 510 --metric_key character_macro_f1 --gpus 0 --num_workers 4
 
-OUTPUT_DIR="klue_output"
-DATA_DIR="data/klue_benchmark"  # default submodule for data from https://github.com/KLUE-benchmark/KLUE
+
+DATA_DIR="dataset/klue-re"  
 VERSION="v1.1"
-# model_name=
+TOKINIZER="sp-32k"
+RESOURCES=./resources/v4_with_dummy_letter/$TOKENIZER/
 # KLUE-RE
 task="klue-re"
-for model_name in "klue/roberta-small" "klue/roberta-base" "klue/bert-base"; do
-    python run_klue.py train --task ${task} --output_dir ${OUTPUT_DIR} --data_dir ${DATA_DIR}/${task}-${VERSION}  --model_name_or_path ${model_name} --learning_rate 5e-5 --num_train_epochs 3 --train_batch_size 32 --warmup_ratio 0.1 --patience 10000 --max_seq_length 256 --metric_key micro_f1 --gpus 0 --num_workers 4
-done
+# for model_name in "klue/roberta-small" "klue/roberta-base" "klue/bert-base"; do
+#     python run_klue.py train --task ${task} --output_dir ${OUTPUT_DIR} --data_dir ${DATA_DIR}/${task}-${VERSION}  --model_name_or_path ${model_name} --learning_rate 5e-5 --num_train_epochs 3 --train_batch_size 32 --warmup_ratio 0.1 --patience 10000 --max_seq_length 256 --metric_key micro_f1 --gpus 0 --num_workers 4
+# done
 
-python3 run_klue.py train \
+OUTPUT_DIR="run_outputs/$TOKENIZER"
+
+python3 tasks/KLUE-baseline-main/klue_baseline/run_klue.py train \
 --task ${task} \
 --output_dir ${OUTPUT_DIR} \
 --data_dir ${DATA_DIR}/${task}-${VERSION}  \
---model_name_or_path klue/roberta-large \
+--model_name_or_path ${RESOURCES}/${TOKENIZER}/*.pth \
+--tokenizer_name ${RESOURCES}/${TOKENIZER}/tok.model \
+--config_name ${RESOURCES}/${TOKENIZER}/bert_config.json
 --learning_rate 2e-5 --num_train_epochs 10 \
 --train_batch_size 16 --warmup_ratio 0.2 --patience 10000 --max_seq_length 256 \
 --metric_key micro_f1 \
@@ -63,19 +68,29 @@ python3 run_klue.py train \
 
 
 # KLUE-DP
-task="klue-dp"
-for model_name in "klue/roberta-small" "klue/roberta-base" "klue/bert-base"; do
-    python run_klue.py train --task ${task} --output_dir ${OUTPUT_DIR} --data_dir ${DATA_DIR}/${task}-${VERSION}  --model_name_or_path ${model_name} --learning_rate 5e-5 --num_train_epochs 10 --warmup_ratio 0.1 --train_batch_size 32 --patience 10000 --max_seq_length 256 --metric_key las_macro_f1 --gpus 0 --num_workers 4
-done
+DATA_DIR="dataset/klue-dp" 
+VERSION="v1.1"
+TOKINIZER="sp-32k"
+RESOURCES=./resources/v4_with_dummy_letter/$TOKENIZER/
 
-python3 run_klue.py train \
+# task="klue-dp"
+# for model_name in "klue/roberta-small" "klue/roberta-base" "klue/bert-base"; do
+#     python run_klue.py train --task ${task} --output_dir ${OUTPUT_DIR} --data_dir ${DATA_DIR}/${task}-${VERSION}  --model_name_or_path ${model_name} --learning_rate 5e-5 --num_train_epochs 10 --warmup_ratio 0.1 --train_batch_size 32 --patience 10000 --max_seq_length 256 --metric_key las_macro_f1 --gpus 0 --num_workers 4
+# done
+
+python3 tasks/KLUE-baseline-main/klue_baseline/run_klue.py train \
 --task ${task} \
 --output_dir ${OUTPUT_DIR} \
 --data_dir ${DATA_DIR}/${task}-${VERSION}  \
---model_name_or_path klue/roberta-large \
+--model_name_or_path ${RESOURCES}/${TOKENIZER}/*.pth \
+--tokenizer_name ${RESOURCES}/${TOKENIZER}/tok.model \
+--config_name ${RESOURCES}/${TOKENIZER}/bert_config.json
 --learning_rate 5e-5 --num_train_epochs 15 --warmup_ratio 0.2 --train_batch_size 32 --patience 10000 --max_seq_length 256 \
 --metric_key uas_macro_f1 \
---gpus 0 1 2 --num_workers 4
+--gpus 0 1 2 --num_workers 8
+# 원래 num_workers=4
+
+
 
 
 # # KLUE-MRC
