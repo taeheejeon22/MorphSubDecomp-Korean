@@ -1,6 +1,9 @@
 from logging import Logger
 
 import torch
+import torch_xla
+import torch_xla.core.xla_model as xm # for using tpu
+
 from scipy.stats import spearmanr
 from torch import nn
 from torch.optim.adamw import AdamW
@@ -8,7 +11,6 @@ from torch.utils.data.dataloader import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
 from transformers import get_linear_schedule_with_warmup
-
 from tasks.korsts.config import TrainConfig
 from tasks.korsts.model import KorSTSModel
 
@@ -26,13 +28,16 @@ class Trainer:
     ):
         self.config = config
 
-        # multi gpu(3)
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        if (self.device.type == 'cuda') and (torch.cuda.device_count() > 1):
-            print('Multi GPU({}) activate'.format(torch.cuda.device_count()))
-            self.model = nn.DataParallel(model, device_ids=[0,1,2])
-        else:
-            self.model = model
+        if config.use_tpu == True:
+            self.device = xm.xla_device()
+        elif config.use_tpu == False:    
+            # multi gpu(3)
+            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            if (self.device.type == 'cuda') and (torch.cuda.device_count() > 1):
+                print('Multi GPU({}) activate'.format(torch.cuda.device_count()))
+                self.model = nn.DataParallel(model, device_ids=[0,1,2])
+            else:
+                self.model = model
 
         self.model.to(self.device)
 
@@ -44,6 +49,9 @@ class Trainer:
 
         self.criterion = nn.MSELoss()
         self.optimizer = AdamW(model.parameters(), lr=config.learning_rate)
+
+        # optimizer for TPU (Note: Cloud TPU-specific code!)
+        self.optimizer = xm.optimizer_step(self.optimizer, barrier=True)
 
         # total step 계산
         self.steps_per_epoch = len(train_data_loader)
