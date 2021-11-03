@@ -30,6 +30,8 @@ class Trainer:
 
         if config.use_tpu == True:
             self.device = xm.xla_device()
+            self.model = model
+            print('TPU running...')
         elif config.use_tpu == False:    
             # multi gpu(3)
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -51,7 +53,7 @@ class Trainer:
         self.optimizer = AdamW(model.parameters(), lr=config.learning_rate)
 
         # optimizer for TPU (Note: Cloud TPU-specific code!)
-        self.optimizer = xm.optimizer_step(self.optimizer)
+        #self.optimizer = xm.optimizer_step(self.optimizer)
 
         # total step 계산
         self.steps_per_epoch = len(train_data_loader)

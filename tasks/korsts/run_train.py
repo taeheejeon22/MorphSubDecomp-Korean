@@ -191,5 +191,5 @@ if __name__ == "__main__":
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 
     # TPU 활용을 위해 main(args)를 xmp.spawn으로 감싸기
-    #main(args)
-    xmp.spawn(main(args), nprocs=8, start_method='fork')
+    main(args)
+    #xmp.spawn(main(args), nprocs=8, start_method='fork')
