@@ -152,7 +152,7 @@ class Trainer:
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
         if self.config.use_tpu == True:
             # optimizer for TPU (Note: Cloud TPU-specific code!)
-            self.optimizer = xm.optimizer_step(self.optimizer, barrier=True)
+            xm.optimizer_step(self.optimizer, barrier=True)
         else:
             self.optimizer.step()
         
