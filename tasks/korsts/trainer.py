@@ -3,7 +3,7 @@ from logging import Logger
 import torch
 import torch_xla
 import torch_xla.core.xla_model as xm # for using tpu
-
+import torch_xla.distributed.xla_multiprocessing as xmp
 from scipy.stats import spearmanr
 from torch import nn
 from torch.optim.adamw import AdamW
@@ -51,7 +51,7 @@ class Trainer:
         self.optimizer = AdamW(model.parameters(), lr=config.learning_rate)
 
         # optimizer for TPU (Note: Cloud TPU-specific code!)
-        self.optimizer = xm.optimizer_step(self.optimizer, barrier=True)
+        self.optimizer = xm.optimizer_step(self.optimizer)
 
         # total step 계산
         self.steps_per_epoch = len(train_data_loader)

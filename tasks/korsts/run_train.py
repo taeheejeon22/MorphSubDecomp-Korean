@@ -5,6 +5,7 @@ import random
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, RandomSampler
+import torch_xla.distributed.xla_multiprocessing as xmp # TPU 코어 활용
 from torch.utils.tensorboard import SummaryWriter
 from transformers import BertConfig
 
@@ -32,7 +33,6 @@ from tokenizer import (
     Vocab,
     # WordTokenizer,
 )
-
 
 
 def set_seed(seed):
@@ -190,4 +190,6 @@ if __name__ == "__main__":
 
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 
-    main(args)
+    # TPU 활용을 위해 main(args)를 xmp.spawn으로 감싸기
+    #main(args)
+    xmp.spawn(main(args), nprocs=8, start_method='fork')
