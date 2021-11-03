@@ -30,7 +30,6 @@ class Trainer:
 
         if config.use_tpu == True:
             self.device = xm.xla_device()
-            self.device = xm.xla_device()
             self.model = model.to(self.device)
             print('TPU running...')
         elif config.use_tpu == False:    
