@@ -192,4 +192,10 @@ if __name__ == "__main__":
 
     # TPU 활용을 위해 main(args)를 xmp.spawn으로 감싸기
     main(args)
-    #xmp.spawn(main(args), nprocs=8, start_method='fork')
+    # flags = {}
+    # config = TrainConfig(**args)
+    # flags['batch_size']=config.batch_size
+    # flags['num_workers']=8
+    # flags['num_epochs']=config.num_epochs
+    # flags['seed'] = config.seed
+    # xmp.spawn(main(args), args=(flags,), nprocs=8, start_method='fork')
