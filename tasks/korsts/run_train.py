@@ -5,6 +5,7 @@ import random
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, RandomSampler
+import torch_xla.distributed.xla_multiprocessing as xmp # TPU 코어 활용
 from torch.utils.tensorboard import SummaryWriter
 from transformers import BertConfig
 
@@ -32,7 +33,6 @@ from tokenizer import (
     Vocab,
     # WordTokenizer,
 )
-
 
 
 def set_seed(seed):
@@ -184,9 +184,18 @@ if __name__ == "__main__":
     parser.add_argument("--train_path", type=str)
     parser.add_argument("--dev_path", type=str)
     parser.add_argument("--test_path", type=str)
+    parser.add_argument("--use_tpu", type=bool, default=False)
 
     # parser.add_argument("--use_kortok", nargs="?", const=False, type=bool, default=False)  # kortok 토크나이저 사용 여부
 
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 
+    # TPU 활용을 위해 main(args)를 xmp.spawn으로 감싸기
     main(args)
+    flags = {}
+    config = TrainConfig(**args)
+    flags['batch_size']=config.batch_size
+    flags['num_workers']=8
+    flags['num_epochs']=config.num_epochs
+    flags['seed'] = config.seed
+    xmp.spawn(main(args), args=(flags,), nprocs=8, start_method='fork')
