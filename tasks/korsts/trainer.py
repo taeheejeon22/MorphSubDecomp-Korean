@@ -153,6 +153,7 @@ class Trainer:
         if self.config.use_tpu == True:
             # optimizer for TPU (Note: Cloud TPU-specific code!)
             xm.optimizer_step(self.optimizer, barrier=True)
+            print('Using xm.optimizer_step...')
         else:
             self.optimizer.step()
         
