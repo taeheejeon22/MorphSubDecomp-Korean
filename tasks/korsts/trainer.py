@@ -30,8 +30,8 @@ class Trainer:
 
         if config.use_tpu == True:
             self.device = xm.xla_device()
-            #self.device = xm.xla_device(n=1, devkind='TPU')
-            self.model = self.model.to(self.device)
+            self.device = xm.xla_device(n=1, devkind='TPU')
+            self.model = model.to(self.device)
             print('TPU running...')
         elif config.use_tpu == False:    
             # multi gpu(3)
