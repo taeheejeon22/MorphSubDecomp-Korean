@@ -30,7 +30,7 @@ class Trainer:
 
         if config.use_tpu == True:
             self.device = xm.xla_device()
-            self.device = xm.xla_device(n=1, devkind='TPU')
+            self.device = xm.xla_device()
             self.model = model.to(self.device)
             print('TPU running...')
         elif config.use_tpu == False:    
@@ -54,6 +54,7 @@ class Trainer:
 
         self.criterion = nn.MSELoss()
         self.optimizer = AdamW(model.parameters(), lr=config.learning_rate)
+
 
 
         # total step 계산
@@ -142,8 +143,6 @@ class Trainer:
             # self.logger.info(f"MODEL IS SAVED AT {output_path}\n")
 
     def _train_step(self, input_token_ids, attention_mask, token_type_ids, labels):
-
-
         self.optimizer.zero_grad()
 
         outputs = self.model(input_token_ids, attention_mask, token_type_ids)
