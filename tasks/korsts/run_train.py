@@ -169,7 +169,7 @@ def main(args):
     )
 
     trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
-    trainer.train()
+    #trainer.train()
 
     if config.use_tpu == True:
         import torch_xla.core.xla_model as xm # for using tpu
@@ -181,7 +181,9 @@ def main(args):
         flags['num_workers']=4
         flags['num_epochs']=config.num_epochs
         flags['seed'] = config.seed
-        xmp.spawn(trainer, args=(flags,), nprocs=8, start_method='fork')
+        xmp.spawn(trainer.train(), args=(flags,), nprocs=8, start_method='fork')
+    else:
+        trainer.train()
 
 
 if __name__ == "__main__":
