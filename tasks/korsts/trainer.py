@@ -49,7 +49,7 @@ class Trainer:
         # self.dev_data_loader = dev_data_loader
         # self.test_data_loader = test_data_loader
         if config.use_tpu == True:
-            self.train_data_loader = pl.ParallelLoader(train_data_loader, [self.device])
+            self.train_data_loader = pl.ParallelLoader(train_data_loader, [self.device]).per_device_loader(self.device)
         else:
             self.train_data_loader = train_data_loader
             
@@ -159,6 +159,7 @@ class Trainer:
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
         if self.config.use_tpu == True:
             # optimizer for TPU (Note: Cloud TPU-specific code!)
+            import torch_xla.core.xla_model as xm # for using tpu
             xm.optimizer_step(self.optimizer) # multi core 사용 시 barrier=True 불필요
         else:
             self.optimizer.step()
