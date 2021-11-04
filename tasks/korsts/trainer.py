@@ -77,7 +77,7 @@ class Trainer:
         # train
         self.logger.info("========== train ==========")
         self.logger.info(f"device                : {self.device}")
-        self.logger.info(f"dataset length/ train : {#len(self.train_data_loader.dataset)}")
+        #self.logger.info(f"dataset length/ train : {len(self.train_data_loader.dataset)}")
         self.logger.info(f"dataset length/ dev   : {len(self.dev_data_loader.dataset)}")
         self.logger.info(f"dataset length/ test  : {len(self.test_data_loader.dataset)}")
         self.logger.info(f"batch size            : {self.config.batch_size}")
