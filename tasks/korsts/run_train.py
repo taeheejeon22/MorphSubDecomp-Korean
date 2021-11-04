@@ -189,14 +189,14 @@ if __name__ == "__main__":
 
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 
-    # TPU 활용을 위해 main(args)를 xmp.spawn으로 감싸기
     
-
-    if self.config.use_tpu == True:
-    # optimizer for TPU (Note: Cloud TPU-specific code!)
+    
+    config = TrainConfig(**args)
+    if config.use_tpu == True:
         import torch_xla.core.xla_model as xm # for using tpu
         import torch_xla.distributed.xla_multiprocessing as xmp
         import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
+        # TPU 활용을 위해 main(args)를 xmp.spawn으로 감싸기
         flags = {}
         config = TrainConfig(**args)
         flags['batch_size']=config.batch_size

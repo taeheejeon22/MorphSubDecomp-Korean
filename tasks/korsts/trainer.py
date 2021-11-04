@@ -44,7 +44,11 @@ class Trainer:
         # self.train_data_loader = train_data_loader
         # self.dev_data_loader = dev_data_loader
         # self.test_data_loader = test_data_loader
-        self.train_data_loader = pl.ParallelLoader(train_data_loader, [self.device])
+        if config.use_tpu == True:
+            self.train_data_loader = pl.ParallelLoader(train_data_loader, [self.device])
+        else:
+            self.train_data_loader = train_data_loader
+            
         self.dev_data_loader = dev_data_loader
         self.test_data_loader = test_data_loader
         self.logger = logger
