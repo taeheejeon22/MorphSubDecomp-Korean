@@ -182,7 +182,7 @@ if __name__ == "__main__":
 
 
     # mecab config  (tok.json) mecab_tokenization.py로 토큰화한 코퍼스 경로에서 있는 것 그대로 복사해서 저장
-    with open(f"../tokenized/{corpus}_{tokenizer_type}/{composition_type}/tok.json") as f:
+    with open(f"./corpus/tokenized/{with_dummy_letter}/{corpus}_{tokenizer_type}/{composition_type}/tok.json") as f:
         tok_json = json.load(f)
 
     with open(os.path.join(output_dir, "tok.json"), "w") as f:
