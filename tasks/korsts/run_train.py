@@ -168,9 +168,20 @@ def main(args):
         bert_config, os.path.join(config.resource_dir, config.tokenizer, pretrained_bert_file_name)
     )
 
-
     trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
     trainer.train()
+
+    if config.use_tpu == True:
+        import torch_xla.core.xla_model as xm # for using tpu
+        import torch_xla.distributed.xla_multiprocessing as xmp
+        import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
+        # TPU 활용을 위해 main(args)를 xmp.spawn으로 감싸기
+        flags = {}
+        flags['batch_size']=config.batch_size
+        flags['num_workers']=4
+        flags['num_epochs']=config.num_epochs
+        flags['seed'] = config.seed
+        xmp.spawn(trainer, args=(flags,), nprocs=8, start_method='fork')
 
 
 if __name__ == "__main__":
@@ -191,18 +202,18 @@ if __name__ == "__main__":
 
     
     
-    config = TrainConfig(**args)
-    if config.use_tpu == True:
-        import torch_xla.core.xla_model as xm # for using tpu
-        import torch_xla.distributed.xla_multiprocessing as xmp
-        import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
-        # TPU 활용을 위해 main(args)를 xmp.spawn으로 감싸기
-        flags = {}
-        config = TrainConfig(**args)
-        flags['batch_size']=config.batch_size
-        flags['num_workers']=4
-        flags['num_epochs']=config.num_epochs
-        flags['seed'] = config.seed
-        xmp.spawn(main(args), args=(flags,), nprocs=8, start_method='fork')
-    else:
-        main(args)
+    # config = TrainConfig(**args)
+    # if config.use_tpu == True:
+    #     import torch_xla.core.xla_model as xm # for using tpu
+    #     import torch_xla.distributed.xla_multiprocessing as xmp
+    #     import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
+    #     # TPU 활용을 위해 main(args)를 xmp.spawn으로 감싸기
+    #     flags = {}
+    #     config = TrainConfig(**args)
+    #     flags['batch_size']=config.batch_size
+    #     flags['num_workers']=4
+    #     flags['num_epochs']=config.num_epochs
+    #     flags['seed'] = config.seed
+    #     xmp.spawn(main(args), args=(flags,), nprocs=8, start_method='fork')
+    # else:
+    main(args)
