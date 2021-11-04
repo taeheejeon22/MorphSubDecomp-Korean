@@ -30,9 +30,9 @@ class Trainer:
             import torch_xla.core.xla_model as xm # for using tpu
             import torch_xla.distributed.xla_multiprocessing as xmp
             import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
-            # self.device = xm.xla_device()
-            # self.model = model.to(self.device)
-            # print('TPU running...')
+            self.device = xm.xla_device()
+            self.model = model.to(self.device)
+            print('TPU running...')
         elif config.use_tpu == False:    
             # multi gpu(3)
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
