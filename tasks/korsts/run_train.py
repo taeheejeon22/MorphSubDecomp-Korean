@@ -200,7 +200,7 @@ if __name__ == "__main__":
         flags['num_workers']=4
         flags['num_epochs']=config.num_epochs
         flags['seed'] = config.seed
-        xmp.spawn(main(args), args=(flags,), nprocs=8, start_method='fork')
+        xmp.spawn(main(args), args=(flags,), nprocs=8)
     else:
         main(args)
 
