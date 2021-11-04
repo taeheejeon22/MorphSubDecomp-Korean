@@ -26,6 +26,10 @@ class Trainer:
         self.config = config
 
         if config.use_tpu == True:
+            import torch_xla
+            import torch_xla.core.xla_model as xm # for using tpu
+            import torch_xla.distributed.xla_multiprocessing as xmp
+            import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
             self.device = xm.xla_device()
             self.model = model.to(self.device)
             print('TPU running...')
@@ -45,7 +49,7 @@ class Trainer:
         # self.dev_data_loader = dev_data_loader
         # self.test_data_loader = test_data_loader
         if config.use_tpu == True:
-            self.train_data_loader = pl.ParallelLoader(train_data_loader, [self.device])
+            self.train_data_loader = pl.ParallelLoader(train_data_loader, [self.device]).per_device_loader(self.device)
         else:
             self.train_data_loader = train_data_loader
             
@@ -73,7 +77,7 @@ class Trainer:
         # train
         self.logger.info("========== train ==========")
         self.logger.info(f"device                : {self.device}")
-        self.logger.info(f"dataset length/ train : {len(self.train_data_loader.dataset)}")
+        #self.logger.info(f"dataset length/ train : {len(self.train_data_loader.dataset)}")
         self.logger.info(f"dataset length/ dev   : {len(self.dev_data_loader.dataset)}")
         self.logger.info(f"dataset length/ test  : {len(self.test_data_loader.dataset)}")
         self.logger.info(f"batch size            : {self.config.batch_size}")
@@ -155,10 +159,7 @@ class Trainer:
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
         if self.config.use_tpu == True:
             # optimizer for TPU (Note: Cloud TPU-specific code!)
-            import torch_xla
             import torch_xla.core.xla_model as xm # for using tpu
-            import torch_xla.distributed.xla_multiprocessing as xmp
-            import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
             xm.optimizer_step(self.optimizer) # multi core 사용 시 barrier=True 불필요
         else:
             self.optimizer.step()

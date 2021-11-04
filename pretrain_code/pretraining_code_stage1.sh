@@ -36,10 +36,17 @@ echo -e "resource_dir: "
 read RESOURCE_DIR
 echo "resource_dir == $RESOURCE_DIR"
 
+echo "output_dir을 입력하세요. "
+echo -e "output_dir: "
+read OUTPUT_DIR
+echo "output_dir == $OUTPUT_DIR"
+
 
 # 입력 받은 tokenizer, corpus의 output_dir
 
-OUTPUT_DIR=`echo ${CORPUS_DIR//"tokenized_GCP"/"tfrecord"}`
+#OUTPUT_DIR=`echo ${CORPUS_DIR//"tokenized_GCP"/"tfrecord"}`
+#OUTPUT_DIR=`echo ${OUTPUT_DIR//"v\d"/"v5"}`
+
 
 
 # 각 코퍼스 파일에 대해서 tfrecord 만들기
