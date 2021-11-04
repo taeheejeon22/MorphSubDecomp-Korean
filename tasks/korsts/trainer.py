@@ -1,10 +1,6 @@
 from logging import Logger
 
 import torch
-import torch_xla
-import torch_xla.core.xla_model as xm # for using tpu
-import torch_xla.distributed.xla_multiprocessing as xmp
-import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
 from scipy.stats import spearmanr
 from torch import nn
 from torch.optim.adamw import AdamW
@@ -155,6 +151,10 @@ class Trainer:
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
         if self.config.use_tpu == True:
             # optimizer for TPU (Note: Cloud TPU-specific code!)
+            import torch_xla
+            import torch_xla.core.xla_model as xm # for using tpu
+            import torch_xla.distributed.xla_multiprocessing as xmp
+            import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
             xm.optimizer_step(self.optimizer) # multi core 사용 시 barrier=True 불필요
         else:
             self.optimizer.step()
