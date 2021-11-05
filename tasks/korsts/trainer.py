@@ -29,6 +29,8 @@ class Trainer:
             # 사전에 torch_xla 설치 필요
             import torch_xla
             import torch_xla.core.xla_model as xm # for using tpu
+            import torch_xla.distributed.xla_multiprocessing as xmp
+            import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
             self.device = xm.xla_device()
             self.model = model
             print('TPU running...')
@@ -42,10 +44,15 @@ class Trainer:
                 self.model = model
 
         self.model.to(self.device)
+            
+        self.train_data_loader = pl.ParallelLoader(train_data_loader, [self.device]).per_device_loader(self.device)
+        self.dev_data_loader = pl.ParallelLoader(dev_data_loader, [self.device]).per_device_loader(self.device)
+        self.test_data_loader = pl.ParallelLoader(test_data_loader, [self.device]).per_device_loader(self.device)
 
-        self.train_data_loader = train_data_loader
-        self.dev_data_loader = dev_data_loader
-        self.test_data_loader = test_data_loader
+
+        # self.train_data_loader = train_data_loader
+        # self.dev_data_loader = dev_data_loader
+        # self.test_data_loader = test_data_loader
 
         self.logger = logger
         self.summary_writer = summary_writer
@@ -69,9 +76,9 @@ class Trainer:
         # train
         self.logger.info("========== train ==========")
         self.logger.info(f"device                : {self.device}")
-        self.logger.info(f"dataset length/ train : {len(self.train_data_loader.dataset)}")
-        self.logger.info(f"dataset length/ dev   : {len(self.dev_data_loader.dataset)}")
-        self.logger.info(f"dataset length/ test  : {len(self.test_data_loader.dataset)}")
+        #self.logger.info(f"dataset length/ train : {len(self.train_data_loader.dataset)}")
+        #self.logger.info(f"dataset length/ dev   : {len(self.dev_data_loader.dataset)}")
+        #self.logger.info(f"dataset length/ test  : {len(self.test_data_loader.dataset)}")
         self.logger.info(f"batch size            : {self.config.batch_size}")
         self.logger.info(f"learning rate         : {self.config.learning_rate}")
         self.logger.info(f"dropout prob          : {self.config.dropout_prob}")
