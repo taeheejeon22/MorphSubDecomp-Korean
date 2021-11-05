@@ -31,6 +31,7 @@ class Trainer:
             import torch_xla
             import torch_xla.core.xla_model as xm # for using tpu
             self.device = xm.xla_device()
+            self.model = model
             print('TPU running...')
         # multi gpu(3)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
