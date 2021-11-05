@@ -95,7 +95,7 @@ if [[ $INIT == "F" ]]; then
     --tpu_name=$TPU_NAME \
     --tpu_zone=$REGION \
     --gcp_project=smooth-loop-327807 \
-    --num_tpu_cores=8 > $TOKENIZER'_'.log 2> $TOKENIZER'_'.err &
+    --num_tpu_cores=8 > ${TOKENIZER}.log 2>&1 &
 else
     nohup \
     python3 bert-sentencepiece/run_pretraining.py \
@@ -116,9 +116,11 @@ else
     --tpu_name=$TPU_NAME \
     --tpu_zone=$REGION \
     --gcp_project=smooth-loop-327807 \
-    --num_tpu_cores=8 > $TOKENIZER'_'.log 2> $TOKENIZER'_'.err &
+    --num_tpu_cores=8 > ${TOKENIZER}.log 2>&1 &
 fi
 
 
+# save command log
+echo $TOKENIZER' ### '$TFRECORD_DIR'  ### '$RESOURCE_DIR' ### ' &> '$TFRECORD_DIR''_'command.log   
 
 
