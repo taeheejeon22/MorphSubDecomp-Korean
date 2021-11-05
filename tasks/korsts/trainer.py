@@ -29,7 +29,6 @@ class Trainer:
             # 사전에 torch_xla 설치 필요
             import torch_xla
             import torch_xla.core.xla_model as xm # for using tpu
-            import torch_xla.distributed.xla_multiprocessing as xmp
             self.device = xm.xla_device()
             print('TPU running...')
         elif config.use_tpu == False:    
