@@ -30,6 +30,7 @@ class Trainer:
             import torch_xla
             import torch_xla.core.xla_model as xm # for using tpu
             self.device = xm.xla_device()
+            self.model = model
             print('TPU running...')
         elif config.use_tpu == False:    
             # multi gpu(3)
@@ -37,11 +38,11 @@ class Trainer:
             if (self.device.type == 'cuda') and (torch.cuda.device_count() > 1):
                 print('Multi GPU({}) activate'.format(torch.cuda.device_count()))
                 self.model = nn.DataParallel(model, device_ids=[0,1,2,3])
+                self.model = model.to(self.device)
             else:
                 self.model = model
 
         self.model.to(self.device)
-
 
         self.train_data_loader = train_data_loader
         self.dev_data_loader = dev_data_loader
