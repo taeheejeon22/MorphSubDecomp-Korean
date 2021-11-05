@@ -172,7 +172,7 @@ def main(args):
         import torch_xla.distributed.xla_multiprocessing as xmp
         import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
         trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
-        xmp.spawn(trainer.train(), nprocs=8)
+        xmp.spawn(trainer.train(), nprocs=8, start_method='fork')
         
     else:
         trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)

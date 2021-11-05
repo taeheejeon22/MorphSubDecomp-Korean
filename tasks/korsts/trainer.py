@@ -45,22 +45,21 @@ class Trainer:
 
         self.model.to(self.device)
             
-        #self.train_data_loader = pl.ParallelLoader(train_data_loader, [self.device]).per_device_loader(self.device)
-        #self.dev_data_loader = pl.ParallelLoader(dev_data_loader, [self.device]).per_device_loader(self.device)
-        #self.test_data_loader = pl.ParallelLoader(test_data_loader, [self.device]).per_device_loader(self.device)
+        self.train_data_loader = pl.ParallelLoader(train_data_loader, [self.device]).per_device_loader(self.device)
+        self.dev_data_loader = pl.ParallelLoader(dev_data_loader, [self.device]).per_device_loader(self.device)
+        self.test_data_loader = pl.ParallelLoader(test_data_loader, [self.device]).per_device_loader(self.device)
 
 
-        self.train_data_loader = train_data_loader
-        self.dev_data_loader = dev_data_loader
-        self.test_data_loader = test_data_loader
+        #self.train_data_loader = train_data_loader
+        #self.dev_data_loader = dev_data_loader
+        #self.test_data_loader = test_data_loader
 
         self.logger = logger
         self.summary_writer = summary_writer
 
         self.criterion = nn.MSELoss()
         self.optimizer = AdamW(model.parameters(), lr=config.learning_rate)
-
-
+        
 
         # total step 계산
         self.steps_per_epoch = len(train_data_loader)
