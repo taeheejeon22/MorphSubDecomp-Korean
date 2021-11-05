@@ -11,15 +11,6 @@ from transformers import get_linear_schedule_with_warmup
 from tasks.korsts.config import TrainConfig
 from tasks.korsts.model import KorSTSModel
 
-config: TrainConfig
-if config.use_tpu == True:
-# 사전에 torch_xla 설치 필요
-    import torch_xla
-    import torch_xla.core.xla_model as xm # for using tpu
-    import torch_xla.distributed.xla_multiprocessing as xmp
-    import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
-
-
 
 class Trainer:
     def __init__(
@@ -35,6 +26,12 @@ class Trainer:
         self.config = config
 
         if config.use_tpu == True:
+
+            # 사전에 torch_xla 설치 필요
+            import torch_xla
+            import torch_xla.core.xla_model as xm # for using tpu
+            import torch_xla.distributed.xla_multiprocessing as xmp
+            import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
             self.device = xm.xla_device()
             self.model = model
             print('TPU running...')
