@@ -26,12 +26,11 @@ class Trainer:
         self.config = config
 
         if config.use_tpu == True:
+            # 사전에 torch_xla 설치 필요
             import torch_xla
             import torch_xla.core.xla_model as xm # for using tpu
             import torch_xla.distributed.xla_multiprocessing as xmp
-            import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
             self.device = xm.xla_device()
-            self.model = model.to(self.device)
             print('TPU running...')
         elif config.use_tpu == False:    
             # multi gpu(3)
@@ -39,26 +38,15 @@ class Trainer:
             if (self.device.type == 'cuda') and (torch.cuda.device_count() > 1):
                 print('Multi GPU({}) activate'.format(torch.cuda.device_count()))
                 self.model = nn.DataParallel(model, device_ids=[0,1,2,3])
-                self.model.to(self.device)
             else:
                 self.model = model
-                self.model.to(self.device)
 
-        
-        # self.train_data_loader = train_data_loader
-        # self.dev_data_loader = dev_data_loader
-        # self.test_data_loader = test_data_loader
-        if config.use_tpu == True:
-            self.train_data_loader = pl.ParallelLoader(train_data_loader, [self.device]).per_device_loader(self.device)
-            self.dev_data_loader = pl.ParallelLoader(dev_data_loader, [self.device]).per_device_loader(self.device)
-            self.test_data_loader = pl.ParallelLoader(test_data_loader, [self.device]).per_device_loader(self.device)
-            #self.train_data_loader = train_data_loader
-            #self.dev_data_loader = dev_data_loader
-            #self.test_data_loader = test_data_loader
-        else:
-            self.train_data_loader = train_data_loader
-            self.dev_data_loader = dev_data_loader
-            self.test_data_loader = test_data_loader
+        self.model.to(self.device)
+
+
+        self.train_data_loader = train_data_loader
+        self.dev_data_loader = dev_data_loader
+        self.test_data_loader = test_data_loader
 
         self.logger = logger
         self.summary_writer = summary_writer
@@ -82,9 +70,9 @@ class Trainer:
         # train
         self.logger.info("========== train ==========")
         self.logger.info(f"device                : {self.device}")
-        #self.logger.info(f"dataset length/ train : {len(self.train_data_loader.dataset)}")
-        #self.logger.info(f"dataset length/ dev   : {len(self.dev_data_loader.dataset)}")
-        #self.logger.info(f"dataset length/ test  : {len(self.test_data_loader.dataset)}")
+        self.logger.info(f"dataset length/ train : {len(self.train_data_loader.dataset)}")
+        self.logger.info(f"dataset length/ dev   : {len(self.dev_data_loader.dataset)}")
+        self.logger.info(f"dataset length/ test  : {len(self.test_data_loader.dataset)}")
         self.logger.info(f"batch size            : {self.config.batch_size}")
         self.logger.info(f"learning rate         : {self.config.learning_rate}")
         self.logger.info(f"dropout prob          : {self.config.dropout_prob}")
@@ -165,7 +153,7 @@ class Trainer:
         if self.config.use_tpu == True:
             # optimizer for TPU (Note: Cloud TPU-specific code!)
             import torch_xla.core.xla_model as xm # for using tpu
-            xm.optimizer_step(self.optimizer) # multi core 사용 시 barrier=True 불필요
+            xm.optimizer_step(self.optimizer, barrier=True) # multi core 사용 시 barrier=True 불필요
         else:
             self.optimizer.step()
         
