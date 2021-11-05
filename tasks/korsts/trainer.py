@@ -32,7 +32,7 @@ class Trainer:
             import torch_xla.distributed.xla_multiprocessing as xmp
             import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
             self.device = xm.xla_device()
-            self.model = pl.ParallelLoader(model, [self.device]).per_device_loader(self.device)
+            self.model = model
             print('TPU running...')
         elif config.use_tpu == False:    
             # multi gpu(3)
@@ -159,7 +159,7 @@ class Trainer:
         if self.config.use_tpu == True:
             # optimizer for TPU (Note: Cloud TPU-specific code!)
             import torch_xla.core.xla_model as xm # for using tpu
-            xm.optimizer_step(self.optimizer, barrier=True) # multi core 사용 시 barrier=True 불필요
+            xm.optimizer_step(self.optimizer) # multi core 사용 시 barrier=True 불필요
         else:
             self.optimizer.step()
         
