@@ -32,7 +32,7 @@ class Trainer:
             import torch_xla.distributed.xla_multiprocessing as xmp
             import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
             self.device = xm.xla_device()
-            self.model = model
+            self.model = pl.ParallelLoader(model, [self.device]).per_device_loader(self.device)
             print('TPU running...')
         elif config.use_tpu == False:    
             # multi gpu(3)
