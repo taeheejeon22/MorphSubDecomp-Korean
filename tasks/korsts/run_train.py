@@ -167,16 +167,16 @@ def main(args):
     model.bert = load_pretrained_bert(
         bert_config, os.path.join(config.resource_dir, config.tokenizer, pretrained_bert_file_name)
     )
-    if config.use_tpu == True:
-        import torch_xla.core.xla_model as xm # for using tpu
-        import torch_xla.distributed.xla_multiprocessing as xmp
-        import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
-        trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
-        xmp.spawn(trainer.train(), nprocs=8, start_method='fork')
+    # if config.use_tpu == True:
+    #     import torch_xla.core.xla_model as xm # for using tpu
+    #     import torch_xla.distributed.xla_multiprocessing as xmp
+    #     import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
+    #     trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
+    #     xmp.spawn(trainer.train(), nprocs=8, start_method='fork')
         
-    else:
-        trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
-        trainer.train()
+    # else:
+    trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
+    trainer.train()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

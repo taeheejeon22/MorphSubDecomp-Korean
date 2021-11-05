@@ -11,6 +11,15 @@ from transformers import get_linear_schedule_with_warmup
 from tasks.korsts.config import TrainConfig
 from tasks.korsts.model import KorSTSModel
 
+config: TrainConfig
+if config.use_tpu == True:
+# 사전에 torch_xla 설치 필요
+    import torch_xla
+    import torch_xla.core.xla_model as xm # for using tpu
+    import torch_xla.distributed.xla_multiprocessing as xmp
+    import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
+
+
 
 class Trainer:
     def __init__(
@@ -26,11 +35,6 @@ class Trainer:
         self.config = config
 
         if config.use_tpu == True:
-            # 사전에 torch_xla 설치 필요
-            import torch_xla
-            import torch_xla.core.xla_model as xm # for using tpu
-            import torch_xla.distributed.xla_multiprocessing as xmp
-            import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
             self.device = xm.xla_device()
             self.model = model
             print('TPU running...')
@@ -142,6 +146,9 @@ class Trainer:
             self.summary_writer.add_scalar("korsts/test/loss", test_loss, self.global_step)
             self.summary_writer.add_scalar("korsts/test/spearman", test_corr, self.global_step)
 
+            # save the weight
+            #xm.save()
+
             # output_path = os.path.join(self.config.checkpoint_dir, f"model-epoch-{epoch}.pth")
             # torch.save(self.model.state_dict(), output_path)
             # self.logger.info(f"MODEL IS SAVED AT {output_path}\n")
@@ -157,8 +164,7 @@ class Trainer:
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
         if self.config.use_tpu == True:
             # optimizer for TPU (Note: Cloud TPU-specific code!)
-            import torch_xla.core.xla_model as xm # for using tpu
-            xm.optimizer_step(self.optimizer) # multi core 사용 시 barrier=True 불필요
+            xm.optimizer_step(self.optimizer, barrier=True) # multi core 사용 시 barrier=True 불필요
         else:
             self.optimizer.step()
         
