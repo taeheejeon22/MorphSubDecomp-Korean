@@ -121,6 +121,6 @@ fi
 
 
 # save command log
-echo $TOKENIZER' ### '$TFRECORD_DIR'  ### '$RESOURCE_DIR' ### ' &> '$TFRECORD_DIR''_'command.log   
+echo $TOKENIZER' ### '$TFRECORD_DIR'  ### '$RESOURCE_DIR' ### '$MODEL_DIR &> ${TOKENIZER}'_'command.log   
 
 
