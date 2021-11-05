@@ -193,13 +193,13 @@ if __name__ == "__main__":
         import torch_xla.distributed.xla_multiprocessing as xmp
         import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
         # TPU 활용을 위해 main(args)를 xmp.spawn으로 감싸기
-        flags = {}
-        config = TrainConfig(**args)
-        flags['batch_size']=config.batch_size
-        flags['num_workers']=4
-        flags['num_epochs']=config.num_epochs
-        flags['seed'] = config.seed
-        xmp.spawn(main(args), args=(flags,), nprocs=8)
+        # flags = {}
+        # config = TrainConfig(**args)
+        # flags['batch_size']=config.batch_size
+        # flags['num_workers']=4
+        # flags['num_epochs']=config.num_epochs
+        # flags['seed'] = config.seed
+        xmp.spawn(main(args), args=(), nprocs=8)
     else:
         main(args)
     #main(args)
