@@ -160,6 +160,8 @@ class Trainer:
         loss.backward()
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
         if self.config.use_tpu == True:
+            import torch_xla
+            import torch_xla.core.xla_model as xm # for using tpu
             # optimizer for TPU (Note: Cloud TPU-specific code!)
             xm.optimizer_step(self.optimizer, barrier=True) # multi core 사용 시 barrier=True 불필요
         else:
