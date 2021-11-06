@@ -51,6 +51,8 @@ for batch_size in "${batch_sizes[@]}"; do
             echo "### vocab_size: ${vocab_size} ###"
             echo "### task: ${task} ###"
             echo "### use_tpu: ${use_tpu}"
+            echo "### log_dir: $log_dir"
+            echo "### summary_dir: $summary_dir"
 
 
             if [[ $vocab_size == "32k" ]]; then
@@ -59,43 +61,57 @@ for batch_size in "${batch_sizes[@]}"; do
                 --resource_dir ./resources/v3_without_dummy_letter \
                 --use_tpu $use_tpu \
                 --batch_size $batch_size \
-                --learning_rate $learning_rate
+                --learning_rate $learning_rate \
+                --log_dir $log_dir \
+                --summary_dir $summary_dir
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_orig_composed_sp-32k \
                 --resource_dir ./resources/v3_without_dummy_letter \
                 --use_tpu $use_tpu \
                 --batch_size $batch_size \
-                --learning_rate $learning_rate
+                --learning_rate $learning_rate \
+                --log_dir $log_dir \
+                --summary_dir $summary_dir
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_orig_decomposed_morphological_sp-32k \
                 --resource_dir ./resources/v3_without_dummy_letter \
                 --use_tpu $use_tpu \
                 --batch_size $batch_size \
-                --learning_rate $learning_rate
+                --learning_rate $learning_rate \
+                --log_dir $log_dir \
+                --summary_dir $summary_dir
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_orig_decomposed_pure_sp-32k \
                 --resource_dir ./resources/v3_without_dummy_letter \
                 --use_tpu $use_tpu \
                 --batch_size $batch_size \
-                --learning_rate $learning_rate
+                --learning_rate $learning_rate \
+                --log_dir $log_dir \
+                --summary_dir $summary_dir
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_fixed_composed_sp-32k \
                 --resource_dir ./resources/v4_without_dummy_letter \
                 --use_tpu $use_tpu \
                 --batch_size $batch_size \
-                --learning_rate $learning_rate
+                --learning_rate $learning_rate \
+                --log_dir $log_dir \
+                --summary_dir $summary_dir
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_fixed_decomposed_morphological_sp-32k \
                 --resource_dir ./resources/v4_without_dummy_letter \
                 --use_tpu $use_tpu \
                 --batch_size $batch_size \
-                --learning_rate $learning_rate
+                --learning_rate $learning_rate \
+                --log_dir $log_dir \
+                --summary_dir $summary_dir
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_fixed_decomposed_pure_sp-32k \
                 --resource_dir ./resources/v4_without_dummy_letter \
                 --use_tpu $use_tpu \
                 --batch_size $batch_size \
-                --learning_rate $learning_rate
+                --learning_rate $learning_rate \
+                --log_dir $log_dir \
+                --summary_dir $summary_dir
 
             elif [[ $vocab_size == "64k" ]]; then
 
@@ -104,7 +120,9 @@ for batch_size in "${batch_sizes[@]}"; do
                     --resource_dir ./resources/v5_without_dummy_letter \
                     --use_tpu $use_tpu \
                     --batch_size $batch_size \
-                    --learning_rate $learning_rate
+                    --learning_rate $learning_rate \
+                    --log_dir $log_dir \
+                    --summary_dir $summary_dir
                 done
             else
                 echo "vocab_size error!!!"
