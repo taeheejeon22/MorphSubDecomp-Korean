@@ -186,7 +186,12 @@ if __name__ == "__main__":
     parser.add_argument("--dev_path", type=str)
     parser.add_argument("--test_path", type=str)
 
-    # parser.add_argument("--use_kortok", nargs="?", const=False, type=bool, default=False)  # kortok 토크나이저 사용 여부
+
+    # hyperparameters
+    parser.add_argument("--num_epochs", type=int)
+    parser.add_argument("--batch_size", type=int)
+    parser.add_argument("--learning_rate", type=float)
+
 
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 
