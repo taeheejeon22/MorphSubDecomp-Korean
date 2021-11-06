@@ -1,6 +1,8 @@
 from logging import Logger
 
 import torch
+import csv
+import os
 from scipy.stats import spearmanr
 from torch import nn
 from torch.optim.adamw import AdamW
@@ -142,6 +144,15 @@ class Trainer:
 
             self.summary_writer.add_scalar("korsts/test/loss", test_loss, self.global_step)
             self.summary_writer.add_scalar("korsts/test/spearman", test_corr, self.global_step)
+
+
+            # dev,test 결과만 따로 저장
+            if os.path.isfile(self.config.log_dir+'/../../summary_by_hparam/summary_by_hparam.csv'):
+                with open (self.config.log_dir+'/../../summary_by_hparam/summary_by_hparam.csv', 'a', newline="") as f:
+                    # task, batch_size, lr, epoch, dev점수, test 점수 저장
+                    wr = csv.writer(f)
+                    wr.wtiterow(['korsts', self.config.batch_size, self.config.learning_rate, epoch, "{dev_corr:.4f}", "{test_corr:.4f}"])
+
 
             # save the weight
             #xm.save()

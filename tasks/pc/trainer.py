@@ -1,6 +1,8 @@
 from logging import Logger
 
 import torch
+import os
+import csv
 from sklearn.metrics import accuracy_score, classification_report
 from torch import nn
 from torch.optim.adamw import AdamW
@@ -138,6 +140,14 @@ class Trainer:
             # output_path = os.path.join(self.config.checkpoint_dir, f"model-epoch-{epoch}.pth")
             # torch.save(self.model.state_dict(), output_path)
             # self.logger.info(f"MODEL IS SAVED AT {output_path}\n")
+
+            # dev,test 결과만 따로 저장
+            if os.path.isfile(self.config.log_dir+'/../../summary_by_hparam/summary_by_hparam.csv'):
+                with open (self.config.log_dir+'/../../summary_by_hparam/summary_by_hparam.csv', 'a', newline="") as f:
+                    # task, batch_size, lr, epoch, dev점수, test 점수 저장
+                    wr = csv.writer(f)
+                    wr.wtiterow(['pc', self.config.batch_size, self.config.learning_rate, epoch, "{dev_corr:.4f}", "{test_corr:.4f}"])
+
 
     def _train_step(self, input_token_ids, attention_mask, token_type_ids, labels):
         self.optimizer.zero_grad()
