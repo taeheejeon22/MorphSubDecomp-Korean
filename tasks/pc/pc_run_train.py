@@ -198,6 +198,9 @@ if __name__ == "__main__":
     parser.add_argument("--batch_size", type=int)
     parser.add_argument("--learning_rate", type=float)
 
+    # use tpu
+    parser.add_argument("--use_tpu", type=bool, default=False)
+
 
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 

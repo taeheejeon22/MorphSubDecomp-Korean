@@ -1,4 +1,4 @@
-from logging import Logger
+from logging import Loggerput
 
 import torch
 from sklearn.metrics import accuracy_score, classification_report
