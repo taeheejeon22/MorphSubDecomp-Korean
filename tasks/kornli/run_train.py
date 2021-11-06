@@ -189,7 +189,6 @@ if __name__ == "__main__":
     parser.add_argument("--train_path", type=str)
     parser.add_argument("--dev_path", type=str)
     parser.add_argument("--test_path", type=str)
-    parser.add_argument("--use_tpu", type=bool, default=False)
 
 
     # hyperparameters
