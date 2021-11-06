@@ -12,11 +12,11 @@ python3 tasks/paws/run_train.py --tokenizer sp-32k \
 --resource_dir ./resources/v3_without_dummy_letter \
 --use_tpu True
 
-python3 tasks/cola/cola_run_train.py --tokenizer sp-32k \
+python3 tasks/cola/run_train.py --tokenizer sp-32k \
 --resource_dir ./resources/v3_without_dummy_letter \
 --use_tpu True
 
-python3 tasks/pc/pc_run_train.py --tokenizer sp-32k \
+python3 tasks/pc/run_train.py --tokenizer sp-32k \
 --resource_dir ./resources/v3_without_dummy_letter \
 --use_tpu True
 
@@ -38,11 +38,11 @@ python3 tasks/paws/run_train.py --tokenizer mecab_orig_composed_sp-32k \
 --resource_dir ./resources/v3_without_dummy_letter \
 --use_tpu True
 
-python3 tasks/cola/cola_run_train.py --tokenizer mecab_orig_composed_sp-32k \
+python3 tasks/cola/run_train.py --tokenizer mecab_orig_composed_sp-32k \
 --resource_dir ./resources/v3_without_dummy_letter \
 --use_tpu True
 
-python3 tasks/pc/pc_run_train.py --tokenizer mecab_orig_composed_sp-32k \
+python3 tasks/pc/run_train.py --tokenizer mecab_orig_composed_sp-32k \
 --resource_dir ./resources/v3_without_dummy_letter \
 --use_tpu True
 
@@ -64,11 +64,11 @@ python3 tasks/paws/run_train.py --tokenizer mecab_orig_decomposed_morphological_
 --resource_dir ./resources/v3_without_dummy_letter \
 --use_tpu True
 
-python3 tasks/cola/cola_run_train.py --tokenizer mecab_orig_decomposed_morphological_sp-32k \
+python3 tasks/cola/run_train.py --tokenizer mecab_orig_decomposed_morphological_sp-32k \
 --resource_dir ./resources/v3_without_dummy_letter \
 --use_tpu True
 
-python3 tasks/pc/pc_run_train.py --tokenizer mecab_orig_decomposed_morphological_sp-32k \
+python3 tasks/pc/run_train.py --tokenizer mecab_orig_decomposed_morphological_sp-32k \
 --resource_dir ./resources/v3_without_dummy_letter \
 --use_tpu True
 
@@ -90,11 +90,11 @@ python3 tasks/paws/run_train.py --tokenizer mecab_orig_decomposed_pure_sp-32k \
 --resource_dir ./resources/v3_without_dummy_letter \
 --use_tpu True
 
-python3 tasks/cola/cola_run_train.py --tokenizer mecab_orig_decomposed_pure_sp-32k \
+python3 tasks/cola/run_train.py --tokenizer mecab_orig_decomposed_pure_sp-32k \
 --resource_dir ./resources/v3_without_dummy_letter \
 --use_tpu True
 
-python3 tasks/pc/pc_run_train.py --tokenizer mecab_orig_decomposed_pure_sp-32k \
+python3 tasks/pc/run_train.py --tokenizer mecab_orig_decomposed_pure_sp-32k \
 --resource_dir ./resources/v3_without_dummy_letter \
 --use_tpu True
 

@@ -1,4 +1,4 @@
-from logging import Loggerput
+from logging import Logger
 
 import torch
 import csv
