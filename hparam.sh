@@ -16,7 +16,7 @@ tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
 num_epochs=5
 
-echo -e "use_tpu: True or False ? " 
+echo -e "use_tpu: tpu or gpu ? " 
 read use_tpu
 echo "use_tpu == $use_tpu"
 
@@ -47,44 +47,44 @@ for batch_size in "${batch_sizes[@]}"; do
 
                 python3 tasks/$task/run_train.py --tokenizer sp-32k \
                 --resource_dir ./resources/v3_without_dummy_letter \
-                --use_tpu $use_tpu
-                --batch_size $batch_size
+                --use_tpu $use_tpu \
+                --batch_size $batch_size \
                 --learning_rate $learning_rate
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_orig_composed_sp-32k \
                 --resource_dir ./resources/v3_without_dummy_letter \
-                --use_tpu $use_tpu
-                --batch_size $batch_size
+                --use_tpu $use_tpu \
+                --batch_size $batch_size \
                 --learning_rate $learning_rate
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_orig_decomposed_morphological_sp-32k \
                 --resource_dir ./resources/v3_without_dummy_letter \
-                --use_tpu $use_tpu
-                --batch_size $batch_size
+                --use_tpu $use_tpu \
+                --batch_size $batch_size \
                 --learning_rate $learning_rate
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_orig_decomposed_pure_sp-32k \
                 --resource_dir ./resources/v3_without_dummy_letter \
-                --use_tpu $use_tpu
-                --batch_size $batch_size
+                --use_tpu $use_tpu \
+                --batch_size $batch_size \
                 --learning_rate $learning_rate
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_fixed_composed_sp-32k \
                 --resource_dir ./resources/v4_without_dummy_letter \
-                --use_tpu $use_tpu
-                --batch_size $batch_size
+                --use_tpu $use_tpu \
+                --batch_size $batch_size \
                 --learning_rate $learning_rate
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_fixed_decomposed_morphological_sp-32k \
                 --resource_dir ./resources/v4_without_dummy_letter \
-                --use_tpu $use_tpu
-                --batch_size $batch_size
+                --use_tpu $use_tpu \
+                --batch_size $batch_size \
                 --learning_rate $learning_rate
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_fixed_decomposed_pure_sp-32k \
                 --resource_dir ./resources/v4_without_dummy_letter \
-                --use_tpu $use_tpu
-                --batch_size $batch_size
+                --use_tpu $use_tpu \
+                --batch_size $batch_size \
                 --learning_rate $learning_rate
 
             elif [[ $vocab_size == "64k" ]]; then
@@ -92,8 +92,8 @@ for batch_size in "${batch_sizes[@]}"; do
                 for tokenizer in "${tokenizers}"; do
                     python3 tasks/$task/run_train.py --tokenizer $tokenizer
                     --resource_dir ./resources/v5_without_dummy_letter \
-                    --use_tpu $use_tpu
-                    --batch_size $batch_size
+                    --use_tpu $use_tpu \
+                    --batch_size $batch_size \
                     --learning_rate $learning_rate
                 done
             else

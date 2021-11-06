@@ -101,3 +101,4 @@ python3 tasks/pc/pc_run_train.py --tokenizer mecab_orig_decomposed_pure_sp-32k \
 python3 tasks/kornli/run_train.py --tokenizer mecab_orig_decomposed_pure_sp-32k \
 --resource_dir ./resources/v3_without_dummy_letter \
 --use_tpu True
+

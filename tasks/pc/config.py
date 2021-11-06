@@ -5,7 +5,7 @@ class TrainConfig(NamedTuple):
     desc: str = ""
 
     # use_kortok: bool = False    # kortok 토크나이저 사용 확인용
-    use_tpu: bool = False
+    use_tpu: str = ""
     """
     Model Hyperparameters
     """

@@ -197,7 +197,7 @@ if __name__ == "__main__":
     parser.add_argument("--learning_rate", type=float)
 
     # use tpu
-    parser.add_argument("--use_tpu", type=bool, default=False)
+    parser.add_argument("--use_tpu", type=str, default='gpu')
 
 
 

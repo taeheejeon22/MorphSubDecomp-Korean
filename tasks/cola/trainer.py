@@ -28,14 +28,14 @@ class Trainer:
     ):
         self.config = config
 
-        if config.use_tpu == True:
+        if config.use_tpu == "tpu":
             # 사전에 torch_xla 설치 필요
             import torch_xla
             import torch_xla.core.xla_model as xm # for using tpu
             self.device = xm.xla_device()
             self.model = model
             print('TPU running...')
-        elif config.use_tpu == False:
+        elif config.use_tpu == "gpu":
         # multi gpu(3)
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
             if (self.device.type == 'cuda') and (torch.cuda.device_count() > 1):
@@ -154,7 +154,7 @@ class Trainer:
         loss = self.criterion(outputs, labels)
         loss.backward()
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
-        if self.config.use_tpu == True:
+        if self.config.use_tpu == "tpu":
             # optimizer for TPU (Note: Cloud TPU-specific code!)
             import torch_xla.core.xla_model as xm # for using tpu
             xm.optimizer_step(self.optimizer, barrier=True) # multi core 사용 시 barrier=True 불필요
