@@ -43,8 +43,8 @@ for batch_size in "${batch_sizes[@]}"; do
 
 
         for task in "${tasks[@]}"; do
-            log_dir="./run_outputs/batch_"${batch_size}"_rl_"${learning_rate}/$task/logs
-            summary_dir="./run_outputs/batch_"${batch_size}"_rl_"${learning_rate}/$task/summaries
+            log_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/logs
+            summary_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/summaries
             
             echo "### batch_size: ${batch_size} ###"
             echo "### learning_rate: ${learning_rate} ###"
