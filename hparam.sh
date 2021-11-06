@@ -35,16 +35,16 @@ for batch_size in "${batch_sizes[@]}"; do
 
     for learning_rate in "${learning_rates[@]}"; do
         # 요약본 저장용 directory 생성
-        if [ ! ~d "./run_outputs/batch"${batch_size}"_rl"${learning_rate}/"summary_by_hparam" ]; then
-            mkdir "./run_outputs/batch"${batch_size}"_rl"${learning_rate}/"summary_by_hparam"
-            touch "./run_outputs/batch"${batch_size}"_rl"${learning_rate}/"summary_by_hparam"/"summary_by_hparam.csv"
+        if [ ! -d "./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/"summary_by_hparam" ]; then
+            mkdir "./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/"summary_by_hparam"
+            touch "./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/"summary_by_hparam"/"summary_by_hparam.csv"
         fi
 
 
 
         for task in "${tasks[@]}"; do
-            log_dir="./run_outputs/batch"${batch_size}"_rl"${learning_rate}/$task/logs
-            summary_dir="./run_outputs/batch"${batch_size}"_rl"${learning_rate}/$task/summaries
+            log_dir="./run_outputs/batch_"${batch_size}"_rl_"${learning_rate}/$task/logs
+            summary_dir="./run_outputs/batch_"${batch_size}"_rl_"${learning_rate}/$task/summaries
             
             echo "### batch_size: ${batch_size} ###"
             echo "### learning_rate: ${learning_rate} ###"
