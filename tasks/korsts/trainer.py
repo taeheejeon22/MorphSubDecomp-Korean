@@ -152,6 +152,7 @@ class Trainer:
                     # task, batch_size, lr, epoch, dev점수, test 점수 저장
                     wr = csv.writer(f)
                     wr.writerow(['korsts', self.config.batch_size, self.config.learning_rate, epoch, "{dev_corr:.4f}", "{test_corr:.4f}"])
+                    print("dev, test logging...")
 
 
             # save the weight

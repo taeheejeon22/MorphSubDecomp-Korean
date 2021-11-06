@@ -145,6 +145,7 @@ class Trainer:
                     # task, batch_size, lr, epoch, dev점수, test 점수 저장
                     wr = csv.writer(f)
                     wr.writerow(['cola', self.config.batch_size, self.config.learning_rate, epoch, "{dev_corr:.4f}", "{test_corr:.4f}"])
+                    print("dev, test logging...")
 
     def _train_step(self, input_token_ids, attention_mask, token_type_ids, labels):
         self.optimizer.zero_grad()
