@@ -199,6 +199,9 @@ if __name__ == "__main__":
     # use tpu
     parser.add_argument("--use_tpu", type=str, default='gpu')
 
+    #log, summary dir
+    parser.add_argument("--log_dir", type=str)
+    parser.add_argument("--summary_dir", type=str)
 
 
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
