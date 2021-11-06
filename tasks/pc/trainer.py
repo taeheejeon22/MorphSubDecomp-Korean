@@ -25,14 +25,24 @@ class Trainer:
         summary_writer: SummaryWriter,
     ):
         self.config = config
-
-        # multi gpu(3)
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        if (self.device.type == 'cuda') and (torch.cuda.device_count() > 1):
-            print('Multi GPU({}) activate'.format(torch.cuda.device_count()))
-            self.model = nn.DataParallel(model, device_ids=[0,1,3])
-        else:
+        if config.use_tpu == True:
+    
+            # 사전에 torch_xla 설치 필요
+            import torch_xla
+            import torch_xla.core.xla_model as xm # for using tpu
+            import torch_xla.distributed.xla_multiprocessing as xmp
+            import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
+            self.device = xm.xla_device()
             self.model = model
+            print('TPU running...')
+        elif config.use_tpu == False:    
+            # multi gpu(3)
+            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            if (self.device.type == 'cuda') and (torch.cuda.device_count() > 1):
+                print('Multi GPU({}) activate'.format(torch.cuda.device_count()))
+                self.model = nn.DataParallel(model, device_ids=[0,1,2,3])
+            else:
+                self.model = model
 
         self.model.to(self.device)
      
@@ -137,8 +147,15 @@ class Trainer:
         loss = self.criterion(outputs, labels)
         loss.backward()
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
+        if self.config.use_tpu == True:
+            import torch_xla
+            import torch_xla.core.xla_model as xm # for using tpu
+            # optimizer for TPU (Note: Cloud TPU-specific code!)
+            xm.optimizer_step(self.optimizer, barrier=True) # multi core 사용 시 barrier=True 불필요
+        else:
+            self.optimizer.step()
 
-        self.optimizer.step()
+        #self.optimizer.step()
         self.scheduler.step()
 
         return loss.item(), outputs

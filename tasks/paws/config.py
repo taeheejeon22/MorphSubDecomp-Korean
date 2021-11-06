@@ -5,7 +5,8 @@ class TrainConfig(NamedTuple):
     desc: str = ""
 
     # use_kortok: bool = False  # kortok 토크나이저 사용 확인용
-
+    use_tpu: bool = False
+    
     """
     Model Hyperparameters
     """
@@ -30,7 +31,7 @@ class TrainConfig(NamedTuple):
     #: 훈련 시의 batch size
     batch_size: int = 64
     #: learning rate
-    learning_rate: float = 1e-4
+    learning_rate: float = 5e-5
     #: bert fine tuning 레이어의 dropout 확률
     dropout_prob: float = 0.1
     #: warmup step의 비율 (warmup step = total step * warmup step ratio)

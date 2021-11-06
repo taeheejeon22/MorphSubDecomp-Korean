@@ -5,7 +5,6 @@ import random
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, RandomSampler
-import torch_xla.distributed.xla_multiprocessing as xmp # TPU 코어 활용
 from torch.utils.tensorboard import SummaryWriter
 from transformers import BertConfig
 
@@ -168,11 +167,16 @@ def main(args):
     model.bert = load_pretrained_bert(
         bert_config, os.path.join(config.resource_dir, config.tokenizer, pretrained_bert_file_name)
     )
-
-
+    # if config.use_tpu == True:
+    #     import torch_xla.core.xla_model as xm # for using tpu
+    #     import torch_xla.distributed.xla_multiprocessing as xmp
+    #     import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
+    #     trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
+    #     xmp.spawn(trainer.train(), nprocs=8, start_method='fork')
+        
+    # else:
     trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
     trainer.train()
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -194,13 +198,6 @@ if __name__ == "__main__":
 
 
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
-
-    # TPU 활용을 위해 main(args)를 xmp.spawn으로 감싸기
+    
     main(args)
-    flags = {}
-    config = TrainConfig(**args)
-    flags['batch_size']=config.batch_size
-    flags['num_workers']=8
-    flags['num_epochs']=config.num_epochs
-    flags['seed'] = config.seed
-    xmp.spawn(main(args), args=(flags,), nprocs=8, start_method='fork')
+    #main(args)

@@ -197,6 +197,10 @@ if __name__ == "__main__":
     parser.add_argument("--learning_rate", type=float)
 
 
+    parser.add_argument("--use_tpu", type=bool, default=False)
+    # parser.add_argument("--use_kortok", nargs="?", const=False, type=bool, default=False)  # kortok 토크나이저 사용 여부
+
+
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 
     main(args)

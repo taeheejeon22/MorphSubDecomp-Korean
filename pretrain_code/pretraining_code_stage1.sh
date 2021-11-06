@@ -36,10 +36,12 @@ echo -e "resource_dir: "
 read RESOURCE_DIR
 echo "resource_dir == $RESOURCE_DIR"
 
-
 # 입력 받은 tokenizer, corpus의 output_dir
 
-OUTPUT_DIR=`echo ${CORPUS_DIR//"tokenized_GCP"/"tfrecord"}`
+#OUTPUT_DIR=`echo ${CORPUS_DIR//"tokenized_GCP"/"tfrecord"}`
+OUTPUT_DIR=kist_bert/tfrecord/v5_without_dummy_letter/$TOKENIZER
+
+
 
 
 # 각 코퍼스 파일에 대해서 tfrecord 만들기
@@ -57,29 +59,28 @@ file_num=0
 
 for file in `gsutil ls gs://$CORPUS_DIR/*`
 do
-    # if [ "${file}" == "*_[0-9][0-9]" ] || [ "${file}" == "*.txt" ] 
-    # then
-    echo "코퍼스 파일: ${file}" 
+    file_name=`basename ${file} .txt`
+    echo "코퍼스 파일: ${file_name}" 
     echo "OUTPUT_DIR: ${OUTPUT_DIR}"
     echo "RESORCE_DIR: ${RESOURCE_DIR}"
     # 코퍼스 조각 -> tfrecord로 만드는 작업을 백그라운드에서 실행
-    nohup \
+    command=nohup \
     python3 bert-sentencepiece/create_pretraining_data.py \
-    --input_file=$file \
-    --output_file=gs://$OUTPUT_DIR/$TOKENIZER'_'$file_num.tfrecord \
-    --vocab_file=gs://$RESOURCE_DIR/vocab.txt \
+    --input_file=${file} \
+    --output_file=gs://${OUTPUT_DIR}/${file_name}.tfrecord \
+    --vocab_file=gs://${RESOURCE_DIR}/vocab.txt \
     --do_lower_case=True \
     --max_predictions_per_seq=20 \
     --max_seq_length=128 \
     --masked_lm_prob=0.15 \
     --random_seed=12345 \
     --piece=sentence \
-    --piece_model=$TOKENIZER'_'tok.model \
-    --dupe_factor=5 > $TOKENIZER'_'$file_num'_'$file_num.log 2> $TOKENIZER'_'$file_num.err &
+    --piece_model=${TOKENIZER}'_'tok.model \
+    --dupe_factor=5 > ${TOKENIZER}'_'${file_name}.log 2>&1 &
 
-    file_num=$((file_num +1))
-    echo $file_num
-  
+    # save command log
+    echo $TOKENIZER' ### '$file_name' ### '$CORPUS_DIR' ### '$RESOURCE_DIR' ### 'gs://${OUTPUT_DIR}/${file_name}.tfrecord' ### '${TOKENIZER}'_'tok.model &> ${file_name}'_'command.log   
+
 done
 
 # log를 gcs로 전송

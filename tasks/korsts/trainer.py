@@ -1,10 +1,6 @@
 from logging import Logger
 
 import torch
-import torch_xla
-import torch_xla.core.xla_model as xm # for using tpu
-import torch_xla.distributed.xla_multiprocessing as xmp
-import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
 from scipy.stats import spearmanr
 from torch import nn
 from torch.optim.adamw import AdamW
@@ -30,34 +26,41 @@ class Trainer:
         self.config = config
 
         if config.use_tpu == True:
+
+            # 사전에 torch_xla 설치 필요
+            import torch_xla
+            import torch_xla.core.xla_model as xm # for using tpu
+            import torch_xla.distributed.xla_multiprocessing as xmp
+            import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
             self.device = xm.xla_device()
-            self.model = model.to(self.device)
+            self.model = model
             print('TPU running...')
         elif config.use_tpu == False:    
             # multi gpu(3)
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
             if (self.device.type == 'cuda') and (torch.cuda.device_count() > 1):
                 print('Multi GPU({}) activate'.format(torch.cuda.device_count()))
-                self.model = nn.DataParallel(model, device_ids=[0,1,2])
-                self.model.to(self.device)
+                self.model = nn.DataParallel(model, device_ids=[0,1,2,3])
             else:
                 self.model = model
-                self.model.to(self.device)
 
-        
-        # self.train_data_loader = train_data_loader
-        # self.dev_data_loader = dev_data_loader
-        # self.test_data_loader = test_data_loader
-        self.train_data_loader = pl.ParallelLoader(train_data_loader, [self.device])
+        self.model.to(self.device)
+            
+        #self.train_data_loader = pl.ParallelLoader(train_data_loader, [self.device]).per_device_loader(self.device)
+        #self.dev_data_loader = pl.ParallelLoader(dev_data_loader, [self.device]).per_device_loader(self.device)
+        #self.test_data_loader = pl.ParallelLoader(test_data_loader, [self.device]).per_device_loader(self.device)
+
+
+        self.train_data_loader = train_data_loader
         self.dev_data_loader = dev_data_loader
         self.test_data_loader = test_data_loader
+
         self.logger = logger
         self.summary_writer = summary_writer
 
         self.criterion = nn.MSELoss()
         self.optimizer = AdamW(model.parameters(), lr=config.learning_rate)
-
-
+        
 
         # total step 계산
         self.steps_per_epoch = len(train_data_loader)
@@ -73,9 +76,9 @@ class Trainer:
         # train
         self.logger.info("========== train ==========")
         self.logger.info(f"device                : {self.device}")
-        self.logger.info(f"dataset length/ train : {len(self.train_data_loader.dataset)}")
-        self.logger.info(f"dataset length/ dev   : {len(self.dev_data_loader.dataset)}")
-        self.logger.info(f"dataset length/ test  : {len(self.test_data_loader.dataset)}")
+        #self.logger.info(f"dataset length/ train : {len(self.train_data_loader.dataset)}")
+        #self.logger.info(f"dataset length/ dev   : {len(self.dev_data_loader.dataset)}")
+        #self.logger.info(f"dataset length/ test  : {len(self.test_data_loader.dataset)}")
         self.logger.info(f"batch size            : {self.config.batch_size}")
         self.logger.info(f"learning rate         : {self.config.learning_rate}")
         self.logger.info(f"dropout prob          : {self.config.dropout_prob}")
@@ -140,6 +143,9 @@ class Trainer:
             self.summary_writer.add_scalar("korsts/test/loss", test_loss, self.global_step)
             self.summary_writer.add_scalar("korsts/test/spearman", test_corr, self.global_step)
 
+            # save the weight
+            #xm.save()
+
             # output_path = os.path.join(self.config.checkpoint_dir, f"model-epoch-{epoch}.pth")
             # torch.save(self.model.state_dict(), output_path)
             # self.logger.info(f"MODEL IS SAVED AT {output_path}\n")
@@ -154,8 +160,10 @@ class Trainer:
         loss.backward()
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
         if self.config.use_tpu == True:
+            import torch_xla
+            import torch_xla.core.xla_model as xm # for using tpu
             # optimizer for TPU (Note: Cloud TPU-specific code!)
-            xm.optimizer_step(self.optimizer) # multi core 사용 시 barrier=True 불필요
+            xm.optimizer_step(self.optimizer, barrier=True) # multi core 사용 시 barrier=True 불필요
         else:
             self.optimizer.step()
         
