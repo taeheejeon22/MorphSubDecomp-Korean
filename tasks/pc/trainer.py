@@ -146,7 +146,7 @@ class Trainer:
                 with open (self.config.log_dir+'/../../summary_by_hparam/summary_by_hparam.csv', 'a', newline="") as f:
                     # task, batch_size, lr, epoch, dev점수, test 점수 저장
                     wr = csv.writer(f)
-                    wr.wtiterow(['pc', self.config.batch_size, self.config.learning_rate, epoch, "{dev_corr:.4f}", "{test_corr:.4f}"])
+                    wr.writerow(['pc', self.config.batch_size, self.config.learning_rate, epoch, "{dev_corr:.4f}", "{test_corr:.4f}"])
 
 
     def _train_step(self, input_token_ids, attention_mask, token_type_ids, labels):
