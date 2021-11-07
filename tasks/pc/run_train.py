@@ -144,7 +144,7 @@ def main(args):
 
     # 토큰화 데모
     print(f"tokenization sample 1: {tokenizer.tokenize(train_sentences[0])}")
-    print(f"tokenization sample 2: {tokenizer.tokenize(train_sentences[0])}")
+    print(f"tokenization sample 2: {tokenizer.tokenize(train_sentences[1])}")
 
 
     # 데이터로 dataloader 만들기
