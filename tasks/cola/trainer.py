@@ -144,7 +144,7 @@ class Trainer:
                 with open (self.config.log_dir+'/../../summary_by_hparam/summary_by_hparam.csv', 'a', newline="") as f:
                     # task, batch_size, lr, epoch, dev점수, test 점수 저장
                     wr = csv.writer(f)
-                    wr.writerow(['cola', self.config.batch_size, self.config.learning_rate, epoch, f"{dev_acc:.4f}", f"{test_acc:.4f}"])
+                    wr.writerow(['cola', self.config.tokenizer, self.config.batch_size, self.config.learning_rate, epoch, f"{dev_acc:.4f}", f"{test_acc:.4f}"])
                     print("dev, test logging...")
 
     def _train_step(self, input_token_ids, attention_mask, token_type_ids, labels):
