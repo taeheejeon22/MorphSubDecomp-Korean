@@ -43,8 +43,9 @@ for batch_size in "${batch_sizes[@]}"; do
             echo "summary_by_hparam dir making...Done"
             if [ ! -e "./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam/summary_by_hparam.csv" ]; then
                 sudo touch "./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam/summary_by_hparam.csv"
-                echo "summary_by_hparam dir making..."
-                echo "summary_by_hparam dir making...Done"
+                chmod +x "./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam/summary_by_hparam.csv"
+                echo "summary_by_hparam file making..."
+                echo "summary_by_hparam file making...Done"
             fi
         fi
 
