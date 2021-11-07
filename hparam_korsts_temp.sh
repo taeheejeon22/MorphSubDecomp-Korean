@@ -67,37 +67,37 @@ for batch_size in "${batch_sizes[@]}"; do
 
             if [[ $vocab_size == "32k" ]]; then
 
-                python3 tasks/$task/run_train.py --tokenizer sp-32k \
-                --resource_dir ./resources/v3_without_dummy_letter \
-                --use_tpu $use_tpu \
-                --batch_size $batch_size \
-                --learning_rate $learning_rate \
-                --log_dir $log_dir \
-                --summary_dir $summary_dir
+                # python3 tasks/$task/run_train.py --tokenizer sp-32k \
+                # --resource_dir ./resources/v3_without_dummy_letter \
+                # --use_tpu $use_tpu \
+                # --batch_size $batch_size \
+                # --learning_rate $learning_rate \
+                # --log_dir $log_dir \
+                # --summary_dir $summary_dir
 
-                python3 tasks/$task/run_train.py --tokenizer mecab_orig_composed_sp-32k \
-                --resource_dir ./resources/v3_without_dummy_letter \
-                --use_tpu $use_tpu \
-                --batch_size $batch_size \
-                --learning_rate $learning_rate \
-                --log_dir $log_dir \
-                --summary_dir $summary_dir
+                # python3 tasks/$task/run_train.py --tokenizer mecab_orig_composed_sp-32k \
+                # --resource_dir ./resources/v3_without_dummy_letter \
+                # --use_tpu $use_tpu \
+                # --batch_size $batch_size \
+                # --learning_rate $learning_rate \
+                # --log_dir $log_dir \
+                # --summary_dir $summary_dir
 
-                python3 tasks/$task/run_train.py --tokenizer mecab_orig_decomposed_morphological_sp-32k \
-                --resource_dir ./resources/v3_without_dummy_letter \
-                --use_tpu $use_tpu \
-                --batch_size $batch_size \
-                --learning_rate $learning_rate \
-                --log_dir $log_dir \
-                --summary_dir $summary_dir
+                # python3 tasks/$task/run_train.py --tokenizer mecab_orig_decomposed_morphological_sp-32k \
+                # --resource_dir ./resources/v3_without_dummy_letter \
+                # --use_tpu $use_tpu \
+                # --batch_size $batch_size \
+                # --learning_rate $learning_rate \
+                # --log_dir $log_dir \
+                # --summary_dir $summary_dir
 
-                python3 tasks/$task/run_train.py --tokenizer mecab_orig_decomposed_pure_sp-32k \
-                --resource_dir ./resources/v3_without_dummy_letter \
-                --use_tpu $use_tpu \
-                --batch_size $batch_size \
-                --learning_rate $learning_rate \
-                --log_dir $log_dir \
-                --summary_dir $summary_dir
+                # python3 tasks/$task/run_train.py --tokenizer mecab_orig_decomposed_pure_sp-32k \
+                # --resource_dir ./resources/v3_without_dummy_letter \
+                # --use_tpu $use_tpu \
+                # --batch_size $batch_size \
+                # --learning_rate $learning_rate \
+                # --log_dir $log_dir \
+                # --summary_dir $summary_dir
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_fixed_composed_sp-32k \
                 --resource_dir ./resources/v4_without_dummy_letter \
