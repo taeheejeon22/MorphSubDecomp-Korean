@@ -69,7 +69,8 @@ for batch_size in "${batch_sizes[@]}"; do
                 --batch_size $batch_size \
                 --learning_rate $learning_rate \
                 --log_dir $log_dir \
-                --summary_dir $summary_dir
+                --summary_dir $summary_dir \
+                --num_epochs $num_epochs
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_orig_composed_sp-32k \
                 --resource_dir ./resources/v3_without_dummy_letter \
@@ -77,7 +78,8 @@ for batch_size in "${batch_sizes[@]}"; do
                 --batch_size $batch_size \
                 --learning_rate $learning_rate \
                 --log_dir $log_dir \
-                --summary_dir $summary_dir
+                --summary_dir $summary_dir \
+                --num_epochs $num_epochs
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_orig_decomposed_morphological_sp-32k \
                 --resource_dir ./resources/v3_without_dummy_letter \
@@ -85,7 +87,8 @@ for batch_size in "${batch_sizes[@]}"; do
                 --batch_size $batch_size \
                 --learning_rate $learning_rate \
                 --log_dir $log_dir \
-                --summary_dir $summary_dir
+                --summary_dir $summary_dir \
+                --num_epochs $num_epochs
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_orig_decomposed_pure_sp-32k \
                 --resource_dir ./resources/v3_without_dummy_letter \
@@ -93,7 +96,8 @@ for batch_size in "${batch_sizes[@]}"; do
                 --batch_size $batch_size \
                 --learning_rate $learning_rate \
                 --log_dir $log_dir \
-                --summary_dir $summary_dir
+                --summary_dir $summary_dir \
+                --num_epochs $num_epochs
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_fixed_composed_sp-32k \
                 --resource_dir ./resources/v4_without_dummy_letter \
@@ -101,7 +105,8 @@ for batch_size in "${batch_sizes[@]}"; do
                 --batch_size $batch_size \
                 --learning_rate $learning_rate \
                 --log_dir $log_dir \
-                --summary_dir $summary_dir
+                --summary_dir $summary_dir \
+                --num_epochs $num_epochs
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_fixed_decomposed_morphological_sp-32k \
                 --resource_dir ./resources/v4_without_dummy_letter \
@@ -109,7 +114,8 @@ for batch_size in "${batch_sizes[@]}"; do
                 --batch_size $batch_size \
                 --learning_rate $learning_rate \
                 --log_dir $log_dir \
-                --summary_dir $summary_dir
+                --summary_dir $summary_dir \
+                --num_epochs $num_epochs
 
                 python3 tasks/$task/run_train.py --tokenizer mecab_fixed_decomposed_pure_sp-32k \
                 --resource_dir ./resources/v4_without_dummy_letter \
@@ -117,7 +123,8 @@ for batch_size in "${batch_sizes[@]}"; do
                 --batch_size $batch_size \
                 --learning_rate $learning_rate \
                 --log_dir $log_dir \
-                --summary_dir $summary_dir
+                --summary_dir $summary_dir \
+                --num_epochs $num_epochs
 
             elif [[ $vocab_size == "64k" ]]; then
 
@@ -128,7 +135,8 @@ for batch_size in "${batch_sizes[@]}"; do
                     --batch_size $batch_size \
                     --learning_rate $learning_rate \
                     --log_dir $log_dir \
-                    --summary_dir $summary_dir
+                    --summary_dir $summary_dir \
+                    --num_epochs $num_epochs
                 done
             else
                 echo "vocab_size error!!!"
