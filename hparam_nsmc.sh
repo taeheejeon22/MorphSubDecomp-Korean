@@ -37,16 +37,18 @@ for batch_size in "${batch_sizes[@]}"; do
 
     for learning_rate in "${learning_rates[@]}"; do
         # 요약본 저장용 directory 생성
+        # 요약본 저장용 directory 생성
         if [ ! -d ./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam ]; then
             echo "summary_by_hparam dir making..."
             mkdir -p "./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam"
             echo "summary_by_hparam dir making...Done"
-            if [ ! -e "./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam/summary_by_hparam.csv" ]; then
-                touch "./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam/summary_by_hparam.csv"
-                chmod +x "./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam/summary_by_hparam.csv"
-                echo "summary_by_hparam file making..."
-                echo "summary_by_hparam file making...Done"
-            fi
+        fi
+        
+        if [ ! -e "./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam/summary_by_hparam.csv" ]; then
+            touch "./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam/summary_by_hparam.csv"
+            chmod +x "./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam/summary_by_hparam.csv"
+            echo "summary_by_hparam file making..."
+            echo "summary_by_hparam file making...Done"
         fi
 
 
