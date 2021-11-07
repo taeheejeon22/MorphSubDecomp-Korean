@@ -1,10 +1,10 @@
 torch==1.4.0
-transformers==2.11.0
+transformers==3.0.0
 
 tweepy==3.10.0
 namu-wiki-extractor==0.2.2
 
-numpy
+numpy==1.18.0
 scikit-learn
 scipy
 
@@ -18,4 +18,4 @@ attrdict
 soynlp==0.0.493
 mosestokenizer==1.1.0
 
-
+tensorboard==2.3.0

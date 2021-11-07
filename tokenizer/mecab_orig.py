@@ -333,11 +333,13 @@ class MeCabTokenizer_orig(BaseTokenizer):
 
 
 
-# config_path = "./resources/v2_with_dummy_letter/wikiko_all_64k/mecab_fixed_decomposed_morphological_sp-64k/tok.json"
+# config_path = "./resources/v5_with_dummy_letter/mecab_fixed_decomposed_morphological_sp-64k/tok.json"
 # decomposition_type = "composed"
 # decomposition_type = "decomposed_pure"
-# mc = MeCabTokenizer_fixed(use_original=True, decomposition_type="composed")                    # ['사람', '은', '▃', '널', '▃', '진짜', '▃', '원해', '.']
-# mc = MeCabTokenizer_fixed(use_original=True, decomposition_type="decomposed_pure")             # ['ㅅㅏㄹㅏㅁ', 'ㅇㅡㄴ', '▃', 'ㄴㅓㄹ', '▃', 'ㅈㅣㄴㅉㅏ', '▃', 'ㅇㅝㄴㅎㅐ', '.']
+# mc = MeCabTokenizer_orig(tokenizer_type="mecab_orig", decomposition_type="composed")                    # ['사람', '은', '▃', '널', '▃', '진짜', '▃', '원해', '.']
+# mc = MeCabTokenizer_orig(tokenizer_type="mecab_orig", decomposition_type="decomposed_pure")             # ['ㅅㅏㄹㅏㅁ', 'ㅇㅡㄴ', '▃', 'ㄴㅓㄹ', '▃', 'ㅈㅣㄴㅉㅏ', '▃', 'ㅇㅝㄴㅎㅐ', '.']
+# mc = MeCabTokenizer_orig(tokenizer_type="mecab_orig", decomposition_type="decomposed_morphological")             # ['사람', 'ㅇㅡㄴ', '▃', 'ㄴㅓㄹ', '▃', '진짜', '▃', 'ㅇㅝㄴㅎㅐ', '.']
+#
 # mc = MeCabTokenizer_fixed(use_original=True, decomposition_type="decomposed_morphological")    # ['사람', 'ㅇㅡㄴ', '▃', 'ㄴㅓㄹ', '▃', '진짜', '▃', 'ㅇㅝㄴㅎㅐ', '.']
 # mc = MeCabTokenizer_fixed(use_original=False, decomposition_type="composed")                   # ['사람', '은', '▃', '너', 'ᆯ', '▃', '진짜', '▃', '원하', '아', '.']
 # mc = MeCabTokenizer_fixed(use_original=False, decomposition_type="decomposed_pure")            # ['ㅅㅏㄹㅏㅁ', 'ㅇㅡㄴ', '▃', 'ㄴㅓ', 'ᆯ', '▃', 'ㅈㅣㄴㅉㅏ', '▃', 'ㅇㅝㄴㅎㅏ', 'ㅇㅏ', '.']
