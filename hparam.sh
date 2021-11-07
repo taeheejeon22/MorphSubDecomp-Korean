@@ -12,7 +12,9 @@
 
 batch_sizes=(16 32)
 learning_rates=(5e-5 3e-5 2e-5)
-tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
+tasks=("korsts")
+
+# tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
 num_epochs=5
 
