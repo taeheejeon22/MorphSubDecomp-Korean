@@ -1,3 +1,6 @@
+# https://python.iitter.com/other/220121.html
+# 에러 나는 코드 들어가서 import amp_c 주석 처리하면 됨 
+
 from logging import Logger
 
 import torch

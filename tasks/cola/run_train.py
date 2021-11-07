@@ -38,6 +38,7 @@ from tokenizer import (
     # WordTokenizer,
 )
 
+from time import gmtime, strftime
 
 
 
@@ -75,7 +76,9 @@ def main(args):
     # logger
     # logger = get_logger(log_path=os.path.join(config.log_dir, "logs.txt"))
     pretrained_bert_file_name = pretrained_bert_files[0]
-    logger = get_logger(log_path=os.path.join(config.log_dir, f"logs_{pretrained_bert_file_name}.txt"))
+    begin_time = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
+    logger = get_logger(log_path=os.path.join(config.log_dir, f"logs_{pretrained_bert_file_name}_{begin_time}.txt"))
+
     logger.info(config)
 
     # 기본적인 모듈들 생성 (vocab, tokenizer)
