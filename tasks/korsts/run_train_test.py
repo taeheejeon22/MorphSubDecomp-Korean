@@ -207,5 +207,6 @@ if config.use_tpu == "tpu":
     import torch_xla.core.xla_model as xm
     import torch_xla.distributed.xla_multiprocessing as xmp
     xmp.spawn(main(args), nprocs=8)
+    print("multi run...")
 else:
     main(args)

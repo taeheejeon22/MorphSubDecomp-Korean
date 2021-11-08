@@ -156,7 +156,10 @@ class Trainer:
 
 
             # save the weight
-            #xm.save()
+            if config.use_tpu == "tpu":
+                import torch_xla
+                import torch_xla.core.xla_model as xm # for using tpu
+                xm.save()
 
             # output_path = os.path.join(self.config.checkpoint_dir, f"model-epoch-{epoch}.pth")
             # torch.save(self.model.state_dict(), output_path)
