@@ -201,7 +201,7 @@ if __name__ == "__main__":
 
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 
-config = TrainConfig(**args)
+config = TrainConfig
 if config.use_tpu == "tpu":
     import torch_xla
     import torch_xla.core.xla_model as xm
