@@ -156,7 +156,7 @@ class Trainer:
 
 
             # save the weight
-            if config.use_tpu == "tpu":
+            if self.config.use_tpu == "tpu":
                 import torch_xla
                 import torch_xla.core.xla_model as xm # for using tpu
                 xm.save()
