@@ -205,7 +205,7 @@ if __name__ == "__main__":
     import torch_xla
     import torch_xla.core.xla_model as xm
     import torch_xla.distributed.xla_multiprocessing as xmp
-    xmp.spawn(main(args), nprocs=8)
+    xmp.spawn(main(args), nprocs=4)
     print('multi run...')
     # else:
     #     print('not tpu...')
