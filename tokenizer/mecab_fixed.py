@@ -344,14 +344,7 @@ class MeCabTokenizer_fixed(BaseTokenizer):
 #
 #
 #
-#
-# mc = MeCabTokenizer_fixed(use_original=True, decomposition_type="composed")                    # ['사람', '은', '▃', '널', '▃', '진짜', '▃', '원해', '.']
-# mc = MeCabTokenizer_fixed(use_original=True, decomposition_type="decomposed_pure")             # ['ㅅㅏㄹㅏㅁ', 'ㅇㅡㄴ', '▃', 'ㄴㅓㄹ', '▃', 'ㅈㅣㄴㅉㅏ', '▃', 'ㅇㅝㄴㅎㅐ', '.']
-# mc = MeCabTokenizer_fixed(use_original=True, decomposition_type="decomposed_morphological")    # ['사람', 'ㅇㅡㄴ', '▃', 'ㄴㅓㄹ', '▃', '진짜', '▃', 'ㅇㅝㄴㅎㅐ', '.']
-# mc = MeCabTokenizer_fixed(use_original=False, decomposition_type="composed")                   # ['사람', '은', '▃', '너', 'ᆯ', '▃', '진짜', '▃', '원하', '아', '.']
-# mc = MeCabTokenizer_fixed(use_original=False, decomposition_type="decomposed_pure")            # ['ㅅㅏㄹㅏㅁ', 'ㅇㅡㄴ', '▃', 'ㄴㅓ', 'ᆯ', '▃', 'ㅈㅣㄴㅉㅏ', '▃', 'ㅇㅝㄴㅎㅏ', 'ㅇㅏ', '.']
-# mc = MeCabTokenizer_fixed(use_original=False, decomposition_type="decomposed_morphological")   # ['사람', 'ㅇㅡㄴ', '▃', '너', 'ᆯ', '▃', '진짜', '▃', '원하', 'ㅇㅏ', '.']
-#
+
 # mc.tokenize("난 널 진짜 원해.")   # ['나', 'ㄴ', '▃', '너', 'ㄹ', '▃', '진짜', '▃', '원하', '아', '.']
 #
 #
