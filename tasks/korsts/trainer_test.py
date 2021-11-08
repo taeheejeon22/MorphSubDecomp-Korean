@@ -159,8 +159,9 @@ class Trainer:
             if self.config.use_tpu == "tpu":
                 import torch_xla
                 import torch_xla.core.xla_model as xm # for using tpu
-                xm.save(self.model.state_dict(), './')
-
+                output_path = os.path.join(self.config.checkpoint_dir, f"model-epoch-{epoch}.pth")
+                xm.save(self.model.state_dict(), output_path)
+                self.logger.info(f"MODEL IS SAVED AT {output_path}\n")
             # output_path = os.path.join(self.config.checkpoint_dir, f"model-epoch-{epoch}.pth")
             # torch.save(self.model.state_dict(), output_path)
             # self.logger.info(f"MODEL IS SAVED AT {output_path}\n")
