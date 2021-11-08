@@ -47,11 +47,6 @@ class Trainer:
                 self.model = model
 
         self.model.to(self.device)
-            
-        # self.train_data_loader = pl.ParallelLoader(train_data_loader, [self.device]).per_device_loader(self.device)
-        # self.dev_data_loader = pl.ParallelLoader(dev_data_loader, [self.device]).per_device_loader(self.device)
-        # self.test_data_loader = pl.ParallelLoader(test_data_loader, [self.device]).per_device_loader(self.device)
-
 
         self.train_data_loader = train_data_loader
         self.dev_data_loader = dev_data_loader
