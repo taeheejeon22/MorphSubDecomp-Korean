@@ -134,7 +134,7 @@ for batch_size in "${batch_sizes[@]}"; do
             elif [[ $vocab_size == "64k" ]]; then
 
                 for tokenizer in "${tokenizers}"; do
-                    python3 tasks/$task/run_train.py --tokenizer $tokenizer
+                    python3 tasks/$task/run_train.py --tokenizer $tokenizer \
                     --resource_dir ./resources/v5_without_dummy_letter \
                     --use_tpu $use_tpu \
                     --batch_size $batch_size \
