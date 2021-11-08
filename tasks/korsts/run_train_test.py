@@ -51,13 +51,13 @@ def main(args):
     config = config._replace(
         log_dir=config.log_dir.format(config.tokenizer),
         summary_dir=config.summary_dir.format(config.tokenizer),
-        checkpoint_dir=config.checkpoint_dir.format(config.tokenizer),
+        #checkpoint_dir=config.checkpoint_dir.format(config.tokenizer),
     )
     set_seed(config.seed)
 
     os.makedirs(config.log_dir, exist_ok=True)
     os.makedirs(config.summary_dir, exist_ok=True)
-    os.makedirs(config.checkpoint_dir, exist_ok=True)
+    #os.makedirs(config.checkpoint_dir, exist_ok=True)
 
 
     # bert 모델 경로 자동 지정
@@ -201,12 +201,11 @@ if __name__ == "__main__":
 
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 
-config = TrainConfig
-if config.use_tpu == "tpu":
-    import torch_xla
-    import torch_xla.core.xla_model as xm
-    import torch_xla.distributed.xla_multiprocessing as xmp
-    xmp.spawn(main(args), nprocs=8)
-    print("multi run...")
-else:
-    main(args)
+
+import torch_xla
+import torch_xla.core.xla_model as xm
+import torch_xla.distributed.xla_multiprocessing as xmp
+xmp.spawn(main(args), nprocs=8)
+# else:
+#     print('not tpu...')
+#     main(args)
