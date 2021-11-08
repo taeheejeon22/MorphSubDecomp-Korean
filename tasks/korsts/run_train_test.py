@@ -35,6 +35,10 @@ from tokenizer import (
 
 from time import gmtime, strftime
 
+import torch_xla
+import torch_xla.core.xla_model as xm
+import torch_xla.distributed.xla_multiprocessing as xmp
+
 
 def set_seed(seed):
     random.seed(seed)
@@ -202,9 +206,7 @@ if __name__ == "__main__":
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 
 
-    import torch_xla
-    import torch_xla.core.xla_model as xm
-    import torch_xla.distributed.xla_multiprocessing as xmp
+
     xmp.spawn(main(args), nprocs=8)
     print('multi run...')
     # else:

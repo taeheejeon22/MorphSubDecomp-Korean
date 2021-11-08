@@ -13,6 +13,10 @@ from transformers import get_linear_schedule_with_warmup
 from tasks.korsts.config import TrainConfig
 from tasks.korsts.model import KorSTSModel
 
+import torch_xla
+import torch_xla.core.xla_model as xm # for using tpu
+import torch_xla.distributed.xla_multiprocessing as xmp
+import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
 
 class Trainer:
     def __init__(
@@ -29,10 +33,7 @@ class Trainer:
 
         if config.use_tpu == "tpu":
             # 사전에 torch_xla 설치 필요
-            import torch_xla
-            import torch_xla.core.xla_model as xm # for using tpu
-            import torch_xla.distributed.xla_multiprocessing as xmp
-            import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
+
             self.device = xm.xla_device()
             self.model = model
             print('TPU running...')
@@ -167,14 +168,9 @@ class Trainer:
         loss = self.criterion(outputs, labels)
         loss.backward()
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
-        if self.config.use_tpu == "tpu":
-            import torch_xla
-            import torch_xla.core.xla_model as xm # for using tpu
-            # optimizer for TPU (Note: Cloud TPU-specific code!)
-            xm.optimizer_step(self.optimizer) # multi core 사용 시 barrier=True 불필요
-        else:
-            self.optimizer.step()
-        
+
+        xm.optimizer_step(self.optimizer) # multi core 사용 시 barrier=True 불필요
+
         #self.optimizer.step()
         self.scheduler.step()
 
