@@ -51,13 +51,13 @@ def main(args):
     config = config._replace(
         log_dir=config.log_dir.format(config.tokenizer),
         summary_dir=config.summary_dir.format(config.tokenizer),
-        # checkpoint_dir=config.checkpoint_dir.format(config.tokenizer),
+        checkpoint_dir=config.checkpoint_dir.format(config.tokenizer),
     )
     set_seed(config.seed)
 
     os.makedirs(config.log_dir, exist_ok=True)
     os.makedirs(config.summary_dir, exist_ok=True)
-    # os.makedirs(config.checkpoint_dir, exist_ok=True)
+    os.makedirs(config.checkpoint_dir, exist_ok=True)
 
 
     # bert 모델 경로 자동 지정
