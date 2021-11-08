@@ -202,10 +202,11 @@ if __name__ == "__main__":
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 
 
-import torch_xla
-import torch_xla.core.xla_model as xm
-import torch_xla.distributed.xla_multiprocessing as xmp
-xmp.spawn(main(args), nprocs=8)
-# else:
-#     print('not tpu...')
-#     main(args)
+    import torch_xla
+    import torch_xla.core.xla_model as xm
+    import torch_xla.distributed.xla_multiprocessing as xmp
+    xmp.spawn(main(args), nprocs=8)
+    print('multi run...')
+    # else:
+    #     print('not tpu...')
+    #     main(args)
