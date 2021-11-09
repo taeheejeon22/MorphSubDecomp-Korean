@@ -39,21 +39,12 @@ echo "resource_dir == $RESOURCE_DIR"
 # 입력 받은 tokenizer, corpus의 output_dir
 
 #OUTPUT_DIR=`echo ${CORPUS_DIR//"tokenized_GCP"/"tfrecord"}`
-OUTPUT_DIR=/home/jth/Desktop/tfrecord/tfrecord/$TOKENIZER
+OUTPUT_DIR=/home/jth/Desktop/acl_tokenization/corpus/tfrecord
 
 
 
 
 # 각 코퍼스 파일에 대해서 tfrecord 만들기
-
-# corpus_files=`gsutil ls gs://$CORPUS_DIR`
-# file_count=`gsutil ls gs://$CORPUS_DIR | wc -l`
-
-# echo corpus files: $corpus_files
-# echo 코퍼스 파일 수: $file_count
-
-# tok.model을 vm으로 불러오기
-#gsutil cp gs://$RESOURCE_DIR/tok.model $TOKENIZER'_'tok.model
 
 file_num=0
 
@@ -64,10 +55,10 @@ do
     echo "OUTPUT_DIR: ${OUTPUT_DIR}"
     echo "RESORCE_DIR: ${RESOURCE_DIR}"
     # 코퍼스 조각 -> tfrecord로 만드는 작업을 백그라운드에서 실행
-    command=nohup \
+    nohup \
     python3 bert-sentencepiece/create_pretraining_data.py \
     --input_file=${file} \
-    --output_file=${OUTPUT_DIR}/${file_name}.tfrecord \
+    --output_file=${OUTPUT_DIR}/${TOKENIZER}/${file_name}.tfrecord \
     --vocab_file=${RESOURCE_DIR}/vocab.txt \
     --do_lower_case=True \
     --max_predictions_per_seq=20 \
@@ -83,15 +74,12 @@ do
 
 done
 
-# log를 gcs로 전송
-#gsutil mv *.err gs://$OUTPUT_DIR
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/decomposed_pure_nfd
+
+# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/eojeol_mecab_fixed_decomposed_pure_nfd_sp-64k
 
 
-#/home/jth/Desktop/tfrecord/tokenized/namuwiki_20200302_mecab_fixed/decomposed_pure
-# /home/jth/Desktop/tfrecord/tokenized/wiki_20210901_mecab_fixed/decomposed_pure
-
-# /home/jth/Desktop/acl_tokenization/resources/v5_without_dummy_letter/mecab_fixed_decomposed_pure_sp-64k
 
 
-# /home/jth/Desktop/tfrecord/fake
+# /home/jth/Desktop/acl_tokenization/corpus
 
