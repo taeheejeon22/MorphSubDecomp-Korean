@@ -54,7 +54,7 @@ class TrainConfig(NamedTuple):
     #: output dir
     log_dir: str = "./run_outputs/{}/korsts/logs"
     summary_dir: str = "./run_outputs/{}/korsts/summaries"
-    # checkpoint_dir: str = "./run_outputs/{}/korsts/checkpoints"
+    checkpoint_dir: str = "./run_outputs/{}/korsts/checkpoints"
 
     def __repr__(self):
         _repr_str = "Training Configuration:\n{\n"

@@ -10,9 +10,9 @@
     # parser.add_argument("--learning_rate", type=float)
 
 
-batch_sizes=(16 32)
-learning_rates=(5e-5 3e-5 2e-5)
-tasks=("cola")
+batch_sizes=(64)
+learning_rates=(5e-5)
+tasks=("korsts")
 
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
@@ -152,5 +152,6 @@ for batch_size in "${batch_sizes[@]}"; do
     done
 
 done
+
 
 

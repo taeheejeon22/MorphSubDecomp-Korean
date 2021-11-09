@@ -17,7 +17,7 @@ from tasks.korsts.config import TrainConfig
 from tasks.korsts.data_utils import load_data
 from tasks.korsts.dataset import KorSTSDataset
 from tasks.korsts.model import KorSTSModel
-from tasks.korsts.trainer import Trainer
+from tasks.korsts.trainer_test import Trainer
 from tasks.logger import get_logger
 from tokenizer import (
     # CharTokenizer,
@@ -34,6 +34,11 @@ from tokenizer import (
 )
 
 from time import gmtime, strftime
+
+import torch_xla
+import torch_xla.core.xla_model as xm
+import torch_xla.distributed.xla_multiprocessing as xmp
+os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 
 def set_seed(seed):
@@ -171,14 +176,7 @@ def main(args):
     model.bert = load_pretrained_bert(
         bert_config, os.path.join(config.resource_dir, config.tokenizer, pretrained_bert_file_name)
     )
-    # if config.use_tpu == True:
-    #     import torch_xla.core.xla_model as xm # for using tpu
-    #     import torch_xla.distributed.xla_multiprocessing as xmp
-    #     import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
-    #     trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
-    #     xmp.spawn(trainer.train(), nprocs=8, start_method='fork')
-        
-    # else:
+
     trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
     trainer.train()
 
@@ -207,5 +205,11 @@ if __name__ == "__main__":
     parser.add_argument("--summary_dir", type=str)
 
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
-    
-    main(args)
+
+
+
+    xmp.spawn(main(args), nprocs=8)
+    print('multi run...')
+    # else:
+    #     print('not tpu...')
+    #     main(args)

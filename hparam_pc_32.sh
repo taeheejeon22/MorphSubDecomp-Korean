@@ -10,9 +10,9 @@
     # parser.add_argument("--learning_rate", type=float)
 
 
-batch_sizes=(16 32)
+batch_sizes=(32)
 learning_rates=(5e-5 3e-5 2e-5)
-tasks=("cola")
+tasks=("pc")
 
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
