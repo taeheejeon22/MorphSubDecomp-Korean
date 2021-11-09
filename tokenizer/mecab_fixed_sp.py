@@ -25,10 +25,19 @@ class MeCabSentencePieceTokenizer_fixed(BaseTokenizer):
 
         # self.mecab = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )                    # ['사람', '은', '▃', '널', '▃', '진짜', '▃', '원해', '.']
         # self.sp = SentencePieceTokenizer(model_path="./resources/v5_without_dummy_letter/mecab_fixed_composed_sp-64k/tok.model")
+
         # self.mecab = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure", space_symbol= "▃", dummy_letter= "" )
         # self.sp = SentencePieceTokenizer(model_path="./resources/v5_without_dummy_letter/mecab_fixed_decomposed_pure_sp-64k/tok.model")
         # self.mecab = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "" )
         # self.sp = SentencePieceTokenizer(model_path="./resources/v5_without_dummy_letter/mecab_fixed_decomposed_morphological_sp-64k/tok.model")
+
+        # self.mecab = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "" )
+        # self.sp = SentencePieceTokenizer(model_path="./output_sp/mecab_fixed_decomposed_morphological_sp-32k/tok.model")
+
+
+
+        # self.mecab = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "⊸" )
+        # self.sp = SentencePieceTokenizer(model_path="./resources/v3_with_dummy_letter/mecab_fixed_decomposed_morphological_sp-32k/tok.model")
 
 
     def tokenize(self, text: str) -> List[str]:
@@ -39,7 +48,7 @@ class MeCabSentencePieceTokenizer_fixed(BaseTokenizer):
 
         tokenized = self.mecab.tokenize(text)  # ['나', 'ᆫ', '▃', '너', 'ᆯ', '▃', '좋아하', '아']
 
-        tokenized = self.sp.tokenize(" ".join(tokenized))   # ['▁나', '▁ㄴ', '▁▃', '▁너', '▁ㄹ', '▁▃', '▁좋아하', '▁아']
+        tokenized = self.sp.tokenize(" ".join(tokenized))   # ['▁나', '▁ㄴ', '▁▃', '▁너', '▁ㄹ', '▁▃', '▁좋아하', '▁아']    # ['▁나', '▁⊸⊸', 'ㄴ', '▁▃', '▁너', '▁⊸⊸', 'ㄹ', '▁▃', '▁좋아하', '▁ㅇㅏ', '⊸']
 
         output = []
         for i in range(0, len(tokenized)):
@@ -67,8 +76,21 @@ class MeCabSentencePieceTokenizer_fixed(BaseTokenizer):
 # text = "사망 플래그의 좋은 예시이다."
 # text = "나는 장풍을 했다."
 # text = "난 널 좋아해"  # ['▁난', '▃', '▁널', '▃', '▁좋아해']
+# text = "나는 너를 좋아해"
+#
+# text = '나를 좋아해'
+# text = '당신을 좋아해'
+#
+# text = '너를 좋아하는데'
+# text = '네가 예쁜데'
+#
 # mc.tokenize(text)
-
+#
+# text = '사람은 좋다'
+#
+# text = '먹으면서'
+# text = "가면서"
+#
 # self = mc
 # self.tokenize(text)
 
