@@ -11,7 +11,7 @@
 
 
 batch_sizes=(64)
-learning_rates=(5e-5 3e-5 2e-5)
+learning_rates=(3e-5 2e-5)
 tasks=("cola")
 
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
