@@ -13,6 +13,10 @@ from transformers import get_linear_schedule_with_warmup
 from tasks.korsts.config import TrainConfig
 from tasks.korsts.model import KorSTSModel
 
+import torch_xla
+import torch_xla.core.xla_model as xm # for using tpu
+import torch_xla.distributed.xla_multiprocessing as xmp
+import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
 
 class Trainer:
     def __init__(
@@ -28,12 +32,8 @@ class Trainer:
         self.config = config
 
         if config.use_tpu == "tpu":
-
             # 사전에 torch_xla 설치 필요
-            import torch_xla
-            import torch_xla.core.xla_model as xm # for using tpu
-            import torch_xla.distributed.xla_multiprocessing as xmp
-            import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
+
             self.device = xm.xla_device()
             self.model = model
             print('TPU running...')
@@ -47,11 +47,6 @@ class Trainer:
                 self.model = model
 
         self.model.to(self.device)
-            
-        #self.train_data_loader = pl.ParallelLoader(train_data_loader, [self.device]).per_device_loader(self.device)
-        #self.dev_data_loader = pl.ParallelLoader(dev_data_loader, [self.device]).per_device_loader(self.device)
-        #self.test_data_loader = pl.ParallelLoader(test_data_loader, [self.device]).per_device_loader(self.device)
-
 
         self.train_data_loader = train_data_loader
         self.dev_data_loader = dev_data_loader
@@ -94,7 +89,7 @@ class Trainer:
             train_targets = []
             train_predictions = []
 
-            for step, data in enumerate(tqdm(self.train_data_loader)):
+            for step, data in enumerate(tqdm(pl.ParallelLoader(self.train_data_loader, [self.device]).per_device_loader(self.device))):
                 self.model.train()
 
                 self.global_step += 1
@@ -126,7 +121,7 @@ class Trainer:
                     train_predictions = []
 
             # dev every epoch
-            dev_loss, dev_targets, dev_predictions = self._validation(self.dev_data_loader)
+            dev_loss, dev_targets, dev_predictions = self._validation(pl.ParallelLoader(self.dev_data_loader, [self.device]).per_device_loader(self.device))
             dev_corr = spearmanr(dev_targets, dev_predictions)[0]
             self.logger.info(f"######### DEV REPORT #EP{epoch} #########")
             self.logger.info(f"Loss {dev_loss:.4f}")
@@ -136,7 +131,7 @@ class Trainer:
             self.summary_writer.add_scalar("korsts/dev/spearman", dev_corr, self.global_step)
 
             # test every epoch
-            test_loss, test_targets, test_predictions = self._validation(self.test_data_loader)
+            test_loss, test_targets, test_predictions = self._validation(pl.ParallelLoader(self.test_data_loader, [self.device]).per_device_loader(self.device))
             test_corr = spearmanr(test_targets, test_predictions)[0]
             self.logger.info(f"######### TEST REPORT #EP{epoch} #########")
             self.logger.info(f"Loss {test_loss:.4f}")
@@ -155,9 +150,6 @@ class Trainer:
                     print("dev, test logging...")
 
 
-            # save the weight
-            #xm.save()
-
             # output_path = os.path.join(self.config.checkpoint_dir, f"model-epoch-{epoch}.pth")
             # torch.save(self.model.state_dict(), output_path)
             # self.logger.info(f"MODEL IS SAVED AT {output_path}\n")
@@ -171,14 +163,9 @@ class Trainer:
         loss = self.criterion(outputs, labels)
         loss.backward()
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
-        if self.config.use_tpu == "tpu":
-            import torch_xla
-            import torch_xla.core.xla_model as xm # for using tpu
-            # optimizer for TPU (Note: Cloud TPU-specific code!)
-            xm.optimizer_step(self.optimizer, barrier=True) # multi core 사용 시 barrier=True 불필요
-        else:
-            self.optimizer.step()
-        
+
+        xm.optimizer_step(self.optimizer) # multi core 사용 시 barrier=True 불필요
+
         #self.optimizer.step()
         self.scheduler.step()
 
