@@ -9,6 +9,9 @@ class SentencePieceTokenizer(BaseTokenizer):
     def __init__(self, model_path: str, reverse: bool = False):
         self.sp = spm.SentencePieceProcessor()
         self.sp.Load(model_path)
+
+        # self.sp.Load("./resources/v3_without_dummy_letter/32k/tok.model")
+
         self.reverse = reverse
 
     def tokenize(self, text: str) -> List[str]:
@@ -26,12 +29,9 @@ class SentencePieceTokenizer(BaseTokenizer):
 
 
 
-# sp_config_path = "./resources/v2_with_dummy_letter/wikiko_all_64k/mecab_orig_composed_sp-64k/tok.model"
-# sp_config_path = "./resources/v2_with_dummy_letter/wikiko_all_64k/mecab_fixed_composed_sp-64k/tok.model"
-#
-#
-# sp = SentencePieceTokenizer(model_path=sp_config_path,)
+# model_path = "./resources/v3_without_dummy_letter/sp-32k/tok.model"
+# sp = SentencePieceTokenizer(model_path)
 # text = "대한민국에 우리끼리 살아보자"    # ['▁대한민국에', '▁우리', '끼리', '▁살아', '보자']
-# text = "난 널 좋아해"
-#
+# text = "난 널 좋아해"  # ['▁난', '▁널', '▁좋아', '해']
+# text = "밥을 먹습니다"  # ['▁밥', '을', '▁먹', '습니다']
 # sp.tokenize(text)

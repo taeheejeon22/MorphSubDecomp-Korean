@@ -20,7 +20,8 @@ from tokenizer.old.mecab_fixed import str2jamo, mecab_tokenize
 
 
 # from tokenizer.mecab_fixed_v2 import MeCabTokenizer_fixed
-import scripts.tokenizers_acl_v2 as tok
+# import scripts.tokenizers_acl_v2 as tok
+import scripts.tokenizers_acl_v3 as tok
 
 
 import MeCab

@@ -16,13 +16,16 @@ parse_Wikiko_with_preprocessing_v0.py
 
 wikiko (without dummy letter)
 ```bash
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=none
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=composed
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_morphological
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological
+python scripts/mecab_tokenization_v2.py --token_type="eojeol" --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed
+python scripts/mecab_tokenization_v2.py --token_type="eojeol" --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure_nfd
+python scripts/mecab_tokenization_v2.py --token_type="eojeol" --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological_nfd
+
+python scripts/mecab_tokenization_v2.py --token_type="morpheme" --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=composed
+python scripts/mecab_tokenization_v2.py --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure_nfd
+python scripts/mecab_tokenization_v2.py --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_morphological_nfd
+python scripts/mecab_tokenization_v2.py --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed
+python scripts/mecab_tokenization_v2.py --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure_nfd
+python scripts/mecab_tokenization_v2.py --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological_nfd
 ```
 wikiko (with dummy letter)
 ```bash
@@ -42,6 +45,15 @@ split -d -l 5000000 namuwiki_20200302_with_preprocessing_v3_nn.txt namuwiki_2020
 
 namuwiki (without dummy letter)
 ```bash
+python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed
+python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure_nfd
+python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological_nfd
+
+
+
+
+
+
 python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=none
 python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=composed
 python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --n_job=6
@@ -147,7 +159,11 @@ orig decomposed morphological 20:12
 ## sentencepiece
 ./build_vocab/train_sentencepiece.py
 ```bash
-python build_vocab/train_sentencepiece.py --vocab_size=32000
+python build_vocab/train_sentencepiece.py --vocab_size=32000 --token_type="eojeol" --tokenizer_type="mecab_fixed" --composition_type="composed"
+python build_vocab/train_sentencepiece.py --vocab_size=32000 --token_type="eojeol" --tokenizer_type="mecab_fixed" --composition_type="decomposed_pure_nfd"
+python build_vocab/train_sentencepiece.py --vocab_size=32000 --token_type="eojeol" --tokenizer_type="mecab_fixed" --composition_type="decomposed_morphological_nfd"
+
+
 
 python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_orig" --composition_type="composed"
 python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_orig" --composition_type="decomposed_pure"
