@@ -16,6 +16,9 @@ dataset/nlu_tasks/*
 run_outputs/*
 output_sp/*
 
+# code
+ckpt_to_pytorch.txt
+
 # java
 .java/*
 
