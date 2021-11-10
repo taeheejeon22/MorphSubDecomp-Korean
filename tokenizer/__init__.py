@@ -15,6 +15,7 @@ from tokenizer.base import BaseTokenizer
 
 from tokenizer.mecab_orig_sp import MeCabSentencePieceTokenizer_orig
 from tokenizer.mecab_fixed_sp import MeCabSentencePieceTokenizer_fixed
+from tokenizer.mecab_sp import MeCabSentencePieceTokenizer
 
 # from tokenizer.mecab_sp_kortok import MeCabSentencePieceTokenizer_kortok
 
@@ -23,6 +24,8 @@ from tokenizer.mecab_fixed_sp import MeCabSentencePieceTokenizer_fixed
 # from tokenizer.mecab_fixed import MeCabTokenizer_fixed
 from tokenizer.mecab_orig import MeCabTokenizer_orig
 from tokenizer.mecab_fixed import MeCabTokenizer_fixed
+
+from tokenizer.mecab_all import MeCabTokenizer_all
 
 
 
@@ -36,11 +39,15 @@ __all__ = [
     # "JamoTokenizer",
     "MeCabSentencePieceTokenizer_orig",
     "MeCabSentencePieceTokenizer_fixed",
+    "MeCabSentencePieceTokenizer",
     # "MeCabTokenizer",
     # "MeCabSentencePieceTokenizer_kortok",
     # "MeCabTokenizer_kortok",
     "MeCabTokenizer_orig",
     "MeCabTokenizer_fixed",
+
+    "MeCabTokenizer_all",
+
     # "MeCabFixedTokenizer",
     "SentencePieceTokenizer",
     "Vocab",
