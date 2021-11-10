@@ -179,13 +179,6 @@ def main(args):
         bert_config, os.path.join(config.resource_dir, config.tokenizer, pretrained_bert_file_name)
     )
 
-    # data loader for tpu
-    if config.use_tpu == "tpu":
-        train_data_loader = pl.ParallelLoader(train_data_loader, [device]).per_device_loader(device)
-        dev_data_loader = pl.ParallelLoader(dev_data_loader, [device]).per_device_loader(device)
-        test_data_loader = pl.ParallelLoader(test_data_loader, [device]).per_device_loader(device)
-
-
     trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
     trainer.train()
 
