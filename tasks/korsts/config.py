@@ -65,7 +65,7 @@ class TrainConfig(NamedTuple):
     device (tpu)
     """
     if use_tpu == "tpu":
-        device = xm.xla_device()
+        device: xm.xla_device()
 
 
 
