@@ -183,7 +183,7 @@ def main(args):
     #device = xm.xla_device()
     #print('TPU running...')
     device = config.device
-    print('Device: ,' device)
+    print('Device: ', device)
 
     # data loader for tpu
     if config.use_tpu == "tpu":
