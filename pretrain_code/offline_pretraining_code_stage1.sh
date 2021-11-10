@@ -78,7 +78,9 @@ done
 
 # /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/eojeol_mecab_fixed_decomposed_pure_nfd_sp-64k
 
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/decomposed_morphological_nfd
 
+# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/eojeol_mecab_fixed_decomposed_morphological_nfd_sp-64k
 
 
 # /home/jth/Desktop/acl_tokenization/corpus
