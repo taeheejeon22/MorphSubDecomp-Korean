@@ -243,7 +243,7 @@ class MeCabTokenizer_all(BaseTokenizer):
     def __init__(self, token_type: str, tokenizer_type: str, decomposition_type: str, space_symbol: str = "▃", dummy_letter: str = ""):
         assert (token_type in ["eojeol", "morpheme"] ), 'check the token type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
         assert (tokenizer_type in ["mecab_orig", "mecab_fixed"] ), 'check the tokenizer type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-        assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+        assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological", "composed_nfd", "decomposed_pure_nfd", "decomposed_morphological_nfd"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 
         self.mecab = MeCab.Tagger(f"--dicdir /usr/local/lib/mecab/dic/mecab-ko-dic")
         # self.use_original = use_original    # True: mecab orig  False: mecab fixed
@@ -338,17 +338,30 @@ class MeCabTokenizer_all(BaseTokenizer):
 
 
 
-# mc = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_orig", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )      # ['나는', '너를', '먹는데.']
-# mc = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )      # ['나는', '너를', '먹는데.']
-# mc = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure_nfd", space_symbol= "▃", dummy_letter= "" )      # ['나는', '너를', '먹는데.']
+# mc = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_orig", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )
+# mc = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )
+# mc = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure_nfd", space_symbol= "▃", dummy_letter= "" )
+# mc = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological_nfd", space_symbol= "▃", dummy_letter= "" )
 #
 #
 # mc = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )    # ['나', '는', '▃', '너', '를', '▃', '먹', '는데', '.']
+# mc = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_pure", space_symbol= "▃", dummy_letter= "" )
+# mc = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "" )
+# mc = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_pure_nfd", space_symbol= "▃", dummy_letter= "" )
+# mc = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_morphological_nfd", space_symbol= "▃", dummy_letter= "" )
+#
+# mc = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )    # ['나', '는', '▃', '너', 'ㄹ', '▃', '먹', '는데', '.']
+# mc = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure", space_symbol= "▃", dummy_letter= "" )
+# mc = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "" )
+# mc = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure_nfd", space_symbol= "▃", dummy_letter= "" )
+# mc = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological_nfd", space_symbol= "▃", dummy_letter= "" )
+#
+#
+#
+#
 # mc = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )   # ['나', '는', '▃', '너', 'ㄹ', '▃', '먹', '는데', '.']
 #
 #
-# mc = MeCabTokenizer_all(tokenizer_type="mecab_orig", decomposition_type="decomposed_pure", space_symbol= "▃", dummy_letter= "" )
-# mc = MeCabTokenizer_all(tokenizer_type="mecab_orig", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "" )
 # mc = MeCabTokenizer_all(tokenizer_type="mecab_fixed", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )                    # ['사람', '은', '▃', '널', '▃', '진짜', '▃', '원해', '.']
 # mc = MeCabTokenizer_all(tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure", space_symbol= "▃", dummy_letter= "" )
 # mc = MeCabTokenizer_all(tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "" )
@@ -358,10 +371,10 @@ class MeCabTokenizer_all(BaseTokenizer):
 #
 #
 # sent = "나는 널 먹는데."
-#
 # mc.tokenize(sent)
 #
-#
+# len(mc.tokenize(sent)[0])
+# len(mc.tokenize(sent)[1])
 #
 #
 #

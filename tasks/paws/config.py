@@ -18,8 +18,10 @@ class TrainConfig(NamedTuple):
     #: bert 설정 파일 이름
     bert_config_file_name: str = "bert_config.json"
     #: pretrained bert 모델 파일 이름
-    # pretrained_bert_file_name: str = "bert_model.pth"
+        # pretrained_bert_file_name: str = "bert_model.pth"
     pretrained_bert_file_name: str = ""
+    #: token type (eojeol / morpheme)
+    token_type: str = ""
 
     """
     Training Hyperparameters

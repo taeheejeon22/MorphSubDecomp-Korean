@@ -275,12 +275,13 @@ class tokenizers():
     # def mecab_tokenizer(self, sent: str, tokenizer_type: str, decomposition_type: str):
 
     def mecab_tokenizer(self, sent: str, token_type: str, tokenizer_type: str, decomposition_type: str):
+        assert (tokenizer_type in ["mecab_orig", "mecab_fixed"] ), 'check the tokenizer type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+        assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological", "composed_nfd", "decomposed_pure_nfd", "decomposed_morphological_nfd"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+
         if token_type == "eojeol":
             mecab_tokenized = self.eojeol_tokenizer(sent=sent, decomposition_type=decomposition_type)
 
         elif token_type == "morpheme":
-            assert (tokenizer_type in ["mecab_orig", "mecab_fixed"] ), 'check the tokenizer type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-            assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological", "composed_nfd", "decomposed_pure_nfd", "decomposed_morphological_nfd"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 
             if tokenizer_type == "mecab_orig":
                 use_original = True

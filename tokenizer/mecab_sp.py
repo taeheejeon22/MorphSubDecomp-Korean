@@ -16,10 +16,10 @@ from tokenizer.sentencepiece import SentencePieceTokenizer
 
 
 class MeCabSentencePieceTokenizer(BaseTokenizer):
-    def __init__(self, mecab, sp: SentencePieceTokenizer, use_fixed: bool):
+    def __init__(self, mecab, sp: SentencePieceTokenizer):
         self.mecab = mecab
         self.sp = sp
-        self.use_fixed = use_fixed
+        # self.use_fixed = use_fixed
 
         # self.mecab = MeCabTokenizer(config_path="./resources/mecab_orig_composed_sp-64k/tok.json")
         # self.sp = SentencePieceTokenizer(model_path="./resources/mecab_orig_composed_sp-64k/tok.model")
@@ -70,6 +70,7 @@ class MeCabSentencePieceTokenizer(BaseTokenizer):
 # mecab = MeCabTokenizer_orig(tokenizer_type="mecab_orig", decomposition_type="decomposed_morphological") # ['▁나', '▁ㄴㅡㄴ', '▃', '▁장', '풍', '▁ㅇㅡㄹ', '▃', '▁ㅎㅐㅆ', '▁ㄷㅏ', '▁.']
 # sp = SentencePieceTokenizer(model_path="./resources/v5_without_dummy_letter/mecab_orig_decomposed_morphological_sp-64k/tok.model")
 #
+#
 # # mecab_fixed.py
 # mecab = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" ) # ['▁나', '▁는', '▃', '▁장풍', '▁을', '▃', '▁하', '▁았', '▁다', '▁.']
 # sp = SentencePieceTokenizer(model_path="./resources/v5_without_dummy_letter/mecab_fixed_composed_sp-64k/tok.model")
@@ -78,29 +79,61 @@ class MeCabSentencePieceTokenizer(BaseTokenizer):
 # mecab = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "" )
 # sp = SentencePieceTokenizer(model_path="./resources/v5_without_dummy_letter/mecab_fixed_decomposed_morphological_sp-64k/tok.model")
 #
+#
 # # mecab_all.py
-# mecab = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_orig", decomposition_type="composed")
-# sp = SentencePieceTokenizer(model_path="./resources/v5_without_dummy_letter/mecab_orig_composed_sp-64k/tok.model")
-# mecab = MeCabTokenizer_all(tokenizer_type="mecab_orig", decomposition_type="decomposed_pure")
-# sp = SentencePieceTokenizer(model_path="./resources/v5_without_dummy_letter/mecab_orig_decomposed_pure_sp-64k/tok.model")
-# mecab = MeCabTokenizer_all(tokenizer_type="mecab_orig", decomposition_type="decomposed_morphological") # ['▁나', '▁ㄴㅡㄴ', '▃', '▁장', '풍', '▁ㅇㅡㄹ', '▃', '▁ㅎㅐㅆ', '▁ㄷㅏ', '▁.']
-# sp = SentencePieceTokenizer(model_path="./resources/v5_without_dummy_letter/mecab_orig_decomposed_morphological_sp-64k/tok.model")
+# mecab = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="composed")    # ['▁전태', '희는', '▁한국', '대학교에', '▁묵', '었었다']
+# sp = SentencePieceTokenizer(model_path="./resources/v6_without_dummy_letter/eojeol_mecab_fixed_composed_sp-64k/tok.model")
+# mecab = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure_nfd") # ['▁전태', '희는', '▁한국', '대학교에', '▁묵', '어', 'ᆻ었다']
+# sp = SentencePieceTokenizer(model_path="./resources/v6_without_dummy_letter/eojeol_mecab_fixed_decomposed_pure_nfd_sp-64k/tok.model")
+# mecab = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological_nfd") # ['▁전태', '희는', '▁한국', '대학교에', '▁묵', '었었다']
+# sp = SentencePieceTokenizer(model_path="./resources/v6_without_dummy_letter/eojeol_mecab_fixed_decomposed_morphological_nfd_sp-64k/tok.model")
+#
+# mecab = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="composed")    # ['▁전태', '희', '▁는', '▃', '▁한국', '▁대학교', '▁에', '▃', '▁묵', '▁었었', '▁다']     # ['▁난', '▃', '▁널', '▃', '▁좋아해']
+# sp = SentencePieceTokenizer(model_path="./resources/v6_without_dummy_letter/morpheme_mecab_orig_composed_sp-64k/tok.model")
+# mecab = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_pure_nfd") # ['▁전태', '희', '▁는', '▃', '▁한국', '▁대학교', '▁에', '▃', '▁묵', '▁었었', '▁다']
+# sp = SentencePieceTokenizer(model_path="./resources/v6_without_dummy_letter/morpheme_mecab_orig_decomposed_pure_nfd_sp-64k/tok.model")
+# mecab = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_morphological_nfd") # ['▁전태', '희', '▁는', '▃', '▁한국', '▁대학교', '▁에', '▃', '▁묵', '▁었었', '▁다']
+# sp = SentencePieceTokenizer(model_path="./resources/v6_without_dummy_letter/morpheme_mecab_orig_decomposed_morphological_nfd_sp-64k/tok.model")
+#
+# mecab = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="composed_nfd", space_symbol="")    # ['▁전태', '희', '▁는', '▃', '▁한국', '▁대학교', '▁에', '▃', '▁묵', '▁었었', '▁다']    # ['▁나', '▁ᆫ', '▃', '▁너', '▁ᆯ', '▃', '▁좋아하', '▁아']
+# sp = SentencePieceTokenizer(model_path="./resources/v6_without_dummy_letter/morpheme_mecab_fixed_composed_nfd_sp-64k/tok.model")
+# mecab = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure_nfd") # ['▁전태', '희', '▁는', '▃', '▁한국', '▁대학교', '▁에', '▃', '▁묵', '▁었었', '▁다']
+# sp = SentencePieceTokenizer(model_path="./resources/v6_without_dummy_letter/morpheme_mecab_fixed_decomposed_pure_nfd_sp-64k/tok.model")
+# mecab = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological_nfd") # ['▁전태', '희', '▁는', '▃', '▁한국', '▁대학교', '▁에', '▃', '▁묵', '▁었었', '▁다']
+# sp = SentencePieceTokenizer(model_path="./resources/v6_without_dummy_letter/morpheme_mecab_fixed_decomposed_morphological_nfd_sp-64k/tok.model")
+#
+#
+#
+# # sentence: eojeol / decomposed_morphological_nfd       # vocab: morpheme / decomposed_morphological_nfd
+# mecab = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological_nfd")    # ['▁전태', '희', '는', '▁한국', '대', '학교', '에', '▁묵', '었', '었', '다']
+# sp = SentencePieceTokenizer(model_path="./resources/v6_without_dummy_letter/morpheme_mecab_fixed_decomposed_morphological_nfd_sp-64k/tok.model")
 #
 #
 #
 #
-# #
-# mc = MeCabSentencePieceTokenizer(mecab=mecab, sp=sp, use_fixed=False)
+# # mc-sp
+#
+# mc = MeCabSentencePieceTokenizer(mecab=mecab, sp=sp)
+# mecab.tokenize(text)
+# mc.tokenize(text)
+#
+#
 #
 # # text = '나는 오늘 저녁을 먹었다.'   # ['▁나', '▁는', '▃', '▁오늘', '▃', '▁저녁', '▁을', '▃', '▁먹', '▁', '었', '▁다', '▁.']
 # # text = "대한민국에 우리끼리 살아보자"    # ['▁대한민국', '▁에', '▃', '▁우리', '▁끼', '리', '▃', '▁살', '▁아', '▁보', '▁자']
 # # text = "사망 플래그의 좋은 예시이다."
 # text = "나는 장풍을 했다."
+# text = "전태희는 한국대학교에 묵었었다"
 # text = "나는 장소를 했다."
-# text = "난 널 좋아해"  # ['▁난', '▃', '▁널', '▃', '▁좋아해']
-# mc.tokenize(text)
+# text = "난 널 좋아해"
 #
+#
+#
+# len(mc.tokenize(text)[0])
+# len(mc.tokenize(text)[1])
+# len(mc.tokenize(text)[2])
+
+
+
 # self = mc
 # self.tokenize(text)
-
-
