@@ -5,6 +5,7 @@ import random
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, RandomSampler
+from torch import nn
 from torch.utils.tensorboard import SummaryWriter
 from transformers import BertConfig
 
@@ -38,7 +39,8 @@ from time import gmtime, strftime
 import torch_xla
 import torch_xla.core.xla_model as xm
 import torch_xla.distributed.xla_multiprocessing as xmp
-os.environ["TOKENIZERS_PARALLELISM"] = "true"
+import torch_xla.distributed.parallel_loader as pl
+#os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 
 def set_seed(seed):
