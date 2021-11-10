@@ -35,6 +35,7 @@ spm.set_random_generator_seed(42)
 # OUTPUT_DIR = "./resources"
 OUTPUT_DIR = "./output_sp"
 
+
 if __name__ == "__main__":
     # set a input path automatically
     # corpus = "namuwiki_20200302"  # namuwiki
@@ -63,29 +64,40 @@ if __name__ == "__main__":
         default="[CLS],[SEP],[MASK]",
         help="Special tokens. You can pass a comma-separated list of special tokens.",
     )
+
+
+    parser.add_argument("--token_type", type=str, default="")   # eojeol / morpheme
     parser.add_argument(
-        "--tokenizer_type", type=str, default="none", choices=["ko", "en", "none", "mecab_orig", "mecab_fixed"]
+        "--tokenizer_type", type=str, default="", choices=["ko", "en", "none", "mecab_orig", "mecab_fixed"]
     )  # ko: Korean Wiki Corpus, en: English Wiki Corpus, mecab_orig: NamuWiki Corpus tokenized by MeCab_orig, mecab_fixed: NamuWiki Corpus tokenized by MeCab_fixed
     parser.add_argument(
-        "--composition_type", type=str, default="composed", choices=["composed", "decomposed_pure", "decomposed_morphological"]
+        "--composition_type", type=str, default="composed", choices=["composed", "decomposed_pure", "decomposed_morphological", "composed_nfd", "decomposed_pure_nfd", "decomposed_morphological_nfd"]
     )  # composed: syllable-level   decomposed_pure: jamo-level     decomposed_morphological: syllable+jamo-level
 
     parser.add_argument("--with_dummy_letter", type=bool, default=False)    # 자모 더미 문자 사용 여부: True, False
 
 
+
     # args = {"vocab_size": 32000, "character_coverage": 1.0, "normalization_rule_name": "identity",
     #         "pad_piece": "[PAD]", "unk_piece": "[UNK]", "bos_piece": "[BOS]", "eos_piece": "[EOS]", "unk_surface": "[UNK]",
     #         "special_symbols": "[CLS],[SEP],[MASK]",
-    #         "tokenizer_type": "mecab_orig",
-    #         "composition_type": "composed"
+    #         "tokenizer_type": "mecab_fixed",
+    #         "composition_type": "composed",
+    #         "token_type": "eojeol",
+    #         "with_dummy_letter": False,
     #         }
 
 
     args = vars(parser.parse_args())
     print(args)
 
+
+    token_type = args["token_type"]
     tokenizer_type = args["tokenizer_type"]
     composition_type = args["composition_type"]
+
+    print(token_type, "###############")
+    print(tokenizer_type, '#################')
 
 
     # 자모 더미 문자 사용 여부에 따른 경로 설정
@@ -95,55 +107,64 @@ if __name__ == "__main__":
         with_dummy_letter = "with_dummy_letter"
 
 
-    if "mecab" in args["tokenizer_type"]:
-        # INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_{tokenizer_type}_{composition_type}.txt"  # all
-        INPUT_MECAB_TOKENIZED_CORPUS = f"./corpus/tokenized/{with_dummy_letter}/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_{tokenizer_type}_{composition_type}.txt"  # all
+
+    INPUT_MECAB_TOKENIZED_CORPUS = f"./corpus/tokenized/{with_dummy_letter}/{corpus}_{token_type}_{tokenizer_type}/{composition_type}/{corpus}_{token_type}_{tokenizer_type}_{composition_type}.txt"  # all
 
 
-        # INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_half.txt" # half
-
-        # namuwiki
-        # INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_all.txt"  # all
-        # # INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_half.txt" # half
-
-        # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwik_" + args[tokenizer_]  mecab_orig/composed/namuwiki_20200302_tokenized_mecab_orig_composed.txt"  # orig / composed
-        # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/decomposed_pure/namuwiki_20200302_tokenized_mecab_orig_decomposed_pure.txt"  # orig / decomposed_pure
-        # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/decomposed_morphological/namuwiki_20200302_tokenized_mecab_orig_decomposed_morphological.txt"  # orig / decomposed_morphological
-        #
-        # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/composed/namuwiki_20200302_tokenized_mecab_fixed_composed.txt"  # fixed /composed
-        # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_pure/namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure.txt"  # fixed / decomposed_pure
-        # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_morphological/namuwiki_20200302_tokenized_mecab_fixed_decomposed_morphological.txt"  # fixed / decomposed_morphological
-    else:
-        # INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_{tokenizer_type}_{composition_type}.txt"  # all
-        INPUT_MECAB_TOKENIZED_CORPUS = f"./corpus/tokenized/{with_dummy_letter}/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_{tokenizer_type}_{composition_type}.txt"  # all
-
-        # INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_half.txt" # half
+    # if "mecab" in args["tokenizer_type"]:
+    #     # INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_{tokenizer_type}_{composition_type}.txt"  # all
+    #     INPUT_MECAB_TOKENIZED_CORPUS = f"./corpus/tokenized/{with_dummy_letter}/{corpus}_{token_type}_{tokenizer_type}/{composition_type}/{corpus}_{token_type}_{tokenizer_type}_{composition_type}.txt"  # all
+    #
+    #
+    #     # INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_half.txt" # half
+    #
+    #     # namuwiki
+    #     # INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_all.txt"  # all
+    #     # # INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_half.txt" # half
+    #
+    #     # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwik_" + args[tokenizer_]  mecab_orig/composed/namuwiki_20200302_tokenized_mecab_orig_composed.txt"  # orig / composed
+    #     # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/decomposed_pure/namuwiki_20200302_tokenized_mecab_orig_decomposed_pure.txt"  # orig / decomposed_pure
+    #     # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_orig/decomposed_morphological/namuwiki_20200302_tokenized_mecab_orig_decomposed_morphological.txt"  # orig / decomposed_morphological
+    #     #
+    #     # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/composed/namuwiki_20200302_tokenized_mecab_fixed_composed.txt"  # fixed /composed
+    #     # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_pure/namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure.txt"  # fixed / decomposed_pure
+    #     # INPUT_MECAB_TOKENIZED_CORPUS = "./pretrain_corpus/tokenized/namuwiki_mecab_fixed/decomposed_morphological/namuwiki_20200302_tokenized_mecab_fixed_decomposed_morphological.txt"  # fixed / decomposed_morphological
+    # else:
+    #     # INPUT_MECAB_TOKENIZED_CORPUS = f"../tokenized/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_{tokenizer_type}_{composition_type}.txt"  # all
+    #     INPUT_MECAB_TOKENIZED_CORPUS = f"./corpus/tokenized/{with_dummy_letter}/{corpus}_{token_type}_{tokenizer_type}/{composition_type}/{corpus}_{token_type}_{tokenizer_type}_{composition_type}.txt"  # all
+    #
+    #     # INPUT_MECAB_TOKENIZED_CORPUS = f"./pretrain_corpus/tokenized/namuwiki_{tokenizer_type}/{composition_type}/namuwiki_20200302_tokenized_{tokenizer_type}_{composition_type}_half.txt" # half
 
 
     print(f"\n\nINPUT_MECAB_TOKENIZED_CORPUS: {INPUT_MECAB_TOKENIZED_CORPUS}\n\n")
 
 
     # set output dir
-    if args["tokenizer_type"] == "none":
-        input_corpus = INPUT_MECAB_TOKENIZED_CORPUS
-        output_dir = os.path.join(OUTPUT_DIR, f"sp-{int(args['vocab_size']) // 1000}k")
-    # elif args["tokenizer_type"] == "ko":
-    #     input_corpus = INPUT_KO_CORPUS
-    #     output_dir = os.path.join(OUTPUT_DIR, f"sp-{int(args['vocab_size'])//1000}k")
-    # elif args["tokenizer_type"] == "en":
-    #     input_corpus = INPUT_EN_CORPUS
-    #     output_dir = os.path.join(OUTPUT_DIR, f"en_sp-{int(args['vocab_size'])//1000}k")
+    input_corpus = INPUT_MECAB_TOKENIZED_CORPUS
+    output_dir = os.path.join(OUTPUT_DIR, f"{token_type}_{tokenizer_type}_{composition_type}_sp-{int(args['vocab_size']) // 1000}k")
 
+    # if args["tokenizer_type"] == "none":
+    #     input_corpus = INPUT_MECAB_TOKENIZED_CORPUS
+    #     output_dir = os.path.join(OUTPUT_DIR, f"sp-{int(args['vocab_size']) // 1000}k")
+    # # elif args["tokenizer_type"] == "ko":
+    # #     input_corpus = INPUT_KO_CORPUS
+    # #     output_dir = os.path.join(OUTPUT_DIR, f"sp-{int(args['vocab_size'])//1000}k")
+    # # elif args["tokenizer_type"] == "en":
+    # #     input_corpus = INPUT_EN_CORPUS
+    # #     output_dir = os.path.join(OUTPUT_DIR, f"en_sp-{int(args['vocab_size'])//1000}k")
+    #
+    # # elif "mecab" in args["tokenizer_type"]:
+    # #     input_corpus = INPUT_MECAB_TOKENIZED_CORPUS
+    # #     output_dir = os.path.join(OUTPUT_DIR, f"mecab_sp-{int(args['vocab_size'])//1000}k")
+    # #
     # elif "mecab" in args["tokenizer_type"]:
     #     input_corpus = INPUT_MECAB_TOKENIZED_CORPUS
-    #     output_dir = os.path.join(OUTPUT_DIR, f"mecab_sp-{int(args['vocab_size'])//1000}k")
+    #     output_dir = os.path.join(OUTPUT_DIR, f"{tokenizer_type}_{composition_type}_sp-{int(args['vocab_size'])//1000}k")
     #
-    elif "mecab" in args["tokenizer_type"]:
-        input_corpus = INPUT_MECAB_TOKENIZED_CORPUS
-        output_dir = os.path.join(OUTPUT_DIR, f"{tokenizer_type}_{composition_type}_sp-{int(args['vocab_size'])//1000}k")
+    # else:
+    #     raise ValueError
 
-    else:
-        raise ValueError
+
 
 
 
@@ -182,7 +203,7 @@ if __name__ == "__main__":
 
 
     # mecab config  (tok.json) mecab_tokenization.py로 토큰화한 코퍼스 경로에서 있는 것 그대로 복사해서 저장
-    with open(f"./corpus/tokenized/{with_dummy_letter}/{corpus}_{tokenizer_type}/{composition_type}/tok.json") as f:
+    with open(f"./corpus/tokenized/{with_dummy_letter}/{corpus}_{token_type}_{tokenizer_type}/{composition_type}/tok.json") as f:
         tok_json = json.load(f)
 
     with open(os.path.join(output_dir, "tok.json"), "w") as f:

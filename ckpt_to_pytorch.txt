@@ -1,8 +1,8 @@
 # convert_bert 폴더에 버트 파일 3개 넣고 돌리기
 transformers-cli convert --model_type bert\
-  --tf_checkpoint=./convert_bert/bert_model_v3_fixed_decomposed_morph_model.ckpt-400000 \
-  --config=./resources/v3_without_dummy_letter/mecab_fixed_decomposed_morphological_sp-32k/bert_config.json \
-  --pytorch_dump_output=./bert_model_v3_fixed_decomposed_morph_model.ckpt-400000.pth
+  --tf_checkpoint=./convert_bert/bert_model_v5_without_dummy_letter_none_composed_model.ckpt-400000 \
+  --config=./resources/v5_without_dummy_letter/sp-64k/bert_config.json \
+  --pytorch_dump_output=./bert_model_v5_without_dummy_letter_none_composed_model.ckpt-400000.pth
 
 
 
@@ -10,21 +10,21 @@ transformers-cli convert --model_type bert\
 ## v5 without
 # none
 transformers-cli convert --model_type bert\
-  --tf_checkpoint=./convert_bert/bert_model_v5_none_composed_total_model.ckpt-400000 \
+  --tf_checkpoint=./convert_bert/bert_model_v5_without_dummy_letter_none_composed_model.ckpt-400000 \
   --config=./resources/v5_without_dummy_letter/sp-64k/bert_config.json \
-  --pytorch_dump_output=./bert_model_v5_none_composed_total_model.ckpt-400000.pth
+  --pytorch_dump_output=./bert_model_v5_without_dummy_letter_none_composed_model.ckpt-400000.pth
 
 
 # orig
 transformers-cli convert --model_type bert\
-  --tf_checkpoint=./convert_bert/bert_model_v5_without_dummy_letter_orig_composed_model.ckpt-1000000 \
+  --tf_checkpoint=./convert_bert/bert_model_v5_without_dummy_letter_orig_composed_model.ckpt-400000 \
   --config=./resources/v5_without_dummy_letter/mecab_orig_composed_sp-64k/bert_config.json \
-  --pytorch_dump_output=./bert_model_v5_without_dummy_letter_orig_composed_model.ckpt-1000000.pth
+  --pytorch_dump_output=./bert_model_v5_without_dummy_letter_orig_composed_model.ckpt-400000.pth
 
 transformers-cli convert --model_type bert\
-  --tf_checkpoint=./convert_bert/bert_model_v5_without_dummy_letter_orig_decomposed_pure_model.ckpt-800000 \
+  --tf_checkpoint=./convert_bert/bert_model_v5_without_dummy_letter_orig_decomposed_pure_model.ckpt-400000 \
   --config=./resources/v5_without_dummy_letter/mecab_orig_decomposed_pure_sp-64k/bert_config.json \
-  --pytorch_dump_output=./bert_model_v5_without_dummy_letter_orig_decomposed_pure_model.ckpt-800000.pth
+  --pytorch_dump_output=./bert_model_v5_without_dummy_letter_orig_decomposed_pure_model.ckpt-400000.pth
 
 transformers-cli convert --model_type bert\
   --tf_checkpoint=./convert_bert/bert_model_v5_without_dummy_letter_orig_decomposed_morphological_model.ckpt-200000 \
@@ -34,19 +34,19 @@ transformers-cli convert --model_type bert\
 
 # fixed
 transformers-cli convert --model_type bert\
-  --tf_checkpoint=./convert_bert/bert_model_v5_without_dummy_letter_fixed_composed_model.ckpt-1000000 \
+  --tf_checkpoint=./convert_bert/bert_model_v5_without_dummy_letter_fixed_composed_model.ckpt-400000 \
   --config=./resources/v5_without_dummy_letter/mecab_fixed_composed_sp-64k/bert_config.json \
-  --pytorch_dump_output=./bert_model_v5_without_dummy_letter_fixed_composed_model.ckpt-1000000.pth
+  --pytorch_dump_output=./bert_model_v5_without_dummy_letter_fixed_composed_model.ckpt-400000.pth
 
 transformers-cli convert --model_type bert\
-  --tf_checkpoint=./convert_bert/bert_model_v5_without_dummy_letter_fixed_decomposed_pure_model.ckpt-800000 \
+  --tf_checkpoint=./convert_bert/bert_model_v5_without_dummy_letter_fixed_decomposed_pure_model.ckpt-400000 \
   --config=./resources/v5_without_dummy_letter/mecab_fixed_decomposed_pure_sp-64k/bert_config.json \
-  --pytorch_dump_output=./bert_model_v5_without_dummy_letter_fixed_decomposed_pure_model.ckpt-800000.pth
+  --pytorch_dump_output=./bert_model_v5_without_dummy_letter_fixed_decomposed_pure_model.ckpt-400000.pth
 
 transformers-cli convert --model_type bert\
-  --tf_checkpoint=./convert_bert/bert_model_v5_without_dummy_letter_fixed_decomposed_morphological_model.ckpt-800000 \
+  --tf_checkpoint=./convert_bert/bert_model_v5_without_dummy_letter_fixed_decomposed_morphological_model.ckpt-200000 \
   --config=./resources/v5_without_dummy_letter/mecab_fixed_decomposed_morphological_sp-64k/bert_config.json \
-  --pytorch_dump_output=./bert_model_v5_without_dummy_letter_fixed_decomposed_morphological_model.ckpt-800000.pth
+  --pytorch_dump_output=./bert_model_v5_without_dummy_letter_fixed_decomposed_morphological_model.ckpt-200000.pth
 
 
 
@@ -192,15 +192,9 @@ transformers-cli convert --model_type bert\
   --pytorch_dump_output=./bert_model.pth
 
 transformers-cli convert --model_type bert\
-<<<<<<< HEAD
   --tf_checkpoint=./bert_model_v3_orig_decomposed_morphological_model.ckpt-400000 \
   --config=./resources/v3_without_dummy_letter/mecab_orig_decomposed_morphological_sp-32k/bert_config.json \
   --pytorch_dump_output=./bert_model.pth
-=======
-  --tf_checkpoint=./bert_model_v3_orig_decomposed_morphological_model.ckpt-1000000 \
-  --config=./resources/v3_without_dummy_letter/mecab_orig_decomposed_morphological_sp-32k/bert_config.json \
-  --pytorch_dump_output=./bert_model_v3_orig_decomposed_morphological_model.ckpt-1000000.pth
->>>>>>> f7162cf6ac6742f8b388ef19ed207a9354ad794e
 
 transformers-cli convert --model_type bert\
   --tf_checkpoint=./bert_model_v3_fixed_composed_model.ckpt-400000 \
@@ -219,26 +213,37 @@ transformers-cli convert --model_type bert\
 --pytorch_dump_output=./bert_model.pth
 
 
-<<<<<<< HEAD
-=======
-## v3_with_dummy 
-transformers-cli convert --model_type bert\
-  --tf_checkpoint=./bert_model_v3_with_dummy_letter_fixed_decomposed_morphological_model.ckpt-1000000 \
-  --config=./resources/v3_with_dummy_letter/mecab_fixed_decomposed_morphological_sp-32k/bert_config.json \
---pytorch_dump_output=./bert_model_v3__with_dummy_letter_fixed_decomposed_morpholological_model.ckpt-1000000.pth
+
+
+## v5_without_dummy_letter
 
 transformers-cli convert --model_type bert\
-  --tf_checkpoint=./bert_model_v3_with_dummy_letter_fixed_decomposed_pure_model.ckpt-600000 \
-  --config=./resources/v3_with_dummy_letter/mecab_fixed_decomposed_morphological_sp-32k/bert_config.json \
---pytorch_dump_output=./bert_model_v3_with_dummy_letter_fixed_decomposed_pure_model.ckpt-600000.pth
+  --tf_checkpoint=./bert_model_v5_without_dummy_letter_none_composed_model.ckpt-600000 \
+  --config=./resources/v5_without_dummy_letter/sp-64k/bert_config.json \
+--pytorch_dump_output=./bert_model_v5_without_dummy_letter_none_composed_model.ckpt-600000.pth
 
 transformers-cli convert --model_type bert\
-  --tf_checkpoint=./bert_model_v3_with_dummy_letter_orig_decomposed_morphological_model.ckpt-600000 \
-  --config=./resources/v3_with_dummy_letter/mecab_orig_decomposed_morphological_sp-32k/bert_config.json \
---pytorch_dump_output=./bert_model_v3__with_dummy_letter_orig_decomposed_morpholological_model.ckpt-600000.pth
+  --tf_checkpoint=./bert_model_v5_without_dummy_letter_orig_composed_model.ckpt-600000 \
+  --config=./resources/v5_without_dummy_letter/sp-64k/bert_config.json \
+--pytorch_dump_output=./bert_model_v5_without_dummy_letter_orig_composed_model.ckpt-600000.pth
 
 transformers-cli convert --model_type bert\
-  --tf_checkpoint=./bert_model_v3_with_dummy_letter_orig_decomposed_pure_model.ckpt-600000 \
-  --config=./resources/v3_with_dummy_letter/mecab_orig_decomposed_morphological_sp-32k/bert_config.json \
---pytorch_dump_output=./bert_model_v3_with_dummy_letter_orig_decomposed_pure_model.ckpt-600000.pth
->>>>>>> f7162cf6ac6742f8b388ef19ed207a9354ad794e
+  --tf_checkpoint=./bert_model_v5_without_dummy_letter_orig_decomposed_pure_model.ckpt-600000 \
+  --config=./resources/v5_without_dummy_letter/sp-64k/bert_config.json \
+--pytorch_dump_output=./bert_model_v5_without_dummy_letter_orig_decomposed_pure_model.ckpt-600000.pth
+
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./bert_model_v5_without_dummy_letter_orig_decomposed_morphological_model.ckpt-600000 \
+  --config=./resources/v5_without_dummy_letter/sp-64k/bert_config.json \
+--pytorch_dump_output=./bert_model_v5_without_dummy_letter_orig_decomposed_morphological_model.ckpt-600000.pth
+
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./bert_model_v5_without_dummy_letter_fixed_composed_model.ckpt-600000 \
+  --config=./resources/v5_without_dummy_letter/sp-64k/bert_config.json \
+--pytorch_dump_output=./bert_model_v5_without_dummy_letter_fixed_composed_model.ckpt-600000.pth
+
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./bert_model_v5_without_dummy_letter_fixed_decomposed_pure_model.ckpt-600000 \
+  --config=./resources/v5_without_dummy_letter/sp-64k/bert_config.json \
+--pytorch_dump_output=./bert_model_v5_without_dummy_letter_fixed_decomposed_pure_model.ckpt-600000.pth
+

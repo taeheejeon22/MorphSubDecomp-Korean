@@ -2,8 +2,10 @@
 # 1: human  0: machine
 
 import json
+import random
 import pandas as pd
 
+random.seed(42)
 
 with open("./dataset/nlu_tasks/pc/NIKL_PC.json") as f:
     data = json.load(f)
@@ -41,10 +43,17 @@ sentences = list()
 labels = list()
 
 
+real_data[0]["paraphrases"]
+random.shuffle(real_data[0]["paraphrases"])
+
+
 for ix in range(len(real_data)):
     sentence_data = real_data[ix]
 
     for jx in range(len(sentence_data["paraphrases"])):
+
+        if len(sentence_data["paraphrases"]) != 10: print(len(sentence_data["paraphrases"]))
+
         sentences.append(sentence_data["paraphrases"][jx]["form"])    # machine / human generated sentence
 
         label_orig = sentence_data["paraphrases"][jx]["generation"]
@@ -57,6 +66,8 @@ for ix in range(len(real_data)):
             raise ValueError
 
         labels.append(label)  # label
+
+
 
 
 df_data = pd.DataFrame({"sentence": sentences, "label": labels})

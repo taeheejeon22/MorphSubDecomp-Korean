@@ -23,7 +23,8 @@ from soynlp.hangle import compose, decompose, character_is_korean, character_is_
 from tokenizer.base import BaseTokenizer
 
 
-import scripts.tokenizers_acl_v2 as tok
+# import scripts.tokenizers_acl_v2 as tok
+import scripts.tokenizers_acl_v3 as tok
 
 
 
@@ -333,8 +334,7 @@ class MeCabTokenizer_fixed(BaseTokenizer):
 
 
 
-# config_path = "./resources/v2_with_dummy_letter/wikiko_all_64k/mecab_fixed_decomposed_morphological_sp-64k/tok.json"
-#
+
 # mc = MeCabTokenizer_fixed(tokenizer_type="mecab_orig", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )                    # ['사람', '은', '▃', '널', '▃', '진짜', '▃', '원해', '.']
 # mc = MeCabTokenizer_fixed(tokenizer_type="mecab_orig", decomposition_type="decomposed_pure", space_symbol= "▃", dummy_letter= "" )
 # mc = MeCabTokenizer_fixed(tokenizer_type="mecab_orig", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "" )
@@ -342,10 +342,13 @@ class MeCabTokenizer_fixed(BaseTokenizer):
 # mc = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure", space_symbol= "▃", dummy_letter= "" )
 # mc = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "" )
 #
+# mc = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "⊸" )   # ['나', '⊸⊸ㄴ', '▃', '너', '⊸⊸ㄹ', '▃', '진짜', '▃', '원하', 'ㅇㅏ⊸', '.']
 #
 #
-
+#
+#
 # mc.tokenize("난 널 진짜 원해.")   # ['나', 'ㄴ', '▃', '너', 'ㄹ', '▃', '진짜', '▃', '원하', '아', '.']
+# mc.tokenize("나는 너를 먹는데.")
 #
 #
 # sent = "강남 비타 에듀 학원에 다닌다"

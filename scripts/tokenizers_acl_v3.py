@@ -1,3 +1,6 @@
+# acl_v3:
+# transform_v3(): NFD로 분해하는 방식 추가
+
 # acl_v2
 # pure_decomposition, morphological -> decomposition type
 # use_original -> tokenizer_type: str
@@ -22,6 +25,7 @@
 
 
 import re
+import unicodedata
 
 from itertools import chain
 # from konlpy.tag import Mecab
@@ -73,6 +77,29 @@ class tokenizers():
         return cjj_
 
 
+    def transform_v3(self, char):
+        if char == ' ':  # 공백은 그대로 출력
+            return char
+
+        cjj = unicodedata.normalize('NFD', char)    # unicode normalization (음절을 3개로)
+
+        return cjj
+
+        # # 자모 하나만 나오는 경우 처리 # ㄴ ㅠ
+        # try:
+        #     if cjj.count(" ") == 2:
+        #         if character_is_jaum(cjj[0]):  # 그 자모가 자음이면
+        #             cjj = (self.dummy_letter, self.dummy_letter, cjj[0])  # ('ㄴ', ' ', ' ') > ('-', 'ㄴ', '-')
+        #         elif character_is_moum(cjj[0]):  # 그 자모가 모음이면
+        #             cjj = (self.dummy_letter, cjj[1], self.dummy_letter)  # (' ', 'ㅠ', ' ') > ('-', 'ㅠ', '-')
+        # except AttributeError:  # 혹시라도 한글 아닌 것이 들어올 경우 대비해
+        #     pass
+        #
+        # unicodedata.normalize('NFD', char)
+
+
+
+
     # 문자열 일부 치환
     def str_substitution(self, orig_str, sub_idx, sub_str):
         lst_orig_str = [x for x in orig_str]
@@ -97,19 +124,20 @@ class tokenizers():
     # https://github.com/ratsgo/embedding/blob/master/preprocess/unsupervised_nlputils.py
     # def str2jamo(self, sent, jamo_morpheme=False):
     def str2jamo(self, sent, grammatical=False):
-        def transform(char):
-            if char == ' ':
-                return char
-            cjj = decompose(char)
-            if len(cjj) == 1:
-                return cjj
-            cjj_ = ''.join(c if c != ' ' else self.dummy_letter for c in cjj)
-            return cjj_
+        # def transform(char):
+        #     if char == ' ':
+        #         return char
+        #     cjj = decompose(char)
+        #     if len(cjj) == 1:
+        #         return cjj
+        #     cjj_ = ''.join(c if c != ' ' else self.dummy_letter for c in cjj)
+        #     return cjj_
 
         def transform_grammatical(char, grammatical):
             if char == ' ':
                 return char
             cjj = decompose(char)
+
             if len(cjj) == 1:
                 return cjj
 
@@ -206,45 +234,93 @@ class tokenizers():
 
     ######## tokenizer ###############
     ## 0. eojeol
-    def eojeol_tokenizer(self, sent):
-        # tokenizer = MosesTokenizer()
-        p_multiple_spaces = re.compile("\s+")   # multiple blanks
-        # eojeol_tokenized = tokenizer( re.sub(p_multiple_spaces, " ", sent).strip() )  # ['넌', '날', '좋아해']
-        eojeol_tokenized = re.sub(p_multiple_spaces, " ", sent).split(" ")
+    def eojeol_tokenizer(self, sent, decomposition_type: str):
+                         # nfd: bool = False, morpheme_normalization: bool = False):
+        # morpheme_normalization: 좋아해 -> 좋아하아
+
+        p_multiple_spaces = re.compile("\s+")  # multiple blanks
+
+        if decomposition_type == "composed":
+        # if nfd == False:
+            eojeol_tokenized = re.sub(p_multiple_spaces, " ", sent).split(" ")
+
+        elif decomposition_type == "decomposed_pure_nfd":
+            eojeol_tokenized = [self.transform_v3(eojeol) for eojeol in re.sub(p_multiple_spaces, " ", sent).split(" ")]
+
+        elif decomposition_type == "decomposed_morphological_nfd":
+            mc = Mecab(use_original=False)
+            # 문법 형태소만 unicode NFD 적용
+            eojeol_tokenized = ["".join([mor_pos[0] if (not mor_pos[1] in self.grammatical_pos) else self.transform_v3(mor_pos[0]) for mor_pos in word]) for word in mc.pos(re.sub(p_multiple_spaces, " ", sent), flatten=False, join=False, coda_normalization=False) ]
+
+
+        # elif nfd == True:
+        #     if morpheme_normalization == False:
+        #         eojeol_tokenized = [self.transform_v3(eojeol) for eojeol in re.sub(p_multiple_spaces, " ", sent).split(" ")]
+        #
+        #     elif morpheme_normalization == True:
+        #         mc = Mecab(use_original=False)
+        #         # 문법 형태소만 unicode NFD 적용
+        #         eojeol_tokenized = ["".join([mor_pos[0] if (not mor_pos[1] in self.grammatical_pos) else self.transform_v3(mor_pos[0]) for mor_pos in word]) for word in mc.pos(re.sub(p_multiple_spaces, " ", sent), flatten=False, join=False) ]
+        #
+        #         # ee = ["".join([mor_pos[0] if (not mor_pos[1] in self.grammatical_pos) else self.transform_v3(mor_pos[0]) for mor_pos in word]) for word in mc.pos(sent, flatten=False, join=False) ]
+        #         # ee = [mor_pos[0] if (not mor_pos[1] in self.grammatical_pos) else self.transform_v3(mor_pos[0]) for mor_pos in mc.pos(sent, flatten=True, join=False)]
+        #         # len(ee[4])
 
         return eojeol_tokenized
-        # eojeol_tokenized_with_space_symbol = self.intersperse(eojeol_tokenized, self.space_symbol)  # ['넌', '▃', '날', '▃', '좋아해']
-        # return eojeol_tokenized_with_space_symbol
 
 
     ## 1. morpheme
     # def mecab_tokenizer(self, sent: str, use_original: bool, pure_decomposition: bool, morphological: bool = False):
 
-    def mecab_tokenizer(self, sent: str, tokenizer_type: str, decomposition_type: str):
-        assert (tokenizer_type in ["mecab_orig", "mecab_fixed"] ), 'check the tokenizer type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-        assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    # def mecab_tokenizer(self, sent: str, tokenizer_type: str, decomposition_type: str):
 
-        if tokenizer_type == "mecab_orig":
-            use_original = True
-        elif tokenizer_type == "mecab_fixed":
-            use_original = False
+    def mecab_tokenizer(self, sent: str, token_type: str, tokenizer_type: str, decomposition_type: str):
+        if token_type == "eojeol":
+            mecab_tokenized = self.eojeol_tokenizer(sent=sent, decomposition_type=decomposition_type)
 
-        if decomposition_type == "composed":
-            mecab_tokenized = self.mecab_composed_decomposed_pure(sent=sent, use_original=use_original, pure_decomposition=False)
-        elif decomposition_type == "decomposed_pure":
-            mecab_tokenized = self.mecab_composed_decomposed_pure(sent=sent, use_original=use_original, pure_decomposition=True)
-        elif decomposition_type == "decomposed_morphological":
-            mecab_tokenized = self.mecab_with_morphological_decomposition(sent=sent, use_original=use_original)
+        elif token_type == "morpheme":
+            assert (tokenizer_type in ["mecab_orig", "mecab_fixed"] ), 'check the tokenizer type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+            assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological", "composed_nfd", "decomposed_pure_nfd", "decomposed_morphological_nfd"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+
+            if tokenizer_type == "mecab_orig":
+                use_original = True
+            elif tokenizer_type == "mecab_fixed":
+                use_original = False
+
+            if decomposition_type == "composed":
+                mecab_tokenized = self.mecab_composed_decomposed_pure(sent=sent, use_original=use_original, pure_decomposition=False, nfd=False)
+            elif decomposition_type == "composed_nfd":  # coda normalization 안 하고, mecab 원래 출력대로 종성 문자 쓰기
+                mecab_tokenized = self.mecab_composed_decomposed_pure(sent=sent, use_original=use_original, pure_decomposition=False, nfd=True)
+                
+            elif decomposition_type == "decomposed_pure":
+                mecab_tokenized = self.mecab_composed_decomposed_pure(sent=sent, use_original=use_original, pure_decomposition=True, nfd=False)
+            elif decomposition_type == "decomposed_morphological":
+                mecab_tokenized = self.mecab_with_morphological_decomposition(sent=sent, use_original=use_original, nfd=False)
+
+
+            elif decomposition_type == "decomposed_pure_nfd":
+                mecab_tokenized = self.mecab_composed_decomposed_pure(sent=sent, use_original=use_original, pure_decomposition=True, nfd=True)
+            elif decomposition_type == "decomposed_morphological_nfd":
+                mecab_tokenized = self.mecab_with_morphological_decomposition(sent=sent, use_original=use_original, nfd=True)
+
+
 
         return mecab_tokenized
 
 
     # 1-1. composed & decomposed_pure
-    def mecab_composed_decomposed_pure(self, sent, use_original, pure_decomposition):
+    def mecab_composed_decomposed_pure(self, sent, use_original, pure_decomposition, nfd: bool = False):
         if use_original == True:
-            mor_poss = self.mc_orig.pos(sent, flatten=False)  # [[('넌', 'NP+JX')], [('날', 'NNG')], [('좋', 'VA'), ('아', 'EC'), ('해', 'VV+EC')]]
+            if nfd == False:
+                mor_poss = self.mc_orig.pos(sent, flatten=False)  # [[('넌', 'NP+JX')], [('날', 'NNG')], [('좋', 'VA'), ('아', 'EC'), ('해', 'VV+EC')]]
+            elif nfd == True:
+                mor_poss = self.mc_orig.pos(sent, flatten=False, coda_normalization=False)  # [[('넌', 'NP+JX')], [('날', 'NNG')], [('좋', 'VA'), ('아', 'EC'), ('해', 'VV+EC')]]
+
         elif use_original == False:
-            mor_poss = self.mc_fixed.pos(sent, flatten=False)  # [[('너', 'NP'), ('ㄴ', 'JX')], [('날', 'NNG')], [('좋', 'VA'), ('아', 'EC'), ('하', 'VV'), ('아', 'EC')]]
+            if nfd == False:
+                mor_poss = self.mc_fixed.pos(sent, flatten=False)  # [[('너', 'NP'), ('ㄴ', 'JX')], [('날', 'NNG')], [('좋', 'VA'), ('아', 'EC'), ('하', 'VV'), ('아', 'EC')]]
+            elif nfd == True:
+                mor_poss = self.mc_fixed.pos(sent, flatten=False, coda_normalization=False)  # [[('너', 'NP'), ('ㄴ', 'JX')], [('날', 'NNG')], [('좋', 'VA'), ('아', 'EC'), ('하', 'VV'), ('아', 'EC')]]
 
         # if pure_decomposition == False:
         #     pass
@@ -258,8 +334,13 @@ class tokenizers():
         elif pure_decomposition == True:
             # mors = [ [ self.str2jamo(mor_pos[0], jamo_morpheme=False) if not mor_pos[-1] in self.grammatical_pos else self.str2jamo(mor_pos[0], jamo_morpheme=True) for mor_pos in word] for word in mor_poss]
             # mors = [ [ self.str2jamo(mor_pos[0], jamo_morpheme=True) if (mor_pos[-1] in self.grammatical_pos and len(mor_pos[0]) == 1 and character_is_jaum(mor_pos[0]) ) else self.str2jamo(mor_pos[0], jamo_morpheme=False) for mor_pos in word] for word in mor_poss]
-            mors = [ [ self.str2jamo(mor_pos[0], grammatical=True) if (mor_pos[-1] in self.grammatical_pos ) else self.str2jamo(mor_pos[0], grammatical=False) for mor_pos in word] for word in mor_poss]
-                                                                    # convert jamo morpheme like ㄴ, ㄹ into ##ㄴ, ##ㄹ
+
+            if nfd == False:
+                mors = [ [ self.str2jamo(mor_pos[0], grammatical=True) if (mor_pos[-1] in self.grammatical_pos ) else self.str2jamo(mor_pos[0], grammatical=False) for mor_pos in word] for word in mor_poss]
+                                                                        # convert jamo morpheme like ㄴ, ㄹ into ##ㄴ, ##ㄹ
+            elif nfd == True:
+                mors = [[self.transform_v3(mor_pos[0]) for mor_pos in word] for word in mor_poss]
+
 
             # ee = list()
             # for word in mor_poss:
@@ -287,20 +368,27 @@ class tokenizers():
 
 
     ## 1-2. decomposition morphological
-    def mecab_with_morphological_decomposition(self, sent, use_original):
+    def mecab_with_morphological_decomposition(self, sent, use_original, nfd: bool = False):
         '''
         :param sent: 자모 변환할 문장      '너를 좋아해'
         :param morpheme_analysis:
             False: 자모 변환만 수행    (어절 토큰화 문장을 자모로 변환하는 데에 그대로 이용 가능)
             True: 형태소 분석 + 자모 변환
         :param use_original: konlpy original mecab 쓸지
+        :param nfd: unicode NFD 적용해서 분해할지.
         :return: 자모 변환된 문장          '너ㅡㄹ 좋아해' or '너 ㄹㅡㄹ 좋아해'
         '''
 
         if use_original == True:
-            mors_ejs_in_sent = self.mc_orig.pos(sent, flatten=False)  # 형태소 분석
+            if nfd == False:
+                mors_ejs_in_sent = self.mc_orig.pos(sent, flatten=False)  # 형태소 분석
+            elif nfd == True:
+                mors_ejs_in_sent = self.mc_orig.pos(sent, flatten=False, coda_normalization=False)  # 형태소 분석
         elif use_original == False:
-            mors_ejs_in_sent = self.mc_fixed.pos(sent, flatten=False)  # 형태소 분석
+            if nfd == False:
+                mors_ejs_in_sent = self.mc_fixed.pos(sent, flatten=False)  # 형태소 분석
+            elif nfd == True:
+                mors_ejs_in_sent = self.mc_fixed.pos(sent, flatten=False, coda_normalization=False)  # 형태소 분석
 
         new_sent = list()
         for ix in range(len(mors_ejs_in_sent)):
@@ -318,8 +406,12 @@ class tokenizers():
                 # 문법 형태소이면
                 # elif pos in grammatical_pos:  # 잔다 VV+EC 등을 분해하지 않음
                 elif sum([1 for pos in pos.split("+") if pos in self.grammatical_pos]) >= 1:  # 잔다 VV+EC 등을 분해함
-                    decomposed_morpheme = "".join(
-                        [self.transform_v2(char) if character_is_korean(char) else char for char in morpheme])
+                    if nfd == False:
+                        decomposed_morpheme = "".join(
+                            [self.transform_v2(char) if character_is_korean(char) else char for char in morpheme])  # 한 -> ㅎㅏㄴ
+                    elif nfd == True:
+                        decomposed_morpheme = "".join(
+                            [self.transform_v3(char) if character_is_korean(char) else char for char in morpheme])  # 는 -> 는  # len("는"): 3
 
                 new_eojeol.append(decomposed_morpheme)
 
@@ -565,7 +657,9 @@ class tokenizers():
 
 
 # tok = tokenizers(dummy_letter="#", space_symbol="▃")
+# tok = tokenizers(dummy_letter="#", space_symbol="")
 #
+# self = tok
 # tok.mecab_tokenizer()
 #
 # tok2 = tokenizers(dummy_letter="", space_symbol=" ")
@@ -585,15 +679,53 @@ class tokenizers():
 # # tok2.jamo2str(tok2.str2jamo(sent))  # '넌 날 좋앟ㅐ'
 # moasseugi(tok2.str2jamo(sent))  # '넌 날 좋아해'
 # # moasseugi('들어가ㄴ다')
-
-
-
-
-# tok.eojeol_tokenizer(sent)
+#
+#
+#
+# sent = "난 너를 좋아해"
+# sent = "예쁜 가방"
+#
+# # eojeol
+# ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="composed")
+# ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure_nfd")
+# ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological_nfd")
+#
+# # morpheme
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="composed")
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_pure_nfd")
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_morphological_nfd")
+#
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="composed")
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="composed_nfd")
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure_nfd")
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological_nfd")
+#
+#
+#
+# len(ee[0])
+# len(ee[1])
+# len(ee[2])
+#
 #
 # # mecab original
 # #     composed
-# tok.mecab_tokenizer(sent, tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological") # ['넌', '▃', '날', '▃', '좋', '아', '해']
+# tok.mecab_tokenizer(sent, tokenizer_type="mecab_orig", decomposition_type="decomposed_morphological") # ['넌', '▃', '날', '▃', '좋', '아', '해']
+# ee = tok.mecab_tokenizer(sent, tokenizer_type="mecab_orig", decomposition_type="decomposed_morphological_nfd") # ['넌', '▃', '날', '▃', '좋', '아', '해']
+# ee = tok.mecab_tokenizer(sent, tokenizer_type="mecab_orig", decomposition_type="decomposed_pure_nfd") # ['넌', '▃', '날', '▃', '좋', '아', '해']
+#
+# ee = tok.mecab_tokenizer(sent, tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological_nfd") # ['넌', '▃', '날', '▃', '좋', '아', '해']
+#
+# ee = tok.mecab_tokenizer(sent, tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure_nfd") # ['넌', '▃', '날', '▃', '좋', '아', '해']
+#
+# len(ee[0])
+# len(ee[1])
+# len(ee[2])
+# len(ee[3])
+# len(ee[4])
+# len(ee[5])
+# len(ee[6])
+# len(ee[7])
+#
 #     # decomposed pure
 # tok.mecab_tokenizer(sent, use_original=True, pure_decomposition=True)  # ['ㄴㅓㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅐ#']
 # tok2.mecab_tokenizer(sent, use_original=True, pure_decomposition=True)  # ['ㄴㅓㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ', 'ㅎㅐ']
