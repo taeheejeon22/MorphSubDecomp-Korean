@@ -180,9 +180,11 @@ def main(args):
     )
 
     # run tpu
-    device = xm.xla_device()
-    print('TPU running...')
-    
+    #device = xm.xla_device()
+    #print('TPU running...')
+    device = config.device
+    print('Device: ,' device)
+
     # data loader for tpu
     if config.use_tpu == "tpu":
         train_data_loader = pl.ParallelLoader(train_data_loader, [device]).per_device_loader(device)
