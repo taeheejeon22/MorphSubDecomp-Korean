@@ -5,6 +5,7 @@ import random
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, RandomSampler
+from torch import nn
 from torch.utils.tensorboard import SummaryWriter
 from transformers import BertConfig
 
@@ -176,6 +177,22 @@ def main(args):
     model.bert = load_pretrained_bert(
         bert_config, os.path.join(config.resource_dir, config.tokenizer, pretrained_bert_file_name)
     )
+
+    # device, model 정의
+    if config.use_tpu == "tpu":
+        # 사전에 torch_xla 설치 필요
+        device = xm.xla_device()
+        model = model
+        print('TPU running...')
+    elif config.use_tpu == "gpu":    
+        # multi gpu(3)
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        if (device.type == 'cuda') and (torch.cuda.device_count() > 1):
+            print('Multi GPU({}) activate'.format(torch.cuda.device_count()))
+            model = nn.DataParallel(model, device_ids=[0,1,2,3])
+        else:
+            model = model
+
 
     trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
     trainer.train()
