@@ -39,7 +39,8 @@ from time import gmtime, strftime
 import torch_xla
 import torch_xla.core.xla_model as xm
 import torch_xla.distributed.xla_multiprocessing as xmp
-os.environ["TOKENIZERS_PARALLELISM"] = "true"
+import torch_xla.distributed.parallel_loader as pl
+#os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 
 def set_seed(seed):
@@ -192,6 +193,12 @@ def main(args):
             model = nn.DataParallel(model, device_ids=[0,1,2,3])
         else:
             model = model
+
+    # data loader for tpu
+    if config.use_tpu == "tpu":
+        train_data_loader = pl.ParallelLoader(train_data_loader, [device]).per_device_loader(device)
+        dev_data_loader = pl.ParallelLoader(dev_data_loader, [device]).per_device_loader(device)
+        test_data_loader = pl.ParallelLoader(test_data_loader, [device]).per_device_loader(device)
 
 
     trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
