@@ -179,22 +179,10 @@ def main(args):
         bert_config, os.path.join(config.resource_dir, config.tokenizer, pretrained_bert_file_name)
     )
 
-    # device, model 정의
-    if config.use_tpu == "tpu":
-        # 사전에 torch_xla 설치 필요
-        device = xm.xla_device()
-        model = model
-        print('TPU running...')
-    elif config.use_tpu == "gpu":    
-        # multi gpu(3)
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        if (device.type == 'cuda') and (torch.cuda.device_count() > 1):
-            print('Multi GPU({}) activate'.format(torch.cuda.device_count()))
-            model = nn.DataParallel(model, device_ids=[0,1,2,3])
-            model = model
-        else:
-            model = model
-
+    # run tpu
+    device = xm.xla_device()
+    print('TPU running...')
+    
     # data loader for tpu
     if config.use_tpu == "tpu":
         train_data_loader = pl.ParallelLoader(train_data_loader, [device]).per_device_loader(device)

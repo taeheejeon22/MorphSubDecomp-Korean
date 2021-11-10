@@ -28,7 +28,7 @@ class Trainer:
         test_data_loader: DataLoader,
         logger: Logger,
         summary_writer: SummaryWriter,
-        device = device
+        device: device
     ):
         self.config = config
 
