@@ -30,28 +30,34 @@ class Trainer:
         summary_writer: SummaryWriter,
     ):
         self.config = config
-        self.device = config.device
 
-        # if config.use_tpu == "tpu":
-        #     # 사전에 torch_xla 설치 필요
+        if config.use_tpu == "tpu":
+            # 사전에 torch_xla 설치 필요
 
-        #     self.device = xm.xla_device()
-        #     self.model = model
-        #     print('TPU running...')
-        # elif config.use_tpu == "gpu":    
-        #     # multi gpu(3)
-        #     self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        #     if (self.device.type == 'cuda') and (torch.cuda.device_count() > 1):
-        #         print('Multi GPU({}) activate'.format(torch.cuda.device_count()))
-        #         self.model = nn.DataParallel(model, device_ids=[0,1,2,3])
-        #     else:
-        #         self.model = model
-        self.model = model
+            self.device = xm.xla_device()
+            self.model = model
+            print('TPU running...')
+        elif config.use_tpu == "gpu":    
+            # multi gpu(3)
+            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            if (self.device.type == 'cuda') and (torch.cuda.device_count() > 1):
+                print('Multi GPU({}) activate'.format(torch.cuda.device_count()))
+                self.model = nn.DataParallel(model, device_ids=[0,1,2,3])
+            else:
+                self.model = model
+
         self.model.to(self.device)
 
         self.train_data_loader = train_data_loader
         self.dev_data_loader = dev_data_loader
         self.test_data_loader = test_data_loader
+
+    # data loader for tpu
+        if config.use_tpu == "tpu":
+            self.train_data_loader = pl.ParallelLoader(self.train_data_loader, [self.device]).per_device_loader(self.device)
+            self.dev_data_loader = pl.ParallelLoader(self.dev_data_loader, [self.device]).per_device_loader(self.device)
+            self.test_data_loader = pl.ParallelLoader(self.test_data_loader, [self.device]).per_device_loader(self.device)
+
 
         self.logger = logger
         self.summary_writer = summary_writer
@@ -74,9 +80,9 @@ class Trainer:
         # train
         self.logger.info("========== train ==========")
         self.logger.info(f"device                : {self.device}")
-        self.logger.info(f"dataset length/ train : {len(self.train_data_loader.dataset)}")
-        self.logger.info(f"dataset length/ dev   : {len(self.dev_data_loader.dataset)}")
-        self.logger.info(f"dataset length/ test  : {len(self.test_data_loader.dataset)}")
+        #self.logger.info(f"dataset length/ train : {len(self.train_data_loader.dataset)}")
+        #self.logger.info(f"dataset length/ dev   : {len(self.dev_data_loader.dataset)}")
+        #self.logger.info(f"dataset length/ test  : {len(self.test_data_loader.dataset)}")
         self.logger.info(f"batch size            : {self.config.batch_size}")
         self.logger.info(f"learning rate         : {self.config.learning_rate}")
         self.logger.info(f"dropout prob          : {self.config.dropout_prob}")

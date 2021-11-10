@@ -61,14 +61,6 @@ class TrainConfig(NamedTuple):
     summary_dir: str = "./run_outputs/{}/korsts/summaries"
     checkpoint_dir: str = "./run_outputs/{}/korsts/checkpoints"
 
-    """
-    device (tpu)
-    """
-    if use_tpu == "tpu":
-        device: xm.xla_device()
-
-
-
     def __repr__(self):
         _repr_str = "Training Configuration:\n{\n"
         for k, v in self._asdict().items():
