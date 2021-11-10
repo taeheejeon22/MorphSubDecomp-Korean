@@ -1,5 +1,10 @@
 from typing import NamedTuple
 
+import torch_xla
+import torch_xla.core.xla_model as xm
+import torch_xla.distributed.xla_multiprocessing as xmp
+import torch_xla.distributed.parallel_loader as pl
+
 
 class TrainConfig(NamedTuple):
     desc: str = ""
@@ -55,6 +60,14 @@ class TrainConfig(NamedTuple):
     log_dir: str = "./run_outputs/{}/korsts/logs"
     summary_dir: str = "./run_outputs/{}/korsts/summaries"
     checkpoint_dir: str = "./run_outputs/{}/korsts/checkpoints"
+
+    """
+    device (tpu)
+    """
+    if use_tpu == "tpu":
+        device = xm.xla_device()
+
+
 
     def __repr__(self):
         _repr_str = "Training Configuration:\n{\n"
