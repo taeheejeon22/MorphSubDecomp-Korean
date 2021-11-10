@@ -154,7 +154,7 @@ class Trainer:
                     self.dev_result = round(dev_acc * 100, 2)
                     self.test_result = round(test_acc * 100, 2)
                     wr.writerow(['time', 'task', 'model', 'tokenizer', 'batch_size', 'lr', 'epoch', 'dev', 'test'])
-                    wr.writerow([self.begin_time, 'korsts', self.pretrained_bert_file_name, self.config.tokenizer, self.config.batch_size, self.config.learning_rate, epoch, f"{self.dev_result:.4f}", f"{self.test_result:.4f}"])
+                    wr.writerow([self.begin_time, 'pc', self.pretrained_bert_file_name, self.config.tokenizer, self.config.batch_size, self.config.learning_rate, epoch, f"{self.dev_result:.4f}", f"{self.test_result:.4f}"])
                     print("making total_log.csv...")
                     print("logging dev, test...")
             
@@ -163,7 +163,7 @@ class Trainer:
                     wr = csv.writer(f)
                     self.dev_result = round(dev_acc * 100, 2)
                     self.test_result = round(test_acc * 100, 2)
-                    wr.writerow([self.begin_time, 'korsts', self.pretrained_bert_file_name, self.config.tokenizer, self.config.batch_size, self.config.learning_rate, epoch, f"{self.dev_result:.4f}", f"{self.test_result:.4f}"])
+                    wr.writerow([self.begin_time, 'pc', self.pretrained_bert_file_name, self.config.tokenizer, self.config.batch_size, self.config.learning_rate, epoch, f"{self.dev_result:.4f}", f"{self.test_result:.4f}"])
                     print("logging dev, test...")
 
 
