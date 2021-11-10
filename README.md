@@ -57,14 +57,13 @@ python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./co
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure_nfd --space_symbol=""
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_morphological_nfd --space_symbol=""
 
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed --space_symbol=""
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed_nfd --space_symbol=""
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure_nfd --space_symbol=""
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological_nfd --space_symbol=""
 
 
 
-
-
+# old
 python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=none
 python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=composed
 python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --n_job=6
@@ -74,6 +73,7 @@ python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwik
 python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
 python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological
 ```
+
 
 메모리 부족할 경우
 ```bash
@@ -100,8 +100,6 @@ python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwik
 ```
 orig decomposed pure 25분
 orig decomposed morphological 15분
-
-
 
 
 
