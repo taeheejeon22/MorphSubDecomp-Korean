@@ -191,6 +191,7 @@ def main(args):
         if (device.type == 'cuda') and (torch.cuda.device_count() > 1):
             print('Multi GPU({}) activate'.format(torch.cuda.device_count()))
             model = nn.DataParallel(model, device_ids=[0,1,2,3])
+            model = model
         else:
             model = model
 
