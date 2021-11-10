@@ -28,9 +28,9 @@ class Trainer:
         test_data_loader: DataLoader,
         logger: Logger,
         summary_writer: SummaryWriter,
-        device: device
     ):
         self.config = config
+        self.device = config.device
 
         # if config.use_tpu == "tpu":
         #     # 사전에 torch_xla 설치 필요
@@ -46,7 +46,6 @@ class Trainer:
         #         self.model = nn.DataParallel(model, device_ids=[0,1,2,3])
         #     else:
         #         self.model = model
-        self.device = device
         self.model = model
         self.model.to(self.device)
 
