@@ -280,7 +280,7 @@ class tokenizers():
 
         elif token_type == "morpheme":
             assert (tokenizer_type in ["mecab_orig", "mecab_fixed"] ), 'check the tokenizer type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-            assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological", "decomposed_pure_nfd", "decomposed_morphological_nfd"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+            assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological", "composed_nfd", "decomposed_pure_nfd", "decomposed_morphological_nfd"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 
             if tokenizer_type == "mecab_orig":
                 use_original = True
@@ -289,6 +289,9 @@ class tokenizers():
 
             if decomposition_type == "composed":
                 mecab_tokenized = self.mecab_composed_decomposed_pure(sent=sent, use_original=use_original, pure_decomposition=False, nfd=False)
+            elif decomposition_type == "composed_nfd":  # coda normalization 안 하고, mecab 원래 출력대로 종성 문자 쓰기
+                mecab_tokenized = self.mecab_composed_decomposed_pure(sent=sent, use_original=use_original, pure_decomposition=False, nfd=True)
+                
             elif decomposition_type == "decomposed_pure":
                 mecab_tokenized = self.mecab_composed_decomposed_pure(sent=sent, use_original=use_original, pure_decomposition=True, nfd=False)
             elif decomposition_type == "decomposed_morphological":
@@ -654,6 +657,8 @@ class tokenizers():
 
 
 # tok = tokenizers(dummy_letter="#", space_symbol="▃")
+# tok = tokenizers(dummy_letter="#", space_symbol="")
+#
 # self = tok
 # tok.mecab_tokenizer()
 #
@@ -678,11 +683,24 @@ class tokenizers():
 #
 #
 # sent = "난 너를 좋아해"
-# eojeol
+# sent = "예쁜 가방"
+#
+# # eojeol
 # ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="composed")
-# ee = tok.eojeol_tokenizer(sent, decomposition_type="composed")
-# ee = tok.eojeol_tokenizer(sent, decomposition_type="decomposed_pure_nfd")
-# ee = tok.eojeol_tokenizer(sent, decomposition_type="decomposed_morphological_nfd")
+# ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure_nfd")
+# ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological_nfd")
+#
+# # morpheme
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="composed")
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_pure_nfd")
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_morphological_nfd")
+#
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="composed")
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="composed_nfd")
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure_nfd")
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological_nfd")
+#
+#
 #
 # len(ee[0])
 # len(ee[1])
@@ -724,17 +742,17 @@ class tokenizers():
 #     # decomposed morphological
 # tok.mecab_with_morphological_decomposition(sent, use_original=False)  # ['너', '##ㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ#', '하', 'ㅇㅏ#']
 # tok2.mecab_with_morphological_decomposition(sent, use_original=False)  # ['너', 'ㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ', '하', 'ㅇㅏ']
-
-
-# 자음 문법 형태소 처리: ##ㄴ
-# 원래 종성 위치대로.
-
-# 그냥 자음/모음 not 문법 형태소 처리: ㅋ##, #ㅠ#
-# 자음은 초성, 모음은 중성 처리.
-
-
-
-
+#
+#
+# # 자음 문법 형태소 처리: ##ㄴ
+# # 원래 종성 위치대로.
+# #
+# # 그냥 자음/모음 not 문법 형태소 처리: ㅋ##, #ㅠ#
+# # 자음은 초성, 모음은 중성 처리.
+#
+#
+#
+#
 # mc = Mecab(use_original=False)
 # sent = "미궁에서 뜬 아앗"
 # mc.pos(sent, join=False)

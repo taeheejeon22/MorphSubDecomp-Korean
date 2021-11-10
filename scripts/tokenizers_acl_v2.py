@@ -565,9 +565,9 @@ class tokenizers():
 
 
 # tok = tokenizers(dummy_letter="#", space_symbol="▃")
-
+#
 # tok.mecab_tokenizer()
-
+#
 # tok2 = tokenizers(dummy_letter="", space_symbol=" ")
 # sent = "이것이 아니다"
 # sent = "재밌음ㅋㅋ"
@@ -585,14 +585,14 @@ class tokenizers():
 # # tok2.jamo2str(tok2.str2jamo(sent))  # '넌 날 좋앟ㅐ'
 # moasseugi(tok2.str2jamo(sent))  # '넌 날 좋아해'
 # # moasseugi('들어가ㄴ다')
-#
-#
-#
-#
-# tok.eojeol_tokenizer(sent)
 
-# mecab original
-    # composed
+
+
+
+# tok.eojeol_tokenizer(sent)
+#
+# # mecab original
+# #     composed
 # tok.mecab_tokenizer(sent, tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological") # ['넌', '▃', '날', '▃', '좋', '아', '해']
 #     # decomposed pure
 # tok.mecab_tokenizer(sent, use_original=True, pure_decomposition=True)  # ['ㄴㅓㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅐ#']
@@ -610,17 +610,17 @@ class tokenizers():
 #     # decomposed morphological
 # tok.mecab_with_morphological_decomposition(sent, use_original=False)  # ['너', '##ㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ#', '하', 'ㅇㅏ#']
 # tok2.mecab_with_morphological_decomposition(sent, use_original=False)  # ['너', 'ㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ', '하', 'ㅇㅏ']
-
-
-# 자음 문법 형태소 처리: ##ㄴ
-# 원래 종성 위치대로.
-
-# 그냥 자음/모음 not 문법 형태소 처리: ㅋ##, #ㅠ#
-# 자음은 초성, 모음은 중성 처리.
-
-
-
-
+#
+#
+# # 자음 문법 형태소 처리: ##ㄴ
+# # 원래 종성 위치대로.
+# #
+# # 그냥 자음/모음 not 문법 형태소 처리: ㅋ##, #ㅠ#
+# # 자음은 초성, 모음은 중성 처리.
+#
+#
+#
+#
 # mc = Mecab(use_original=False)
 # sent = "미궁에서 뜬 아앗"
 # mc.pos(sent, join=False)

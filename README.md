@@ -16,16 +16,20 @@ parse_Wikiko_with_preprocessing_v0.py
 
 wikiko (without dummy letter)
 ```bash
-python scripts/mecab_tokenization_v2.py --token_type="eojeol" --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed
-python scripts/mecab_tokenization_v2.py --token_type="eojeol" --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure_nfd
-python scripts/mecab_tokenization_v2.py --token_type="eojeol" --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological_nfd
+python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed
+python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure_nfd
+python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological_nfd
 
-python scripts/mecab_tokenization_v2.py --token_type="morpheme" --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=composed
-python scripts/mecab_tokenization_v2.py --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure_nfd
-python scripts/mecab_tokenization_v2.py --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_morphological_nfd
-python scripts/mecab_tokenization_v2.py --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed
-python scripts/mecab_tokenization_v2.py --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure_nfd
-python scripts/mecab_tokenization_v2.py --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological_nfd
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=composed --space_symbol=""
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure_nfd --space_symbol=""
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_morphological_nfd --space_symbol=""
+
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed_nfd --space_symbol=""
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure_nfd --space_symbol=""
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological_nfd --space_symbol=""
+
+
+
 ```
 wikiko (with dummy letter)
 ```bash
@@ -43,12 +47,19 @@ split -d -l 5000000 namuwiki_20200302_with_preprocessing_v3_nn.txt namuwiki_2020
 ```
 
 
-namuwiki (without dummy letter)
+namuwiki (without dummy letter, space symbol)
 ```bash
-python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed
-python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure_nfd
-python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological_nfd
+python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed --space_symbol=""
+python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure_nfd --space_symbol=""
+python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological_nfd --space_symbol=""
 
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=composed --space_symbol=""
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure_nfd --space_symbol=""
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_morphological_nfd --space_symbol=""
+
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed --space_symbol=""
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure_nfd --space_symbol=""
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological_nfd --space_symbol=""
 
 
 
@@ -159,19 +170,19 @@ orig decomposed morphological 20:12
 ## sentencepiece
 ./build_vocab/train_sentencepiece.py
 ```bash
-python build_vocab/train_sentencepiece.py --vocab_size=32000 --token_type="eojeol" --tokenizer_type="mecab_fixed" --composition_type="composed"
-python build_vocab/train_sentencepiece.py --vocab_size=32000 --token_type="eojeol" --tokenizer_type="mecab_fixed" --composition_type="decomposed_pure_nfd"
-python build_vocab/train_sentencepiece.py --vocab_size=32000 --token_type="eojeol" --tokenizer_type="mecab_fixed" --composition_type="decomposed_morphological_nfd"
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --token_type=eojeol --tokenizer_type=mecab_fixed --composition_type=composed
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --token_type=eojeol --tokenizer_type=mecab_fixed --composition_type=decomposed_pure_nfd
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --token_type=eojeol --tokenizer_type=mecab_fixed --composition_type=decomposed_morphological_nfd
+
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_orig --composition_type=composed
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_orig --composition_type=decomposed_pure_nfd
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_orig --composition_type=decomposed_morphological_nfd
+
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_fixed --composition_type=composed_nfd
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_fixed --composition_type=decomposed_pure_nfd
+python build_vocab/train_sentencepiece.py --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_fixed --composition_type=decomposed_morphological_nfd
 
 
-
-python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_orig" --composition_type="composed"
-python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_orig" --composition_type="decomposed_pure"
-python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_orig" --composition_type="decomposed_morphological"
-
-python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_fixed" --composition_type="composed"
-python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_fixed" --composition_type="decomposed_pure"
-python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_fixed" --composition_type="decomposed_morphological"
 
 
 python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_orig" --composition_type="decomposed_pure" --with_dummy_letter=True
@@ -185,7 +196,7 @@ python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="m
 
 # 3. make BERT files 
 ```buildoutcfg
-python scripts/make_bert_files.py --root_path=output_sp/ --vocab_size=32000
+python scripts/make_bert_files.py --root_path=output_sp/ --vocab_size=64000
 ```
 실행 후 파일들 resources로 옮기기. 수동으로.
 

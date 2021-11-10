@@ -71,7 +71,7 @@ if __name__ == "__main__":
         "--tokenizer_type", type=str, default="", choices=["ko", "en", "none", "mecab_orig", "mecab_fixed"]
     )  # ko: Korean Wiki Corpus, en: English Wiki Corpus, mecab_orig: NamuWiki Corpus tokenized by MeCab_orig, mecab_fixed: NamuWiki Corpus tokenized by MeCab_fixed
     parser.add_argument(
-        "--composition_type", type=str, default="composed", choices=["composed", "decomposed_pure", "decomposed_morphological", "decomposed_pure_nfd", "decomposed_morphological_nfd"]
+        "--composition_type", type=str, default="composed", choices=["composed", "decomposed_pure", "decomposed_morphological", "composed_nfd", "decomposed_pure_nfd", "decomposed_morphological_nfd"]
     )  # composed: syllable-level   decomposed_pure: jamo-level     decomposed_morphological: syllable+jamo-level
 
     parser.add_argument("--with_dummy_letter", type=bool, default=False)    # 자모 더미 문자 사용 여부: True, False
@@ -203,7 +203,7 @@ if __name__ == "__main__":
 
 
     # mecab config  (tok.json) mecab_tokenization.py로 토큰화한 코퍼스 경로에서 있는 것 그대로 복사해서 저장
-    with open(f"./corpus/tokenized/{with_dummy_letter}/{corpus}_{tokenizer_type}/{composition_type}/tok.json") as f:
+    with open(f"./corpus/tokenized/{with_dummy_letter}/{corpus}_{token_type}_{tokenizer_type}/{composition_type}/tok.json") as f:
         tok_json = json.load(f)
 
     with open(os.path.join(output_dir, "tok.json"), "w") as f:
