@@ -89,7 +89,7 @@ class Trainer:
             train_targets = []
             train_predictions = []
 
-            for step, data in enumerate(tqdm(self.train_data_loader):
+            for step, data in enumerate(tqdm(self.train_data_loader)):
                 self.model.train()
 
                 self.global_step += 1
