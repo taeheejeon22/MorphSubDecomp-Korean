@@ -1,10 +1,5 @@
 from typing import NamedTuple
 
-import torch_xla
-import torch_xla.core.xla_model as xm
-import torch_xla.distributed.xla_multiprocessing as xmp
-import torch_xla.distributed.parallel_loader as pl
-
 
 class TrainConfig(NamedTuple):
     desc: str = ""
