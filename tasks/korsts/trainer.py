@@ -126,7 +126,7 @@ class Trainer:
                     train_targets = []
                     train_predictions = []
 
-            self.begin_time = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
+
 
             # dev every epoch
             dev_loss, dev_targets, dev_predictions = self._validation(self.dev_data_loader)
@@ -147,15 +147,16 @@ class Trainer:
 
             self.summary_writer.add_scalar("korsts/test/loss", test_loss, self.global_step)
             self.summary_writer.add_scalar("korsts/test/spearman", test_corr, self.global_step)
-
+            
 
             # dev,test 결과만 따로 저장
+            self.begin_time = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
             tokenizer_dir = os.path.join(self.config.resource_dir, self.config.tokenizer)
             self.pretrained_bert_files = [file for file in os.listdir(tokenizer_dir) if file.endswith("pth")]
             self.pretrained_bert_file_name = self.pretrained_bert_files[0]
 
             if os.path.isfile('./run_outputs/total_log.csv') == False:
-                with open (self.total_log_dir+'/total_log.csv', 'w', newline="") as f:
+                with open ('./run_outputs/total_log.csv', 'w', newline="") as f:
                     wr = csv.writer(f)
                     self.dev_result = dev_corr * 100
                     self.test_result = test_corr * 100

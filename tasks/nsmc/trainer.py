@@ -14,6 +14,7 @@ from transformers import get_linear_schedule_with_warmup
 from tasks.nsmc.config import TrainConfig
 from tasks.nsmc.model import NSMCModel
 
+from time import gmtime, strftime
 
 class Trainer:
     def __init__(
@@ -143,12 +144,28 @@ class Trainer:
             # self.logger.info(f"MODEL IS SAVED AT {output_path}\n")
 
             # dev,test 결과만 따로 저장
-            if os.path.isfile(self.config.log_dir+'/../../summary_by_hparam/summary_by_hparam.csv'):
-                with open (self.config.log_dir+'/../../summary_by_hparam/summary_by_hparam.csv', 'a', newline="") as f:
-                    # task, batch_size, lr, epoch, dev점수, test 점수 저장
+            self.begin_time = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
+            tokenizer_dir = os.path.join(self.config.resource_dir, self.config.tokenizer)
+            self.pretrained_bert_files = [file for file in os.listdir(tokenizer_dir) if file.endswith("pth")]
+            self.pretrained_bert_file_name = self.pretrained_bert_files[0]
+
+            if os.path.isfile('./run_outputs/total_log.csv') == False:
+                with open ('./run_outputs/total_log.csv', 'w', newline="") as f:
                     wr = csv.writer(f)
-                    wr.writerow(['nsmc', self.config.tokenizer, self.config.batch_size, self.config.learning_rate, epoch, f"{dev_acc:.4f}", f"{test_acc:.4f}"])
-                    print("dev, test logging...")
+                    self.dev_result = dev_acc * 100
+                    self.test_result = test_acc * 100
+                    wr.writerow('time', 'task', 'model', 'tokenizer', 'batch_size', 'lr', 'epoch', 'dev', 'test')
+                    wr.writerow([self.begin_time, 'nsmc', self.pretrained_bert_file_name, self.config.tokenizer, self.config.batch_size, self.config.learning_rate, epoch, f"{self.dev_result:.4f}", f"{self.test_result:.4f}"])
+                    print("making total_log.csv...")
+                    print("logging dev, test...")
+            
+            else:
+                with open ('./run_outputs/total_log.csv', 'a', newline="") as f:
+                    wr = csv.writer(f)
+                    self.dev_result = dev_acc * 100
+                    self.test_result = test_acc * 100
+                    wr.writerow([self.begin_time, 'korsts', self.pretrained_bert_file_name, self.config.tokenizer, self.config.batch_size, self.config.learning_rate, epoch, f"{self.dev_result:.4f}", f"{self.test_result:.4f}"])
+                    print("logging dev, test...")
 
 
     def _train_step(self, input_token_ids, attention_mask, token_type_ids, labels):
