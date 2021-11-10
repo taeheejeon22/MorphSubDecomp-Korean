@@ -24,9 +24,11 @@ from tokenizer import (
     # JamoTokenizer,
     MeCabSentencePieceTokenizer_orig,
     MeCabSentencePieceTokenizer_fixed,
+    MeCabSentencePieceTokenizer,
     # MeCabTokenizer,
     MeCabTokenizer_orig,
     MeCabTokenizer_fixed,
+    MeCabTokenizer_all,
     # MeCabSentencePieceTokenizer_kortok,
     # MeCabTokenizer_kortok,
     SentencePieceTokenizer,
@@ -88,11 +90,12 @@ def main(args):
     print("resources path:", tokenizer_dir, "\n")
 
 
+    with open(os.path.join(tokenizer_dir, "tok.json")) as f:
+        tokenizer_config: dict = json.load(f)
+
     if config.tokenizer.startswith("sp-"):
         tokenizer = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
     elif config.tokenizer.startswith("mecab_"):
-        with open(os.path.join(tokenizer_dir, "tok.json")) as f:
-            tokenizer_config: dict = json.load(f)
 
         # mecab = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
         # mecab = MeCabTokenizer_fixed(tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"])
@@ -100,10 +103,39 @@ def main(args):
 
         if "orig" in config.tokenizer:
             mecab = MeCabTokenizer_orig(tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"])
-            tokenizer = MeCabSentencePieceTokenizer_orig(mecab, sp, use_fixed=False)
+            tokenizer = MeCabSentencePieceTokenizer_orig(mecab, sp, use_fixed=False) # mecab_sp_orig.py
+
+            # if config.token_type in ["eojeol", "morpheme"]: # token type 지정하는 resources v6~ 방식이면
+            #     mecab = MeCabTokenizer_all(token_type=tokenizer_config["token_type"], tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"])
+            #     tokenizer = MeCabSentencePieceTokenizer(mecab=mecab, sp=sp) # mecab_sp.py
+            # elif config.token_type == "":   # 기존의 mecab_orig, mecab_fixed 사용
+            #     mecab = MeCabTokenizer_orig(tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"])
+            #     tokenizer = MeCabSentencePieceTokenizer_orig(mecab, sp, use_fixed=False) # mecab_sp_orig.py
         elif "fixed" in config.tokenizer:
             mecab = MeCabTokenizer_fixed(tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"])
-            tokenizer = MeCabSentencePieceTokenizer_fixed(mecab, sp, use_fixed=True)
+            tokenizer = MeCabSentencePieceTokenizer_fixed(mecab, sp, use_fixed=True) # mecab_fixed.py
+
+            # if config.token_type in ["eojeol", "morpheme"]: # token type 지정하는 resources v6~ 방식이면
+            #     mecab = MeCabTokenizer_all(token_type=tokenizer_config["token_type"], tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"])
+            #     tokenizer = MeCabSentencePieceTokenizer(mecab=mecab, sp=sp) # mecab_sp.py
+            #
+            # elif config.token_type == "":  # 기존의 mecab_orig, mecab_fixed 사용
+            #     mecab = MeCabTokenizer_fixed(tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"])
+            #     tokenizer = MeCabSentencePieceTokenizer_fixed(mecab, sp, use_fixed=True) # mecab_fixed.py
+
+    elif config.tokenizer.startswith("eojeol") or config.tokenizer.startswith("morpheme"):
+        sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
+
+        if "orig" in config.tokenizer:
+            mecab = MeCabTokenizer_all(token_type=tokenizer_config["token_type"], tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"])
+            tokenizer = MeCabSentencePieceTokenizer(mecab=mecab, sp=sp) # mecab_sp.py
+        elif "fixed" in config.tokenizer:
+            mecab = MeCabTokenizer_all(token_type=tokenizer_config["token_type"], tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"])
+            tokenizer = MeCabSentencePieceTokenizer(mecab=mecab, sp=sp) # mecab_sp.py
+
+
+
+
 
         # elif args["use_kortok"] == True:
         #     print("use_kortok: ", args["use_kortok"])
@@ -136,7 +168,9 @@ def main(args):
 
 
     # 토큰화 데모
+    print(f"original sample 1: {train_sentence_as[0]}")
     print(f"tokenization sample 1: {tokenizer.tokenize(train_sentence_as[0])}")
+    print(f"original sample 2: {train_sentence_bs[0]}")
     print(f"tokenization sample 2: {tokenizer.tokenize(train_sentence_bs[0])}")
 
 
