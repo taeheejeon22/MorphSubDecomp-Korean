@@ -28,6 +28,7 @@ class Trainer:
         test_data_loader: DataLoader,
         logger: Logger,
         summary_writer: SummaryWriter,
+        device: device
     ):
         self.config = config
 
@@ -45,7 +46,8 @@ class Trainer:
         #         self.model = nn.DataParallel(model, device_ids=[0,1,2,3])
         #     else:
         #         self.model = model
-
+        self.device = device
+        self.model = model
         self.model.to(self.device)
 
         self.train_data_loader = train_data_loader

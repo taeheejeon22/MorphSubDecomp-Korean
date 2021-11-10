@@ -201,7 +201,7 @@ def main(args):
         test_data_loader = pl.ParallelLoader(test_data_loader, [device]).per_device_loader(device)
 
 
-    trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
+    trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer, device)
     trainer.train()
 
 if __name__ == "__main__":
