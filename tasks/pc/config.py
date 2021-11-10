@@ -38,7 +38,7 @@ class TrainConfig(NamedTuple):
     #: max sequence length
     max_sequence_length: int = 128
     #: logging을 진행할 단위 step
-    logging_interval: int = 10
+    logging_interval: int = 100
 
     """
     Data Hyperparameters
