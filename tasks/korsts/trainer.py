@@ -155,11 +155,11 @@ class Trainer:
             self.pretrained_bert_file_name = self.pretrained_bert_files[0]
 
             if os.path.isfile('./run_outputs/total_log.csv') == False:
-                with open (self.total_log_dir+'/total_log.csv', 'w', newline="") as f:
+                with open ('./run_outputs/total_log.csv', 'w', newline="") as f:
                     wr = csv.writer(f)
-                    self.dev_result = dev_corr * 100
+                    self.dev_result = round(dev_corr * 100, 4)
                     self.test_result = test_corr * 100
-                    wr.writerow('time', 'task', 'model', 'tokenizer', 'batch_size', 'lr', 'epoch', 'dev', 'test')
+                    wr.writerow(['time', 'task', 'model', 'tokenizer', 'batch_size', 'lr', 'epoch', 'dev', 'test'])
                     wr.writerow([self.begin_time, 'korsts', self.pretrained_bert_file_name, self.config.tokenizer, self.config.batch_size, self.config.learning_rate, epoch, f"{self.dev_result:.4f}", f"{self.test_result:.4f}"])
                     print("making total_log.csv...")
                     print("logging dev, test...")
@@ -167,7 +167,7 @@ class Trainer:
             else:
                 with open ('./run_outputs/total_log.csv', 'a', newline="") as f:
                     wr = csv.writer(f)
-                    self.dev_result = dev_corr * 100
+                    self.dev_result = round(dev_corr * 100, 4)
                     self.test_result = test_corr * 100
                     wr.writerow([self.begin_time, 'korsts', self.pretrained_bert_file_name, self.config.tokenizer, self.config.batch_size, self.config.learning_rate, epoch, f"{self.dev_result:.4f}", f"{self.test_result:.4f}"])
                     print("logging dev, test...")
