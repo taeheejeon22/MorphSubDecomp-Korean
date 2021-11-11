@@ -37,7 +37,7 @@ class Trainer:
             self.model = model
             print('TPU running...')
 
-        elif config.use_multi_gpu == True:
+        elif config.use_tpu == "gpu":
             # multi gpu(3)
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
             if (self.device.type == 'cuda') and (torch.cuda.device_count() > 1):
