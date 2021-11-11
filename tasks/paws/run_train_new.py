@@ -250,29 +250,29 @@ if __name__ == "__main__":
     main(args)
 
 
-    # args = {"tokenizer":'mecab_fixed_decomposed_morphological_sp-64k'}
-    args = {"tokenizer":'mecab_orig_decomposed_morphological_sp-32k'}
-    args = {"tokenizer": 'mecab_fixed_decomposed_morphological_sp-32k'}
-    args = {"tokenizer":'mecab_orig_composed_sp-32k'}
-    args = {"tokenizer":'mecab_fixed_decomposed_morphological_sp-32k', "resource_dir": './resources/v3_without_dummy_letter'}
-
-
-    # px = PAWSDataset(dev_sentence_as, dev_sentence_bs, dev_labels, vocab, tokenizer, config.max_sequence_length)
-    # sentence_as = dev_sentence_as
-    # sentence_bs = dev_sentence_bs
-    # labels = dev_labels
-
-
-    # args = {"tokenizer":'mecab_sp-64k'}
-    max_length = 128
-
-    sentence_as = train_sentence_as[:]
-    sentence_bs = train_sentence_bs[:]
-
-    sentence_a = sentence_as[0]
-    sentence_b = sentence_bs[0]
-
-
-    # bert_utils.py
-    token_ids
-    vocab.convert_ids_to_tokens(token_ids)
+    # # args = {"tokenizer":'mecab_fixed_decomposed_morphological_sp-64k'}
+    # args = {"tokenizer":'mecab_orig_decomposed_morphological_sp-32k'}
+    # args = {"tokenizer": 'mecab_fixed_decomposed_morphological_sp-32k'}
+    # args = {"tokenizer":'mecab_orig_composed_sp-32k'}
+    # args = {"tokenizer":'mecab_fixed_decomposed_morphological_sp-32k', "resource_dir": './resources/v3_without_dummy_letter'}
+    #
+    #
+    # # px = PAWSDataset(dev_sentence_as, dev_sentence_bs, dev_labels, vocab, tokenizer, config.max_sequence_length)
+    # # sentence_as = dev_sentence_as
+    # # sentence_bs = dev_sentence_bs
+    # # labels = dev_labels
+    #
+    #
+    # # args = {"tokenizer":'mecab_sp-64k'}
+    # max_length = 128
+    #
+    # sentence_as = train_sentence_as[:]
+    # sentence_bs = train_sentence_bs[:]
+    #
+    # sentence_a = sentence_as[0]
+    # sentence_b = sentence_bs[0]
+    #
+    #
+    # # bert_utils.py
+    # token_ids
+    # vocab.convert_ids_to_tokens(token_ids)
