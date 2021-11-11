@@ -18,7 +18,7 @@ from tasks.korsts.config import TrainConfig
 from tasks.korsts.data_utils import load_data
 from tasks.korsts.dataset import KorSTSDataset
 from tasks.korsts.model import KorSTSModel
-# from tasks.korsts.trainer_test import Trainer
+from tasks.korsts.trainer_test import Trainer
 from tasks.logger import get_logger
 from tokenizer import (
     # CharTokenizer,
@@ -40,7 +40,7 @@ import torch_xla
 import torch_xla.core.xla_model as xm
 import torch_xla.distributed.xla_multiprocessing as xmp
 import torch_xla.distributed.parallel_loader as pl
-#os.environ["TOKENIZERS_PARALLELISM"] = "true"
+os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 
 def set_seed(seed):
@@ -180,7 +180,7 @@ def main(args):
     )
 
     # spawn 이전에 device를 설정하면 안 되므로, 이 부분에서 Trainer를 임포트함.
-    from tasks.korsts.trainer_test import Trainer
+
     trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
     trainer.train()
 
