@@ -1,5 +1,5 @@
 # v2
-# kortok 토크나이저 버리고 내 거로. tokenizers_acl_v3.py
+# kortok 토크나이저 버리고 내 거로만. tokenizers_acl_v3.py
 
 
 # 토크나이저 mecab_fixed 이용해서 만들기
@@ -28,66 +28,66 @@ from tokenizer.old.mecab_fixed import str2jamo, mecab_tokenize
 import scripts.tokenizers_acl_v3 as tok
 
 
-import MeCab
+# import MeCab
 
 # INPUT_CORPUS = "./dataset/wiki/sample_ko-wiki-200420.txt"
 # INPUT_CORPUS = "../wikiko_20210901_with_preprocessing_v2.txt"
 # OUTPUT_DIR = "./dataset/wiki/mecab_tokenized"
 
-TOKENIZER = MeCab.Tagger(f"--dicdir /usr/local/lib/mecab/dic/mecab-ko-dic")
-
-grammatical_pos = ["JKS", "JKC", "JKG", "JKO", "JKB", "JKV", "JKQ", "JX", "JC", "EP", "EF", "EC", "ETN", "ETM"]    # 어미, 조사
-
-
-# kortok API based (tokenizer/mecab_orig.py)
-def tokenize_kortok(text: str, tokenizer_type: str, decomposition_type: str, space_symbol: str = "▃", dummy_letter: str = "") -> List[str]:
-    assert (tokenizer_type in ["mecab_orig", "mecab_fixed"] ), 'check the tokenizer type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-    assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-
-
-    text = text.strip()
-    text_ptr = 0
-    tokenized = []
-    for mor in TOKENIZER.parse(text).split("\n"):
-        if "\t" in mor:
-            splitted = mor.split("\t")
-            token = splitted[0]
-            pos = splitted[1].split(",", 1)[0]
-
-            if text[text_ptr] == " ":
-                while text[text_ptr] == " ":
-                    text_ptr += 1
-                assert text[text_ptr] == token[0]
-
-                tokenized.append(space_symbol)
-
-            # tokenized.append(token)
-
-            if tokenizer_type == "mecab_orig":   # mecab original
-                if decomposition_type == "composed":
-                    tokenized.append(token)
-                elif decomposition_type == "decomposed_pure":
-                    tokenized.append(str2jamo(token, grammatical=False, dummy_letter=dummy_letter))   # 자모 분해 후 추가
-                elif decomposition_type == "decomposed_morphological":
-                    if sum([1 for pos in pos.split("+") if pos in grammatical_pos]) < 1:  # VV+EC 등 고려해도 문법 형태소 없으면
-                        tokenized.append(token) # 그대로 추가
-                    elif sum([1 for pos in pos.split("+") if pos in grammatical_pos]) >= 1:  # VV+EC 등 고려해서 문법 형태소 있으면
-                        tokenized.append(str2jamo(token, grammatical=False, dummy_letter=dummy_letter))   # 자모 분해 후 추가
-
-            # elif tokenizer_type == "mecab_fixed":    # mecab fixed
-            #     if decomposition_type == "composed":
-            #         mecab_tokenized = [mor_pos[0] for mor_pos in mecab_tokenize(mor)]  # ['나', 'ᆫ'] 진짜 형태소로 쪼개진 토큰들 저장
-            #         tokenized += mecab_tokenized
-            #     elif decomposition_type == "decomposed_pure":
-            #         mecab_tokenized = [mor_pos[0] for mor_pos in mecab_tokenize(mor)]  # ['나', 'ᆫ'] 진짜 형태소로 쪼개진 토큰들 저장
-            #         tokenized += [str2jamo(token, grammatical=False, dummy_letter=dummy_letter) for token in mecab_tokenized] # 자모 분해 후 추가
-            #     elif decomposition_type == "decomposed_morphological":
-            #         mecab_tokenized_with_pos = mecab_tokenize(mor)[:]  # [('나', 'NP'), ('ᆫ', 'JX')] 진짜 형태소로 쪼개진 토큰들 저장 with POS tag
-            #         tokenized += [mor_pos[0] if (not mor_pos[-1] in grammatical_pos) else str2jamo(mor_pos[0], grammatical=False, dummy_letter=dummy_letter) for mor_pos in mecab_tokenized_with_pos]    # 어휘 형태소는 그대로, 문법 형태소는 자모 분해 후 추가
-
-            text_ptr += len(token)
-
-    return tokenized
+# TOKENIZER = MeCab.Tagger(f"--dicdir /usr/local/lib/mecab/dic/mecab-ko-dic")
+#
+# grammatical_pos = ["JKS", "JKC", "JKG", "JKO", "JKB", "JKV", "JKQ", "JX", "JC", "EP", "EF", "EC", "ETN", "ETM"]    # 어미, 조사
+#
+#
+# # kortok API based (tokenizer/mecab_orig.py)
+# def tokenize_kortok(text: str, tokenizer_type: str, decomposition_type: str, space_symbol: str = "▃", dummy_letter: str = "") -> List[str]:
+#     assert (tokenizer_type in ["mecab_orig", "mecab_fixed"] ), 'check the tokenizer type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+#     # assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+#
+#
+#     text = text.strip()
+#     text_ptr = 0
+#     tokenized = []
+#     for mor in TOKENIZER.parse(text).split("\n"):
+#         if "\t" in mor:
+#             splitted = mor.split("\t")
+#             token = splitted[0]
+#             pos = splitted[1].split(",", 1)[0]
+#
+#             if text[text_ptr] == " ":
+#                 while text[text_ptr] == " ":
+#                     text_ptr += 1
+#                 assert text[text_ptr] == token[0]
+#
+#                 tokenized.append(space_symbol)
+#
+#             # tokenized.append(token)
+#
+#             if tokenizer_type == "mecab_orig":   # mecab original
+#                 if decomposition_type == "composed":
+#                     tokenized.append(token)
+#                 elif decomposition_type == "decomposed_pure":
+#                     tokenized.append(str2jamo(token, grammatical=False, dummy_letter=dummy_letter))   # 자모 분해 후 추가
+#                 elif decomposition_type == "decomposed_morphological":
+#                     if sum([1 for pos in pos.split("+") if pos in grammatical_pos]) < 1:  # VV+EC 등 고려해도 문법 형태소 없으면
+#                         tokenized.append(token) # 그대로 추가
+#                     elif sum([1 for pos in pos.split("+") if pos in grammatical_pos]) >= 1:  # VV+EC 등 고려해서 문법 형태소 있으면
+#                         tokenized.append(str2jamo(token, grammatical=False, dummy_letter=dummy_letter))   # 자모 분해 후 추가
+#
+#             # elif tokenizer_type == "mecab_fixed":    # mecab fixed
+#             #     if decomposition_type == "composed":
+#             #         mecab_tokenized = [mor_pos[0] for mor_pos in mecab_tokenize(mor)]  # ['나', 'ᆫ'] 진짜 형태소로 쪼개진 토큰들 저장
+#             #         tokenized += mecab_tokenized
+#             #     elif decomposition_type == "decomposed_pure":
+#             #         mecab_tokenized = [mor_pos[0] for mor_pos in mecab_tokenize(mor)]  # ['나', 'ᆫ'] 진짜 형태소로 쪼개진 토큰들 저장
+#             #         tokenized += [str2jamo(token, grammatical=False, dummy_letter=dummy_letter) for token in mecab_tokenized] # 자모 분해 후 추가
+#             #     elif decomposition_type == "decomposed_morphological":
+#             #         mecab_tokenized_with_pos = mecab_tokenize(mor)[:]  # [('나', 'NP'), ('ᆫ', 'JX')] 진짜 형태소로 쪼개진 토큰들 저장 with POS tag
+#             #         tokenized += [mor_pos[0] if (not mor_pos[-1] in grammatical_pos) else str2jamo(mor_pos[0], grammatical=False, dummy_letter=dummy_letter) for mor_pos in mecab_tokenized_with_pos]    # 어휘 형태소는 그대로, 문법 형태소는 자모 분해 후 추가
+#
+#             text_ptr += len(token)
+#
+#     return tokenized
 
 
 # our (konlpy based)
@@ -134,17 +134,21 @@ if __name__ == "__main__":
 
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--space_symbol", type=str, default="▃")
+    parser.add_argument("--space_symbol", type=str, default="")  # "▃" chr(9603)
     parser.add_argument("--n_jobs", type=int, default=16)
 
+
         # 추가한 것들
-    # parser.add_argument("--use_original", type=bool, default=True)  # mecab orig / fixed
+    parser.add_argument("--dummy_letter", type=str, default="")  # 초성/중성/종성 자리 채우기용 더미 문자. default는 없음(""). # "⊸"  # chr(8888)
+    parser.add_argument("--grammatical_symbol", type=str, default="")  # "⭧" chr(11111)
+
     parser.add_argument("--token_type", type=str, default="")   # eojeol / morpheme # v2에서 추가
     parser.add_argument("--tokenizer_type", type=str, default="mecab_orig")  # mecab_orig / mecab_fixed
 
     parser.add_argument("--decomposition_type", type=str, default="composed")   # "composed", "decomposed_pure", "decomposed_morphological"
-    parser.add_argument("--dummy_letter", type=str, default="") # 초성/중성/종성 자리 채우기용 더미 문자. default는 없음("").
+
     parser.add_argument("--nfd", type=bool, default=True)   # NFD 사용해서 자모 분해할지
+
 
 
     # parser.add_argument("--corpus", type=str)   # "wikiko", "namuwiki"
@@ -161,10 +165,26 @@ if __name__ == "__main__":
 
 
     # 출력 디렉토리 생성
-    if args["dummy_letter"] == "":  # 초성/중성/종성 자리 채우기용 더미 문자 안 쓰면
-        OUTPUT_DIR = "./corpus/tokenized/" + "without_dummy_letter/"
+    if args["space_symbol"] == "":
+        with_space_symbol = "F"
     else:
-        OUTPUT_DIR = "./corpus/tokenized/" + "with_dummy_letter/"
+        with_sapce_symbol = "T"
+
+    if args["dummy_letter"] == "":
+        with_dummy_letter = "F"
+    else:
+        with_dummy_letter = "T"
+
+    if args["grammatical_symbol"] == "":
+        with_grammatical_symbol = "F"
+    else:
+        with_grammatical_symbol = "T"
+
+    OUTPUT_DIR = f"./corpus/tokenized/space_{with_space_symbol}_dummy_{with_dummy_letter}_grammatical_{with_grammatical_symbol}"
+
+
+
+
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -207,7 +227,7 @@ if __name__ == "__main__":
 
 
     # v2
-    tok = tok.tokenizers(dummy_letter=args["dummy_letter"], space_symbol=args["space_symbol"], nfd=args["nfd"])
+    tok = tok.tokenizers(dummy_letter=args["dummy_letter"], space_symbol=args["space_symbol"], grammatical_symbol=args["grammatical_symbol"], nfd=args["nfd"])
     tokenize_fn = partial(tokenize_our, token_type=args["token_type"], tokenizer_type=args["tokenizer_type"], decomposition_type=args["decomposition_type"], space_symbol=args["space_symbol"], dummy_letter=args["dummy_letter"] )
 
 
@@ -264,14 +284,16 @@ if __name__ == "__main__":
 
 
     # 저장
-    if args["tokenizer_type"] == "none":  # 형태소 분석하지 않고 원문 그대로 이용
-        with open(os.path.join(OUTPUT_DIR_sub, os.path.basename(file_name)), "w", encoding="utf-8") as f:
-            f.write(tokenized)
+    # if args["tokenizer_type"] == "none":  # 형태소 분석하지 않고 원문 그대로 이용
+    #     with open(os.path.join(OUTPUT_DIR_sub, os.path.basename(file_name)), "w", encoding="utf-8") as f:
+    #         f.write(tokenized)
+    #
+    # else:  # 형태소 분석할 경우
+    with open(os.path.join(OUTPUT_DIR_sub, os.path.basename(file_name)), "w", encoding="utf-8") as f:
+        for tokens in tokenized:
+            f.write(" ".join(tokens) + "\n")
 
-    else:  # 형태소 분석할 경우
-        with open(os.path.join(OUTPUT_DIR_sub, os.path.basename(file_name)), "w", encoding="utf-8") as f:
-            for tokens in tokenized:
-                f.write(" ".join(tokens) + "\n")
+
 
     # mecab config
     print("write mecab config file...")
