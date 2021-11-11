@@ -21,14 +21,14 @@ def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str]
         for i, line in enumerate(f.readlines()[1:]):
             splitted = line.strip().split("\t")
             if len(splitted) != 4:
-                print(f"[ERROR] {repr(line)}, line {i}")
+                #print(f"[ERROR] {repr(line)}, line {i}")
                 continue
             if splitted[1] == "" or splitted[2] == "":
-                print(f"[ERROR] {repr(line)}, line {i}")
+                #print(f"[ERROR] {repr(line)}, line {i}")
                 continue
             # 문장이 "NS"로만 표기된 라인 제외
             if splitted[1] == "NS" or splitted[2] == "NS":
-                print(f"[ERROR] {repr(line)}, line {i}")
+                #print(f"[ERROR] {repr(line)}, line {i}")
                 continue
             sentence_as.append(splitted[1])
             sentence_bs.append(splitted[2])

@@ -55,10 +55,10 @@ class Trainer:
         self.test_data_loader = test_data_loader
 
     # data loader for tpu
-        if config.use_tpu == "tpu":
-            self.train_data_loader = pl.ParallelLoader(self.train_data_loader, [self.device]).per_device_loader(self.device)
-            self.dev_data_loader = pl.ParallelLoader(self.dev_data_loader, [self.device]).per_device_loader(self.device)
-            self.test_data_loader = pl.ParallelLoader(self.test_data_loader, [self.device]).per_device_loader(self.device)
+        # if config.use_tpu == "tpu":
+        #     self.train_data_loader = pl.ParallelLoader(self.train_data_loader, [self.device]).per_device_loader(self.device)
+        #     self.dev_data_loader = pl.ParallelLoader(self.dev_data_loader, [self.device]).per_device_loader(self.device)
+        #     self.test_data_loader = pl.ParallelLoader(self.test_data_loader, [self.device]).per_device_loader(self.device)
 
 
         self.logger = logger
@@ -98,7 +98,7 @@ class Trainer:
             train_targets = []
             train_predictions = []
 
-            for step, data in enumerate(tqdm(self.train_data_loader)):
+            for step, data in enumerate(tqdm(pl.ParallelLoader(self.train_data_loader, [self.device]).per_device_loader(self.device))):
                 self.model.train()
 
                 self.global_step += 1
@@ -130,7 +130,7 @@ class Trainer:
                     train_predictions = []
 
             # dev every epoch
-            dev_loss, dev_targets, dev_predictions = self._validation(self.dev_data_loader)
+            dev_loss, dev_targets, dev_predictions = self._validation(pl.ParallelLoader(self.dev_data_loader, [self.device]).per_device_loader(self.device))
             dev_corr = spearmanr(dev_targets, dev_predictions)[0]
             self.logger.info(f"######### DEV REPORT #EP{epoch} #########")
             self.logger.info(f"Loss {dev_loss:.4f}")
@@ -140,7 +140,7 @@ class Trainer:
             self.summary_writer.add_scalar("korsts/dev/spearman", dev_corr, self.global_step)
 
             # test every epoch
-            test_loss, test_targets, test_predictions = self._validation(self.test_data_loader)
+            test_loss, test_targets, test_predictions = self._validation(pl.ParallelLoader(self.test_data_loader, [self.device]).per_device_loader(self.device))
             test_corr = spearmanr(test_targets, test_predictions)[0]
             self.logger.info(f"######### TEST REPORT #EP{epoch} #########")
             self.logger.info(f"Loss {test_loss:.4f}")
@@ -162,7 +162,7 @@ class Trainer:
                     self.dev_result = round(dev_corr * 100, 2)
                     self.test_result = round(test_corr * 100, 2)
                     wr.writerow(['time', 'task', 'model', 'tokenizer', 'batch_size', 'lr', 'epoch', 'dev', 'test'])
-                    wr.writerow([self.begin_time, 'korsts', self.pretrained_bert_file_name, self.config.tokenizer, self.config.batch_size, self.config.learning_rate, epoch, f"{self.dev_result:.4f}", f"{self.test_result:.4f}"])
+                    wr.writerow([self.begin_time, 'korsts', self.pretrained_bert_file_name, self.config.tokenizer, self.config.batch_size, self.config.learning_rate, epoch, self.dev_result, self.test_result])
                     print("making total_log.csv...")
                     print("logging dev, test...")
             
@@ -171,7 +171,7 @@ class Trainer:
                     wr = csv.writer(f)
                     self.dev_result = round(dev_corr * 100, 2)
                     self.test_result = round(test_corr * 100, 2)
-                    wr.writerow([self.begin_time, 'korsts', self.pretrained_bert_file_name, self.config.tokenizer, self.config.batch_size, self.config.learning_rate, epoch, f"{self.dev_result:.4f}", f"{self.test_result:.4f}"])
+                    wr.writerow([self.begin_time, 'korsts', self.pretrained_bert_file_name, self.config.tokenizer, self.config.batch_size, self.config.learning_rate, epoch, self.dev_result, self.test_result])
                     print("logging dev, test...")
 
 
