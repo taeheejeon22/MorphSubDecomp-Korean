@@ -18,7 +18,7 @@ from tasks.korsts.config import TrainConfig
 from tasks.korsts.data_utils import load_data
 from tasks.korsts.dataset import KorSTSDataset
 from tasks.korsts.model import KorSTSModel
-from tasks.korsts.trainer_test import Trainer
+# from tasks.korsts.trainer_test import Trainer
 from tasks.logger import get_logger
 from tokenizer import (
     # CharTokenizer,
@@ -179,6 +179,8 @@ def main(args):
         bert_config, os.path.join(config.resource_dir, config.tokenizer, pretrained_bert_file_name)
     )
 
+    # spawn 이전에 device를 설정하면 안 되므로, 이 부분에서 Trainer를 임포트함.
+    from tasks.korsts.trainer_test import Trainer
     trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
     trainer.train()
 
@@ -207,8 +209,6 @@ if __name__ == "__main__":
     parser.add_argument("--summary_dir", type=str)
 
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
-
-
 
     xmp.spawn(main(args), nprocs=8)
     print('multi run...')
