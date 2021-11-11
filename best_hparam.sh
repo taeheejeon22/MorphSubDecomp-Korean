@@ -1,3 +1,5 @@
+#!bin/bash
+
 # setting:
 
 # batch: 16, 32
@@ -10,7 +12,7 @@
     # parser.add_argument("--learning_rate", type=float)
 
 
-tasks=("korsts", "paws", "cola", "pc")
+tasks=("korsts" "paws" "cola" "pc")
 
 #best_hparam:
 # korsts    32	3e-5	5
