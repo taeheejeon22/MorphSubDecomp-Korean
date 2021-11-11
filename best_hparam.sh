@@ -1,3 +1,5 @@
+#!bin/bash
+
 # setting:
 
 # batch: 16, 32
