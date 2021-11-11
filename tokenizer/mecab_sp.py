@@ -162,11 +162,15 @@ class MeCabSentencePieceTokenizer(BaseTokenizer):
 #     mc = MeCabSentencePieceTokenizer(mecab=mecab, sp=sp)
 #     print(mc.tokenize(text))
 #
+#
 # show_tokenized(mecab, sp, text)
 #
 #
 #
 # ## v6
+# text ="래미안이 좋다"
+#
+# text = "사망 플래그의 좋은 예시이다."
 # # eojeol
 #     # '사망 플래그의 좋은 예시이다'
 #     # ▁플래: 4970 ▁플래그:36169      # ▁예: 167   _예시: 25430
@@ -188,11 +192,13 @@ class MeCabSentencePieceTokenizer(BaseTokenizer):
 #
 #
 # # morpheme orig morphological
+# text = "사람은 머리는 크다"
 # ['▁사람', '▁은', '▃', '▁머리', '▁는', '▃', '▁크', '▁다']
 #
 #
 #
 # # eojeol morphological      # ▁하았다: 393      # ▁하: 58
+# text = "나는 장풍을 했다."
 # ['▁나는', '▁장', '풍을', '▁하았다', '.']
 #
 #

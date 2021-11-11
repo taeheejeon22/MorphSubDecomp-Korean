@@ -144,6 +144,8 @@ if __name__ == "__main__":
 
     parser.add_argument("--decomposition_type", type=str, default="composed")   # "composed", "decomposed_pure", "decomposed_morphological"
     parser.add_argument("--dummy_letter", type=str, default="") # 초성/중성/종성 자리 채우기용 더미 문자. default는 없음("").
+    parser.add_argument("--nfd", type=bool, default=True)   # NFD 사용해서 자모 분해할지
+
 
     # parser.add_argument("--corpus", type=str)   # "wikiko", "namuwiki"
     parser.add_argument("--corpus_path", type=str)
@@ -205,7 +207,7 @@ if __name__ == "__main__":
 
 
     # v2
-    tok = tok.tokenizers(dummy_letter=args["dummy_letter"], space_symbol=args["space_symbol"])
+    tok = tok.tokenizers(dummy_letter=args["dummy_letter"], space_symbol=args["space_symbol"], nfd=args["nfd"])
     tokenize_fn = partial(tokenize_our, token_type=args["token_type"], tokenizer_type=args["tokenizer_type"], decomposition_type=args["decomposition_type"], space_symbol=args["space_symbol"], dummy_letter=args["dummy_letter"] )
 
 
