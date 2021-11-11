@@ -233,7 +233,6 @@ if __name__ == "__main__":
 
     # use tpu
     parser.add_argument("--use_tpu", type=str, default="gpu")
-    parser.add_argument("--use_multi_gpu", type=bool, default=False)
 
     #log, summary dir
     parser.add_argument("--log_dir", type=str)
