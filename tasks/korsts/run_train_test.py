@@ -40,7 +40,7 @@ import torch_xla
 import torch_xla.core.xla_model as xm
 import torch_xla.distributed.xla_multiprocessing as xmp
 import torch_xla.distributed.parallel_loader as pl
-#os.environ["TOKENIZERS_PARALLELISM"] = "true"
+os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 
 def set_seed(seed):
@@ -179,6 +179,8 @@ def main(args):
         bert_config, os.path.join(config.resource_dir, config.tokenizer, pretrained_bert_file_name)
     )
 
+    # spawn 이전에 device를 설정하면 안 되므로, 이 부분에서 Trainer를 임포트함.
+
     trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
     trainer.train()
 
@@ -207,8 +209,6 @@ if __name__ == "__main__":
     parser.add_argument("--summary_dir", type=str)
 
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
-
-
 
     xmp.spawn(main(args), nprocs=8)
     print('multi run...')
