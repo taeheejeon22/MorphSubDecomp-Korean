@@ -62,6 +62,9 @@ class MeCabSentencePieceTokenizer(BaseTokenizer):
 
 
 
+
+
+
 # # mecab_orig.py
 # mecab = MeCabTokenizer_orig(tokenizer_type="mecab_orig", decomposition_type="composed")
 # sp = SentencePieceTokenizer(model_path="./resources/v5_without_dummy_letter/mecab_orig_composed_sp-64k/tok.model")
@@ -104,6 +107,15 @@ class MeCabSentencePieceTokenizer(BaseTokenizer):
 #
 #
 #
+#
+#
+# mecab = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological", dummy_letter="⊸") # ['▁전태', '희', '▁는', '▃', '▁한국', '▁대학교', '▁에', '▃', '▁묵', '▁었었', '▁다']
+# sp = SentencePieceTokenizer(model_path="./resources/v4_with_dummy_letter/mecab_fixed_decomposed_morphological_sp-32k/tok.model")
+#
+#
+#
+#
+#     # 혼종 실험
 # # sentence: eojeol / decomposed_morphological_nfd       # vocab: morpheme / decomposed_morphological_nfd
 # mecab = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological_nfd")    # ['▁전태', '희', '는', '▁한국', '대', '학교', '에', '▁묵', '었', '었', '다']
 # sp = SentencePieceTokenizer(model_path="./resources/v6_without_dummy_letter/morpheme_mecab_fixed_decomposed_morphological_nfd_sp-64k/tok.model")
@@ -121,19 +133,71 @@ class MeCabSentencePieceTokenizer(BaseTokenizer):
 #
 # # text = '나는 오늘 저녁을 먹었다.'   # ['▁나', '▁는', '▃', '▁오늘', '▃', '▁저녁', '▁을', '▃', '▁먹', '▁', '었', '▁다', '▁.']
 # # text = "대한민국에 우리끼리 살아보자"    # ['▁대한민국', '▁에', '▃', '▁우리', '▁끼', '리', '▃', '▁살', '▁아', '▁보', '▁자']
-# # text = "사망 플래그의 좋은 예시이다."
+# text = "사망 플래그의 좋은 예시이다."
+#
+#
 # text = "나는 장풍을 했다."
-# text = "전태희는 한국대학교에 묵었었다"
 # text = "나는 장소를 했다."
+#
+# text = "전태희는 한국대학교에 묵었었다"
 # text = "난 널 좋아해"
 #
-#
+# text = "사람은 머리는 크다"
+# text = "날씨가 춥다"
+# text = "뱃사람이 있다"
+# text = '사람을 죽인 죄'
+# text = '목을 졸라 콜라에게 준 죄'
+# text = '널 위해 준 선물'
 #
 # len(mc.tokenize(text)[0])
 # len(mc.tokenize(text)[1])
 # len(mc.tokenize(text)[2])
-
-
-
+#
+#
 # self = mc
 # self.tokenize(text)
+#
+#
+# def show_tokenized(mecab, sp, text):
+#     mc = MeCabSentencePieceTokenizer(mecab=mecab, sp=sp)
+#     print(mc.tokenize(text))
+#
+# show_tokenized(mecab, sp, text)
+#
+#
+#
+# ## v6
+# # eojeol
+#     # '사망 플래그의 좋은 예시이다'
+#     # ▁플래: 4970 ▁플래그:36169      # ▁예: 167   _예시: 25430
+#     # '플래그의'가 없으니 빈도 높은 '플래' 선택
+#
+# ['▁사망', '▁플래', '그의', '▁좋은', '▁예', '시이다', '.']
+# ['▁사망', '▁플래', '그의', '▁좋은', '▁예', '시이다', '.']
+# ['▁사망', '▁플래', '그의', '▁좋은', '▁예', '시이다', '.']
+#
+# # morpheme orig
+#     # '사망 플래그 의 좋 은 예시 이 다 .'
+#     # ▁플래: 3708 ▁플래그: 17307     # ▁예: 178   ▁예시: 8714
+#     # '플래그'가 있으니 그대로 선택
+#
+# ['▁사망', '▃', '▁플래그', '▁의', '▃', '▁좋', '▁은', '▃', '▁예시', '▁이', '▁다', '▁.']
+# ['▁사망', '▃', '▁플래그', '▁의', '▃', '▁좋', '▁은', '▃', '▁예시', '▁이', '▁다', '▁.']
+# ['▁사망', '▃', '▁플래그', '▁의', '▃', '▁좋', '▁은', '▃', '▁예시', '▁이', '▁다', '▁.']
+#
+#
+#
+# # morpheme orig morphological
+# ['▁사람', '▁은', '▃', '▁머리', '▁는', '▃', '▁크', '▁다']
+#
+#
+#
+# # eojeol morphological      # ▁하았다: 393      # ▁하: 58
+# ['▁나는', '▁장', '풍을', '▁하았다', '.']
+#
+#
+#
+#
+# ## v4
+# # with fixed morphological
+# ['▁사람', '▁ㅇㅡㄴ', '▃', '▁머리', '▁ㄴㅡㄴ', '▃', '▁크', '▁ㄷㅏ', '⊸']
