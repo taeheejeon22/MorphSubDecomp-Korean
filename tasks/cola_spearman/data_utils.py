@@ -16,7 +16,7 @@ def load_data(file_path: str) -> Tuple[List[str], List[str], List[int]]:
         for i, line in enumerate(f.readlines()[1:]):
             splitted = line.strip().split("\t")
             if len(splitted) != 2:
-                print(f"[ERROR] {repr(line)}, line {i}")
+                #print(f"[ERROR] {repr(line)}, line {i}")
                 continue
             sentence.append(splitted[0])
             labels.append(float(splitted[1]))

@@ -140,7 +140,8 @@ if __name__ == "__main__":
 
         # 추가한 것들
     parser.add_argument("--dummy_letter", type=str, default="")  # 초성/중성/종성 자리 채우기용 더미 문자. default는 없음(""). # "⊸"  # chr(8888)
-    parser.add_argument("--grammatical_symbol", type=str, default="")  # "⭧" chr(11111)
+    parser.add_argument("--grammatical_symbol", type=str, default="")  # "⭧" # chr(11111)
+    # '⭨" # chr(11112)
 
     parser.add_argument("--token_type", type=str, default="")   # eojeol / morpheme # v2에서 추가
     parser.add_argument("--tokenizer_type", type=str, default="mecab_orig")  # mecab_orig / mecab_fixed

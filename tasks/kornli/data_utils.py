@@ -18,7 +18,7 @@ def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str]
         for i, line in enumerate(f.readlines()[1:]):
             splitted = line.strip().split("\t")
             if len(splitted) != 3:
-                print(f"[ERROR] {repr(line)}, line {i}")
+                #print(f"[ERROR] {repr(line)}, line {i}")
                 continue
             sentence_as.append(splitted[0])
             sentence_bs.append(splitted[1])

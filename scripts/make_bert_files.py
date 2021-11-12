@@ -33,22 +33,22 @@ def main(root_path: str, vocab_size: int):
     bert_config = make_bert_config(vocab_size=vocab_size)
 
     for ix in range(len(tok_vocab_paths)):
-        # make a "vocab.txt"
-        replaced = []
 
         # delete number column
         output_dir = tok_vocab_paths[ix].split("tok.vocab")[0]
 
-        # with open(output_dir + "tok.vocab", "r", encoding='utf-8') as f:
-        with open(os.path.join(output_dir, "tok.vocab"), "r", encoding='utf-8') as f:
-            text = f.readlines()
-            for line in text:
-                replaced.append(line.split('\t')[0])
+        # # make a "vocab.txt"
+        # replaced = []
+        #
+        # with open(os.path.join(output_dir, "tok.vocab"), "r", encoding='utf-8') as f:
+        #     text = f.readlines()
+        #     for line in text:
+        #         replaced.append(line.split('\t')[0])
+        #
+        # with open(os.path.join(output_dir, "vocab.txt"), "w", encoding='utf-8') as f:
+        #     for vocab in replaced:
+        #         f.write(vocab + '\n')
 
-        # with open(output_dir + "vocab.txt", "w", encoding='utf-8') as f:
-        with open(os.path.join(output_dir, "vocab.txt"), "w", encoding='utf-8') as f:
-            for vocab in replaced:
-                f.write(vocab + '\n')
 
         # make a "bert_config.json"
         # with open(output_dir + "bert_config.json", "w") as json_file:

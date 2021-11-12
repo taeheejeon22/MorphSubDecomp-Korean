@@ -31,6 +31,12 @@ class SentencePieceTokenizer(BaseTokenizer):
 
 
 # model_path="./output_sp/morpheme_mecab_orig_composed_sp-0k/tok.model"
+# model_path="./output_sp/morpheme_mecab_orig_composed_sp-64k_0/tok.model"
+#
+# sp = spm.SentencePieceProcessor(model_file=model_path)
+# sp.Encode("우리 ⭧는 좋 ⭧다", out_type=str)
+#
+# sp.encode("마을이 넓다", out_type)
 # # model_path = "./resources/v3_without_dummy_letter/sp-32k/tok.model"
 # sp = SentencePieceTokenizer(model_path)
 # text = "대한민국에 우리끼리 살아보자"    # ['▁대한민국에', '▁우리', '끼리', '▁살아', '보자']

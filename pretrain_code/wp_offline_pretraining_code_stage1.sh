@@ -12,8 +12,6 @@ set -e
 #pip install -U gast==0.2.2
 #git clone https://github.com/google-research/bert.git
 #bert-sentencepiece version
-#pip install sentencepiece==0.1.96
-#git clone https://github.com/raymondhs/bert-sentencepiece.git
 
 
 # tokenizer를 사용자로부터 입력 받기
@@ -56,7 +54,7 @@ do
     echo "RESORCE_DIR: ${RESOURCE_DIR}"
     # 코퍼스 조각 -> tfrecord로 만드는 작업을 백그라운드에서 실행
     nohup \
-    python3 bert-sentencepiece/create_pretraining_data.py \
+    python3 bert/create_pretraining_data.py \
     --input_file=${file} \
     --output_file=${OUTPUT_DIR}/${TOKENIZER}/${file_name}.tfrecord \
     --vocab_file=${RESOURCE_DIR}/vocab.txt \
@@ -65,23 +63,23 @@ do
     --max_seq_length=128 \
     --masked_lm_prob=0.15 \
     --random_seed=12345 \
-    --piece=sentence \
-    --piece_model=${RESOURCE_DIR}/tok.model \
     --dupe_factor=5 > ${TOKENIZER}'_'${file_name}.log 2>&1 &
 
     # save command log
-    echo $TOKENIZER' ### '$file_name' ### '$CORPUS_DIR' ### '$RESOURCE_DIR' ### '${OUTPUT_DIR}/${file_name}.tfrecord' ### '${TOKENIZER}'_'tok.model &> ${file_name}'_'command.log   
+    echo $TOKENIZER' ### '$file_name' ### '$CORPUS_DIR' ### '$RESOURCE_DIR' ### '${OUTPUT_DIR}/${file_name}.tfrecord &> ${file_name}'_'command.log   
 
 done
 
-# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/decomposed_pure_nfd
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/composed_nfd
 
-# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/eojeol_mecab_fixed_decomposed_pure_nfd_sp-64k
+# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/eojeol_mecab_fixed_composed_wp-64k
 
-# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/decomposed_morphological_nfd
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/decomposed_pure_nfd/1st
 
-# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/eojeol_mecab_fixed_decomposed_morphological_nfd_sp-64k
+# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/eojeol_mecab_fixed_decomposed_pure_wp-64k
+
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/decomposed_pure_nfd/2nd
 
 
-# /home/jth/Desktop/acl_tokenization/corpus
 
+# /home/jth/Desktop/acl_tokenization/corpus/fake
