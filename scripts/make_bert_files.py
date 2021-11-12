@@ -33,11 +33,12 @@ def main(root_path: str, vocab_size: int):
     bert_config = make_bert_config(vocab_size=vocab_size)
 
     for ix in range(len(tok_vocab_paths)):
+
+        # delete number column
+        output_dir = tok_vocab_paths[ix].split("tok.vocab")[0]
+
         # # make a "vocab.txt"
         # replaced = []
-        #
-        # # delete number column
-        # output_dir = tok_vocab_paths[ix].split("tok.vocab")[0]
         #
         # with open(os.path.join(output_dir, "tok.vocab"), "r", encoding='utf-8') as f:
         #     text = f.readlines()
