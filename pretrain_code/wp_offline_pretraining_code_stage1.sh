@@ -39,7 +39,23 @@ echo "resource_dir == $RESOURCE_DIR"
 #OUTPUT_DIR=`echo ${CORPUS_DIR//"tokenized_GCP"/"tfrecord"}`
 OUTPUT_DIR=/home/jth/Desktop/acl_tokenization/corpus/tfrecord
 
+# if [ ! -d ./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam ]; then
+#     echo "summary_by_hparam dir making..."
+#     mkdir -p "./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam"
+#     echo "summary_by_hparam dir making...Done"
+# fi
 
+# if [ ! -e "./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam/summary_by_hparam.csv" ]; then
+#     touch "./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam/summary_by_hparam.csv"
+#     chmod +x "./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam/summary_by_hparam.csv"
+#     echo "summary_by_hparam file making..."
+#     echo "summary_by_hparam file making...Done"
+# fi
+
+if [ ! -d ${OUTPUT_DIR}/${TOKENIZER} ]; then
+    echo "OUTPUT_DIR making..."
+    mkdir -p ${OUTPUT_DIR}/${TOKENIZER}
+    echo "OUTPUT_DIR making... Done!"
 
 
 # 각 코퍼스 파일에 대해서 tfrecord 만들기
