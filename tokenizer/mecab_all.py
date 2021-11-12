@@ -240,7 +240,7 @@ def str2jamo(text, grammatical=False, dummy_letter=""):
 
 
 class MeCabTokenizer_all(BaseTokenizer):
-    def __init__(self, token_type: str, tokenizer_type: str, decomposition_type: str, space_symbol: str = "▃", dummy_letter: str = "", nfd: bool = True):
+    def __init__(self, token_type: str, tokenizer_type: str, decomposition_type: str, space_symbol: str = "", dummy_letter: str = "", nfd: bool = True, grammatical_symbol: str = ""):
         assert (token_type in ["eojeol", "morpheme"] ), 'check the token type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
         assert (tokenizer_type in ["mecab_orig", "mecab_fixed"] ), 'check the tokenizer type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
         assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological", "composed_nfd", "decomposed_pure_nfd", "decomposed_morphological_nfd"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
@@ -252,13 +252,14 @@ class MeCabTokenizer_all(BaseTokenizer):
         self.tokenizer_type = tokenizer_type  # mecab_orig  / mecab_fixed
 
         self.decomposition_type = decomposition_type    # composed  decomposed_pure  decomposed_morphological
-        self.space_symbol = space_symbol    # 단어 사이 특수 문자
+        self.space_symbol = space_symbol    # 단어 사이 특수 문자   # "▃"
         self.dummy_letter = dummy_letter    # 초성/중성/종성 자리 채우기용 더미 문자
         self.nfd = nfd  # NFD 이용해 자모 분해할지
+        self.grammatical_symbol = grammatical_symbol    # 문법 형태소 표지
 
         self.grammatical_pos = ["JKS", "JKC", "JKG", "JKO", "JKB", "JKV", "JKQ", "JX", "JC", "EP", "EF", "EC", "ETN", "ETM"]    # 어미, 조사
 
-        self.tok = tok.tokenizers(dummy_letter=self.dummy_letter , space_symbol=self.space_symbol, nfd=self.nfd)
+        self.tok = tok.tokenizers(dummy_letter=self.dummy_letter , space_symbol=self.space_symbol, nfd=self.nfd, grammatical_symbol=self.grammatical_symbol)
 
 
     # # kortok API based

@@ -180,7 +180,7 @@ if __name__ == "__main__":
     else:
         with_grammatical_symbol = "T"
 
-    OUTPUT_DIR = f"./corpus/tokenized/space_{with_space_symbol}_dummy_{with_dummy_letter}_grammatical_{with_grammatical_symbol}"
+    OUTPUT_DIR = f"./corpus/tokenized/space_{with_space_symbol}_dummy_{with_dummy_letter}_grammatical_{with_grammatical_symbol}/"
 
 
 
