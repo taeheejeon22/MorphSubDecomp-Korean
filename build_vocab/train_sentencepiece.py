@@ -71,11 +71,12 @@ if __name__ == "__main__":
         "--tokenizer_type", type=str, default="", choices=["ko", "en", "none", "mecab_orig", "mecab_fixed"]
     )  # ko: Korean Wiki Corpus, en: English Wiki Corpus, mecab_orig: NamuWiki Corpus tokenized by MeCab_orig, mecab_fixed: NamuWiki Corpus tokenized by MeCab_fixed
     parser.add_argument(
-        "--composition_type", type=str, default="composed", choices=["composed", "decomposed_pure", "decomposed_morphological", "composed_nfd", "decomposed_pure_nfd", "decomposed_morphological_nfd"]
+        "--composition_type", type=str, default="composed", choices=["composed", "decomposed_pure", "decomposed_morphological", "decomposed_lexical", "decomposed_grammatical"]
     )  # composed: syllable-level   decomposed_pure: jamo-level     decomposed_morphological: syllable+jamo-level
 
     parser.add_argument("--with_dummy_letter", type=bool, default=False)    # 자모 더미 문자 사용 여부: True, False
 
+    parser.add_argument("--tokenized_corpus_path", type=str, default="")  # 토큰화한 코퍼스 경로
 
 
     # args = {"vocab_size": 32000, "character_coverage": 1.0, "normalization_rule_name": "identity",
@@ -100,15 +101,17 @@ if __name__ == "__main__":
     print(tokenizer_type, '#################')
 
 
-    # 자모 더미 문자 사용 여부에 따른 경로 설정
-    if args["with_dummy_letter"] == False:
-        with_dummy_letter = "without_dummy_letter"
-    elif args["with_dummy_letter"] == True:
-        with_dummy_letter = "with_dummy_letter"
+    # # 자모 더미 문자 사용 여부에 따른 경로 설정
+    # if args["with_dummy_letter"] == False:
+    #     with_dummy_letter = "without_dummy_letter"
+    # elif args["with_dummy_letter"] == True:
+    #     with_dummy_letter = "with_dummy_letter"
 
 
+    # INPUT_MECAB_TOKENIZED_CORPUS = f"./corpus/tokenized/{with_dummy_letter}/{corpus}_{token_type}_{tokenizer_type}/{composition_type}/{corpus}_{token_type}_{tokenizer_type}_{composition_type}.txt"  # all
 
-    INPUT_MECAB_TOKENIZED_CORPUS = f"./corpus/tokenized/{with_dummy_letter}/{corpus}_{token_type}_{tokenizer_type}/{composition_type}/{corpus}_{token_type}_{tokenizer_type}_{composition_type}.txt"  # all
+    corpus_subpath = os.path.join(args["tokenized_corpus_path"], f"{corpus}_{token_type}_{tokenizer_type}/{composition_type}/")
+    INPUT_MECAB_TOKENIZED_CORPUS = os.path.join(corpus_subpath, f"{corpus}_{token_type}_{tokenizer_type}_{composition_type}.txt")
 
 
     # if "mecab" in args["tokenizer_type"]:
@@ -189,6 +192,8 @@ if __name__ == "__main__":
     cmd += f"--unk_surface={args['unk_surface']} "
     cmd += f"--user_defined_symbols={args['special_symbols']} "
 
+    # cmd += f"--normalization_rule_name=identity"
+
     # train sentencepiece
     spm.SentencePieceTrainer.Train(cmd)
 
@@ -203,7 +208,9 @@ if __name__ == "__main__":
 
 
     # mecab config  (tok.json) mecab_tokenization.py로 토큰화한 코퍼스 경로에서 있는 것 그대로 복사해서 저장
-    with open(f"./corpus/tokenized/{with_dummy_letter}/{corpus}_{token_type}_{tokenizer_type}/{composition_type}/tok.json") as f:
+
+    # with open(f"./corpus/tokenized/{with_dummy_letter}/{corpus}_{token_type}_{tokenizer_type}/{composition_type}/tok.json") as f:
+    with open(os.path.join(corpus_subpath, "tok.json")) as f:
         tok_json = json.load(f)
 
     with open(os.path.join(output_dir, "tok.json"), "w") as f:

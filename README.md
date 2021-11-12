@@ -161,29 +161,30 @@ orig decomposed morphological 20:12
 
 ## sentencepiece
 ./build_vocab/train_sentencepiece.py
+### baseline
 ```bash
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --token_type=eojeol --tokenizer_type=mecab_fixed --composition_type=composed
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --token_type=eojeol --tokenizer_type=mecab_fixed --composition_type=decomposed_pure_nfd
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --token_type=eojeol --tokenizer_type=mecab_fixed --composition_type=decomposed_morphological_nfd
+python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F --vocab_size=64000 --token_type=eojeol --tokenizer_type=mecab_fixed --composition_type=composed
+python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F --vocab_size=64000 --token_type=eojeol --tokenizer_type=mecab_fixed --composition_type=decomposed_pure
 
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_orig --composition_type=composed
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_orig --composition_type=decomposed_pure_nfd
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_orig --composition_type=decomposed_morphological_nfd
-
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_fixed --composition_type=composed_nfd
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_fixed --composition_type=decomposed_pure_nfd
-python build_vocab/train_sentencepiece.py --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_fixed --composition_type=decomposed_morphological_nfd
-
-
-
-
-python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_orig" --composition_type="decomposed_pure" --with_dummy_letter=True
-python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_orig" --composition_type="decomposed_morphological" --with_dummy_letter=True
-
-python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_fixed" --composition_type="decomposed_pure" --with_dummy_letter=True
-python build_vocab/train_sentencepiece.py --vocab_size=32000 --tokenizer_type="mecab_fixed" --composition_type="decomposed_morphological" --with_dummy_letter=True
-
+python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_orig --composition_type=composed
+python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_orig --composition_type=decomposed_pure
+python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_fixed --composition_type=composed
+python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_fixed --composition_type=decomposed_pure
 ```
+
+### our
+```bash
+python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_T --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_orig --composition_type=composed
+python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_T --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_orig --composition_type=decomposed_lexical
+python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_T --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_orig --composition_type=decomposed_pure
+
+python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_T --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_fixed --composition_type=composed
+python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_T --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_fixed --composition_type=decomposed_lexical
+python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_T --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_fixed --composition_type=decomposed_pure
+```
+
+
+
 
 
 # 3. make BERT files 
