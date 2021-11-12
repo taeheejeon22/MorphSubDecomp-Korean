@@ -13,7 +13,7 @@ class PAWSModel(nn.Module):
         self.classifier = nn.Linear(bert_config.hidden_size, 2)
 
     def forward(self, input_token_ids: torch.Tensor, attention_mask: torch.Tensor, token_type_ids: torch.Tensor):
-        _, pooled_output = self.bert.forward(input_token_ids, attention_mask, token_type_ids)
+        _, pooled_output = self.bert.forward(input_token_ids, attention_mask, token_type_ids, return_dict=False)
         output_drop = self.dropout(pooled_output)
         logits = self.classifier(output_drop)
 

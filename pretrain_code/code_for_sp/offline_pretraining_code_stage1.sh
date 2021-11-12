@@ -78,10 +78,43 @@ done
 
 # /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/eojeol_mecab_fixed_decomposed_pure_nfd_sp-64k
 
+
 # /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/decomposed_morphological_nfd
 
 # /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/eojeol_mecab_fixed_decomposed_morphological_nfd_sp-64k
 
 
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_morpheme_mecab_fixed/composed_nfd
+
+# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/morpheme_mecab_fixed_composed_nfd_sp-64k
+
+
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_morpheme_mecab_fixed/decomposed_pure_nfd
+
+# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/morpheme_mecab_fixed_decomposed_pure_nfd_sp-64k
+
+
+
 # /home/jth/Desktop/acl_tokenization/corpus
 
+
+
+
+
+
+# /home/jth/Desktop/acl_tokenization/corpus/tfrecord/fixed_composed
+
+
+# nohup \
+# python3 bert-sentencepiece/create_pretraining_data.py \
+# --input_file=/home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_morpheme_mecab_fixed/composed_nfd/wikiko_20210901_morpheme_mecab_fixed_composed_nfd_dupe_2.txt \
+# --output_file=/home/jth/Desktop/acl_tokenization/corpus/tfrecord/fixed_composed/dupe2.tfrecord \
+# --vocab_file=/home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/morpheme_mecab_fixed_composed_nfd_sp-64k/vocab.txt \
+# --do_lower_case=True \
+# --max_predictions_per_seq=20 \
+# --max_seq_length=128 \
+# --masked_lm_prob=0.15 \
+# --random_seed=12345 \
+# --piece=sentence \
+# --piece_model=/home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/morpheme_mecab_fixed_composed_nfd_sp-64k/tok.model \
+# --dupe_factor=2 > dupe2_test.log 2>&1 &
