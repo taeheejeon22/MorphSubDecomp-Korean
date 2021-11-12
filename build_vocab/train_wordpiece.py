@@ -29,7 +29,7 @@ from tokenizers.trainers import WordPieceTrainer
 def train_wp(vocab_size: int, files: list, save_path: str):
     # set a tokenizer
     bert_tokenizer = Tokenizer(WordPiece(unk_token="[UNK]"))
-    bert_tokenizer.normalizer = normalizers.Sequence([StripAccents()])  # normalizer
+    # bert_tokenizer.normalizer = normalizers.Sequence([StripAccents()])  # normalizer
     bert_tokenizer.pre_tokenizer = WhitespaceSplit()  # pretokenizer
 
     bert_tokenizer.post_processor = TemplateProcessing(

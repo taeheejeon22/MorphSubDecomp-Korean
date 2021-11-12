@@ -4,5 +4,5 @@
     "tokenizer_type": "mecab_orig",
     "composition_type": "composed",
     "with_dummy_letter": false,
-    "tokenized_corpus_path": "./corpus/tokenized/space_F_dummy_F_grammatical_F/wikiko_20210901_morpheme_mecab_orig/composed"
+    "tokenized_corpus_path": "./corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_orig/composed"
 }
