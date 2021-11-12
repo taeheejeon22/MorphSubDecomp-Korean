@@ -1,0 +1,8 @@
+{
+    "vocab_size": 64000,
+    "tokenizer_type": "mecab_fixed",
+    "composition_type": "composed",
+    "token_type": "eojeol",
+    "with_dummy_letter": false,
+    "tokenized_corpus_path": "./corpus/tokenized/space_F_dummy_F_grammatical_F/wikiko_20210901_eojeol_mecab_fixed/composed"
+}
