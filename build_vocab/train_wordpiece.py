@@ -11,47 +11,79 @@ import argparse
 import json
 import os
 
+from tokenizers import BertWordPieceTokenizer
 
-from tokenizers import Tokenizer
-from tokenizers.models import WordPiece
-from tokenizers import normalizers
-from tokenizers.normalizers import StripAccents, NFD, NFC
 
-from tokenizers.pre_tokenizers import WhitespaceSplit
-from tokenizers.processors import TemplateProcessing
 
-from tokenizers.trainers import WordPieceTrainer
-
+# from tokenizers import Tokenizer
+# from tokenizers.models import WordPiece
+# from tokenizers import normalizers
+# from tokenizers.normalizers import StripAccents, NFD, NFC
+#
+# from tokenizers.pre_tokenizers import WhitespaceSplit
+# from tokenizers.processors import TemplateProcessing
+#
+# from tokenizers.trainers import WordPieceTrainer
+#
 
 
 
 # train a wordpiece model
 def train_wp(vocab_size: int, files: list, save_path: str):
-    # set a tokenizer
-    bert_tokenizer = Tokenizer(WordPiece(unk_token="[UNK]"))
-    bert_tokenizer.normalizer = normalizers.Sequence([NFC(), StripAccents()])  # normalizer
-    bert_tokenizer.pre_tokenizer = WhitespaceSplit()  # pretokenizer
-
-    bert_tokenizer.post_processor = TemplateProcessing(
-        single="[CLS] $A [SEP]",
-        pair="[CLS] $A [SEP] $B:1 [SEP]:1",
-        special_tokens=[
-            ("[CLS]", 1),
-            ("[SEP]", 2),
-        ],
+    tokenizer = BertWordPieceTokenizer(
+        vocab_file=None,
+        clean_text=True,
+        handle_chinese_chars=True,
+        strip_accents=False,  # Must be False if cased model
+        lowercase=False,
+        wordpieces_prefix="##"
     )
 
-    # train
-    trainer = WordPieceTrainer(
-        vocab_size=vocab_size, special_tokens=["[UNK]", "[CLS]", "[SEP]", "[PAD]", "[MASK]"]
+    tokenizer.train(
+        files=files,
+        limit_alphabet=6000,
+        vocab_size=vocab_size
     )
-    bert_tokenizer.train(files, trainer)
+
 
 
     # save
-    bert_tokenizer.save(os.path.join(save_path, "tok.vocab"))
+    tokenizer.save(os.path.join(save_path, "tok.vocab"))
 
-    return bert_tokenizer
+    return tokenizer
+
+
+# def train_wp(vocab_size: int, files: list, save_path: str):
+#     # set a tokenizer
+#     bert_tokenizer = Tokenizer(WordPiece(unk_token="[UNK]"))
+#     bert_tokenizer.normalizer = normalizers.Sequence([StripAccents()])  # normalizer
+#     bert_tokenizer.pre_tokenizer = WhitespaceSplit()  # pretokenizer
+#
+#     bert_tokenizer.post_processor = TemplateProcessing(
+#         single="[CLS] $A [SEP]",
+#         pair="[CLS] $A [SEP] $B:1 [SEP]:1",
+#         special_tokens=[
+#             ("[CLS]", 1),
+#             ("[SEP]", 2),
+#         ],
+#     )
+#
+#     # train
+#     trainer = WordPieceTrainer(
+#         vocab_size=vocab_size, special_tokens=["[UNK]", "[CLS]", "[SEP]", "[PAD]", "[MASK]"]
+#     )
+#     bert_tokenizer.train(files, trainer)
+#
+#
+#     # save
+#     bert_tokenizer.save(os.path.join(save_path, "tok.vocab"))
+#
+#     return bert_tokenizer
+
+
+
+
+
 
 
 def listdir_fullpath(d):
