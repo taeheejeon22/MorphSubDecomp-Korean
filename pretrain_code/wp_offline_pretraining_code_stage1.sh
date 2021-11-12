@@ -78,5 +78,8 @@ done
 
 # /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/eojeol_mecab_fixed_decomposed_pure_wp-64k
 
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/decomposed_pure_nfd/2nd
+
+
 
 # /home/jth/Desktop/acl_tokenization/corpus/fake
