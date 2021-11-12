@@ -41,15 +41,22 @@ doublespace_pattern = re.compile('\s+')
 
 # class process_jamo():
 class tokenizers():
-    def __init__(self, dummy_letter: str, space_symbol: str, grammatical_symbol: str, nfd: bool):
+    def __init__(self, dummy_letter: str, space_symbol: str, grammatical_symbol: list =["", ""], nfd: bool = True):
         self.dummy_letter = dummy_letter    # 초성/중성/종성 더미 문자
         self.space_symbol = space_symbol    # 띄어쓰기 더미 문자
-        self.grammatical_symbol = grammatical_symbol    # 문법 형태소 표지
+        self.grammatical_symbol = grammatical_symbol    # 문법 형태소 표지 # ["⭧", "⭨"]
+        self.grammatical_symbol_josa = grammatical_symbol[0]    # "⫸"   # chr(11000)
+        self.grammatical_symbol_eomi = grammatical_symbol[1]    # "⭧"   # chr(11111)
+
         self.nfd = nfd # Unicode normalization Form D
 
         self.mc_orig = Mecab(use_original=True)
         self.mc_fixed = Mecab(use_original=False)
         self.grammatical_pos = ["JKS", "JKC", "JKG", "JKO", "JKB", "JKV", "JKQ", "JX", "JC", "EP", "EF", "EC", "ETN", "ETM"]
+        self.grammatical_pos_josa = ["JKS", "JKC", "JKG", "JKO", "JKB", "JKV", "JKQ", "JX", "JC"]
+        self.grammatical_pos_eomi = ["EP", "EF", "EC", "ETN", "ETM"]
+
+
         self.lexical_pos = ["NNG", "NNP", "NNB", "NNBC", "NR", "NP",
                             "VV", "VA", "VX", "VCP", "VCN",
                             "MM", "MAG", "MAJ", "IC",
@@ -129,12 +136,19 @@ class tokenizers():
 
     # for inserting grammar_symbol ("⭧")
     def insert_grammar_symbol(self, mor_pos):
-        # mor_pos: ('난', 'NP+JX')
+        # mor_pos: ('나', 'NP')
+        # mor_pos: ('ㄴ', 'JX')
+        # mor_pos: ('난', 'NP+JX')   # 무시
 
         pos = mor_pos[1]
-        if sum([1 for pos in pos.split("+") if pos in self.grammatical_pos]) >= 1: # 토큰 내에 문법 형태소 있으면
-            new_mor = self.grammatical_symbol + mor_pos[0]
-        else:
+        # if sum([1 for pos in pos.split("+") if pos in self.grammatical_pos]) >= 1: # 토큰 내에 문법 형태소 있으면
+
+
+        if pos in self.grammatical_pos_josa:    # 조사이면
+            new_mor = self.grammatical_symbol_josa + mor_pos[0]
+        elif pos in self.grammatical_pos_eomi:  # 어미이면
+            new_mor = self.grammatical_symbol_eomi + mor_pos[0]
+        else:   # 어휘 형태소이면
             new_mor = mor_pos[0]
 
         return (new_mor, pos)
@@ -270,7 +284,20 @@ class tokenizers():
             elif self.nfd == False:
                 eojeol_tokenized = [self.str2jamo(eojeol) for eojeol in re.sub(p_multiple_spaces, " ", sent).split(" ")]
 
-        # elif decomposition_type == "decomposed_morphological":
+
+        ## 폐기 ##
+        # elif decomposition_type == "decomposed_lexical":
+        #     mc = Mecab(use_original=False)
+        #     if self.nfd == True:
+        #         # 어휘 형태소만 unicode NFD 적용
+        #         # eojeol_tokenized = ["".join([mor_pos[0] if (mor_pos[1] in self.grammatical_pos) else (self.grammatical_symbol + self.transform_v3(mor_pos[0]) ) for mor_pos in word]) for word in mc.pos(re.sub(p_multiple_spaces, " ", sent), flatten=False, join=False, coda_normalization=False) ]
+        #         eojeol_tokenized = ["".join([self.transform_v3(mor_pos[0]) if (not mor_pos[1] in self.grammatical_pos) else (self.grammatical_symbol + mor_pos[0] ) for mor_pos in word]) for word in mc.pos(re.sub(p_multiple_spaces, " ", sent), flatten=False, join=False, coda_normalization=False) ]
+        #
+        #     elif self.nfd == False:
+        #         # eojeol_tokenized = ["".join([mor_pos[0] if (mor_pos[1] in self.grammatical_pos) else (self.grammatical_symbol + self.str2jamo(mor_pos[0]) ) for mor_pos in word]) for word in mc.pos(re.sub(p_multiple_spaces, " ", sent), flatten=False, join=False, coda_normalization=True) ]
+        #         eojeol_tokenized = ["".join([self.str2jamo(mor_pos[0]) if (not mor_pos[1] in self.grammatical_pos) else (self.grammatical_symbol + mor_pos[0] ) for mor_pos in word]) for word in mc.pos(re.sub(p_multiple_spaces, " ", sent), flatten=False, join=False, coda_normalization=True) ]
+        #
+        # elif decomposition_type == "decomposed_grammatical":
         #     mc = Mecab(use_original=False)
         #     if self.nfd == True:
         #         # 문법 형태소만 unicode NFD 적용
@@ -278,38 +305,6 @@ class tokenizers():
         #     elif self.nfd == False:
         #         eojeol_tokenized = ["".join([mor_pos[0] if (not mor_pos[1] in self.grammatical_pos) else (self.grammatical_symbol + self.str2jamo(mor_pos[0]) ) for mor_pos in word]) for word in mc.pos(re.sub(p_multiple_spaces, " ", sent), flatten=False, join=False, coda_normalization=True) ]
 
-        elif decomposition_type == "decomposed_lexical":
-            mc = Mecab(use_original=False)
-            if self.nfd == True:
-                # 어휘 형태소만 unicode NFD 적용
-                # eojeol_tokenized = ["".join([mor_pos[0] if (mor_pos[1] in self.grammatical_pos) else (self.grammatical_symbol + self.transform_v3(mor_pos[0]) ) for mor_pos in word]) for word in mc.pos(re.sub(p_multiple_spaces, " ", sent), flatten=False, join=False, coda_normalization=False) ]
-                eojeol_tokenized = ["".join([self.transform_v3(mor_pos[0]) if (not mor_pos[1] in self.grammatical_pos) else (self.grammatical_symbol + mor_pos[0] ) for mor_pos in word]) for word in mc.pos(re.sub(p_multiple_spaces, " ", sent), flatten=False, join=False, coda_normalization=False) ]
-
-            elif self.nfd == False:
-                # eojeol_tokenized = ["".join([mor_pos[0] if (mor_pos[1] in self.grammatical_pos) else (self.grammatical_symbol + self.str2jamo(mor_pos[0]) ) for mor_pos in word]) for word in mc.pos(re.sub(p_multiple_spaces, " ", sent), flatten=False, join=False, coda_normalization=True) ]
-                eojeol_tokenized = ["".join([self.str2jamo(mor_pos[0]) if (not mor_pos[1] in self.grammatical_pos) else (self.grammatical_symbol + mor_pos[0] ) for mor_pos in word]) for word in mc.pos(re.sub(p_multiple_spaces, " ", sent), flatten=False, join=False, coda_normalization=True) ]
-
-        elif decomposition_type == "decomposed_grammatical":
-            mc = Mecab(use_original=False)
-            if self.nfd == True:
-                # 문법 형태소만 unicode NFD 적용
-                eojeol_tokenized = ["".join([mor_pos[0] if (not mor_pos[1] in self.grammatical_pos) else (self.grammatical_symbol + self.transform_v3(mor_pos[0]) ) for mor_pos in word]) for word in mc.pos(re.sub(p_multiple_spaces, " ", sent), flatten=False, join=False, coda_normalization=False) ]
-            elif self.nfd == False:
-                eojeol_tokenized = ["".join([mor_pos[0] if (not mor_pos[1] in self.grammatical_pos) else (self.grammatical_symbol + self.str2jamo(mor_pos[0]) ) for mor_pos in word]) for word in mc.pos(re.sub(p_multiple_spaces, " ", sent), flatten=False, join=False, coda_normalization=True) ]
-
-
-        # elif nfd == True:
-        #     if morpheme_normalization == False:
-        #         eojeol_tokenized = [self.transform_v3(eojeol) for eojeol in re.sub(p_multiple_spaces, " ", sent).split(" ")]
-        #
-        #     elif morpheme_normalization == True:
-        #         mc = Mecab(use_original=False)
-        #         # 문법 형태소만 unicode NFD 적용
-        #         eojeol_tokenized = ["".join([mor_pos[0] if (not mor_pos[1] in self.grammatical_pos) else self.transform_v3(mor_pos[0]) for mor_pos in word]) for word in mc.pos(re.sub(p_multiple_spaces, " ", sent), flatten=False, join=False) ]
-        #
-        #         # ee = ["".join([mor_pos[0] if (not mor_pos[1] in self.grammatical_pos) else self.transform_v3(mor_pos[0]) for mor_pos in word]) for word in mc.pos(sent, flatten=False, join=False) ]
-        #         # ee = [mor_pos[0] if (not mor_pos[1] in self.grammatical_pos) else self.transform_v3(mor_pos[0]) for mor_pos in mc.pos(sent, flatten=True, join=False)]
-        #         # len(ee[4])
 
         return eojeol_tokenized
 
@@ -384,8 +379,8 @@ class tokenizers():
 
 
 
-        # insert grammar symbol
-        if self.grammatical_symbol != "":   # grammar_symbol 사용하면
+        # insert grammatical symbol
+        if len(self.grammatical_symbol) > 0:   # grammatical_symbol 사용하면
             mor_poss = [[self.insert_grammar_symbol(mor_pos=mor_pos) for mor_pos in word] for word in mor_poss]
 
 
@@ -482,9 +477,15 @@ class tokenizers():
 
                 if lexical_or_grammatical == "lexical":
                     # 문법 형태소가 들어 있으면
-                    if sum([1 for pos in pos.split("+") if pos in self.grammatical_pos]) >= 1:
-                        decomposed_morpheme = self.grammatical_symbol + morpheme[:]
-                    else: # 순수 어휘 형태소이면
+                    # if sum([1 for pos in pos.split("+") if pos in self.grammatical_pos]) >= 1:
+                    #     decomposed_morpheme = self.grammatical_symbol + morpheme[:]
+
+                    if pos in self.grammatical_pos_josa: # 조사이면
+                        decomposed_morpheme = self.grammatical_symbol_josa + morpheme[:]
+                    elif pos in self.grammatical_pos_eomi: # 어미이면
+                        decomposed_morpheme = self.grammatical_symbol_eomi + morpheme[:]
+
+                    else: # 어휘 형태소 혹은 혼종('난/NP+JX')이면
                         if nfd == False:
                             decomposed_morpheme = "".join(
                                 [self.transform_v2(char) if character_is_korean(char) else char for char in morpheme])  # 한 -> ㅎㅏㄴ
@@ -495,17 +496,37 @@ class tokenizers():
 
                 elif lexical_or_grammatical == "grammatical":
                     # 문법 형태소가 아니면
-                    if sum([1 for pos in pos.split("+") if pos in self.grammatical_pos]) < 1:  # 잔다 VV+EC 등을 분해함
+                    # if sum([1 for pos in pos.split("+") if pos in self.grammatical_pos]) < 1:  # 잔다 VV+EC 등을 분해함
+                    #     decomposed_morpheme = morpheme[:]
+                    if not (pos in self.grammatical_pos):
                         decomposed_morpheme = morpheme[:]
 
-                    # 문법 형태소이면
-                    elif sum([1 for pos in pos.split("+") if pos in self.grammatical_pos]) >= 1:  # 잔다 VV+EC 등을 분해함
+
+                    else:   # 문법 형태소이면
+
+                        if pos in self.grammatical_pos_josa:   # 조사이면
+                            grammatical_symbol = self.grammatical_symbol_josa[:]
+                        elif pos in self.grammatical_symbol_eomi:   # 어미이면
+                            grammatical_symbol = self.grammatical_symbol_eomi[:]
+
+
                         if nfd == False:
-                            decomposed_morpheme = self.grammatical_symbol + "".join(
+                            decomposed_morpheme = grammatical_symbol + "".join(
                                 [self.transform_v2(char) if character_is_korean(char) else char for char in morpheme])  # 한 -> ㅎㅏㄴ
                         elif nfd == True:
-                            decomposed_morpheme = self.grammatical_symbol + "".join(
+                            decomposed_morpheme = grammatical_symbol + "".join(
                                 [self.transform_v3(char) if character_is_korean(char) else char for char in morpheme])  # 는 -> 는  # len("는"): 3
+
+
+
+                    # 혼종(난/NP+JX)도 처리하는 방식
+                    # elif sum([1 for pos in pos.split("+") if pos in self.grammatical_pos]) >= 1:  # 잔다 VV+EC 등을 분해함
+                    #     if nfd == False:
+                    #         decomposed_morpheme = self.grammatical_symbol + "".join(
+                    #             [self.transform_v2(char) if character_is_korean(char) else char for char in morpheme])  # 한 -> ㅎㅏㄴ
+                    #     elif nfd == True:
+                    #         decomposed_morpheme = self.grammatical_symbol + "".join(
+                    #             [self.transform_v3(char) if character_is_korean(char) else char for char in morpheme])  # 는 -> 는  # len("는"): 3
 
 
 
@@ -750,15 +771,16 @@ class tokenizers():
 
 
 
-# # dummy_letter = "⊸"  # chr(8888)
-# # space_symbol = "▃"  # chr(9603)
-# # grammatical_symbol = "⭧"  # chr(11111)
-#
-#
-#
+# dummy_letter = "⊸"  # chr(8888)
+# space_symbol = "▃"  # chr(9603)
+# grammatical_symbol = "⭧"  # chr(11111)
+
+
+
 # tok = tokenizers(dummy_letter="#", space_symbol="▃", grammatical_symbol="⭧", nfd=True)    #
 # tok = tokenizers(dummy_letter="#", space_symbol="", grammatical_symbol="⭧", nfd=True)
-# tok = tokenizers(dummy_letter="", space_symbol="", grammatical_symbol="⭧", nfd=False)
+# tok = tokenizers(dummy_letter="", space_symbol="", grammatical_symbol=["⫸", "⭧"], nfd=False)
+# tok = tokenizers(dummy_letter="", space_symbol="", grammatical_symbol=["⫸", "⭧"], nfd=True)
 #
 # self = tok
 # tok.mecab_tokenizer()
@@ -771,7 +793,7 @@ class tokenizers():
 # sent = "미궁에서 뜬 아앗"
 # sent = "훌륭한 사망 플래그의 예시이다"
 # sent = "수해에 입장한다"   # ['ㅅㅜ#ㅎㅐ#', 'ㅇㅔ#', '▃', 'ㅇㅣㅂㅈㅏㅇ', 'ㅎㅏ#', 'ㄴ##ㄷㅏ#']
-# sent = "난 널 좋아해"
+# sent = "나는 널 좋아해"
 #
 # tok.str2jamo(sent)   # 'ㄴㅓㄴ ㄴㅏㄹ ㅈㅗㅎㅇㅏ#ㅎㅐ#'
 # tok.jamo2str(tok.str2jamo(sent))
@@ -782,15 +804,15 @@ class tokenizers():
 # # moasseugi('들어가ㄴ다')
 #
 #
-#
-# sent = "난 너를 좋아해."
 # sent = "예쁜 가방"
+# sent = "난 너를 좋아해."
+#
 #
 # # eojeol
 # ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="composed"); print(ee)
 # ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure"); print(ee)
-# ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_lexical"); print(ee)
-# ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_grammatical"); print(ee)
+# # ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_lexical"); print(ee)
+# # ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_grammatical"); print(ee)
 #
 # # morpheme
 # ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="composed"); print(ee)
@@ -809,7 +831,8 @@ class tokenizers():
 # len(ee[1])
 # len(ee[2])
 # len(ee[3])
-#
+# len(ee[4])
+# len(ee[5])
 #
 # # mecab original
 # #     composed

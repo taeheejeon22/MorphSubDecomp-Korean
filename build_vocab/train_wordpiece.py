@@ -1,3 +1,5 @@
+# https://huggingface.co/docs/tokenizers/python/latest/pipeline.html#all-together-a-bert-tokenizer-from-scratch
+
 # 다음 경로 수정해서 with / without 폴더 잘 설정해야.
 # INPUT_MECAB_TOKENIZED_CORPUS = f"./corpus/tokenized/with_dummy_letter/{corpus}_{tokenizer_type}/{composition_type}/{corpus}_{tokenizer_type}_{composition_type}.txt"  # all
 

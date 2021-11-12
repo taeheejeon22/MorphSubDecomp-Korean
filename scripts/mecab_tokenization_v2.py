@@ -140,8 +140,8 @@ if __name__ == "__main__":
 
         # 추가한 것들
     parser.add_argument("--dummy_letter", type=str, default="")  # 초성/중성/종성 자리 채우기용 더미 문자. default는 없음(""). # "⊸"  # chr(8888)
-    parser.add_argument("--grammatical_symbol", type=str, default="")  # "⭧" # chr(11111)
-    # '⭨" # chr(11112)
+    # parser.add_argument("--grammatical_symbol", type=str, default="")  # "⭧" # chr(11111)
+    parser.add_argument("--grammatical_symbol", type=list, default=["", ""])  # ["⫸", "⭧"] # chr(11000) # chr(11111)
 
     parser.add_argument("--token_type", type=str, default="")   # eojeol / morpheme # v2에서 추가
     parser.add_argument("--tokenizer_type", type=str, default="mecab_orig")  # mecab_orig / mecab_fixed
@@ -176,7 +176,7 @@ if __name__ == "__main__":
     else:
         with_dummy_letter = "T"
 
-    if args["grammatical_symbol"] == "":
+    if args["grammatical_symbol"] == ["", ""]:
         with_grammatical_symbol = "F"
     else:
         with_grammatical_symbol = "T"
@@ -207,7 +207,8 @@ if __name__ == "__main__":
 
 
     INPUT_CORPUS = args["corpus_path"]
-    corpus = "_".join(INPUT_CORPUS.split("/")[-1].split("_")[:2])
+    corpus = "_".join(INPUT_CORPUS.split("/")[-1].split("_")[:2])   # corpus name
+
 
     p_endswith_num = re.compile("\d+$") # split 커맨드로 나눈 후 생기는 번호 검색용
 
@@ -228,7 +229,10 @@ if __name__ == "__main__":
 
 
     # v2
-    tok = tok.tokenizers(dummy_letter=args["dummy_letter"], space_symbol=args["space_symbol"], grammatical_symbol=args["grammatical_symbol"], nfd=args["nfd"])
+    symbol_josa = args["grammatical_symbol"][0]
+    symbol_eomi = args["grammatical_symbol"][1]
+
+    tok = tok.tokenizers(dummy_letter=args["dummy_letter"], space_symbol=args["space_symbol"], grammatical_symbol=[symbol_josa, symbol_eomi], nfd=args["nfd"])
     tokenize_fn = partial(tokenize_our, token_type=args["token_type"], tokenizer_type=args["tokenizer_type"], decomposition_type=args["decomposition_type"], space_symbol=args["space_symbol"], dummy_letter=args["dummy_letter"] )
 
 
@@ -277,9 +281,8 @@ if __name__ == "__main__":
 
 
 
-
-
-    OUTPUT_DIR_sub = OUTPUT_DIR + "_".join([corpus, args["token_type"], args["tokenizer_type"] ]) + "/" + args["decomposition_type"]
+    # OUTPUT_DIR_sub = OUTPUT_DIR + "_".join([corpus, args["token_type"], args["tokenizer_type"] ]) + "/" + args["decomposition_type"]
+    OUTPUT_DIR_sub = OUTPUT_DIR + "_".join([args["token_type"], args["tokenizer_type"] ]) + "/" + args["decomposition_type"]
 
     os.makedirs(OUTPUT_DIR_sub, exist_ok=True)
 
