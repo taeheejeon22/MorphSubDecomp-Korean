@@ -14,9 +14,10 @@ set -e
 
 # tokenizer를 사용자로부터 입력 받기
 echo "아래의 토크나이저 중에서 사용할 토크나이저를 입력하세요. "
-echo "none_composed"
-echo "orig_composed    orig_decomposed_pure    orig_deocomposed_morphological"
-echo "fixed_composed    fixed_decomposed_pure    fixed_decomposed_morphological"
+echo "eojeol_fixed_composed"
+echo "eojeol_fixed_pure"
+echo "morpheme_orig_composed    morpheme_orig_decomposed_pure    morpheme_orig_decomposed_morphological"
+echo "morpheme_fixed_composed    morpheme_fixed_decomposed_pure    morpheme_fixed_decomposed_morphological"
 
 echo -e "tokenizer: " 
 read TOKENIZER
@@ -37,18 +38,6 @@ echo "resource_dir == $RESOURCE_DIR"
 #OUTPUT_DIR=`echo ${CORPUS_DIR//"tokenized_GCP"/"tfrecord"}`
 OUTPUT_DIR=/home/jth/Desktop/acl_tokenization/corpus/tfrecord
 
-# if [ ! -d ./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam ]; then
-#     echo "summary_by_hparam dir making..."
-#     mkdir -p "./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam"
-#     echo "summary_by_hparam dir making...Done"
-# fi
-
-# if [ ! -e "./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam/summary_by_hparam.csv" ]; then
-#     touch "./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam/summary_by_hparam.csv"
-#     chmod +x "./run_outputs/batch_${batch_size}_lr_${learning_rate}/summary_by_hparam/summary_by_hparam.csv"
-#     echo "summary_by_hparam file making..."
-#     echo "summary_by_hparam file making...Done"
-# fi
 
 if [ ! -d ${OUTPUT_DIR}/${TOKENIZER} ]; then
     echo "OUTPUT_DIR making..."
@@ -99,19 +88,10 @@ done
 
 # /home/jth/Desktop/acl_tokenization/corpus/fake
 
-
-# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/composed_nfd/sample_test
+#eojoel_fixed_composed
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/composed_nfd
 # /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/eojeol_mecab_fixed_composed_wp-64k
 
-# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/decomposed_pure_nfd/1st/sample_test
+#eojoel_fixed_pure
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/decomposed_pure_nfd
 # /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/eojeol_mecab_fixed_decomposed_pure_wp-64k
-
-
-# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_morpheme_mecab_orig/composed/sample_test
-# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/morpheme_mecab_orig_composed_wp-64k
-
-# morpheme_fixed_composed
-# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_morpheme_mecab_fixed/composed_nfd/sample_test
-# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/morpheme_mecab_fixed_composed_wp-64k
-
-# morpheme_fixed_decomposed_pure
