@@ -73,7 +73,7 @@ do
     --input_file=${file} \
     --output_file=${OUTPUT_DIR}/${TOKENIZER}/${file_name}.tfrecord \
     --vocab_file=${RESOURCE_DIR}/vocab.txt \
-    --do_lower_case=True \
+    --do_lower_case=False \
     --max_predictions_per_seq=20 \
     --max_seq_length=128 \
     --masked_lm_prob=0.15 \
@@ -99,7 +99,6 @@ done
 
 # /home/jth/Desktop/acl_tokenization/corpus/fake
 
-# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/composed_nfd/namu/sample_test
 
 # /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/composed_nfd/sample_test
 # /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/eojeol_mecab_fixed_composed_wp-64k
@@ -110,3 +109,9 @@ done
 
 # /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_morpheme_mecab_orig/composed/sample_test
 # /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/morpheme_mecab_orig_composed_wp-64k
+
+# morpheme_fixed_composed
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_morpheme_mecab_fixed/composed_nfd/sample_test
+# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/morpheme_mecab_fixed_composed_wp-64k
+
+# morpheme_fixed_decomposed_pure
