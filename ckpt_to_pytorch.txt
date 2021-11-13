@@ -27,9 +27,9 @@ transformers-cli convert --model_type bert\
   --pytorch_dump_output=./bert_model_v5_without_dummy_letter_orig_decomposed_pure_model.ckpt-1000000.pth
 
 transformers-cli convert --model_type bert\
-  --tf_checkpoint=./convert_bert/bert_model_v5_without_dummy_letter_orig_decomposed_morphological_model.ckpt-400000 \
+  --tf_checkpoint=./convert_bert/bert_model_v5_without_dummy_letter_orig_decomposed_morphological_model.ckpt-800000 \
   --config=./resources/v5_without_dummy_letter/mecab_orig_decomposed_morphological_sp-64k/bert_config.json \
-  --pytorch_dump_output=./bert_model_v5_without_dummy_letter_orig_decomposed_morphological_model.ckpt-400000.pth
+  --pytorch_dump_output=./bert_model_v5_without_dummy_letter_orig_decomposed_morphological_model.ckpt-800000.pth
 
 
 # fixed
