@@ -181,7 +181,7 @@ orig decomposed morphological 20:12
 
 
 
-# 2. Sentencepiece 학습
+# 2. Wordpiece, Sentencepiece 학습
 
 [comment]: <> (## mecab 토큰화)
 
