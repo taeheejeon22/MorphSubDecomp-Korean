@@ -25,6 +25,7 @@ from tokenizer import (
     MeCabSentencePieceTokenizer_orig,
     MeCabSentencePieceTokenizer_fixed,
     MeCabSentencePieceTokenizer,
+    MeCabWordPieceTokenizer,
     # MeCabTokenizer,
     MeCabTokenizer_orig,
     MeCabTokenizer_fixed,
@@ -32,6 +33,7 @@ from tokenizer import (
     # MeCabSentencePieceTokenizer_kortok,
     # MeCabTokenizer_kortok,
     SentencePieceTokenizer,
+    WordPieceTokenizer,
     Vocab,
     # WordTokenizer,
 )
@@ -126,10 +128,10 @@ def main(args):
             #     tokenizer = MeCabSentencePieceTokenizer_fixed(mecab, sp, use_fixed=True) # mecab_fixed.py
 
     elif config.tokenizer.startswith("eojeol") or config.tokenizer.startswith("morpheme"):
-        sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
+        wp = WordPieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
 
-        mecab = MeCabTokenizer_all(token_type=tokenizer_config["token_type"], tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"], nfd=tokenizer_config["nfd"])
-        tokenizer = MeCabSentencePieceTokenizer(mecab=mecab, sp=sp) # mecab_sp.py
+        mecab = MeCabTokenizer_all(token_type=tokenizer_config["token_type"], tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"], nfd=tokenizer_config["nfd"], grammatical_symbol=tokenizer_config["grammatical_symbol"])
+        tokenizer = MeCabWordPieceTokenizer(mecab=mecab, wp=wp) # mecab_wp.py
 
         # if "orig" in config.tokenizer:
         #     mecab = MeCabTokenizer_all(token_type=tokenizer_config["token_type"], tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"], nfd=tokenizer_config["nfd"])
