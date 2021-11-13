@@ -11,8 +11,6 @@ set -e
 #pip install tensorflow==1.14
 #pip install -U gast==0.2.2
 #git clone https://github.com/google-research/bert.git
-#bert-sentencepiece version
-
 
 # tokenizer를 사용자로부터 입력 받기
 echo "아래의 토크나이저 중에서 사용할 토크나이저를 입력하세요. "
@@ -56,6 +54,7 @@ if [ ! -d ${OUTPUT_DIR}/${TOKENIZER} ]; then
     echo "OUTPUT_DIR making..."
     mkdir -p ${OUTPUT_DIR}/${TOKENIZER}
     echo "OUTPUT_DIR making... Done!"
+fi
 
 
 # 각 코퍼스 파일에 대해서 tfrecord 만들기
@@ -86,7 +85,7 @@ do
 
 done
 
-# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/composed_nfd
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/composed_nfd/namu
 
 # /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/eojeol_mecab_fixed_composed_wp-64k
 
@@ -99,3 +98,15 @@ done
 
 
 # /home/jth/Desktop/acl_tokenization/corpus/fake
+
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/composed_nfd/namu/sample_test
+
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/composed_nfd/sample_test
+# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/eojeol_mecab_fixed_composed_wp-64k
+
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/decomposed_pure_nfd/1st/sample_test
+# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/eojeol_mecab_fixed_decomposed_pure_wp-64k
+
+
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_morpheme_mecab_orig/composed/sample_test
+# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/morpheme_mecab_orig_composed_wp-64k
