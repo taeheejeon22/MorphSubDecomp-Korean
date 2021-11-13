@@ -148,23 +148,37 @@ if __name__ == "__main__":
     parser.add_argument("--tokenized_corpus_path", type=str, default="")  # 토큰화한 코퍼스 경로
 
 
-    # args = {"vocab_size": 64000,
-    #         "tokenizer_type": "mecab_fixed",
-    #         "composition_type": "composed",
-    #         "token_type": "eojeol",
-    #         "with_dummy_letter": False,
-    #         "tokenized_corpus_path": "./corpus/tokenized/space_F_dummy_F_grammatical_F/wikiko_20210901_eojeol_mecab_fixed/composed",
-    #         # "tokenized_corpus_path": "./convert_bert",
-    #         }
+    args = {"vocab_size": 64000,
+            "tokenizer_type": "mecab_fixed",
+            "composition_type": "composed",
+            "token_type": "eojeol",
+            "with_dummy_letter": False,
+            "tokenized_corpus_path": "./corpus/tokenized/space_F_dummy_F_grammatical_F/eojeol_mecab_fixed/composed",
+            # "tokenized_corpus_path": "./convert_bert",
+            }
 
 
     args = vars(parser.parse_args())
     print(args)
 
 
-    token_type = args["token_type"]
-    tokenizer_type = args["tokenizer_type"]
-    composition_type = args["composition_type"]
+
+    # tokenized file info.
+    with open(os.path.join(args["tokenized_corpus_path"], "tok.json")) as f:
+        tok_json = json.load(f)
+
+
+
+    # token_type = args["token_type"]
+    # tokenizer_type = args["tokenizer_type"]
+    # composition_type = args["composition_type"]
+    token_type = tok_json["token_type"]
+    tokenizer_type = tok_json["tokenizer_type"]
+    decomposition_type = tok_json["decomposition_type"]
+
+    grammatical_symbol = "F" if tok_json["grammatical_symbol"] == ["",""] else "T"
+
+
 
     print(token_type, "###############")
     print(tokenizer_type, '#################')
@@ -190,7 +204,7 @@ if __name__ == "__main__":
     print(f"\n\nINPUT_CORPORA: {input_file_paths}\n\n")
 
 
-    output_dir = os.path.join(OUTPUT_DIR, f"{token_type}_{tokenizer_type}_{composition_type}_wp-{int(args['vocab_size']) // 1000}k")
+    output_dir = os.path.join(OUTPUT_DIR, f"{token_type}_{tokenizer_type}_{decomposition_type}_grammatical_symbol_{grammatical_symbol}_wp-{int(args['vocab_size']) // 1000}k")
 
     # if args["tokenizer_type"] == "none":
     #     input_corpus = INPUT_MECAB_TOKENIZED_CORPUS

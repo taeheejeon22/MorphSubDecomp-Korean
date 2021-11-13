@@ -1,4 +1,7 @@
-# mecab all: wordpiece용
+# mecab all: wordpiece용. 아래 코드 변경
+    # class MeCabTokenizer_all(BaseTokenizer):
+    #     def __init__(self, token_type: str, tokenizer_type: str, decomposition_type: str, space_symbol: str = "", dummy_letter: str = "", nfd: bool = True, grammatical_symbol: list = ["", ""]):
+
 # mecab orig, fixed 동시에 처리할 수 있는 토크나이저
 
 
