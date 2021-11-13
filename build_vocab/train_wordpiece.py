@@ -77,7 +77,9 @@ def train_wp(vocab_size: int, files: list, save_path: str):
 
 
     # save
-    bert_tokenizer.save(os.path.join(save_path, "tok.vocab"))
+    # bert_tokenizer.save(os.path.join(save_path, "tok.vocab"))
+    bert_tokenizer.save(os.path.join(save_path, "tok.model"))
+
 
     return bert_tokenizer
 
@@ -92,14 +94,37 @@ def listdir_fullpath(d):
 
 
 
-def save_bert_vocab(output_dir: str):
-    f = open(os.path.join(output_dir, "vocab.txt"), 'w', encoding='utf-8')
-    with open(os.path.join(output_dir, "tok.vocab")) as json_file:
-        json_data = json.load(json_file)
-        for item in json_data["model"]["vocab"].keys():
+# # BERT 학습용 vocab.txt 만들기
+# def save_bert_vocab(output_dir: str):
+#     f = open(os.path.join(output_dir, "vocab.txt"), "w", encoding="utf-8")
+#     with open(os.path.join(output_dir, "tok.model")) as json_file:
+#         json_data = json.load(json_file)
+#         for item in json_data["model"]["vocab"].keys():
+#             f.write(item + '\n')
+#
+#     f.close()
+
+
+
+# vocab.txt tok.vocab 만들기
+def save_wp_vocab(output_dir: str):
+    # load tok.model (wp model)
+    with open(os.path.join(output_dir, "tok.model"), "r", encoding="utf-8") as f:
+        wp_model = json.load(f)
+
+    tok_vocab = wp_model["model"]["vocab"]
+
+    # tok.vocab
+    with open(os.path.join(output_dir, "tok.vocab"), "w", encoding="utf-8") as f:
+        for item, idx in tok_vocab.items():
+            f.write(f"{item}\t{idx}\n")
+
+
+    # vocab.txt
+    with open(os.path.join(output_dir, "vocab.txt"), "w", encoding="utf-8") as f:
+        for item in tok_vocab.keys():
             f.write(item + '\n')
 
-    f.close()
 
 
 
@@ -242,12 +267,14 @@ if __name__ == "__main__":
 
 
     # train
-    wp_tokenizer = train_wp(vocab_size=args["vocab_size"], files=input_file_paths, save_path=output_dir)
+    wp_tokenizer = train_wp(vocab_size=args["vocab_size"], files=input_file_paths, save_path=output_dir)    # tok.model
 
 
 
     # save
-    save_bert_vocab(output_dir=output_dir)
+    # save_bert_vocab(output_dir=output_dir)  # vocab.txt
+    # save_tok_vocab(output_dir=output_dir)   # tok.vocab
+    save_wp_vocab(output_dir=output_dir)  # vocab.txt   # tok.vocab
 
 
 
