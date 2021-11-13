@@ -135,15 +135,17 @@ if __name__ == "__main__":
     #     help="Special tokens. You can pass a comma-separated list of special tokens.",
     # )
 
-    parser.add_argument("--token_type", type=str, default="")   # eojeol / morpheme
-    parser.add_argument(
-        "--tokenizer_type", type=str, default="", choices=[ "none", "mecab_orig", "mecab_fixed"]
-    )  # mecab_orig: NamuWiki Corpus tokenized by MeCab_orig, mecab_fixed: NamuWiki Corpus tokenized by MeCab_fixed
-    parser.add_argument(
-        "--composition_type", type=str, default="composed", choices=["composed", "decomposed_pure", "decomposed_morphological", "decomposed_lexical", "decomposed_grammatical"]
-    )  # composed: syllable-level   decomposed_pure: jamo-level     decomposed_morphological: syllable+jamo-level
 
-    parser.add_argument("--with_dummy_letter", type=bool, default=False)    # 자모 더미 문자 사용 여부: True, False
+    # parser.add_argument("--token_type", type=str, default="")   # eojeol / morpheme
+    # parser.add_argument(
+    #     "--tokenizer_type", type=str, default="", choices=[ "none", "mecab_orig", "mecab_fixed"]
+    # )  # mecab_orig: NamuWiki Corpus tokenized by MeCab_orig, mecab_fixed: NamuWiki Corpus tokenized by MeCab_fixed
+    # parser.add_argument(
+    #     "--composition_type", type=str, default="composed", choices=["composed", "decomposed_pure", "decomposed_morphological", "decomposed_lexical", "decomposed_grammatical"]
+    # )  # composed: syllable-level   decomposed_pure: jamo-level     decomposed_morphological: syllable+jamo-level
+
+    # parser.add_argument("--with_dummy_letter", type=bool, default=False)    # 자모 더미 문자 사용 여부: True, False
+
 
     parser.add_argument("--tokenized_corpus_path", type=str, default="")  # 토큰화한 코퍼스 경로
 
