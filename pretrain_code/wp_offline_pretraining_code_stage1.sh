@@ -16,8 +16,8 @@ set -e
 echo "아래의 토크나이저 중에서 사용할 토크나이저를 입력하세요. "
 echo "eojeol_fixed_composed"
 echo "eojeol_fixed_pure"
-echo "morpheme_orig_composed    morpheme_orig_decomposed_pure    morpheme_orig_decomposed_morphological"
-echo "morpheme_fixed_composed    morpheme_fixed_decomposed_pure    morpheme_fixed_decomposed_morphological"
+echo "morpheme_orig_composed    morpheme_orig_decomposed_pure"
+echo "morpheme_fixed_composed    morpheme_fixed_decomposed_pure"
 
 echo -e "tokenizer: " 
 read TOKENIZER
@@ -95,3 +95,17 @@ done
 #eojoel_fixed_pure
 # /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_eojeol_mecab_fixed/decomposed_pure_nfd
 # /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/eojeol_mecab_fixed_decomposed_pure_wp-64k
+
+#morpheme_orig_composed
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_morpheme_mecab_orig/composed
+# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k
+
+#morpheme_orig_pure
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_morpheme_mecab_orig/decomposed_pure_nfd/1st
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_morpheme_mecab_orig/decomposed_pure_nfd/2nd
+# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k
+
+
+#morpheme_fixed_composed
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_morpheme_mecab_fixed/composed_nfd
+# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k
