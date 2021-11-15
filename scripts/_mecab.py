@@ -141,16 +141,18 @@ def replace_multiple(string, replace_list):
 
 
 # 기본 파서에서 같은 어미를 다른 문자열로 분석하는 것 해결: ㄴ지  (타당하 + ㄴ지  vs. 뭐 + 이 +  ᆫ지)
-def coda_correction(parsed: str):
+    # ("ᆼ", "ㅇ") 이건 코다 아니지만 수정
+
+def hangul_unicode_correction(parsed: str):
     result_split_n = parsed.split("\n")[:-2]  # 'EOS', '' 일단 제외
 
-    result_coda_corrected = [token_analysis.split(",")[0] + "," + ",".join(
-        [replace_multiple(string=info, replace_list=[("ㄴ", "ᆫ"), ("ᆯ", "ㄹ"), ("ᄆ", "ㅁ"), ("ᄇ", "ㅂ"), ("ᆼ", "ㅇ")]) for
+    result_corrected = [token_analysis.split(",")[0] + "," + ",".join(
+        [replace_multiple(string=info, replace_list=[("ㄴ", "ᆫ"), ("ㄹ", "ᆯ"), ("ㅁ", "ᄆ"), ("ㅂ", "ᄇ"), ("ᆼ", "ㅇ")]) for
          info in token_analysis.split(",")[1:]]) for token_analysis in result_split_n]
 
-    result_coda_corrected = "\n".join(result_coda_corrected + parsed.split("\n")[-2:])
+    result_corrected_final = "\n".join(result_corrected + parsed.split("\n")[-2:])
 
-    return result_coda_corrected
+    return result_corrected_final
 
 
 ######################## the original code ##############################
@@ -312,7 +314,7 @@ class Mecab():
                     # result = result.replace("ᆯ", "ㄹ").replace("ᆫ", "ㄴ").replace("ᄇ", "ㅂ").replace("ᆼ", "ㅇ")
 
 
-                    result = coda_correction(parsed=result)
+                    result = hangul_unicode_correction(parsed=result)
 
 
                     if coda_normalization == False:
@@ -396,7 +398,7 @@ class Mecab():
 
 
                     ## 4) saving the 3-D (unflattened) result:    [ [ (morpheme, POS), (morpheme, POS), ... ], ... ]
-                    parsed_mor = parse_fixed( coda_correction( parsed=self.tagger.parse(phrase) ) , join=join)  # 2-D (flattened) result: [ (morpheme, POS), ...]
+                    parsed_mor = parse_fixed( hangul_unicode_correction( parsed=self.tagger.parse(phrase) ) , join=join)  # 2-D (flattened) result: [ (morpheme, POS), ...]
 
                     pos_result = list() # list for the final result: 3-D (unflattened) list
                     cnt = 0 # index for a morpheme
