@@ -359,16 +359,16 @@ class tokenizers():
 
 
     # 1-1. composed & decomposed_pure
-    def mecab_composed_decomposed_pure(self, sent, use_original, pure_decomposition, nfd: bool = False):
+    def mecab_composed_decomposed_pure(self, sent, use_original, pure_decomposition, nfd: bool):
         if use_original == True:
             if nfd == False:
-                mor_poss = self.mc_orig.pos(sent, flatten=False)  # [[('넌', 'NP+JX')], [('날', 'NNG')], [('좋', 'VA'), ('아', 'EC'), ('해', 'VV+EC')]]
+                mor_poss = self.mc_orig.pos(sent, flatten=False, coda_normalization=True)  # [[('넌', 'NP+JX')], [('날', 'NNG')], [('좋', 'VA'), ('아', 'EC'), ('해', 'VV+EC')]]
             elif nfd == True:
                 mor_poss = self.mc_orig.pos(sent, flatten=False, coda_normalization=False)  # [[('넌', 'NP+JX')], [('날', 'NNG')], [('좋', 'VA'), ('아', 'EC'), ('해', 'VV+EC')]]
 
         elif use_original == False:
             if nfd == False:
-                mor_poss = self.mc_fixed.pos(sent, flatten=False)  # [[('너', 'NP'), ('ㄴ', 'JX')], [('날', 'NNG')], [('좋', 'VA'), ('아', 'EC'), ('하', 'VV'), ('아', 'EC')]]
+                mor_poss = self.mc_fixed.pos(sent, flatten=False, coda_normalization=True)  # [[('너', 'NP'), ('ㄴ', 'JX')], [('날', 'NNG')], [('좋', 'VA'), ('아', 'EC'), ('하', 'VV'), ('아', 'EC')]]
             elif nfd == True:
                 mor_poss = self.mc_fixed.pos(sent, flatten=False, coda_normalization=False)  # [[('너', 'NP'), ('ㄴ', 'JX')], [('날', 'NNG')], [('좋', 'VA'), ('아', 'EC'), ('하', 'VV'), ('아', 'EC')]]
 
@@ -443,12 +443,12 @@ class tokenizers():
 
         if use_original == True:
             if nfd == False:
-                mors_ejs_in_sent = self.mc_orig.pos(sent, flatten=False)  # 형태소 분석
+                mors_ejs_in_sent = self.mc_orig.pos(sent, flatten=False, coda_normalization=True)  # 형태소 분석
             elif nfd == True:
                 mors_ejs_in_sent = self.mc_orig.pos(sent, flatten=False, coda_normalization=False)  # 형태소 분석
         elif use_original == False:
             if nfd == False:
-                mors_ejs_in_sent = self.mc_fixed.pos(sent, flatten=False)  # 형태소 분석
+                mors_ejs_in_sent = self.mc_fixed.pos(sent, flatten=False, coda_normalization=True)  # 형태소 분석
             elif nfd == True:
                 mors_ejs_in_sent = self.mc_fixed.pos(sent, flatten=False, coda_normalization=False)  # 형태소 분석
 
@@ -771,15 +771,20 @@ class tokenizers():
 
 
 
+
+
+
+
 # dummy_letter = "⊸"  # chr(8888)
 # space_symbol = "▃"  # chr(9603)
 # grammatical_symbol = "⭧"  # chr(11111)
-
-
-
+#
+#
+#
 # tok = tokenizers(dummy_letter="#", space_symbol="▃", grammatical_symbol="⭧", nfd=True)    #
 # tok = tokenizers(dummy_letter="#", space_symbol="", grammatical_symbol="⭧", nfd=True)
 # tok = tokenizers(dummy_letter="", space_symbol="", grammatical_symbol=["⫸", "⭧"], nfd=False)
+#
 # tok = tokenizers(dummy_letter="", space_symbol="", grammatical_symbol=["⫸", "⭧"], nfd=True)
 #
 # self = tok
@@ -806,6 +811,9 @@ class tokenizers():
 #
 # sent = "예쁜 가방"
 # sent = "난 너를 좋아해."
+#
+# sent = "호스팅이 필요한지 여부로 판단한다"
+# sent = "뭔지 모르지만"
 #
 #
 # # eojeol

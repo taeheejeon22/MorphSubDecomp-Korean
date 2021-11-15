@@ -1,8 +1,3 @@
-## update
-# 2021-11-15
-# 같은 어미를 다른 문자열로 분석하는 것 해결: ㄴ지  (타당하 + ㄴ지  vs. 뭐 + 이 +  ᆫ지)
-
-
 # https://bitbucket.org/eunjeon/mecab-python-0.996/src/master/
 # the minamoto of MeCab
 
@@ -137,20 +132,6 @@ def replace_multiple(string, replace_list):
         string = string.replace(*r)
     return string
 
-
-
-
-# 기본 파서에서 같은 어미를 다른 문자열로 분석하는 것 해결: ㄴ지  (타당하 + ㄴ지  vs. 뭐 + 이 +  ᆫ지)
-def coda_correction(parsed: str):
-    result_split_n = parsed.split("\n")[:-2]  # 'EOS', '' 일단 제외
-
-    result_coda_corrected = [token_analysis.split(",")[0] + "," + ",".join(
-        [replace_multiple(string=info, replace_list=[("ㄴ", "ᆫ"), ("ᆯ", "ㄹ"), ("ᄆ", "ㅁ"), ("ᄇ", "ㅂ"), ("ᆼ", "ㅇ")]) for
-         info in token_analysis.split(",")[1:]]) for token_analysis in result_split_n]
-
-    result_coda_corrected = "\n".join(result_coda_corrected + parsed.split("\n")[-2:])
-
-    return result_coda_corrected
 
 
 ######################## the original code ##############################
@@ -292,11 +273,6 @@ class Mecab():
             if sys.version_info[0] >= 3: # for Python 3
                 result = self.tagger.parse(phrase)  # an analysed result of a phrase (or a sentence) (e.g. 이게 뭔지 알아. > 이게\tNP+JKS,*,F,이게,Inflect,NP,JKS,이것/NP/*+이/JKS/*\n뭔지\tNP+VCP+EC,*,F,뭔지,Inflect,NP,EC,뭐/NP/*+이/VCP/*+ㄴ지/EC/*\n알\tVV,*,T,알,*,*,*,*\n아\tEF,*,F,아,*,*,*,*\n.\tSF,*,*,*,*,*,*,*\nEOS\n)
 
-
-
-
-
-
                 if flatten: # flatten = True. If you want to get a flattened (2-D) result: [(morpheme, POS), ...]
                                 # e.g.
                                 # [('이것', 'NP'),
@@ -312,13 +288,10 @@ class Mecab():
                     # result = result.replace("ᆯ", "ㄹ").replace("ᆫ", "ㄴ").replace("ᄇ", "ㅂ").replace("ᆼ", "ㅇ")
 
 
-                    result = coda_correction(parsed=result)
-
-
                     if coda_normalization == False:
                         pass
                     elif coda_normalization == True:
-                        result = replace_multiple(string=result, replace_list=[("ᆫ", "ㄴ"), ("ᆯ", "ㄹ"), ("ᄆ", "ㅁ"), ("ᄇ", "ㅂ"), ("ᆼ", "ㅇ")])
+                        result = replace_multiple(string=result, replace_list=[("ᆫ", "ㄴ"), ("ᆯ", "ㄹ"), ("ᄇ", "ㅂ"), ("ᆼ", "ㅇ")])
 
                     return parse_fixed(result, join=join)
 
@@ -396,7 +369,7 @@ class Mecab():
 
 
                     ## 4) saving the 3-D (unflattened) result:    [ [ (morpheme, POS), (morpheme, POS), ... ], ... ]
-                    parsed_mor = parse_fixed( coda_correction( parsed=self.tagger.parse(phrase) ) , join=join)  # 2-D (flattened) result: [ (morpheme, POS), ...]
+                    parsed_mor = parse_fixed(self.tagger.parse(phrase), join=join)  # 2-D (flattened) result: [ (morpheme, POS), ...]
 
                     pos_result = list() # list for the final result: 3-D (unflattened) list
                     cnt = 0 # index for a morpheme
@@ -421,14 +394,13 @@ class Mecab():
                         if coda_normalization == False:
                             pos_result = [[(mor_pos[0], mor_pos[1]) for mor_pos in word] for word in pos_result]
                         elif coda_normalization == True:
-                            pos_result = [ [( replace_multiple(string=mor_pos[0], replace_list=[("ᆫ", "ㄴ"), ("ᆯ", "ㄹ"), ("ᄆ", "ㅁ"), ("ᄇ", "ㅂ"), ("ᆼ", "ㅇ")]), mor_pos[1]) for mor_pos in word] for word in pos_result]
+                            pos_result = [ [( replace_multiple(string=mor_pos[0], replace_list=[("ᆫ", "ㄴ"), ("ᆯ", "ㄹ"), ("ᄇ", "ㅂ"), ("ᆼ", "ㅇ")]), mor_pos[1]) for mor_pos in word] for word in pos_result]
 
                     elif join == True:
                         if coda_normalization == False:
                             pos_result = [[mor_pos for mor_pos in word] for word in pos_result]
                         elif coda_normalization == True:
-                            pos_result = [ [ replace_multiple(string=mor_pos, replace_list=[("ᆫ", "ㄴ"), ("ᆯ", "ㄹ"), ("ᄆ", "ㅁ"), ("ᄇ", "ㅂ"), ("ᆼ", "ㅇ")]) for mor_pos in word] for word in pos_result]
-
+                            pos_result = [ [ replace_multiple(string=mor_pos, replace_list=[("ᆫ", "ㄴ"), ("ᆯ", "ㄹ"), ("ᄇ", "ㅂ"), ("ᆼ", "ㅇ")]) for mor_pos in word] for word in pos_result]
 
                     return pos_result
 
