@@ -28,6 +28,7 @@ acl
 ### morpheme_fixed
 - composed
     - (decomposed pure)
+    
 - composed + grammar_symbol
 - grammar_symbol + decomposed_lexical   # 최고일 것으로 기대
 - grammar_symbol + decomposed pure
