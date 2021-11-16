@@ -41,7 +41,7 @@ doublespace_pattern = re.compile('\s+')
 
 # class process_jamo():
 class tokenizers():
-    def __init__(self, dummy_letter: str, space_symbol: str, grammatical_symbol: list =["", ""], nfd: bool = True):
+    def __init__(self, dummy_letter: str = "", space_symbol: str = "", grammatical_symbol: list =["", ""], nfd: bool = True):
         self.dummy_letter = dummy_letter    # 초성/중성/종성 더미 문자
         self.space_symbol = space_symbol    # 띄어쓰기 더미 문자
         self.grammatical_symbol = grammatical_symbol    # 문법 형태소 표지 # ["⭧", "⭨"]
@@ -506,7 +506,7 @@ class tokenizers():
 
                         if pos in self.grammatical_pos_josa:   # 조사이면
                             grammatical_symbol = self.grammatical_symbol_josa[:]
-                        elif pos in self.grammatical_symbol_eomi:   # 어미이면
+                        elif pos in self.grammatical_pos_eomi:   # 어미이면
                             grammatical_symbol = self.grammatical_symbol_eomi[:]
 
 
@@ -814,6 +814,7 @@ class tokenizers():
 #
 # sent = "호스팅이 필요한지 여부로 판단한다"
 # sent = "뭔지 모르지만"
+# sent = "이듬해, 견심은 주공소공의 고사를 본받아 평안을 좌백에, 견풍을 우백에 임명해야 한다는 내용의 부명을 지어 바쳤고, 왕망은 곧바로 부명대로 하였다. 그런데 견풍이 정식으로 취임하기 직전에 견심이 부명을 또 지어 바쳤는데, 내용은 이러하였다."
 #
 #
 # # eojeol

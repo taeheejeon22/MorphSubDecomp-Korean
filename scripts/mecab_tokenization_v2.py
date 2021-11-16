@@ -94,8 +94,12 @@ import scripts.tokenizers_acl_v3 as tok
 def tokenize_our(text: str, token_type: str, tokenizer_type: str, decomposition_type: str, space_symbol: str = "▃", dummy_letter: str = "") -> List[str]:
     text = text.strip()
 
+    # print(f"\norit_text: {text}\n")
+    tokenized = tok.mecab_tokenizer(text, token_type=token_type, tokenizer_type=tokenizer_type, decomposition_type=decomposition_type)
+    # print(f"\ntokenized: {tokenized}\n")
+
     # return self.tok.mecab_tokenizer(text, use_original=self.use_original, pure_decomposition=self.pure_decomposition, morphological=self.morphological)
-    return tok.mecab_tokenizer(text, token_type=token_type, tokenizer_type=tokenizer_type, decomposition_type=decomposition_type)
+    return tokenized
 
 
 
