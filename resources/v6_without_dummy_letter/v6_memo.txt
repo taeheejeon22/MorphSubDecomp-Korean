@@ -1,0 +1,10 @@
+# baseline
+eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k
+eojeol_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k
+
+morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k
+morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k
+
+
+# our
+morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k

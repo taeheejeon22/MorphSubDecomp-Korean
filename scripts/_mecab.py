@@ -138,13 +138,9 @@ def replace_multiple(string, replace_list):
     return string
 
 
-
-
-# 기본 파서에서 같은 어미를 다른 문자열로 분석하는 것 해결: ㄴ지  (타당하 + ㄴ지  vs. 뭐 + 이 +  ᆫ지)
-    # ("ᆼ", "ㅇ") 이건 코다 아니지만 수정
-
+# unicode error correction      # (타당하 + ㄴ지  vs. 뭐 + 이 +  ᆫ지) ->  ᆫ지    # "ᆼ" -> "ㅇ"
 def hangul_unicode_correction(parsed: str):
-    result_split_n = parsed.split("\n")[:-2]  # 'EOS', '' 일단 제외
+    result_split_n = parsed.split("\n")[:-2]  # remove 'EOS', ''
 
     result_corrected = [token_analysis.split(",")[0] + "," + ",".join(
         [replace_multiple(string=info, replace_list=[("ㄴ", "ᆫ"), ("ㄹ", "ᆯ"), ("ㅁ", "ᄆ"), ("ㅂ", "ᄇ"), ("ᆼ", "ㅇ")]) for
@@ -293,10 +289,6 @@ class Mecab():
             # self = Mecab()
             if sys.version_info[0] >= 3: # for Python 3
                 result = self.tagger.parse(phrase)  # an analysed result of a phrase (or a sentence) (e.g. 이게 뭔지 알아. > 이게\tNP+JKS,*,F,이게,Inflect,NP,JKS,이것/NP/*+이/JKS/*\n뭔지\tNP+VCP+EC,*,F,뭔지,Inflect,NP,EC,뭐/NP/*+이/VCP/*+ㄴ지/EC/*\n알\tVV,*,T,알,*,*,*,*\n아\tEF,*,F,아,*,*,*,*\n.\tSF,*,*,*,*,*,*,*\nEOS\n)
-
-
-
-
 
 
                 if flatten: # flatten = True. If you want to get a flattened (2-D) result: [(morpheme, POS), ...]
