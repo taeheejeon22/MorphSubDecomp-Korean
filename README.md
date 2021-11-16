@@ -37,7 +37,7 @@ parse_Wikiko_with_preprocessing_v0.py
 ./scripts/tokenization_v2_0.py
 ./pretrain_corpus/tokenized 에 저장
 
-## baseline
+## *baselines*
 ### wikiko 
 ```bash
 python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed
@@ -56,7 +56,7 @@ python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./co
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure
 ```
 
-## our
+## *OUR*
 ### wikiko
 ```bash
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed
@@ -117,7 +117,7 @@ split -d -l 8000000 namuwiki_20200302_with_preprocessing_v3_nn.txt namuwiki_2020
 
 ## Wordpiece
 ./build_vocab/train_wordsentencepiece.py
-### baseline
+### *baselines*
 ```bash
 python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F/eojeol_mecab_fixed/composed --vocab_size=64000
 python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F/eojeol_mecab_fixed/decomposed_pure --vocab_size=64000
@@ -126,7 +126,7 @@ python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized
 python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_orig/decomposed_pure --vocab_size=64000
 ```
 
-### our
+### *OUR*
 ```bash
 python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_fixed/composed --vocab_size=64000
 
@@ -147,7 +147,7 @@ python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized
 
 ## Sentencepiece
 ./build_vocab/train_sentencepiece.py
-### baseline
+### *baselines*
 ```bash
 python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F --vocab_size=64000 --token_type=eojeol --tokenizer_type=mecab_fixed --composition_type=composed
 python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F --vocab_size=64000 --token_type=eojeol --tokenizer_type=mecab_fixed --composition_type=decomposed_pure
@@ -158,7 +158,7 @@ python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/token
 python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_fixed --composition_type=decomposed_pure
 ```
 
-### our
+### *OUR*
 ```bash
 python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_T --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_orig --composition_type=composed
 python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_T --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_orig --composition_type=decomposed_lexical
