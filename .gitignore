@@ -16,7 +16,6 @@ convert_bert
 bert-base
 dataset.zip
 tasks/KLUE-baseline/data/*
-tasks/KLUE-baseline/klue-resources/*
 
 
 # log
