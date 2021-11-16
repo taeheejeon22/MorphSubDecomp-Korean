@@ -19,6 +19,9 @@ echo "eojeol_fixed_pure"
 echo "morpheme_orig_composed    morpheme_orig_decomposed_pure"
 echo "morpheme_fixed_composed    morpheme_fixed_decomposed_pure"
 
+echo "morpheme_fixed_composed_T    morpheme_fixed_decomposed_pure_T"
+echo "morpheme_fixed_decomposed_lexical_T    morpheme_fixed_decomposed_grammatical_T"
+
 echo -e "tokenizer: " 
 read TOKENIZER
 echo "tokenizer == $TOKENIZER"
@@ -109,3 +112,14 @@ done
 #morpheme_fixed_composed
 # /home/jth/Desktop/acl_tokenization/corpus/tokenized/without_dummy_letter/namuwiki_20200302_morpheme_mecab_fixed/composed_nfd
 # /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k
+
+
+
+# T fixed_composed
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/space_F_dummy_F_grammatical_T/morpheme_mecab_fixed/composed
+# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter_grammatical_symbol_T/morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k
+
+# lexical
+
+#pure
+
