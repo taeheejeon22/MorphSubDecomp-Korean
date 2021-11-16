@@ -18,13 +18,6 @@ acl
 
 
 ## *OUR*
-### morpheme_orig
-- (composed + grammar_symbol)
-- (grammar_symbol + decomposed_lexical)
-
-- (grammar_symbol + decomposed pure)
-    - (composed + grammar_symbol + decomposed_grammatical)
-
 ### morpheme_fixed
 - composed
     - (decomposed pure)
@@ -44,8 +37,8 @@ parse_Wikiko_with_preprocessing_v0.py
 ./scripts/tokenization_v2_0.py
 ./pretrain_corpus/tokenized 에 저장
 
-## wikiko (without dummy letter)
-### baseline
+## baseline
+### wikiko 
 ```bash
 python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed
 python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
@@ -54,8 +47,17 @@ python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./co
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure
 ```
 
+### namuwiki
+```bash
+python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed
+python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
 
-### our
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=composed
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure
+```
+
+## our
+### wikiko
 ```bash
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed
 
@@ -63,33 +65,8 @@ python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./co
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_lexical --grammatical_symbol=⫸⭧
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --grammatical_symbol=⫸⭧
 ```
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_grammatical --grammatical_symbol=⫸⭧
 
-
-
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=composed --grammatical_symbol=⫸⭧
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_lexical --grammatical_symbol=⫸⭧
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --grammatical_symbol=⫸⭧
-
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --grammatical_symbol=⫸⭧
-
-
-
-## namuwiki
-### baseline
-```bash
-python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed
-python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
-
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=composed
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure
-
-
-```
-
-
-### our
+### namuwiki
 ```bash
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed
 
@@ -97,20 +74,21 @@ python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./co
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_lexical --grammatical_symbol=⫸⭧
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --grammatical_symbol=⫸⭧
 ```
+
+## additional
+### wikiko
+```bash
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
+
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_grammatical --grammatical_symbol=⫸⭧
+```
+
+### namuwiki
+```bash
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
+
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_grammatical --grammatical_symbol=⫸⭧
-
-
-
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=composed --grammatical_symbol=⫸⭧
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_lexical --grammatical_symbol=⫸⭧
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --grammatical_symbol=⫸⭧
-
-
-
-
-
-
+```
 
 ## namuwiki
 분할 커맨드
@@ -118,100 +96,7 @@ python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./co
 split -d -l 8000000 namuwiki_20200302_with_preprocessing_v3_nn.txt namuwiki_20200302_with_preprocessing_v3_nn_
 ```
 
-### baseline
-```bash
-python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed
-python scripts/mecab_tokenization_v2.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
-
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=composed 
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure 
-```
-
-### our
-```bash
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=composed --grammatical_symbol="⭧" 
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_lexical --grammatical_symbol="⭧"
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --grammatical_symbol="⭧"
-
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed --grammatical_symbol="⭧" 
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_lexical --grammatical_symbol="⭧"
-python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --grammatical_symbol="⭧"
-```
-
-
-메모리 부족할 경우
-```bash
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_00 --tokenizer_type=mecab_fixed --decomposition_type=composed
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_01 --tokenizer_type=mecab_fixed --decomposition_type=composed
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_02 --tokenizer_type=mecab_fixed --decomposition_type=composed
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_03 --tokenizer_type=mecab_fixed --decomposition_type=composed
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_04 --tokenizer_type=mecab_fixed --decomposition_type=composed
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_05 --tokenizer_type=mecab_fixed --decomposition_type=composed
-
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_00 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_01 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_02 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_03 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_04 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_05 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
-
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_00 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_01 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_02 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_03 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_04 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_05 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological
-```
-orig decomposed pure 25분
-orig decomposed morphological 15분
-
-
-
-namuwiki (with dummy letter)
-```bash
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_morphological --dummy_letter=⊸
-
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
-```
-
-
-메모리 부족할 경우
-```bash
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_00 --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_01 --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_02 --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_03 --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_04 --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_05 --tokenizer_type=mecab_orig --decomposition_type=decomposed_pure --dummy_letter=⊸
-
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_orig --decomposition_type=decomposed_morphological --n_job=6 --dummy_letter=⊸
-
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_00 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_01 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_02 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_03 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_04 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_05 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --dummy_letter=⊸
-
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_00 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_01 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_02 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_03 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_04 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
-python scripts/mecab_tokenization.py --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn_05 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_morphological --dummy_letter=⊸
-```
-orig decomposed morphological 20:12
-
-
 - 도저히 안 되면 tokenization_v4.0.py 이용해서 할 것. 128G로도 메모리 터짐.
-
-* namuwiki fixed 모든 세팅
-* namuwiki (with dummy letter) orig decompsed pure 
-
 
 
 
@@ -219,7 +104,6 @@ orig decomposed morphological 20:12
 
 
 # 2. Wordpiece, Sentencepiece 학습
-
 [comment]: <> (## mecab 토큰화)
 
 [comment]: <> (./build_vocab/build_mecab_vocab_our.py &#40;자동화 위해 코드 수정 필요&#41;)
@@ -231,8 +115,8 @@ orig decomposed morphological 20:12
 [comment]: <> (```)
 
 
-## wordpiece
-
+## Wordpiece
+./build_vocab/train_wordsentencepiece.py
 ### baseline
 ```bash
 python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F/eojeol_mecab_fixed/composed --vocab_size=64000
@@ -240,14 +124,6 @@ python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized
 
 python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_orig/composed --vocab_size=64000
 python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_orig/decomposed_pure --vocab_size=64000
-
-```
-
-
-python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_orig --composition_type=composed
-python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_orig --composition_type=decomposed_pure
-python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_fixed --composition_type=composed
-python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F --vocab_size=64000 --token_type=morpheme --tokenizer_type=mecab_fixed --composition_type=decomposed_pure
 ```
 
 ### our
@@ -258,17 +134,18 @@ python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized
 python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_T/morpheme_mecab_fixed/decomposed_lexical --vocab_size=64000
 python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_T/morpheme_mecab_fixed/decomposed_pure --vocab_size=64000
 
-
+python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_T/morpheme_mecab_fixed/decomposed_grammatical --vocab_size=64000
 ```
+
+### additional
+```bash
 python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_fixed/decomposed_pure --vocab_size=64000
 python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_T/morpheme_mecab_fixed/decomposed_grammatical --vocab_size=64000
+```
 
 
 
-
-
-
-## sentencepiece
+## Sentencepiece
 ./build_vocab/train_sentencepiece.py
 ### baseline
 ```bash
@@ -302,6 +179,7 @@ python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/token
 python scripts/make_bert_files.py --root_path=output_sp/ --vocab_size=64000
 ```
 실행 후 파일들 resources로 옮기기. 수동으로.
+
 
 
 # 4. pretrain BERT
