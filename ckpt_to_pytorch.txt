@@ -325,9 +325,9 @@ transformers-cli convert --model_type bert\
 --pytorch_dump_output=./bert_model_v6_without_dummy_letter_morpheme_mecab_orig_composed_wp-64k_model.ckpt-200000.pth
 
 transformers-cli convert --model_type bert\
-  --tf_checkpoint=./bert_model_v6_without_dummy_letter_morpheme_mecab_orig_decomposed_pure_wp-64k_model.ckpt-200000 \
+  --tf_checkpoint=./bert_model_v6_without_dummy_letter_morpheme_mecab_orig_decomposed_pure_wp-64k_model.ckpt-400000 \
   --config=./resources/v6_without_dummy_letter/morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k/bert_config.json \
---pytorch_dump_output=./bert_model_v6_without_dummy_letter_morpheme_mecab_orig_decomposed_pure_wp-64k_model.ckpt-200000.pth
+--pytorch_dump_output=./bert_model_v6_without_dummy_letter_morpheme_mecab_orig_decomposed_pure_wp-64k_model.ckpt-400000.pth
 
 transformers-cli convert --model_type bert\
   --tf_checkpoint=./bert_model_v6_without_dummy_letter_morpheme_mecab_fixed_composed_wp-64k_model.ckpt-200000 \
