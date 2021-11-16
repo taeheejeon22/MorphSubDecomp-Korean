@@ -15,6 +15,9 @@ multi_cased_L-12_H-768_A-12
 convert_bert
 bert-base
 dataset.zip
+tasks/KLUE-baseline/data/*
+tasks/KLUE-baseline/klue-resources/*
+
 
 # log
 run_outputs/*
