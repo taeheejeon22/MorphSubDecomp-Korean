@@ -16,6 +16,9 @@ convert_bert
 bert-base
 dataset.zip
 
+#model
+*.bin
+
 
 # log
 run_outputs/*
