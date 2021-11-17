@@ -16,7 +16,7 @@ class TrainConfig(NamedTuple):
     #: tokenizer_name
     tokenizer: str = ""
     #: bert 설정 파일 이름
-    bert_config_file_name: str = "bert_config.json"
+    bert_config_file_name: str = "config.json"
     #: pretrained bert 모델 파일 이름
     # pretrained_bert_file_name: str = "bert_model.pth"
     pretrained_bert_file_name: str = ""

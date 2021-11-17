@@ -48,6 +48,8 @@ class WordPieceTokenizer(BaseTokenizer):
 
 
 
+
+# model_path = "./resources/v6_without_dummy_letter_grammatical_symbol_F/eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k/tok.model"
 # model_path = "./output_sp/eojeol_mecab_fixed_composed_wp-64k/tok.vocab"
 # model_path = "./output_sp/eojeol_mecab_fixed_composed_wp-64k/tok.vocab"
 #
@@ -59,7 +61,6 @@ class WordPieceTokenizer(BaseTokenizer):
 # text = "나는 너를 사랑해"
 # text = "전태희는 너를 사랑해"
 # text = "나 ⫸는 너 ⫸ᆯ 좋아하 ⭧아"
-# text = "브라보텍의 지포스3090은 개시발좋다. 히히 좋다."
 # wp.tokenize(text)
 #
 #

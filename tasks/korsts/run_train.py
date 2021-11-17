@@ -124,7 +124,8 @@ def main(args):
             #     tokenizer = MeCabSentencePieceTokenizer_fixed(mecab, sp, use_fixed=True) # mecab_fixed.py
 
     elif config.tokenizer.startswith("eojeol") or config.tokenizer.startswith("morpheme"):
-        wp = WordPieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
+        # wp = WordPieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))
+        wp = WordPieceTokenizer(os.path.join(tokenizer_dir, "bert_tokenizer.json"))
 
         mecab = MeCabTokenizer_all(token_type=tokenizer_config["token_type"], tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"], nfd=tokenizer_config["nfd"], grammatical_symbol=tokenizer_config["grammatical_symbol"])
         tokenizer = MeCabWordPieceTokenizer(mecab=mecab, wp=wp) # mecab_wp.py

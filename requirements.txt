@@ -1,4 +1,4 @@
-torch==1.4.0
+torch==1.4.0    # https://pytorch.kr/get-started/previous-versions/
 transformers==4.12.3
 
 tweepy==3.10.0
@@ -19,3 +19,10 @@ soynlp==0.0.493
 mosestokenizer==1.1.0
 
 tensorboard==2.3.0
+
+
+# KLUE
+pytorch-lightning==1.1.0
+fsspec==2021.4.0 # due to pytorch lightning
+overrides==3.1.0
+seqeval

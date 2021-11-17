@@ -176,7 +176,7 @@ python build_vocab/train_sentencepiece.py --tokenized_corpus_path=./corpus/token
 
 # 3. make BERT files 
 ```buildoutcfg
-python scripts/make_bert_files.py --root_path=output_sp/ --vocab_size=64000
+python scripts/make_bert_files.py --root_path=output_sp/ --vocab_size=64000 --model_max_length=128
 ```
 실행 후 파일들 resources로 옮기기. 수동으로.
 
