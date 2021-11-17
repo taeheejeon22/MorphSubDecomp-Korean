@@ -74,9 +74,9 @@ def load_bert_config(config_path:str, **kwargs):
 
 def main(root_path: str, vocab_size: int, model_max_length: int):
     tok_vocab_paths = get_paths(root_path=root_path)
-    bert_config = load_bert_config(config_path="./resources/bert_config.json", vocab_size=vocab_size)
-    special_tokens_map = load_bert_config(config_path="./resources/special_tokens_map.json")
-    tokenizer_config = load_bert_config(config_path="./resources/tokenizer_config.json", model_max_length=model_max_length)
+    bert_config = load_bert_config(config_path="./resources/bert_config.json", vocab_size=vocab_size)   # for BERT training
+    special_tokens_map = load_bert_config(config_path="./resources/special_tokens_map.json")    # for Hugging Face transformers
+    tokenizer_config = load_bert_config(config_path="./resources/tokenizer_config.json", model_max_length=model_max_length) # for Hugging Face transformers
 
 
     for ix in range(len(tok_vocab_paths)):
