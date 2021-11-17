@@ -77,7 +77,7 @@ if [[ $INIT == "F" ]]; then
     --output_dir=gs://$MODEL_DIR \
     --do_train=True \
     --do_eval=True \
-    --bert_config_file=gs://$RESOURCE_DIR/bert_config.json \
+    --bert_config_file=gs://$RESOURCE_DIR/config.json \
     --train_batch_size=1024 \
     --max_seq_length=128 \
     --max_predictions_per_seq=20 \
@@ -98,7 +98,7 @@ else
     --output_dir=gs://$MODEL_DIR \
     --do_train=True \
     --do_eval=True \
-    --bert_config_file=gs://$RESOURCE_DIR/bert_config.json \
+    --bert_config_file=gs://$RESOURCE_DIR/config.json \
     --train_batch_size=1024 \
     --max_seq_length=128 \
     --max_predictions_per_seq=20 \
