@@ -63,6 +63,6 @@ python run_klue.py train \
 --tokenizer_name ${resources} \
 --config_name ${resources} \
 --learning_rate 5e-5 --num_train_epochs 3 --train_batch_size 32 --warmup_ratio 0.1 --patience 10000 \
---max_seq_length 128 --metric_key micro_f1 --gpus 0 --num_workers 16
+--max_seq_length 128 --metric_key micro_f1 --gpus 2 --num_workers 16
 
 
