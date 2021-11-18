@@ -1,8 +1,0 @@
-{
-    "vocab_size": 64000,
-    "token_type": "eojeol",
-    "tokenizer_type": "mecab_fixed",
-    "composition_type": "composed",
-    "with_dummy_letter": false,
-    "tokenized_corpus_path": "./corpus/tokenized/space_F_dummy_F_grammatical_F/eojeol_mecab_fixed/composed"
-}
