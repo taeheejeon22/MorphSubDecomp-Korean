@@ -11,6 +11,7 @@ from pytorch_lightning.loggers import CSVLogger
 
 from klue_baseline import KLUE_TASKS
 from klue_baseline.utils import Command, LoggingCallback
+from klue_baseline.models import BaseTransformer
 
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
@@ -89,7 +90,8 @@ def make_klue_trainer(
     pl.seed_everything(args.seed)
 
     # Logging
-    csv_logger = CSVLogger(args.output_dir, name=args.task)
+    csv_logger = CSVLogger(args.output_dir, name=args.task + '/' + args.tokenizer_name.split('/')[-1])
+
     args.output_dir = csv_logger.log_dir
 
     if logging_callback is None:
@@ -106,7 +108,7 @@ def make_klue_trainer(
             filename="{epoch:02d}-{step}=" + filename_for_metric,
             save_top_k=1,
             mode="max",
-        )
+        )                           
     early_stopping_callback = EarlyStopping(monitor=metric_key, patience=args.patience, mode=args.early_stopping_mode)
     extra_callbacks.append(early_stopping_callback)
 

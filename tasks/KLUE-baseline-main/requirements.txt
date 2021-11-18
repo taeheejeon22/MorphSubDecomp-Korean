@@ -11,3 +11,13 @@ dataclasses; python_version<"3.7"
 # Metrics
 scikit-learn==0.24.1
 seqeval
+
+mecab-python @ git+https://bitbucket.org/eunjeon/mecab-python-0.996.git@ac44c1e23785be09bb60f29b83f2463848314796
+konlpy==0.5.2
+
+tqdm
+attrdict
+
+soynlp==0.0.493
+mosestokenizer==1.1.0
+tweepy==3.10.0

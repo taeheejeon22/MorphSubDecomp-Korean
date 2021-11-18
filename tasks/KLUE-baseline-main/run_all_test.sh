@@ -6,6 +6,75 @@ OUTPUT_DIR="klue_output"
 DATA_DIR="data/klue_benchmark"  # default submodule for data from https://github.com/KLUE-benchmark/KLUE
 VERSION="v1.1"
 
+
+echo "grammatical_symbol T of F? "
+
+echo -e "grammatical_symbol: "
+read grammatical_symbol
+echo "grammatical_symbol == ${grammatical_symbol}"
+
+echo "아래의 토크나이저 중에서 사용할 토크나이저를 입력하세요. "
+echo "eojeol_fixed_composed_F_wp-64k"
+echo "eojeol_fixed_pure_F_wp-64k"
+echo "morpheme_orig_composed_F_wp-64k    morpheme_orig_decomposed_pure_F_wp-64k"
+echo "morpheme_fixed_composed_F_wp-64k    morpheme_fixed_decomposed_pure_F_wp-64k"
+
+echo "morpheme_fixed_composed_T_wp-64k    morpheme_fixed_decomposed_pure_T_wp-64k"
+echo "morpheme_fixed_decomposed_lexical_T_wp-64k    morpheme_fixed_decomposed_grammatical_T_wp-64k"
+
+echo -e "tokenizer: " 
+read tokenizer
+echo "tokenizer == ${tokenizer}"
+
+
+if [[ ${grammatical_symbol} == "F" ]]; then
+    resources="resources/v6_without_dummy_letter_grammatical_symbol_F/${tokenizer}"
+elif [[ ${grammatical_symbol} == "T" ]]; then
+    resources="resources/v6_without_dummy_letter_grammatical_symbol_T/${tokenizer}"
+else
+    echo "press T or F!!!!"
+fi
+
+
+# task 입력 받기
+echo "task ynat or klue-dp? "
+echo -e "task: "
+read task
+echo "task == ${task}"
+
+# gpu 입력 받기
+echo "gpu 0 1 2 3 ? "
+echo -e "gpu: "
+read gpu
+echo "gpu == ${gpu}"
+
+
+
+if [[ ${task} == "ynat" ]]; then
+    python run_klue.py train \
+    --task ${task} \
+    --output_dir ${OUTPUT_DIR}  \
+    --data_dir ${DATA_DIR}/${task}-${VERSION} \
+    --model_name_or_path ${resources} \
+    --tokenizer_name ${resources} \
+    --config_name ${resources} \
+    --learning_rate 5e-5 --num_train_epochs 3 --train_batch_size 32 --warmup_ratio 0.1 --patience 10000 \
+    --max_seq_length 128 --metric_key macro_f1 --gpus ${gpus} --num_workers 16
+
+elif [[ ${task} == "klue-dp" ]]; then
+    python run_klue.py train \
+    --task ${task} \
+    --output_dir ${OUTPUT_DIR} \
+    --data_dir ${DATA_DIR}/${task}-${VERSION} \
+    --model_name_or_path ${resources} \
+    --tokenizer_name ${resources} \
+    --config_name ${resources} \
+    --learning_rate 5e-5 --num_train_epochs 15 --warmup_ratio 0.2 --train_batch_size 32 --patience 10000 \
+    --max_seq_length 256 --metric_key uas_macro_f1 --gpus ${gpus} --num_workers 16
+else
+    echo "try again"
+fi
+
 # # YNAT
 #task="ynat"
 # for model_name in "klue/bert-base" "klue/roberta-small" "klue/roberta-base"; do
@@ -15,55 +84,9 @@ VERSION="v1.1"
 # python run_klue.py train --task ${task} --output_dir ${OUTPUT_DIR} --data_dir ${DATA_DIR}/${task}-${VERSION} --model_name_or_path klue/roberta-large --learning_rate 5e-5 --train_batch_size 32 --warmup_ratio 0.2 --max_seq_length 128 --patience 100000 --metric_key macro_f1 --gpus 0 --num_workers 4
 
 
-# # KLUE-STS
-# task="klue-sts"
-# for model_name in "klue/roberta-small" "klue/roberta-base" "klue/bert-base"; do
-#     python run_klue.py train --task ${task} --output_dir ${OUTPUT_DIR} --data_dir ${DATA_DIR}/${task}-${VERSION} --model_name_or_path ${model_name} --learning_rate 5e-5 --num_train_epochs 4 --train_batch_size 32 --warmup_ratio 0.1 --max_grad_norm 1.0 --weight_decay 0 --max_seq_length 128 --metric_key pearsonr --gpus 0 --num_workers 4
-# done
-
-# python run_klue.py train --task ${task} --output_dir ${OUTPUT_DIR} --data_dir ${DATA_DIR}/${task}-${VERSION} --model_name_or_path klue/roberta-large --learning_rate 2e-5 --num_train_epochs 4 --train_batch_size 32 --warmup_ratio 0.1 --max_grad_norm 1.0 --weight_decay 0 --max_seq_length 128 --metric_key pearsonr --gpus 0 --num_workers 4
-
-
-# # KLUE-NLI
-# task="klue-nli"
-# for model_name in "klue/roberta-small" "klue/roberta-base" "klue/bert-base"; do
-#     python run_klue.py train --task ${task} --output_dir ${OUTPUT_DIR} --data_dir ${DATA_DIR}/${task}-${VERSION} --model_name_or_path ${model_name} --learning_rate 5e-5 --num_train_epochs 5 --train_batch_size 32 --max_grad_norm 1.0 --warmup_ratio 0.1 --weight_decay 0 --max_seq_length 128 --metric_key accuracy --gpus 0 --num_workers 4
-# done
-
-# python run_klue.py train --task ${task} --output_dir ${OUTPUT_DIR} --data_dir ${DATA_DIR}/${task}-${VERSION}  --model_name_or_path klue/roberta-large --learning_rate 5e-5 --num_train_epochs 5 --train_batch_size 32 --max_grad_norm 1.0 --warmup_ratio 0.2 --weight_decay 0 --max_seq_length 128 --metric_key accuracy --gpus 0 --num_workers 4
-
-
-# # KLUE-NER
-# task="klue-ner"
-# for model_name in "klue/roberta-small" "klue/roberta-base" "klue/bert-base"; do
-#     python run_klue.py train --task ${task} --output_dir ${OUTPUT_DIR} --data_dir ${DATA_DIR}/${task}-${VERSION}  --model_name_or_path ${model_name} --num_train_epochs 3 --max_seq_length 510 --metric_key character_macro_f1 --gpus 0 --num_workers 4
-# done
-
-# python run_klue.py train --task ${task} --output_dir ${OUTPUT_DIR} --data_dir ${DATA_DIR}/${task}-${VERSION}  --model_name_or_path klue/roberta-large --learning_rate 1e-5 --num_train_epochs 3 --train_batch_size 8 --max_seq_length 510 --metric_key character_macro_f1 --gpus 0 --num_workers 4
-
-
-# KLUE-RE
-OUTPUT_DIR="klue_output"
-DATA_DIR="data/klue_benchmark"  # default submodule for data from https://github.com/KLUE-benchmark/KLUE
-VERSION="v1.1"
 # task="klue-dp"
-task="ynat"
-resources="resources/v6_without_dummy_letter_grammatical_symbol_F/eojeol_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k"
-
 # for model_name in "klue/roberta-small" "klue/roberta-base" "klue/bert-base"; do
-#     python run_klue.py train --task ${task} --output_dir ${OUTPUT_DIR} --data_dir ${DATA_DIR}/${task}-${VERSION}  --model_name_or_path ${model_name} --learning_rate 5e-5 --num_train_epochs 3 --train_batch_size 32 --warmup_ratio 0.1 --patience 10000 --max_seq_length 256 --metric_key micro_f1 --gpus 0 --num_workers 4
+#     python run_klue.py train --task ${task} --output_dir ${OUTPUT_DIR} --data_dir ${DATA_DIR}/${task}-${VERSION}  --model_name_or_path ${model_name} --learning_rate 5e-5 --num_train_epochs 10 --warmup_ratio 0.1 --train_batch_size 32 --patience 10000 --max_seq_length 256 --metric_key las_macro_f1 --gpus 0 --num_workers 4
 # done
-#python run_klue.py train --task ${task} --output_dir ${OUTPUT_DIR} --data_dir ${DATA_DIR}/${task}-${VERSION}  --model_name_or_path ${model_name} --learning_rate 5e-5 --num_train_epochs 3 --train_batch_size 32 --warmup_ratio 0.1 --patience 10000 --max_seq_length 256 --metric_key micro_f1 --gpus 0 --num_workers 4
 
-
-python run_klue.py train \
---task ${task} \
---output_dir ${OUTPUT_DIR}  \
---data_dir ${DATA_DIR}/${task}-${VERSION} \
---model_name_or_path ${resources} \
---tokenizer_name ${resources} \
---config_name ${resources} \
---learning_rate 5e-5 --num_train_epochs 3 --train_batch_size 32 --warmup_ratio 0.1 --patience 10000 \
---max_seq_length 128 --metric_key micro_f1 --gpus 0 --num_workers 16
-
-
+# python run_klue.py train --task ${task} --output_dir ${OUTPUT_DIR} --data_dir ${DATA_DIR}/${task}-${VERSION}  --model_name_or_path klue/roberta-large --learning_rate 5e-5 --num_train_epochs 15 --warmup_ratio 0.2 --train_batch_size 32 --patience 10000 --max_seq_length 256 --metric_key uas_macro_f1 --gpus 0 --num_workers 4

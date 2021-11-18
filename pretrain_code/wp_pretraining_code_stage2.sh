@@ -12,9 +12,12 @@
 # tokenizer를 사용자로부터 입력 받기
 echo "아래의 토크나이저 중에서 사용할 토크나이저를 입력하세요. "
 echo "eojeol_fixed_composed"
-echo "eojeol_fixed_decomposed_pure"
-echo "morpheme_orig_composed    morpheme_orig_decomposed_pure    morpheme_orig_decomposed_morphological"
-echo "morpheme_fixed_composed    morpheme_fixed_decomposed_pure    morpheme_fixed_decomposed_morphological"
+echo "eojeol_fixed_pure"
+echo "morpheme_orig_composed    morpheme_orig_decomposed_pure"
+echo "morpheme_fixed_composed    morpheme_fixed_decomposed_pure"
+
+echo "morpheme_fixed_composed_T    morpheme_fixed_decomposed_pure_T"
+echo "morpheme_fixed_decomposed_lexical_T    morpheme_fixed_decomposed_grammatical_T"
 
 echo -e "tokenizer: " 
 read TOKENIZER
