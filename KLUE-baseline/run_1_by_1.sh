@@ -2,7 +2,7 @@
 
 set +x
 
-OUTPUT_DIR="klue_output"
+OUTPUT_DIR="../run_outputs"
 DATA_DIR="data/klue_benchmark"  # default submodule for data from https://github.com/KLUE-benchmark/KLUE
 VERSION="v1.1"
 
