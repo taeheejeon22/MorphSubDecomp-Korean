@@ -6,6 +6,12 @@ OUTPUT_DIR="../run_outputs"
 DATA_DIR="data/klue_benchmark"  # default submodule for data from https://github.com/KLUE-benchmark/KLUE
 VERSION="v1.1"
 
+# gpu 입력 받기
+echo "gpus 0 1 2 3 ? "
+echo -e "gpus: "
+read gpus
+echo "gpus == ${gpus}"
+
 
 tasks="ynat"
 
@@ -25,4 +31,16 @@ tokenizers=("eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
 for tokenizer in "${tokenizers[@]}"; do
     # resource directory
     resource="../resources/v6_without_dummy_letter_grammatical_symbol_F/${tokenizer}"
-    
+
+    python run_klue.py train \
+    --task ${task} \
+    --output_dir ${OUTPUT_DIR}  \
+    --data_dir ${DATA_DIR}/${task}-${VERSION} \
+    --model_name_or_path ${resources} \
+    --tokenizer_name ${resources} \
+    --config_name ${resources} \
+    --learning_rate 5e-5 --num_train_epochs 3 --train_batch_size 32 --warmup_ratio 0.1 --patience 10000 \
+    --max_seq_length 128 --metric_key macro_f1 --gpus ${gpus} --num_workers 16
+done
+
+
