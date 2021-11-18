@@ -1,0 +1,20 @@
+# Framework
+transformers==3.5.1
+pytorch-lightning==1.1.0
+fsspec==2021.4.0 # due to pytorch lightning
+
+# Utils
+overrides==3.1.0
+dataclasses; python_version<"3.7"
+
+# Metrics
+scikit-learn==0.24.1
+seqeval
+
+
+
+# etc
+tweepy==3.10.0
+mecab-python @ git+https://bitbucket.org/eunjeon/mecab-python-0.996.git@ac44c1e23785be09bb60f29b83f2463848314796
+konlpy==0.5.2
+soynlp==0.0.493
