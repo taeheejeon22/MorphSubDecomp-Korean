@@ -14,13 +14,13 @@ read grammatical_symbol
 echo "grammatical_symbol == ${grammatical_symbol}"
 
 echo "아래의 토크나이저 중에서 사용할 토크나이저를 입력하세요. "
-echo "eojeol_fixed_composed_F_wp-64k"
-echo "eojeol_fixed_pure_F_wp-64k"
-echo "morpheme_orig_composed_F_wp-64k    morpheme_orig_decomposed_pure_F_wp-64k"
-echo "morpheme_fixed_composed_F_wp-64k    morpheme_fixed_decomposed_pure_F_wp-64k"
+echo "eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
+echo "eojeol_mecab_fixed_pure__grammatical_symbol_F_wp-64k"
+echo "morpheme_mecab_orig_composed__grammatical_symbol_F_wp-64k    morpheme_mecab_orig_decomposed_pure__grammatical_symbol_F_wp-64k"
+echo "morpheme_mecab_fixed_composed__grammatical_symbol_F_wp-64k    morpheme_mecab_fixed_decomposed_pure__grammatical_symbol_F_wp-64k"
 
-echo "morpheme_fixed_composed_T_wp-64k    morpheme_fixed_decomposed_pure_T_wp-64k"
-echo "morpheme_fixed_decomposed_lexical_T_wp-64k    morpheme_fixed_decomposed_grammatical_T_wp-64k"
+echo "morpheme_mecab_fixed_composed__grammatical_symbol_T_wp-64k    morpheme_mecab_fixed_decomposed_pure__grammatical_symbol_T_wp-64k"
+echo "morpheme_mecab_fixed_decomposed_lexical__grammatical_symbol_T_wp-64k    morpheme_mecab_fixed_decomposed_grammatical__grammatical_symbol_T_wp-64k"
 
 echo -e "tokenizer: " 
 read tokenizer
@@ -43,10 +43,10 @@ read task
 echo "task == ${task}"
 
 # gpu 입력 받기
-echo "gpu 0 1 2 3 ? "
-echo -e "gpu: "
-read gpu
-echo "gpu == ${gpu}"
+echo "gpus 0 1 2 3 ? "
+echo -e "gpus: "
+read gpus
+echo "gpus == ${gpus}"
 
 
 
