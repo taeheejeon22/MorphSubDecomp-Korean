@@ -1,0 +1,4 @@
+{
+    "vocab_size": 64000,
+    "tokenized_corpus_path": "./corpus/tokenized/space_F_dummy_F_grammatical_T/morpheme_mecab_fixed/composed"
+}

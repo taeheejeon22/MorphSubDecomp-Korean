@@ -1,0 +1,9 @@
+{
+    "space_symbol": "\u2583",
+    "n_jobs": 16,
+    "token_type": "eojeol",
+    "tokenizer_type": "mecab_fixed",
+    "decomposition_type": "decomposed_pure_nfd",
+    "dummy_letter": "",
+    "corpus_path": "./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt"
+}
