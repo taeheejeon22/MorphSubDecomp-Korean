@@ -12,6 +12,38 @@ from transformers import PreTrainedTokenizer
 from klue_baseline.data.base import DataProcessor, InputExample, InputFeatures, KlueDataModule
 from klue_baseline.data.utils import check_tokenizer_type
 
+### our ###
+import json
+import inspect
+import os
+import sys
+
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname( os.path.dirname(currentdir) )
+sys.path.insert(0, parentdir)
+
+from tokenizer import (
+    # CharTokenizer,
+    # JamoTokenizer,
+    # MeCabSentencePieceTokenizer_orig,
+    # MeCabSentencePieceTokenizer_fixed,
+    # MeCabSentencePieceTokenizer,
+    MeCabWordPieceTokenizer,
+    # MeCabTokenizer,
+    # MeCabTokenizer_orig,
+    # MeCabTokenizer_fixed,    # MeCabSentencePieceTokenizer_kortok,
+    MeCabTokenizer_all,
+    # MeCabTokenizer_kortok,
+    # SentencePieceTokenizer,
+    WordPieceTokenizer,
+    Vocab,
+    # WordTokenizer,
+)
+###
+
+
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -24,8 +56,18 @@ class KlueREProcessor(DataProcessor):
 
     datamodule_type = KlueDataModule
 
-    def __init__(self, args: argparse.Namespace, tokenizer: PreTrainedTokenizer) -> None:
-        super().__init__(args, tokenizer)
+    # def __init__(self, args: argparse.Namespace, tokenizer: PreTrainedTokenizer) -> None:
+        # super().__init__(args, tokenizer)
+
+    ### our ### morpheme pretokenizer
+    def __init__(self, args: argparse.Namespace, tokenizer: PreTrainedTokenizer, path_rsc: str) -> None:
+        super().__init__(args, tokenizer, path_rsc)
+
+        with open(os.path.join(self.path_rsc, "tok.json")) as f:
+            tokenizer_config: dict = json.load(f)
+
+        self.pretokenizer = MeCabTokenizer_all(token_type=tokenizer_config["token_type"], tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"], nfd=tokenizer_config["nfd"], grammatical_symbol=tokenizer_config["grammatical_symbol"])
+    ###
 
         # special tokens to mark the subject/object entity boundaries
         self.subject_start_marker = "<subj>"
@@ -90,6 +132,7 @@ class KlueREProcessor(DataProcessor):
         for data in data_lst:
             guid = data["guid"]
             text = data["sentence"]
+            # text = " ".join( self.pretokenizer.tokenize(data["sentence"]) ) ### our ### pretokenization
             subject_entity = data["subject_entity"]
             object_entity = data["object_entity"]
             label = data["label"]
@@ -99,6 +142,8 @@ class KlueREProcessor(DataProcessor):
                 subject_range=(int(subject_entity["start_idx"]), int(subject_entity["end_idx"])),
                 object_range=(int(object_entity["start_idx"]), int(object_entity["end_idx"])),
             )
+
+            text = " ".join( self.pretokenizer.tokenize(data["sentence"]) ) ### our ### pretokenization
             examples.append(InputExample(guid=guid, text_a=text, label=label))
 
         return examples
@@ -224,6 +269,8 @@ class KlueREProcessor(DataProcessor):
         examples = self._create_examples(file_path, dataset_type)
         features = self._convert_example_to_features(examples)
 
+        print(f"\n\n\nlen_examples:{len(examples)}\n\n\n")  ### our ###
+
         all_input_ids = torch.tensor([f.input_ids for f in features], dtype=torch.long)
         all_attention_mask = torch.tensor([f.attention_mask for f in features], dtype=torch.long)
         # Some model does not make use of token type ids (e.g. RoBERTa)
@@ -231,6 +278,8 @@ class KlueREProcessor(DataProcessor):
             [0 if f.token_type_ids is None else f.token_type_ids for f in features], dtype=torch.long
         )
         all_labels = torch.tensor([f.label for f in features], dtype=torch.long)
+
+        print(f"\n\n\nlen_all:{len(all_labels)}\n\n\n")  ### our ###
 
         return TensorDataset(all_input_ids, all_attention_mask, all_token_type_ids, all_labels)
 

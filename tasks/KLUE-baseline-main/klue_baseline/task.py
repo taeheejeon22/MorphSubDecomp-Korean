@@ -33,7 +33,19 @@ class KlueTask:
         tokenizer = AutoTokenizer.from_pretrained(
             args.tokenizer_name if args.tokenizer_name else args.model_name_or_path,
         )
-        processor = self.processor_type(args, tokenizer)
+
+
+
+        ### our ###
+        # print(args)
+        # tok_name = args.tokenizer_name
+
+        print(f"\n\n\ntokenizer_name: {args.tokenizer_name}")
+        path_rsc = args.config_name   # mecab 이용하기 위해 resources 경로 지정
+
+        processor = self.processor_type(args, tokenizer, path_rsc) # base.py
+        ###
+
         datamodule = self.processor_type.datamodule_type(args, processor)
 
         self.set_command_specifics(args, command, datamodule)

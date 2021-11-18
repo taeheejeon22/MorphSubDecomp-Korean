@@ -11,6 +11,36 @@ from transformers import PreTrainedTokenizer
 
 from klue_baseline.data.base import DataProcessor, KlueDataModule
 
+### our ###
+import json
+import inspect
+import os
+import sys
+
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname( os.path.dirname(currentdir) )
+sys.path.insert(0, parentdir)
+
+from tokenizer import (
+    # CharTokenizer,
+    # JamoTokenizer,
+    # MeCabSentencePieceTokenizer_orig,
+    # MeCabSentencePieceTokenizer_fixed,
+    # MeCabSentencePieceTokenizer,
+    MeCabWordPieceTokenizer,
+    # MeCabTokenizer,
+    # MeCabTokenizer_orig,
+    # MeCabTokenizer_fixed,    # MeCabSentencePieceTokenizer_kortok,
+    MeCabTokenizer_all,
+    # MeCabTokenizer_kortok,
+    # SentencePieceTokenizer,
+    WordPieceTokenizer,
+    Vocab,
+    # WordTokenizer,
+)
+###
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -151,8 +181,19 @@ class KlueDPProcessor(DataProcessor):
 
     datamodule_type = KlueDPDataModule
 
-    def __init__(self, args: argparse.Namespace, tokenizer: PreTrainedTokenizer) -> None:
-        super().__init__(args, tokenizer)
+    # def __init__(self, args: argparse.Namespace, tokenizer: PreTrainedTokenizer) -> None:
+    #     super().__init__(args, tokenizer)
+
+    ### our ### morpheme pretokenizer
+    def __init__(self, args: argparse.Namespace, tokenizer: PreTrainedTokenizer, path_rsc: str) -> None:
+        super().__init__(args, tokenizer, path_rsc)
+
+        with open(os.path.join(self.path_rsc, "tok.json")) as f:
+            tokenizer_config: dict = json.load(f)
+
+        self.pretokenizer = MeCabTokenizer_all(token_type=tokenizer_config["token_type"], tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"], nfd=tokenizer_config["nfd"], grammatical_symbol=tokenizer_config["grammatical_symbol"])
+    ###
+
 
     def _create_examples(self, file_path: str, dataset_type: str) -> List[KlueDPInputExample]:
         sent_id = -1
@@ -169,9 +210,14 @@ class KlueDPProcessor(DataProcessor):
                     else:
                         sent_id += 1
                         text = parsed[1].strip()
+                        # text = " ".join(self.pretokenizer.tokenize(parsed[1].strip()))  ### our ### pretokenization
+
                         guid = parsed[0].replace("##", "").strip()
                 else:
                     token_list = [token.replace("\n", "") for token in line.split("\t")] + ["-", "-"]
+
+                    text = " ".join(self.pretokenizer.tokenize(parsed[1].strip()))  ### our ### pretokenization
+
                     examples.append(
                         KlueDPInputExample(
                             guid=guid,
@@ -334,15 +380,26 @@ class KlueDPProcessor(DataProcessor):
         )
         features.append(feature)
 
-        for feature in features[:3]:
+        # for feature in features[:3]:
+        #     logger.info("*** Example ***")
+        #     logger.info("input_ids: %s" % feature.input_ids)
+        #     logger.info("attention_mask: %s" % feature.attention_mask)
+        #     logger.info("bpe_head_mask: %s" % feature.bpe_head_mask)
+        #     logger.info("bpe_tail_mask: %s" % feature.bpe_tail_mask)
+        #     logger.info("head_id: %s" % feature.head_ids)
+        #     logger.info("dep_ids: %s" % feature.dep_ids)
+        #     logger.info("pos_ids: %s" % feature.pos_ids)
+
+        ### from klue_re.py ###
+        for i in range(5):
             logger.info("*** Example ***")
-            logger.info("input_ids: %s" % feature.input_ids)
-            logger.info("attention_mask: %s" % feature.attention_mask)
-            logger.info("bpe_head_mask: %s" % feature.bpe_head_mask)
-            logger.info("bpe_tail_mask: %s" % feature.bpe_tail_mask)
-            logger.info("head_id: %s" % feature.head_ids)
-            logger.info("dep_ids: %s" % feature.dep_ids)
-            logger.info("pos_ids: %s" % feature.pos_ids)
+            logger.info("guid: %s" % (examples[i].guid))
+            logger.info("origin example: %s" % examples[i].text)
+            logger.info("origin tokens: %s" % self.tokenizer.tokenize(examples[i].text))
+            # logger.info("fixed tokens: %s" % tokenized_examples[i])
+            logger.info("features: %s" % examples[i])
+        ###
+
 
         return features
 

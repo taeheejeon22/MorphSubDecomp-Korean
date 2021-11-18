@@ -163,6 +163,11 @@ def main() -> None:
 
     task = KLUE_TASKS.get(task_name, None)
 
+    ### our
+    print(f"\n\n\ntask_type: {type(task)}\n\n\n")
+    ###
+
+
     if not task:
         raise ValueError(f"task_name is positional argument. task list: {list(KLUE_TASKS.keys())}")
 

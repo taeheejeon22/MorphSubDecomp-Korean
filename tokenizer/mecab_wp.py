@@ -76,7 +76,8 @@ class MeCabWordPieceTokenizer(BaseTokenizer):
 #
 # # mecab_all.py
 # mecab = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="composed",  grammatical_symbol=["⫸", "⭧"])    # ['▁전태', '희는', '▁한국', '대학교에', '▁묵', '었었다']
-# wp = WordPieceTokenizer(model_path="./resources/v6_without_dummy_letter/eojeol_mecab_fixed_composed_wp-64k/tok.vocab")
+# wp = WordPieceTokenizer(model_path="./resources/v6_without_dummy_letter_grammatical_symbol_F/eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k/bert_tokenizer.json")
+
 # mecab = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure", grammatical_symbol=["⫸", "⭧"]) # ['▁전태', '희는', '▁한국', '대학교에', '▁묵', '어', 'ᆻ었다']
 # wp = WordPieceTokenizer(model_path="./resources/v6_without_dummy_letter/eojeol_mecab_fixed_decomposed_pure_wp-64k/tok.vocab")
 #

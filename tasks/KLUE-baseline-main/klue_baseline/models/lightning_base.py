@@ -86,11 +86,15 @@ class BaseTransformer(pl.LightningModule):
                 setattr(self.config, p, getattr(self.hparams, p))
 
         if tokenizer is None:
+            print("\n\n\n######tokenizer NONE\n\n\n###")
+
             self.tokenizer = AutoTokenizer.from_pretrained(
                 self.hparams.tokenizer_name if self.hparams.tokenizer_name else self.hparams.model_name_or_path,
                 cache_dir=cache_dir,
             )
         else:
+            print("\n\n\n######tokenizer else\n\n\n###")
+
             self.tokenizer = tokenizer
         self.model = model_type.from_pretrained(
             self.hparams.model_name_or_path,
