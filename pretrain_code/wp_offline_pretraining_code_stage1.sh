@@ -114,6 +114,12 @@ done
 # /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter/morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k
 
 
+#morpheme_fixed_decomposed_pure
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_fixed/decomposed_pure
+# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter_grammatical_symbol_F/morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k
+
+
+
 
 # T fixed_composed
 # /home/jth/Desktop/acl_tokenization/corpus/tokenized/space_F_dummy_F_grammatical_T/morpheme_mecab_fixed/composed
@@ -131,3 +137,4 @@ done
 # gram
 # /home/jth/Desktop/acl_tokenization/corpus/tokenized/space_F_dummy_F_grammatical_T/morpheme_mecab_fixed/decomposed_grammatical
 # /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter_grammatical_symbol_T/morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k
+

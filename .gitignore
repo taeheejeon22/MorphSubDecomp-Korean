@@ -15,6 +15,7 @@ multi_cased_L-12_H-768_A-12
 convert_bert
 bert-base
 dataset.zip
+corpus/tfrecord/*
 
 #model
 *.bin
