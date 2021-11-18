@@ -1,0 +1,9 @@
+{
+    "space_symbol": "",
+    "n_jobs": 16,
+    "token_type": "morpheme",
+    "tokenizer_type": "mecab_orig",
+    "decomposition_type": "decomposed_morphological_nfd",
+    "dummy_letter": "",
+    "corpus_path": "./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt"
+}
