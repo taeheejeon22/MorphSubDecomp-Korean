@@ -70,7 +70,7 @@ elif [[ ${task} == "klue-dp" ]]; then
     --tokenizer_name ${resources} \
     --config_name ${resources} \
     --learning_rate 5e-5 --num_train_epochs 15 --warmup_ratio 0.2 --train_batch_size 32 --patience 10000 \
-    --max_seq_length 256 --metric_key uas_macro_f1 --gpus ${gpus} --num_workers 16
+    --max_seq_length 128 --metric_key uas_macro_f1 --gpus ${gpus} --num_workers 16
 else
     echo "try again"
 fi
