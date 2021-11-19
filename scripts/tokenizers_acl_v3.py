@@ -277,7 +277,7 @@ class tokenizers():
         if decomposition_type == "composed":
         # if nfd == False:
         #     eojeol_tokenized = re.sub(p_multiple_spaces, " ", sent).split(" ")
-            eojeol_tokenized = sent.split(" ")
+            eojeol_tokenized = sent.split()
 
         elif decomposition_type == "decomposed_pure":
             if self.nfd == True:
@@ -799,128 +799,128 @@ class tokenizers():
 
 
 
-# dummy_letter = "⊸"  # chr(8888)
-# space_symbol = "▃"  # chr(9603)
-# grammatical_symbol = "⭧"  # chr(11111)
+dummy_letter = "⊸"  # chr(8888)
+space_symbol = "▃"  # chr(9603)
+grammatical_symbol = "⭧"  # chr(11111)
+
+
+
+tok = tokenizers(dummy_letter="#", space_symbol="▃", grammatical_symbol="⭧", nfd=True)    #
+tok = tokenizers(dummy_letter="#", space_symbol="", grammatical_symbol="⭧", nfd=True)
+tok = tokenizers(dummy_letter="", space_symbol="", grammatical_symbol=["⫸", "⭧"], nfd=False)
+
+tok = tokenizers(dummy_letter="", space_symbol="", grammatical_symbol=["⫸", "⭧"], nfd=True)
+
+self = tok
+tok.mecab_tokenizer()
+
+tok2 = tokenizers(dummy_letter="", space_symbol=" ")
+sent = "이것이 아니다"
+sent = "재밌음ㅋㅋ"
+sent = "재밌음ㅠㅠ"
+sent = "넌 날 좋아해"
+sent = "미궁에서 뜬 아앗"
+sent = "훌륭한 사망 플래그의 예시이다"
+sent = "수해에 입장한다"   # ['ㅅㅜ#ㅎㅐ#', 'ㅇㅔ#', '▃', 'ㅇㅣㅂㅈㅏㅇ', 'ㅎㅏ#', 'ㄴ##ㄷㅏ#']
+sent = "나는 널 좋아해"
+
+tok.str2jamo(sent)   # 'ㄴㅓㄴ ㄴㅏㄹ ㅈㅗㅎㅇㅏ#ㅎㅐ#'
+tok.jamo2str(tok.str2jamo(sent))
+
+tok2.str2jamo(sent)   # 'ㄴㅓㄴ ㄴㅏㄹ ㅈㅗㅎㅇㅏㅎㅐ'
+# tok2.jamo2str(tok2.str2jamo(sent))  # '넌 날 좋앟ㅐ'
+moasseugi(tok2.str2jamo(sent))  # '넌 날 좋아해'
+# moasseugi('들어가ㄴ다')
+
+
+sent = "예쁜 가방"
+sent = "난 너를 좋아해."
+
+sent = "지하철에서 완전 가깝고 주변에 마트도 가까워요."
+sent = "호스팅이 필요한지 여부로 판단한다"
+sent = "뭔지 모르지만"
+sent = "이듬해, 견심은 주공소공의 고사를 본받아 평안을 좌백에, 견풍을 우백에 임명해야 한다는 내용의 부명을 지어 바쳤고, 왕망은 곧바로 부명대로 하였다. 그런데 견풍이 정식으로 취임하기 직전에 견심이 부명을 또 지어 바쳤는데, 내용은 이러하였다."
+
+
+# eojeol
+ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="composed"); print(ee)
+ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure"); print(ee)
+# ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_lexical"); print(ee)
+# ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_grammatical"); print(ee)
+
+# morpheme
+ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="composed", flatten=True); print(ee)
+ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="composed", flatten=False); print(ee)
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="composed_nfd"); print(ee)
+ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_pure", flatten=True); print(ee)
+ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_pure", flatten=False); print(ee)
+ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_lexical"); print(ee)
+ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_lexical", flatten=False); print(ee)
+ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_grammatical"); print(ee)
+ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_grammatical", flatten=False); print(ee)
+
+ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="composed"); print(ee)
+ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="composed", flatten=False); print(ee)
+ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure"); print(ee)
+ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure", flatten=False); print(ee)
+ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_lexical"); print(ee)
+ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_grammatical"); print(ee)
+
+
+len(ee[0])
+len(ee[1])
+len(ee[2])
+len(ee[3])
+len(ee[4])
+len(ee[5])
+
+# mecab original
+#     composed
+tok.mecab_tokenizer(sent, tokenizer_type="mecab_orig", decomposition_type="decomposed_morphological") # ['넌', '▃', '날', '▃', '좋', '아', '해']
+ee = tok.mecab_tokenizer(sent, tokenizer_type="mecab_orig", decomposition_type="decomposed_morphological_nfd") # ['넌', '▃', '날', '▃', '좋', '아', '해']
+ee = tok.mecab_tokenizer(sent, tokenizer_type="mecab_orig", decomposition_type="decomposed_pure_nfd") # ['넌', '▃', '날', '▃', '좋', '아', '해']
+
+ee = tok.mecab_tokenizer(sent, tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological_nfd") # ['넌', '▃', '날', '▃', '좋', '아', '해']
+
+ee = tok.mecab_tokenizer(sent, tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure_nfd") # ['넌', '▃', '날', '▃', '좋', '아', '해']
+
+len(ee[0])
+len(ee[1])
+len(ee[2])
+len(ee[3])
+len(ee[4])
+len(ee[5])
+len(ee[6])
+len(ee[7])
+
+    # decomposed pure
+tok.mecab_tokenizer(sent, use_original=True, pure_decomposition=True)  # ['ㄴㅓㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅐ#']
+tok2.mecab_tokenizer(sent, use_original=True, pure_decomposition=True)  # ['ㄴㅓㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ', 'ㅎㅐ']
+    # decomposed morphological
+tok.mecab_with_morphological_decomposition(sent, use_original=True)  # ['ㄴㅓㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ#', 'ㅎㅐ#']
+tok2.mecab_with_morphological_decomposition(sent, use_original=True)  # ['ㄴㅓㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ', 'ㅎㅐ']
+
+# mecab fixed
+    # composed
+tok.mecab_tokenizer(sent, use_original=False, pure_decomposition=False) # ['너', 'ㄴ', '▃', '날', '▃', '좋', '아', '하', '아']
+    # decomposed pure
+tok.mecab_tokenizer(sent, use_original=False, pure_decomposition=True)  # ['ㄴㅓ#', 'ㄴ##', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅏ#', 'ㅇㅏ#']
+tok2.mecab_tokenizer(sent, use_original=False, pure_decomposition=True)  # ['ㄴㅓ', 'ㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ', 'ㅎㅏ', 'ㅇㅏ']
+    # decomposed morphological
+tok.mecab_with_morphological_decomposition(sent, use_original=False)  # ['너', '##ㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ#', '하', 'ㅇㅏ#']
+tok2.mecab_with_morphological_decomposition(sent, use_original=False)  # ['너', 'ㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ', '하', 'ㅇㅏ']
+
+
+# 자음 문법 형태소 처리: ##ㄴ
+# 원래 종성 위치대로.
 #
-#
-#
-# tok = tokenizers(dummy_letter="#", space_symbol="▃", grammatical_symbol="⭧", nfd=True)    #
-# tok = tokenizers(dummy_letter="#", space_symbol="", grammatical_symbol="⭧", nfd=True)
-# tok = tokenizers(dummy_letter="", space_symbol="", grammatical_symbol=["⫸", "⭧"], nfd=False)
-#
-# tok = tokenizers(dummy_letter="", space_symbol="", grammatical_symbol=["⫸", "⭧"], nfd=True)
-#
-# self = tok
-# tok.mecab_tokenizer()
-#
-# tok2 = tokenizers(dummy_letter="", space_symbol=" ")
-# sent = "이것이 아니다"
-# sent = "재밌음ㅋㅋ"
-# sent = "재밌음ㅠㅠ"
-# sent = "넌 날 좋아해"
-# sent = "미궁에서 뜬 아앗"
-# sent = "훌륭한 사망 플래그의 예시이다"
-# sent = "수해에 입장한다"   # ['ㅅㅜ#ㅎㅐ#', 'ㅇㅔ#', '▃', 'ㅇㅣㅂㅈㅏㅇ', 'ㅎㅏ#', 'ㄴ##ㄷㅏ#']
-# sent = "나는 널 좋아해"
-#
-# tok.str2jamo(sent)   # 'ㄴㅓㄴ ㄴㅏㄹ ㅈㅗㅎㅇㅏ#ㅎㅐ#'
-# tok.jamo2str(tok.str2jamo(sent))
-#
-# tok2.str2jamo(sent)   # 'ㄴㅓㄴ ㄴㅏㄹ ㅈㅗㅎㅇㅏㅎㅐ'
-# # tok2.jamo2str(tok2.str2jamo(sent))  # '넌 날 좋앟ㅐ'
-# moasseugi(tok2.str2jamo(sent))  # '넌 날 좋아해'
-# # moasseugi('들어가ㄴ다')
-#
-#
-# sent = "예쁜 가방"
-# sent = "난 너를 좋아해."
-#
-# sent = "지하철에서 완전 가깝고 주변에 마트도 가까워요."
-# sent = "호스팅이 필요한지 여부로 판단한다"
-# sent = "뭔지 모르지만"
-# sent = "이듬해, 견심은 주공소공의 고사를 본받아 평안을 좌백에, 견풍을 우백에 임명해야 한다는 내용의 부명을 지어 바쳤고, 왕망은 곧바로 부명대로 하였다. 그런데 견풍이 정식으로 취임하기 직전에 견심이 부명을 또 지어 바쳤는데, 내용은 이러하였다."
-#
-#
-# # eojeol
-# ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="composed"); print(ee)
-# ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure"); print(ee)
-# # ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_lexical"); print(ee)
-# # ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_grammatical"); print(ee)
-#
-# # morpheme
-# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="composed", flatten=True); print(ee)
-# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="composed", flatten=False); print(ee)
-# # ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="composed_nfd"); print(ee)
-# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_pure", flatten=True); print(ee)
-# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_pure", flatten=False); print(ee)
-# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_lexical"); print(ee)
-# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_lexical", flatten=False); print(ee)
-# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_grammatical"); print(ee)
-# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_grammatical", flatten=False); print(ee)
-#
-# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="composed"); print(ee)
-# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="composed", flatten=False); print(ee)
-# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure"); print(ee)
-# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure", flatten=False); print(ee)
-# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_lexical"); print(ee)
-# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_grammatical"); print(ee)
-#
-#
-# len(ee[0])
-# len(ee[1])
-# len(ee[2])
-# len(ee[3])
-# len(ee[4])
-# len(ee[5])
-#
-# # mecab original
-# #     composed
-# tok.mecab_tokenizer(sent, tokenizer_type="mecab_orig", decomposition_type="decomposed_morphological") # ['넌', '▃', '날', '▃', '좋', '아', '해']
-# ee = tok.mecab_tokenizer(sent, tokenizer_type="mecab_orig", decomposition_type="decomposed_morphological_nfd") # ['넌', '▃', '날', '▃', '좋', '아', '해']
-# ee = tok.mecab_tokenizer(sent, tokenizer_type="mecab_orig", decomposition_type="decomposed_pure_nfd") # ['넌', '▃', '날', '▃', '좋', '아', '해']
-#
-# ee = tok.mecab_tokenizer(sent, tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological_nfd") # ['넌', '▃', '날', '▃', '좋', '아', '해']
-#
-# ee = tok.mecab_tokenizer(sent, tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure_nfd") # ['넌', '▃', '날', '▃', '좋', '아', '해']
-#
-# len(ee[0])
-# len(ee[1])
-# len(ee[2])
-# len(ee[3])
-# len(ee[4])
-# len(ee[5])
-# len(ee[6])
-# len(ee[7])
-#
-#     # decomposed pure
-# tok.mecab_tokenizer(sent, use_original=True, pure_decomposition=True)  # ['ㄴㅓㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅐ#']
-# tok2.mecab_tokenizer(sent, use_original=True, pure_decomposition=True)  # ['ㄴㅓㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ', 'ㅎㅐ']
-#     # decomposed morphological
-# tok.mecab_with_morphological_decomposition(sent, use_original=True)  # ['ㄴㅓㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ#', 'ㅎㅐ#']
-# tok2.mecab_with_morphological_decomposition(sent, use_original=True)  # ['ㄴㅓㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ', 'ㅎㅐ']
-#
-# # mecab fixed
-#     # composed
-# tok.mecab_tokenizer(sent, use_original=False, pure_decomposition=False) # ['너', 'ㄴ', '▃', '날', '▃', '좋', '아', '하', '아']
-#     # decomposed pure
-# tok.mecab_tokenizer(sent, use_original=False, pure_decomposition=True)  # ['ㄴㅓ#', 'ㄴ##', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ#', 'ㅎㅏ#', 'ㅇㅏ#']
-# tok2.mecab_tokenizer(sent, use_original=False, pure_decomposition=True)  # ['ㄴㅓ', 'ㄴ', '▃', 'ㄴㅏㄹ', '▃', 'ㅈㅗㅎ', 'ㅇㅏ', 'ㅎㅏ', 'ㅇㅏ']
-#     # decomposed morphological
-# tok.mecab_with_morphological_decomposition(sent, use_original=False)  # ['너', '##ㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ#', '하', 'ㅇㅏ#']
-# tok2.mecab_with_morphological_decomposition(sent, use_original=False)  # ['너', 'ㄴ', '▃', '날', '▃', '좋', 'ㅇㅏ', '하', 'ㅇㅏ']
-#
-#
-# # 자음 문법 형태소 처리: ##ㄴ
-# # 원래 종성 위치대로.
-# #
-# # 그냥 자음/모음 not 문법 형태소 처리: ㅋ##, #ㅠ#
-# # 자음은 초성, 모음은 중성 처리.
-#
-#
-#
-#
-# mc = Mecab(use_original=False)
-# sent = "미궁에서 뜬 아앗"
-# mc.pos(sent, join=False)
-# mc.pos(sent, join=True)
+# 그냥 자음/모음 not 문법 형태소 처리: ㅋ##, #ㅠ#
+# 자음은 초성, 모음은 중성 처리.
+
+
+
+
+mc = Mecab(use_original=False)
+sent = "미궁에서 뜬 아앗"
+mc.pos(sent, join=False)
+mc.pos(sent, join=True)
