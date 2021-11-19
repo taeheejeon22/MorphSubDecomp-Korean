@@ -221,8 +221,11 @@ class KlueDPProcessor(DataProcessor):
                         continue
                     else:
                         sent_id += 1
-                        # text = parsed[1].strip()  ### KLUE original
-                        text = " ".join(self.pretokenizer.tokenize(parsed[1].strip()))  ### our ### pretokenization
+
+                        if self.tokenizer_config["token_type"] == "eojeol" and self.tokenizer_config["decomposition_type"] == "composed":
+                            text = parsed[1].strip()  ### KLUE original
+                        else:
+                            text = " ".join(self.pretokenizer.tokenize(parsed[1].strip()))  ### our ### pretokenization
 
                         new_tokens = self.mecab_tokenizer.mecab_tokenizer(sent=parsed[1].strip(), token_type=self.tokenizer_config["token_type"], tokenizer_type=self.tokenizer_config["tokenizer_type"], decomposition_type=self.tokenizer_config["decomposition_type"], flatten=False)
 
@@ -238,11 +241,13 @@ class KlueDPProcessor(DataProcessor):
                     ### our ### text를 형태소 분석 후 토큰들 갈아끼워 넣기
                     # 1 유희열이 -> 유희열 이
                     # 4 탈락에 -> 탈락 에
-
                     new_token_list = token_list[:]
 
-                    if self.tokenizer_config["token_type"] == "eojeol":
+                    if self.tokenizer_config["token_type"] == "eojeol" and self.tokenizer_config["decomposition_type"] == "composed":
+                        pass
+                    elif self.tokenizer_config["token_type"] == "eojeol" and self.tokenizer_config["decomposition_type"] == "decomposed_pure":
                         new_token_list[1] = new_tokens[int(token_list[0]) - 1]
+
                     elif self.tokenizer_config["token_type"] == "morpheme":
                         new_token_list[1] = " ".join( new_tokens[int(token_list[0]) - 1] )
 
