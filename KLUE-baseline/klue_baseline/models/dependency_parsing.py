@@ -101,6 +101,9 @@ class DPTransformer(BaseTransformer):
     ) -> Tuple[torch.Tensor, torch.Tensor]:
 
         outputs = self.model(**inputs)
+
+        # print(f"outputs: {outputs}")    ### our
+
         outputs = outputs[0]
         outputs, sent_len = self.resize_outputs(outputs, bpe_head_mask, bpe_tail_mask, max_word_length)
 
@@ -309,9 +312,19 @@ class DPTransformer(BaseTransformer):
         word_outputs = torch.zeros(batch_size, max_word_length + 1, hidden_size * 2).to(outputs.device)
         sent_len = list()
 
+
+        # print(f"\n\nlen(outputs): {len(outputs)}")  ### our
+
         for batch_id in range(batch_size):
+            # print(f"\n\nbatch_id: {batch_id}")  ### our
+            # print(f"\n\nbpe_head_mask[batch_id]: {bpe_head_mask[batch_id]}")  ### our
+            # print(f"\n\nbpe_tail_mask[batch_id]: {bpe_tail_mask[batch_id]}")  ### our
+            # print(f"\n\nword_outputs[batch_id]: {word_outputs[batch_id]}")  ### our
+
             head_ids = [i for i, token in enumerate(bpe_head_mask[batch_id]) if token == 1]
             tail_ids = [i for i, token in enumerate(bpe_tail_mask[batch_id]) if token == 1]
+            # print(f"\nlen(head_ids):{len(head_ids)}\n len(tail_ids): {len(tail_ids)}")  ### our ###
+
             assert len(head_ids) == len(tail_ids)
 
             word_outputs[batch_id][0] = torch.cat(

@@ -197,6 +197,7 @@ class KlueDPProcessor(DataProcessor):
         self.pretokenizer = MeCabTokenizer_all(token_type=self.tokenizer_config["token_type"], tokenizer_type=self.tokenizer_config["tokenizer_type"], decomposition_type=self.tokenizer_config["decomposition_type"], space_symbol=self.tokenizer_config["space_symbol"], dummy_letter=self.tokenizer_config["dummy_letter"], nfd=self.tokenizer_config["nfd"], grammatical_symbol=self.tokenizer_config["grammatical_symbol"])
 
         self.mecab_tokenizer = tok.tokenizers(space_symbol=self.tokenizer_config["space_symbol"], dummy_letter=self.tokenizer_config["dummy_letter"], nfd=self.tokenizer_config["nfd"], grammatical_symbol=self.tokenizer_config["grammatical_symbol"])
+
     ###
 
 
@@ -223,10 +224,11 @@ class KlueDPProcessor(DataProcessor):
                         # text = parsed[1].strip()  ### KLUE original
                         text = " ".join(self.pretokenizer.tokenize(parsed[1].strip()))  ### our ### pretokenization
 
-                        new_tokens = self.mecab_tokenizer.mecab_tokenizer(parsed[1].strip(), token_type=self.tokenizer_config["token_type"], tokenizer_type=self.tokenizer_config["tokenizer_type"], decomposition_type=self.tokenizer_config["decomposition_type"], flatten=False)
+                        new_tokens = self.mecab_tokenizer.mecab_tokenizer(sent=parsed[1].strip(), token_type=self.tokenizer_config["token_type"], tokenizer_type=self.tokenizer_config["tokenizer_type"], decomposition_type=self.tokenizer_config["decomposition_type"], flatten=False)
 
-                        print(f"\n\n\nlen_new_tokens:{len(new_tokens)}\n\n\n") ### our ###
 
+                        # print(f"new_tokens:{new_tokens}")   ### our ###
+                        # print(f"\n\n\nlen_new_tokens:{len(new_tokens)}\n\n\n") ### our ###
 
 
                         guid = parsed[0].replace("##", "").strip()
@@ -235,10 +237,16 @@ class KlueDPProcessor(DataProcessor):
 
                     ### our
                     new_token_list = token_list[:]
-                    new_token_list[1] = " ".join( new_tokens[int(token_list[0])-1] )
+                    # new_token_list[1] = " ".join( new_tokens[int(token_list[0])-1] )
+                    new_token_list[1] = new_tokens[int(token_list[0]) - 1]
 
-                    print(f"token_list:{token_list}\n")  ### our ###
-                    print(f"new_token_list:{new_token_list}\n")  ### our ###
+                    print(f"my_token_0: {new_tokens[int(token_list[0])-1]}")
+                    print(f"my_token_1: {new_token_list[1]}")
+                    print(f"\norig_token: {token_list[1]}")
+                    print(f"new_token: {new_token_list[1]}\n")
+
+                    # print(f"token_list:{token_list}\n")  ### our ###
+                    # print(f"new_token_list:{new_token_list}\n")  ### our ###
 
 
 
@@ -512,6 +520,23 @@ class KlueDPProcessor(DataProcessor):
             batch_attention_masks.append(attention_mask)
             batch_bpe_head_masks.append(bpe_head_mask)
             batch_bpe_tail_masks.append(bpe_tail_mask)
+
+
+            ### our # from dependency_parsing.py
+            # head_ids = [i for i, token in enumerate(bpe_head_mask[batch_id]) if token == 1]
+            head_ids = [i for i, token in enumerate(batch[batch_id][2]) if token == 1]
+            # tail_ids = [i for i, token in enumerate(bpe_tail_mask[batch_id]) if token == 1]
+            tail_ids = [i for i, token in enumerate(batch[batch_id][3]) if token == 1]
+
+            print(f"orig_text: {self.tokenizer.decode(batch[batch_id][0])}")
+
+            print(f"<klue_dp> batch[batch_id]:{batch[batch_id]}")
+            print(f"\nlen(head_ids):{len(head_ids)}\n len(tail_ids): {len(tail_ids)}")  ### our ###
+
+            assert len(head_ids) == len(tail_ids)
+            ###
+
+
         # 2. build inputs : packing tensors
         # 나는 밥을 먹는다. => [CLS] 나 ##는 밥 ##을 먹 ##는 ##다 . [SEP]
         # input_id : [2, 717, 2259, 1127, 2069, 1059, 2259, 2062, 18, 3, 0, 0, ...]

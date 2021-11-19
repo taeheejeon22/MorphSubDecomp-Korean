@@ -1,4 +1,5 @@
-torch==1.4.0    # https://pytorch.kr/get-started/previous-versions/ # pip install torch==1.5.0+cu101 torchvision==0.6.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html
+torch==1.4.0    # https://pytorch.org/get-started/previous-versions/                                                        # pip install torch==1.5.0+cu101 torchvision==0.6.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html
+                # pip3 install torch==1.7.0 torchvision==0.8.1 -f https://download.pytorch.org/whl/cu101/torch_stable.html  # https://varhowto.com/install-pytorch-cuda-10-1/
 transformers==4.12.3
 
 tweepy==3.10.0
