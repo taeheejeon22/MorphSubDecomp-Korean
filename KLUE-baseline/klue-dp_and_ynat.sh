@@ -17,7 +17,7 @@ tasks=("klue-dp" "ynat")
 
 tokenizers=("eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k" 
 "eojeol_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k"
-"morpheme_mecab_orig_composed__grammatical_symbol_F_wp-64k"
+"morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k")
 
@@ -36,7 +36,7 @@ for task in "${tasks[@]}"; do
 
         echo "##### ${tokenizer} ##### "
         resources="../resources/v6_without_dummy_letter_grammatical_symbol_F/${tokenizer}"
-        
+
         if [[ ${task} == "ynat" ]]; then
             python run_klue.py train \
             --task ${task} \

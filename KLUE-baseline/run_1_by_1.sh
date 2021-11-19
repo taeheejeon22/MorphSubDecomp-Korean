@@ -16,7 +16,7 @@ echo "grammatical_symbol == ${grammatical_symbol}"
 echo "아래의 토크나이저 중에서 사용할 토크나이저를 입력하세요. "
 echo "eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
 echo "eojeol_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k"
-echo "morpheme_mecab_orig_composed__grammatical_symbol_F_wp-64k    morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
+echo "morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k    morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
 echo "morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k    morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k"
 
 echo "morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k    morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_T_wp-64k"
