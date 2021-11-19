@@ -62,7 +62,7 @@ python run_klue.py train \
 --model_name_or_path ${resources} \
 --tokenizer_name ${resources} \
 --config_name ${resources} \
---learning_rate 5e-5 --num_train_epochs 3 --train_batch_size 32 --warmup_ratio 0.1 --patience 10000 \
+--learning_rate 5e-5 --num_train_epochs 3 --train_batch_size 32 --warmup_ratio 0.1 --patience 100000 \
 --max_seq_length 128 --metric_key micro_f1 --gpus 1 --num_workers 16
 
 
@@ -86,8 +86,8 @@ python run_klue.py train \
 --model_name_or_path ${resources} \
 --tokenizer_name ${resources} \
 --config_name ${resources} \
---learning_rate 5e-5 --num_train_epochs 15 --train_batch_size 32 --warmup_ratio 0.2 --patience 10000 \
---max_seq_length 128 --metric_key uas_macro_f1 --gpus 3 --num_workers 16
+--learning_rate 5e-5 --num_train_epochs 10 --train_batch_size 32 --warmup_ratio 0.1 --patience 10000 \
+--max_seq_length 128 --metric_key las_macro_f1 --gpus 3 --num_workers 16
 
 
 
