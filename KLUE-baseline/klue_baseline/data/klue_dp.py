@@ -240,7 +240,11 @@ class KlueDPProcessor(DataProcessor):
                     # 4 탈락에 -> 탈락 에
 
                     new_token_list = token_list[:]
-                    new_token_list[1] = new_tokens[int(token_list[0]) - 1]
+
+                    if self.tokenizer_config["token_type"] == "eojeol":
+                        new_token_list[1] = new_tokens[int(token_list[0]) - 1]
+                    elif self.tokenizer_config["token_type"] == "morpheme":
+                        new_token_list[1] = " ".join( new_tokens[int(token_list[0]) - 1] )
 
                     # print(f"my_token_0: {new_tokens[int(token_list[0])-1]}")
                     # print(f"my_token_1: {new_token_list[1]}")
@@ -291,6 +295,9 @@ class KlueDPProcessor(DataProcessor):
         for example in examples:
             if SENT_ID != example.sent_id:
                 SENT_ID = example.sent_id
+
+                # print(f"\ntoken_list: {token_list}") ### our
+
                 encoded = tokenizer.encode_plus(
                     " ".join(token_list),
                     None,
