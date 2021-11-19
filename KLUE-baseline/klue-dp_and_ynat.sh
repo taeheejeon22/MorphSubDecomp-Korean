@@ -45,7 +45,7 @@ for task in "${tasks[@]}"; do
             --model_name_or_path ${resources} \
             --tokenizer_name ${resources} \
             --config_name ${resources} \
-            --learning_rate 5e-5 --num_train_epochs 3 --train_batch_size 32 --warmup_ratio 0.1 --patience 10000 \
+            --learning_rate 5e-5 --train_batch_size 32 --warmup_ratio 0.1 --patience 100000 \
             --max_seq_length 128 --metric_key macro_f1 --gpus ${gpus} --num_workers 16
 
         elif [[ ${task} == "klue-dp" ]]; then
@@ -56,8 +56,8 @@ for task in "${tasks[@]}"; do
             --model_name_or_path ${resources} \
             --tokenizer_name ${resources} \
             --config_name ${resources} \
-            --learning_rate 5e-5 --num_train_epochs 15 --warmup_ratio 0.2 --train_batch_size 32 --patience 10000 \
-            --max_seq_length 128 --metric_key uas_macro_f1 --gpus ${gpus} --num_workers 16
+            --learning_rate 5e-5 --num_train_epochs 10 --warmup_ratio 0.1 --train_batch_size 32 --patience 10000 \
+            --max_seq_length 128 --metric_key las_macro_f1 --gpus ${gpus} --num_workers 16
         fi
     done
 done
