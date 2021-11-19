@@ -89,7 +89,7 @@ def make_klue_trainer(
     pl.seed_everything(args.seed)
 
     # Logging
-    csv_logger = CSVLogger(args.output_dir, name=args.task)
+    csv_logger = CSVLogger(args.output_dir, name=args.task + '/' + args.tokenizer_name.split('/')[-1])
     args.output_dir = csv_logger.log_dir
 
     if logging_callback is None:
