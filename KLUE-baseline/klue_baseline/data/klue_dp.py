@@ -38,6 +38,9 @@ from tokenizer import (
     Vocab,
     # WordTokenizer,
 )
+
+import scripts.tokenizers_acl_v3 as tok
+
 ###
 
 
@@ -189,9 +192,11 @@ class KlueDPProcessor(DataProcessor):
         super().__init__(args, tokenizer, path_rsc)
 
         with open(os.path.join(self.path_rsc, "tok.json")) as f:
-            tokenizer_config: dict = json.load(f)
+            self.tokenizer_config: dict = json.load(f)
 
-        self.pretokenizer = MeCabTokenizer_all(token_type=tokenizer_config["token_type"], tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"], nfd=tokenizer_config["nfd"], grammatical_symbol=tokenizer_config["grammatical_symbol"])
+        self.pretokenizer = MeCabTokenizer_all(token_type=self.tokenizer_config["token_type"], tokenizer_type=self.tokenizer_config["tokenizer_type"], decomposition_type=self.tokenizer_config["decomposition_type"], space_symbol=self.tokenizer_config["space_symbol"], dummy_letter=self.tokenizer_config["dummy_letter"], nfd=self.tokenizer_config["nfd"], grammatical_symbol=self.tokenizer_config["grammatical_symbol"])
+
+        self.mecab_tokenizer = tok.tokenizers(space_symbol=self.tokenizer_config["space_symbol"], dummy_letter=self.tokenizer_config["dummy_letter"], nfd=self.tokenizer_config["nfd"], grammatical_symbol=self.tokenizer_config["grammatical_symbol"])
     ###
 
 
@@ -201,22 +206,42 @@ class KlueDPProcessor(DataProcessor):
         with open(file_path, "r", encoding="utf-8") as f:
             for line in f:
                 line = line.strip()
+
+                # print(f"\nline:{line}\n") ### our ###
+
                 if line == "" or line == "\n" or line == "\t":
                     continue
                 if line.startswith("#"):
                     parsed = line.strip().split("\t")
+
+                    # print(f"\n\n\nparsed:{parsed}\n\n\n") ### our ###
+
                     if len(parsed) != 2:  # metadata line about dataset
                         continue
                     else:
                         sent_id += 1
-                        text = parsed[1].strip()
-                        # text = " ".join(self.pretokenizer.tokenize(parsed[1].strip()))  ### our ### pretokenization
+                        # text = parsed[1].strip()  ### KLUE original
+                        text = " ".join(self.pretokenizer.tokenize(parsed[1].strip()))  ### our ### pretokenization
+
+                        new_tokens = self.mecab_tokenizer.mecab_tokenizer(parsed[1].strip(), token_type=self.tokenizer_config["token_type"], tokenizer_type=self.tokenizer_config["tokenizer_type"], decomposition_type=self.tokenizer_config["decomposition_type"], flatten=False)
+
+                        print(f"\n\n\nlen_new_tokens:{len(new_tokens)}\n\n\n") ### our ###
+
+
 
                         guid = parsed[0].replace("##", "").strip()
                 else:
                     token_list = [token.replace("\n", "") for token in line.split("\t")] + ["-", "-"]
 
-                    text = " ".join(self.pretokenizer.tokenize(parsed[1].strip()))  ### our ### pretokenization
+                    ### our
+                    new_token_list = token_list[:]
+                    new_token_list[1] = " ".join( new_tokens[int(token_list[0])-1] )
+
+                    print(f"token_list:{token_list}\n")  ### our ###
+                    print(f"new_token_list:{new_token_list}\n")  ### our ###
+
+
+
 
                     examples.append(
                         KlueDPInputExample(
@@ -224,7 +249,8 @@ class KlueDPProcessor(DataProcessor):
                             text=text,
                             sent_id=sent_id,
                             token_id=int(token_list[0]),
-                            token=token_list[1],
+                            # token=token_list[1],
+                            token=new_token_list[1],
                             pos=token_list[3],
                             head=token_list[4],
                             dep=token_list[5],
