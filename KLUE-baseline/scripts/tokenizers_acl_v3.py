@@ -128,7 +128,7 @@ class tokenizers():
     # for inserting space_symbol ("▃")
     # https://stackoverflow.com/questions/5920643/add-an-item-between-each-item-already-in-the-list
     def intersperse(self, lst, item):
-        result = [item] * (len(lst) * 2 - 1)
+        result = [[item]] * (len(lst) * 2 - 1)
         result[0::2] = lst
         return result
 
@@ -313,7 +313,7 @@ class tokenizers():
 
     # def mecab_tokenizer(self, sent: str, tokenizer_type: str, decomposition_type: str):
 
-    def mecab_tokenizer(self, sent: str, token_type: str, tokenizer_type: str, decomposition_type: str):
+    def mecab_tokenizer(self, sent: str, token_type: str, tokenizer_type: str, decomposition_type: str, flatten: bool = True):
         assert (tokenizer_type in ["mecab_orig", "mecab_fixed"] ), 'check the tokenizer type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
         # assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological", "composed_nfd", "decomposed_pure_nfd", "decomposed_morphological_nfd"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 
@@ -328,12 +328,12 @@ class tokenizers():
                 use_original = False
 
             if decomposition_type == "composed":
-                mecab_tokenized = self.mecab_composed_decomposed_pure(sent=sent, use_original=use_original, pure_decomposition=False, nfd=self.nfd)
+                mecab_tokenized = self.mecab_composed_decomposed_pure(sent=sent, use_original=use_original, pure_decomposition=False, nfd=self.nfd, flatten=flatten)
             # elif decomposition_type == "composed_nfd":  # coda normalization 안 하고, mecab 원래 출력대로 종성 문자 쓰기
             #     mecab_tokenized = self.mecab_composed_decomposed_pure(sent=sent, use_original=use_original, pure_decomposition=False, nfd=True)
                 
             elif decomposition_type == "decomposed_pure":
-                mecab_tokenized = self.mecab_composed_decomposed_pure(sent=sent, use_original=use_original, pure_decomposition=True, nfd=self.nfd)
+                mecab_tokenized = self.mecab_composed_decomposed_pure(sent=sent, use_original=use_original, pure_decomposition=True, nfd=self.nfd, flatten=flatten)
                 # mecab_tokenized = self.mecab_composed_decomposed_pure(sent=sent, use_original=use_original, pure_decomposition=True, nfd=False)
             # elif decomposition_type == "decomposed_pure_nfd":
             #     mecab_tokenized = self.mecab_composed_decomposed_pure(sent=sent, use_original=use_original, pure_decomposition=True, nfd=True)
@@ -346,10 +346,10 @@ class tokenizers():
 
 
             elif decomposition_type == "decomposed_lexical":
-                mecab_tokenized = self.mecab_with_morphological_decomposition(sent=sent, use_original=use_original, nfd=self.nfd, lexical_or_grammatical="lexical")
+                mecab_tokenized = self.mecab_with_morphological_decomposition(sent=sent, use_original=use_original, nfd=self.nfd, lexical_or_grammatical="lexical", flatten=flatten)
 
             elif decomposition_type == "decomposed_grammatical":
-                mecab_tokenized = self.mecab_with_morphological_decomposition(sent=sent, use_original=use_original, nfd=self.nfd, lexical_or_grammatical="grammatical")
+                mecab_tokenized = self.mecab_with_morphological_decomposition(sent=sent, use_original=use_original, nfd=self.nfd, lexical_or_grammatical="grammatical", flatten=flatten)
 
 
 
@@ -358,7 +358,7 @@ class tokenizers():
 
 
     # 1-1. composed & decomposed_pure
-    def mecab_composed_decomposed_pure(self, sent, use_original, pure_decomposition, nfd: bool):
+    def mecab_composed_decomposed_pure(self, sent, use_original, pure_decomposition, nfd: bool, flatten: bool = True):
         if use_original == True:
             if nfd == False:
                 mor_poss = self.mc_orig.pos(sent, flatten=False, coda_normalization=True)  # [[('넌', 'NP+JX')], [('날', 'NNG')], [('좋', 'VA'), ('아', 'EC'), ('해', 'VV+EC')]]
@@ -409,11 +409,18 @@ class tokenizers():
 
 
 
+        if flatten == True:
+            mecab_tokenized = list(chain.from_iterable(self.intersperse(mors, self.space_symbol)))  # ['너', 'ㄴ', '▃', '날', '▃', '좋', '아', '하', '아']
 
-        mecab_tokenized = list(chain.from_iterable(self.intersperse(mors, self.space_symbol)))  # ['너', 'ㄴ', '▃', '날', '▃', '좋', '아', '하', '아']
+            if self.space_symbol == "": # 스페이스 심벌 안 쓴다면
+                mecab_tokenized = [token for token in mecab_tokenized if token != ""]    # 빈 토큰 제외
 
 
+        elif flatten == False:
+            mecab_tokenized = self.intersperse(mors, self.space_symbol)  # [['너', 'ㄴ'], ['▃'], ['날'], ['▃'], ['좋', '아', '하', '아']]
 
+            if self.space_symbol == "": # 스페이스 심벌 안 쓴다면
+                mecab_tokenized = [token for token in mecab_tokenized if token != [""]]    # 빈 토큰 제외
 
 
         return mecab_tokenized
@@ -429,7 +436,7 @@ class tokenizers():
 
 
     ## 1-2. decomposition morphological
-    def mecab_with_morphological_decomposition(self, sent, use_original, nfd: bool = False, lexical_or_grammatical: str = "lexical"):
+    def mecab_with_morphological_decomposition(self, sent, use_original, nfd: bool = False, lexical_or_grammatical: str = "lexical", flatten: bool = True):
         '''
         :param sent: 자모 변환할 문장      '너를 좋아해'
         :param morpheme_analysis:
@@ -549,7 +556,17 @@ class tokenizers():
         # elif flatten == False:
         #     pass
 
-        new_sent_with_special_token = list(chain.from_iterable(self.intersperse(new_sent, self.space_symbol)))
+        if flatten == True:
+            new_sent_with_special_token = list(chain.from_iterable(self.intersperse(new_sent, self.space_symbol)))    # ['너', 'ㄴ', '▃', '날', '▃', '좋', '아', '하', '아']
+
+            if self.space_symbol == "": # 스페이스 심벌 안 쓴다면
+                new_sent_with_special_token = [token for token in new_sent_with_special_token if token != ""]    # 빈 토큰 제외
+
+        elif flatten == False:
+            new_sent_with_special_token = self.intersperse(new_sent, self.space_symbol)  # [['너', 'ㄴ'], ['▃'], ['날'], ['▃'], ['좋', '아', '하', '아']]
+
+            if self.space_symbol == "":  # 스페이스 심벌 안 쓴다면
+                new_sent_with_special_token = [token for token in new_sent_with_special_token if token != [""]]  # 빈 토큰 제외
 
         return new_sent_with_special_token
 
@@ -774,6 +791,12 @@ class tokenizers():
 
 
 
+
+
+############################################################################################################################################################################################
+
+
+
 # dummy_letter = "⊸"  # chr(8888)
 # space_symbol = "▃"  # chr(9603)
 # grammatical_symbol = "⭧"  # chr(11111)
@@ -823,14 +846,20 @@ class tokenizers():
 # # ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_grammatical"); print(ee)
 #
 # # morpheme
-# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="composed"); print(ee)
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="composed", flatten=True); print(ee)
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="composed", flatten=False); print(ee)
 # # ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="composed_nfd"); print(ee)
-# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_pure"); print(ee)
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_pure", flatten=True); print(ee)
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_pure", flatten=False); print(ee)
 # ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_lexical"); print(ee)
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_lexical", flatten=False); print(ee)
 # ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_grammatical"); print(ee)
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_grammatical", flatten=False); print(ee)
 #
 # ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="composed"); print(ee)
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="composed", flatten=False); print(ee)
 # ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure"); print(ee)
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure", flatten=False); print(ee)
 # ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_lexical"); print(ee)
 # ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_grammatical"); print(ee)
 #
