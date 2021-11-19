@@ -271,11 +271,13 @@ class tokenizers():
                          # nfd: bool = False, morpheme_normalization: bool = False):
         # morpheme_normalization: 좋아해 -> 좋아하아
 
+
         p_multiple_spaces = re.compile("\s+")  # multiple blanks
 
         if decomposition_type == "composed":
         # if nfd == False:
-            eojeol_tokenized = re.sub(p_multiple_spaces, " ", sent).split(" ")
+        #     eojeol_tokenized = re.sub(p_multiple_spaces, " ", sent).split(" ")
+            eojeol_tokenized = sent.split(" ")
 
         elif decomposition_type == "decomposed_pure":
             if self.nfd == True:
