@@ -20,13 +20,20 @@ acl
 ## *OUR*
 ### morpheme_fixed
 - composed
-    - (decomposed pure)
+    
     
 - composed + grammar_symbol
 - grammar_symbol + decomposed_lexical   # 최고일 것으로 기대
 - grammar_symbol + decomposed pure
-    - (grammar_symbol + decomposed_grammatical)
     
+    
+
+## additional
+### morpheme_fixed
+- decomposed pure
+- decomposed_lexical
+- grammar_symbol + decomposed_grammatical
+
 
 
 # 0. raw 코퍼스 만들기
@@ -79,6 +86,7 @@ python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./co
 ### wikiko
 ```bash
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_lexical
 
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_grammatical --grammatical_symbol=⫸⭧
 ```
@@ -86,6 +94,7 @@ python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./co
 ### namuwiki
 ```bash
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure
+python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_lexical
 
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_grammatical --grammatical_symbol=⫸⭧
 ```
