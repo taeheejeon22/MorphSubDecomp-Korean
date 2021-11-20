@@ -357,3 +357,12 @@ transformers-cli convert --model_type bert\
 --pytorch_dump_output=./bert_model_v6_without_dummy_letter_morpheme_mecab_fixed_composed_wp-64k_model.ckpt-200000.pth
 
 
+## grammatical_symbol_T
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./bert_model_v6_without_dummy_letter_grammatical_symbol_T_morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k_model.ckpt-200000 \
+  --config=./resources/v6_without_dummy_letter_grammatical_symbol_T/morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k/config.json \
+--pytorch_dump_output=./bert_model_v6_without_dummy_letter_grammatical_symbol_T_morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k_model.ckpt-200000.pth
+
+
+
+
