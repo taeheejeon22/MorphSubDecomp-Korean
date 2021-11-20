@@ -48,7 +48,7 @@ DATA_DIR="data/klue_benchmark"  # default submodule for data from https://github
 VERSION="v1.1"
 task="klue-dp"
 # task="ynat"
-resources="resources/v6_without_dummy_letter_grammatical_symbol_F/morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k"
+resources="resources/v6_without_dummy_letter_grammatical_symbol_F/eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
 
 # for model_name in "klue/roberta-small" "klue/roberta-base" "klue/bert-base"; do
 #     python run_klue.py train --task ${task} --output_dir ${OUTPUT_DIR} --data_dir ${DATA_DIR}/${task}-${VERSION}  --model_name_or_path ${model_name} --learning_rate 5e-5 --num_train_epochs 3 --train_batch_size 32 --warmup_ratio 0.1 --patience 10000 --max_seq_length 256 --metric_key micro_f1 --gpus 0 --num_workers 4
@@ -63,7 +63,7 @@ python run_klue.py train \
 --model_name_or_path ${resources} \
 --tokenizer_name ${resources} \
 --config_name ${resources} \
---learning_rate 5e-5 --num_train_epochs 3 --train_batch_size 32 --warmup_ratio 0.1 --patience 10000 \
---max_seq_length 128 --metric_key micro_f1 --gpus 0 --num_workers 16
+--learning_rate 5e-5 --num_train_epochs 15 --warmup_ratio 0.2 --train_batch_size 16 --patience 10000 \
+--max_seq_length 128 --metric_key uas_macro_f1 --gpus 0 --num_workers 16
 
 

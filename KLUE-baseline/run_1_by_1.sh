@@ -71,6 +71,7 @@ elif [[ ${task} == "klue-dp" ]]; then
     --config_name ${resources} \
     --learning_rate 5e-5 --num_train_epochs 10 --warmup_ratio 0.1 --train_batch_size 32 --patience 10000 \
     --max_seq_length 128 --metric_key las_macro_f1 --gpus ${gpus} --num_workers 16
+
 else
     echo "try again"
 fi

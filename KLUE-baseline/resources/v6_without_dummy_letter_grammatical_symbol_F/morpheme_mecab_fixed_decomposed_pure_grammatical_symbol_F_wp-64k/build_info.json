@@ -1,4 +1,0 @@
-{
-    "vocab_size": 64000,
-    "tokenized_corpus_path": "./corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_fixed/decomposed_pure"
-}

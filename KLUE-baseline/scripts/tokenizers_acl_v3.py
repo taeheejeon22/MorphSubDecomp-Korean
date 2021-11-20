@@ -271,11 +271,13 @@ class tokenizers():
                          # nfd: bool = False, morpheme_normalization: bool = False):
         # morpheme_normalization: 좋아해 -> 좋아하아
 
+
         p_multiple_spaces = re.compile("\s+")  # multiple blanks
 
         if decomposition_type == "composed":
         # if nfd == False:
-            eojeol_tokenized = re.sub(p_multiple_spaces, " ", sent).split(" ")
+        #     eojeol_tokenized = re.sub(p_multiple_spaces, " ", sent).split(" ")
+            eojeol_tokenized = sent.split()
 
         elif decomposition_type == "decomposed_pure":
             if self.nfd == True:
@@ -834,13 +836,14 @@ class tokenizers():
 # sent = "예쁜 가방"
 # sent = "난 너를 좋아해."
 #
+# sent = "지하철에서 완전 가깝고 주변에 마트도 가까워요."
 # sent = "호스팅이 필요한지 여부로 판단한다"
 # sent = "뭔지 모르지만"
 # sent = "이듬해, 견심은 주공소공의 고사를 본받아 평안을 좌백에, 견풍을 우백에 임명해야 한다는 내용의 부명을 지어 바쳤고, 왕망은 곧바로 부명대로 하였다. 그런데 견풍이 정식으로 취임하기 직전에 견심이 부명을 또 지어 바쳤는데, 내용은 이러하였다."
 #
 #
 # # eojeol
-# ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="composed"); print(ee)
+# ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="composed", flatten=False); print(ee)
 # ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure"); print(ee)
 # # ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_lexical"); print(ee)
 # # ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_grammatical"); print(ee)

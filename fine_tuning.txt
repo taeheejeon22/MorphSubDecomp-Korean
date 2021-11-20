@@ -179,13 +179,13 @@ CUDA_VISIBLE_DEVICES=3 python3 tasks/korsts/run_train.py --tokenizer eojeol_meca
 CUDA_VISIBLE_DEVICES=2 python3 tasks/paws/run_train.py --tokenizer eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F --batch_size 64 --learning_rate 3e-5
 
-CUDA_VISIBLE_DEVICES=2 python3 tasks/cola/run_train.py --tokenizer eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k \
+CUDA_VISIBLE_DEVICES=1 python3 tasks/cola/run_train.py --tokenizer eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F --batch_size 64 --learning_rate 2e-5
 
-CUDA_VISIBLE_DEVICES=3 python3 tasks/pc/run_train.py --tokenizer eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k \
+CUDA_VISIBLE_DEVICES=1 python3 tasks/pc/run_train.py --tokenizer eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F --batch_size 32 --learning_rate 3e-5
 
-CUDA_VISIBLE_DEVICES=1 python3 tasks/nsmc/run_train.py --tokenizer eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k \
+CUDA_VISIBLE_DEVICES=0 python3 tasks/nsmc/run_train.py --tokenizer eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F
 
 CUDA_VISIBLE_DEVICES=0 python3 tasks/kornli/run_train.py --tokenizer eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k \
@@ -208,7 +208,7 @@ CUDA_VISIBLE_DEVICES=3 python3 tasks/pc/run_train.py --tokenizer eojeol_mecab_fi
 CUDA_VISIBLE_DEVICES=1 python3 tasks/nsmc/run_train.py --tokenizer eojeol_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F
 
-CUDA_VISIBLE_DEVICES=0 python3 tasks/kornli/run_train.py --tokenizer eojeol_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k \
+CUDA_VISIBLE_DEVICES=1 python3 tasks/kornli/run_train.py --tokenizer eojeol_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F --learning_rate 5e-5
 
 
@@ -219,16 +219,16 @@ CUDA_VISIBLE_DEVICES=3 python3 tasks/korsts/run_train.py --tokenizer morpheme_me
 CUDA_VISIBLE_DEVICES=2 python3 tasks/paws/run_train.py --tokenizer morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F --batch_size 64 --learning_rate 3e-5
 
-CUDA_VISIBLE_DEVICES=2 python3 tasks/cola/run_train.py --tokenizer morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k \
+CUDA_VISIBLE_DEVICES=1 python3 tasks/cola/run_train.py --tokenizer morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F --batch_size 64 --learning_rate 2e-5
 
-CUDA_VISIBLE_DEVICES=3 python3 tasks/pc/run_train.py --tokenizer morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k \
+CUDA_VISIBLE_DEVICES=0 python3 tasks/pc/run_train.py --tokenizer morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F --batch_size 32 --learning_rate 3e-5
 
-CUDA_VISIBLE_DEVICES=1 python3 tasks/nsmc/run_train.py --tokenizer morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k \
+CUDA_VISIBLE_DEVICES=2 python3 tasks/nsmc/run_train.py --tokenizer morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F
 
-CUDA_VISIBLE_DEVICES=0 python3 tasks/kornli/run_train.py --tokenizer morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k \
+CUDA_VISIBLE_DEVICES=2 python3 tasks/kornli/run_train.py --tokenizer morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F --learning_rate 5e-5
 
 
@@ -236,16 +236,16 @@ CUDA_VISIBLE_DEVICES=0 python3 tasks/kornli/run_train.py --tokenizer morpheme_me
 CUDA_VISIBLE_DEVICES=3 python3 tasks/korsts/run_train.py --tokenizer morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F --batch_size 32 --learning_rate 3e-5
 
-CUDA_VISIBLE_DEVICES=2 python3 tasks/paws/run_train.py --tokenizer morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k \
+CUDA_VISIBLE_DEVICES=3 python3 tasks/paws/run_train.py --tokenizer morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F --batch_size 64 --learning_rate 3e-5
 
 CUDA_VISIBLE_DEVICES=2 python3 tasks/cola/run_train.py --tokenizer morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F --batch_size 64 --learning_rate 2e-5
 
-CUDA_VISIBLE_DEVICES=3 python3 tasks/pc/run_train.py --tokenizer morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k \
+CUDA_VISIBLE_DEVICES=2 python3 tasks/pc/run_train.py --tokenizer morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F --batch_size 32 --learning_rate 3e-5
 
-CUDA_VISIBLE_DEVICES=0 python3 tasks/nsmc/run_train.py --tokenizer morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k \
+CUDA_VISIBLE_DEVICES=1 python3 tasks/nsmc/run_train.py --tokenizer morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F
 
 CUDA_VISIBLE_DEVICES=1 python3 tasks/kornli/run_train.py --tokenizer morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k \
@@ -253,23 +253,76 @@ CUDA_VISIBLE_DEVICES=1 python3 tasks/kornli/run_train.py --tokenizer morpheme_me
 
 
 # morpheme orig decomposed pure
-CUDA_VISIBLE_DEVICES=3 python3 tasks/korsts/run_train.py --tokenizer morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k \
+CUDA_VISIBLE_DEVICES=0 python3 tasks/korsts/run_train.py --tokenizer morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F --batch_size 32 --learning_rate 3e-5
 
 CUDA_VISIBLE_DEVICES=2 python3 tasks/paws/run_train.py --tokenizer morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F --batch_size 64 --learning_rate 3e-5
 
-CUDA_VISIBLE_DEVICES=2 python3 tasks/cola/run_train.py --tokenizer morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k \
+CUDA_VISIBLE_DEVICES=1 python3 tasks/cola/run_train.py --tokenizer morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F --batch_size 64 --learning_rate 2e-5
 
-CUDA_VISIBLE_DEVICES=3 python3 tasks/pc/run_train.py --tokenizer morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k \
+CUDA_VISIBLE_DEVICES=2 python3 tasks/pc/run_train.py --tokenizer morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F --batch_size 32 --learning_rate 3e-5
 
 CUDA_VISIBLE_DEVICES=1 python3 tasks/nsmc/run_train.py --tokenizer morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F
 
-CUDA_VISIBLE_DEVICES=2 python3 tasks/kornli/run_train.py --tokenizer morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k \
+CUDA_VISIBLE_DEVICES=0 python3 tasks/kornli/run_train.py --tokenizer morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k \
 --resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_F --learning_rate 5e-5
+
+
+# grammatical_symbol_T 
+# morpheme_fixed_composed
+CUDA_VISIBLE_DEVICES=2 python3 tasks/korsts/run_train.py --tokenizer morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k \
+--resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_T --batch_size 32 --learning_rate 3e-5
+
+CUDA_VISIBLE_DEVICES=2 python3 tasks/paws/run_train.py --tokenizer morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k \
+--resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_T --batch_size 64 --learning_rate 3e-5
+
+CUDA_VISIBLE_DEVICES=2 python3 tasks/cola/run_train.py --tokenizer morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k \
+--resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_T --batch_size 64 --learning_rate 2e-5
+
+CUDA_VISIBLE_DEVICES=1 python3 tasks/pc/run_train.py --tokenizer morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k \
+--resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_T --batch_size 32 --learning_rate 3e-5
+
+CUDA_VISIBLE_DEVICES=0 python3 tasks/nsmc/run_train.py --tokenizer morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k \
+--resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_T
+
+CUDA_VISIBLE_DEVICES=1 python3 tasks/kornli/run_train.py --tokenizer morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k \
+--resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_T --learning_rate 5e-5
+
+
+# morpheme_fixed_decomposed_lexical
+CUDA_VISIBLE_DEVICES=2 python3 tasks/korsts/run_train.py --tokenizer morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k \
+--resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_T --batch_size 32 --learning_rate 3e-5
+
+CUDA_VISIBLE_DEVICES=2 python3 tasks/paws/run_train.py --tokenizer morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k \
+--resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_T --batch_size 64 --learning_rate 3e-5
+
+CUDA_VISIBLE_DEVICES=2 python3 tasks/cola/run_train.py --tokenizer morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k \
+--resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_T --batch_size 64 --learning_rate 2e-5
+
+CUDA_VISIBLE_DEVICES=1 python3 tasks/pc/run_train.py --tokenizer morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k \
+--resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_T --batch_size 32 --learning_rate 3e-5
+
+CUDA_VISIBLE_DEVICES=0 python3 tasks/nsmc/run_train.py --tokenizer morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k \
+--resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_T
+
+CUDA_VISIBLE_DEVICES=1 python3 tasks/kornli/run_train.py --tokenizer morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k \
+--resource_dir ./resources/v6_without_dummy_letter_grammatical_symbol_T --learning_rate 5e-5
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

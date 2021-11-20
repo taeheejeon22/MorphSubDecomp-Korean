@@ -221,8 +221,11 @@ class KlueDPProcessor(DataProcessor):
                         continue
                     else:
                         sent_id += 1
-                        # text = parsed[1].strip()  ### KLUE original
-                        text = " ".join(self.pretokenizer.tokenize(parsed[1].strip()))  ### our ### pretokenization
+
+                        if self.tokenizer_config["token_type"] == "eojeol" and self.tokenizer_config["decomposition_type"] == "composed":
+                            text = parsed[1].strip()  ### KLUE original
+                        else:
+                            text = " ".join(self.pretokenizer.tokenize(parsed[1].strip()))  ### our ### pretokenization
 
                         new_tokens = self.mecab_tokenizer.mecab_tokenizer(sent=parsed[1].strip(), token_type=self.tokenizer_config["token_type"], tokenizer_type=self.tokenizer_config["tokenizer_type"], decomposition_type=self.tokenizer_config["decomposition_type"], flatten=False)
 
@@ -235,15 +238,23 @@ class KlueDPProcessor(DataProcessor):
                 else:
                     token_list = [token.replace("\n", "") for token in line.split("\t")] + ["-", "-"]
 
-                    ### our
+                    ### our ### text를 형태소 분석 후 토큰들 갈아끼워 넣기
+                    # 1 유희열이 -> 유희열 이
+                    # 4 탈락에 -> 탈락 에
                     new_token_list = token_list[:]
-                    # new_token_list[1] = " ".join( new_tokens[int(token_list[0])-1] )
-                    new_token_list[1] = new_tokens[int(token_list[0]) - 1]
 
-                    print(f"my_token_0: {new_tokens[int(token_list[0])-1]}")
-                    print(f"my_token_1: {new_token_list[1]}")
-                    print(f"\norig_token: {token_list[1]}")
-                    print(f"new_token: {new_token_list[1]}\n")
+                    if self.tokenizer_config["token_type"] == "eojeol" and self.tokenizer_config["decomposition_type"] == "composed":
+                        pass
+                    elif self.tokenizer_config["token_type"] == "eojeol" and self.tokenizer_config["decomposition_type"] == "decomposed_pure":
+                        new_token_list[1] = new_tokens[int(token_list[0]) - 1]
+
+                    elif self.tokenizer_config["token_type"] == "morpheme":
+                        new_token_list[1] = " ".join( new_tokens[int(token_list[0]) - 1] )
+
+                    # print(f"my_token_0: {new_tokens[int(token_list[0])-1]}")
+                    # print(f"my_token_1: {new_token_list[1]}")
+                    # print(f"\norig_token: {token_list[1]}")
+                    # print(f"new_token: {new_token_list[1]}\n")
 
                     # print(f"token_list:{token_list}\n")  ### our ###
                     # print(f"new_token_list:{new_token_list}\n")  ### our ###
@@ -258,7 +269,7 @@ class KlueDPProcessor(DataProcessor):
                             sent_id=sent_id,
                             token_id=int(token_list[0]),
                             # token=token_list[1],
-                            token=new_token_list[1],
+                            token=new_token_list[1],    ### our ###
                             pos=token_list[3],
                             head=token_list[4],
                             dep=token_list[5],
@@ -289,6 +300,9 @@ class KlueDPProcessor(DataProcessor):
         for example in examples:
             if SENT_ID != example.sent_id:
                 SENT_ID = example.sent_id
+
+                # print(f"\ntoken_list: {token_list}") ### our
+
                 encoded = tokenizer.encode_plus(
                     " ".join(token_list),
                     None,
@@ -522,19 +536,17 @@ class KlueDPProcessor(DataProcessor):
             batch_bpe_tail_masks.append(bpe_tail_mask)
 
 
-            ### our # from dependency_parsing.py
-            # head_ids = [i for i, token in enumerate(bpe_head_mask[batch_id]) if token == 1]
-            head_ids = [i for i, token in enumerate(batch[batch_id][2]) if token == 1]
-            # tail_ids = [i for i, token in enumerate(bpe_tail_mask[batch_id]) if token == 1]
-            tail_ids = [i for i, token in enumerate(batch[batch_id][3]) if token == 1]
-
-            print(f"orig_text: {self.tokenizer.decode(batch[batch_id][0])}")
-
-            print(f"<klue_dp> batch[batch_id]:{batch[batch_id]}")
-            print(f"\nlen(head_ids):{len(head_ids)}\n len(tail_ids): {len(tail_ids)}")  ### our ###
-
-            assert len(head_ids) == len(tail_ids)
-            ###
+            # ### our # from dependency_parsing.py
+            # head_ids = [i for i, token in enumerate(batch[batch_id][2]) if token == 1]
+            # tail_ids = [i for i, token in enumerate(batch[batch_id][3]) if token == 1]
+            #
+            # print(f"orig_text: {self.tokenizer.decode(batch[batch_id][0])}")
+            #
+            # print(f"<klue_dp> batch[batch_id]:{batch[batch_id]}")
+            # print(f"\nlen(head_ids):{len(head_ids)}\n len(tail_ids): {len(tail_ids)}")  ### our ###
+            #
+            # assert len(head_ids) == len(tail_ids)
+            # ###
 
 
         # 2. build inputs : packing tensors

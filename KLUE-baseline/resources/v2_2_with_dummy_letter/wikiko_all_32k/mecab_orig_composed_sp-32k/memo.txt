@@ -1,4 +1,0 @@
-INPUT_MECAB_TOKENIZED_CORPUS = "../tokenized/wikiko_20211021_mecab_orig/composed/wikiko_20211021_tokenized_mecab_orig_composed.txt"
-
-# preprocess wikiko_20211021 with ratsgo's code
-
