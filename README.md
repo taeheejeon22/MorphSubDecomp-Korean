@@ -149,6 +149,9 @@ python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized
 ### additional
 ```bash
 python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_fixed/decomposed_pure --vocab_size=64000
+python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_fixed/decomposed_lexical --vocab_size=64000
+
+
 python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_T/morpheme_mecab_fixed/decomposed_grammatical --vocab_size=64000
 ```
 
