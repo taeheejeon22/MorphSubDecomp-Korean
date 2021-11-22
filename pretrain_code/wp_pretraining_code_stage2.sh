@@ -18,6 +18,7 @@ echo "morpheme_fixed_composed    morpheme_fixed_decomposed_pure"
 
 echo "morpheme_fixed_composed_T    morpheme_fixed_decomposed_pure_T"
 echo "morpheme_fixed_decomposed_lexical_T    morpheme_fixed_decomposed_grammatical_T"
+echo "morpheme_fixed_decomposed_lexical_F"
 
 echo -e "tokenizer: " 
 read TOKENIZER
