@@ -2,8 +2,8 @@
 
 set +x
 
-OUTPUT_DIR="../run_outputs"
-DATA_DIR="data/klue_benchmark"  # default submodule for data from https://github.com/KLUE-benchmark/KLUE
+OUTPUT_DIR="run_outputs"
+DATA_DIR="KLUE-baseline/data/klue_benchmark"  # default submodule for data from https://github.com/KLUE-benchmark/KLUE
 VERSION="v1.1"
 
 # gpu 입력 받기
@@ -25,10 +25,8 @@ tasks=("ynat" "klue-dp")
 #"morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k"
 # )
 
-tokenizers=("morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k"
-"morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k"
-"morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_T_wp-64k"
-
+tokenizers=("morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k"
+"morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
 )
 
 
@@ -50,7 +48,7 @@ for task in "${tasks[@]}"; do
     for tokenizer in "${tokenizers[@]}"; do
 
         echo "##### ${tokenizer} ##### "
-        resources="../resources/v6_without_dummy_letter_grammatical_symbol_T/${tokenizer}"
+        resources="resources/v6_without_dummy_letter_grammatical_symbol_F/${tokenizer}"
 
         if [[ ${task} == "ynat" ]]; then
             python run_klue.py train \
