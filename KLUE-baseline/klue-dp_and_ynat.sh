@@ -13,7 +13,7 @@ read gpus
 echo "gpus == ${gpus}"
 
 
-tasks=("klue-dp" "ynat")
+tasks=("ynat" "klue-dp")
 
 # tokenizers=("eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k" 
 # "eojeol_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k"
@@ -22,13 +22,14 @@ tasks=("klue-dp" "ynat")
 # "morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
 # "morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k"
 # "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k"
+#"morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k"
 # )
 
 tokenizers=("morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k"
-"morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k"
 "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k"
 "morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_T_wp-64k"
-"morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k")
+"morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
+)
 
 
 
@@ -72,6 +73,8 @@ for task in "${tasks[@]}"; do
             --config_name ${resources} \
             --learning_rate 5e-5 --num_train_epochs 10 --warmup_ratio 0.1 --train_batch_size 32 --patience 10000 \
             --max_seq_length 128 --metric_key las_macro_f1 --gpus ${gpus} --num_workers 16
+        else
+            echo "try again..."
         fi
     done
 done
