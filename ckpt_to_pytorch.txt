@@ -31,15 +31,15 @@ transformers-cli convert --model_type bert\
 
 transformers-cli convert --model_type bert\
   --tf_checkpoint=./convert_bert/bert_model_v6_without_dummy_letter_morpheme_mecab_orig_decomposed_pure_wp-64k_model.ckpt-1000000 \
-  --config=./resources/v6_without_dummy_letter_grammatical_symbol_F/morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k/config.json \
+  --config=./resources/v6_without_dummy_letter_grammatical_symbol_F/morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k/config.json \
   --pytorch_dump_output=./bert_model_v6_without_dummy_letter_morpheme_mecab_orig_decomposed_pure_wp-64k_model.ckpt-1000000.pth
 
 
 ### fixed
 transformers-cli convert --model_type bert\
-  --tf_checkpoint=./convert_bert/bert_model_v6_without_dummy_letter_morpheme_mecab_fixed_composed_wp-64k_model.ckpt-600000 \
+  --tf_checkpoint=./convert_bert/bert_model_v6_without_dummy_letter_morpheme_mecab_fixed_composed_wp-64k_model.ckpt-1000000 \
   --config=./resources/v6_without_dummy_letter_grammatical_symbol_F/morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k/config.json \
-  --pytorch_dump_output=./bert_model_v6_without_dummy_letter_morpheme_mecab_fixed_composed_wp-64k_model.ckpt-600000.pth
+  --pytorch_dump_output=./bert_model_v6_without_dummy_letter_morpheme_mecab_fixed_composed_wp-64k_model.ckpt-1000000.pth
 
 
 
@@ -52,8 +52,28 @@ transformers-cli convert --model_type bert\
   --pytorch_dump_output=./bert_model_v6_without_dummy_letter_grammatical_symbol_T_morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k_model.ckpt-200000.pth
 
 
+## decomposed_lexical + grammar_symbol
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./convert_bert/bert_model_v6_without_dummy_letter_grammatical_symbol_T_morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k_model.ckpt-200000 \
+  --config=./resources/v6_without_dummy_letter_grammatical_symbol_T/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k/config.json \
+  --pytorch_dump_output=./bert_model_v6_without_dummy_letter_grammatical_symbol_T_morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k_model.ckpt-200000.pth
 
 
+## decomposed_pure + grammar_symbol
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./convert_bert/bert_model_v6_without_dummy_letter_grammatical_symbol_T_morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_T_wp-64k_model.ckpt-420000 \
+  --config=./resources/v6_without_dummy_letter_grammatical_symbol_T/morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_T_wp-64k/config.json \
+  --pytorch_dump_output=./bert_model_v6_without_dummy_letter_grammatical_symbol_T_morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_T_wp-64k_model.ckpt-420000.pth
+
+
+
+# additional
+## morpheme
+### fixed decomposed pure
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./convert_bert/bert_model_v6_without_dummy_letter_morpheme_mecab_fixed_decomposed_pure_wp-64k_model.ckpt-420000 \
+  --config=./resources/v6_without_dummy_letter_grammatical_symbol_F/morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k/config.json \
+  --pytorch_dump_output=./bert_model_v6_without_dummy_letter_morpheme_mecab_fixed_decomposed_pure_wp-64k_model.ckpt-420000.pth
 
 
 

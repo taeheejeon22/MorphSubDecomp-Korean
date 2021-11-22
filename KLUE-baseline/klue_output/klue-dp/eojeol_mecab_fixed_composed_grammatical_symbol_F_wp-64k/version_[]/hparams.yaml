@@ -6,7 +6,7 @@ attention_dropout: null
 cache_dir: ''
 command: train
 config_name: resources/v6_without_dummy_letter_grammatical_symbol_F/eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k
-data_dir: data/klue_benchmark/klue-dp-v1.1
+data_dir: KLUE-baseline/data/klue_benchmark/klue-dp-v1.1
 dataset_size: 10000
 decoder_layerdrop: null
 decoder_layers: 1
@@ -31,7 +31,7 @@ no_pos: false
 num_gpus: 1
 num_sanity_val_steps: 2
 num_workers: 16
-output_dir: klue_output/klue-dp/eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k/version_[]
+output_dir: KLUE-baseline/klue_output/klue-dp/eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k/version_[]
 patience: 10000
 pos_dim: 256
 seed: 42

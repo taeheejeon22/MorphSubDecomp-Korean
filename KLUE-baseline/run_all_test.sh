@@ -67,3 +67,7 @@ python run_klue.py train \
 --max_seq_length 128 --metric_key uas_macro_f1 --gpus 0 --num_workers 16
 
 
+
+
+
+
