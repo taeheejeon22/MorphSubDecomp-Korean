@@ -3,7 +3,6 @@
 # setting:
 batch_sizes=(64 32 16)
 learning_rates=(1e-5 2e-5 3e-5 5e-5)
-warmup_ratios=(0.0 0.1 0.2 0.6)
 tasks=("ynat")
 # epoch = 10으로 고정
 

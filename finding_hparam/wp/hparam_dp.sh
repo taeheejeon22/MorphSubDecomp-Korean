@@ -3,7 +3,6 @@
 # setting:
 batch_sizes=(64 32 16)
 learning_rates=(1e-5 2e-5 3e-5 5e-5)
-warmup_ratios=(0.0 0.1 0.2 0.6)
 tasks=("dp")
 # epoch = 10으로 고정
 
@@ -12,18 +11,18 @@ echo -e "gpu num 0 1 2 3 ? "
 read gpu_num
 echo "gpu_num == ${gpu_num}"
 
-tokenizers=(
-    #"eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
-#"eojeol_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k"
-"morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k"
+tokenizers=("morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k"
-# "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k"
 "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k"
 "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k"
 )
+
+    #"eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
+#"eojeol_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k"
+#"morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
 
 # klue 경로
 OUTPUT_DIR="run_outputs"
@@ -37,7 +36,7 @@ for batch_size in "${batch_sizes[@]}"; do
 
     for learning_rate in "${learning_rates[@]}"; do
 
-        for warmup_ratio in "${warmup_tatios[@]}"; do
+        for warmup_ratio in "${warmup_ratios[@]}"; do
 
             for task in "${tasks[@]}"; do
                 # log_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/logs
@@ -66,10 +65,10 @@ for batch_size in "${batch_sizes[@]}"; do
                     --task ${task} \
                     --output_dir ${OUTPUT_DIR}  \
                     --data_dir ${DATA_DIR}/${task}-${VERSION} \
-                    --model_name_or_path ${resource} \
-                    --tokenizer_name ${resource} \
-                    --config_name ${resource} \
-                    --learning_rate ${learning_rate}--train_batch_size ${batch_size} --num_train_epochs 10 --warmup_ratio ${warmpu_ratio} --patience 100000 \
+                    --model_name_or_path ${resource}/${tokenizer} \
+                    --tokenizer_name ${resource}/${tokenizer} \
+                    --config_name ${resource}/${tokenizer} \
+                    --learning_rate ${learning_rate} --train_batch_size ${batch_size} --num_train_epochs 10 --warmup_ratio ${warmup_ratio} --patience 100000 \
                     --max_seq_length 128 --metric_key macro_f1 --gpus ${gpu_num} --num_workers 16
                 
                 done
