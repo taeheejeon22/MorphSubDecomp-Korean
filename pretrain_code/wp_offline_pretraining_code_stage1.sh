@@ -22,6 +22,7 @@ echo "morpheme_fixed_composed    morpheme_fixed_decomposed_pure"
 echo "morpheme_fixed_composed_T    morpheme_fixed_decomposed_pure_T"
 echo "morpheme_fixed_decomposed_lexical_T    morpheme_fixed_decomposed_grammatical_T"
 echo "morpheme_fixed_decomposed_lexical_F"
+echo "morpheme_fixed_decomposed_grammatical_F"
 
 echo -e "tokenizer: " 
 read TOKENIZER
@@ -144,4 +145,9 @@ done
 # /home/jth/Desktop/acl_tokenization/corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_fixed/decomposed_lexical
 
 # /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter_grammatical_symbol_F/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k
+
+# grammatical
+# /home/jth/Desktop/acl_tokenization/corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_fixed/decomposed_grammatical
+# /home/jth/Desktop/acl_tokenization/resources/v6_without_dummy_letter_grammatical_symbol_F/morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k
+
 
