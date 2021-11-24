@@ -54,7 +54,6 @@ for batch_size in "${batch_sizes[@]}"; do
 
                 CUDA_VISIBLE_DEVICES=${gpu_num} python3 tasks/$task/run_train.py --tokenizer ${tokenizer} \
                 --resource_dir ${resource} \
-                --use_tpu $use_tpu \
                 --batch_size $batch_size \
                 --learning_rate $learning_rate \
                 --log_dir $log_dir \
