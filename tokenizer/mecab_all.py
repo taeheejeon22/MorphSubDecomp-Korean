@@ -345,7 +345,7 @@ class MeCabTokenizer_all(BaseTokenizer):
 
 # mc = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_orig", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )
 # mc = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )
-# mc = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure_nfd", space_symbol= "▃", dummy_letter= "" )
+# mc = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure", space_symbol= "▃", dummy_letter= "" )
 # mc = MeCabTokenizer_all(token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological_nfd", space_symbol= "▃", dummy_letter= "" )
 #
 #
