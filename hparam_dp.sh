@@ -36,46 +36,42 @@ for batch_size in "${batch_sizes[@]}"; do
 
     for learning_rate in "${learning_rates[@]}"; do
 
-        for warmup_ratio in "${warmup_ratios[@]}"; do
+          for task in "${tasks[@]}"; do
+              # log_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/logs
+              # summary_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/summaries
 
-            for task in "${tasks[@]}"; do
-                # log_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/logs
-                # summary_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/summaries
-                
-                echo "### batch_size: ${batch_size} ###"
-                echo "### learning_rate: ${learning_rate} ###"
-                echo "### vocab_size: ${vocab_size} ###"
-                echo "### task: ${task} ###"
-                echo "### log_dir: $log_dir ###"
-                echo "### summary_dir: $summary_dir ###"
-            
-                for tokenizer in "${tokenizers}"; do 
-                    echo "### tokenizer: ${tokenizer} ###"
+              echo "### batch_size: ${batch_size} ###"
+              echo "### learning_rate: ${learning_rate} ###"
+              echo "### vocab_size: ${vocab_size} ###"
+              echo "### task: ${task} ###"
+              echo "### log_dir: $log_dir ###"
+              echo "### summary_dir: $summary_dir ###"
 
-                    # resource dir
-                    if [[ `echo "${tokenizer: (-8):1}"` == "T" ]]; then
-                        resource="./resources/v6_without_dummy_letter_grammatical_symbol_T"
-                    elif [[ `echo "${tokenizer: (-8):1}"` == "F" ]]; then
-                        resource="./resources/v6_without_dummy_letter_grammatical_symbol_F"
-                    else
-                        echo "tokenizer_name ERROR"
-                    fi
+              for tokenizer in "${tokenizers}"; do
+                  echo "### tokenizer: ${tokenizer} ###"
 
-                    python run_klue.py train \
-                    --task ${task} \
-                    --output_dir ${OUTPUT_DIR}  \
-                    --data_dir ${DATA_DIR}/${task}-${VERSION} \
-                    --model_name_or_path ${resource}/${tokenizer} \
-                    --tokenizer_name ${resource}/${tokenizer} \
-                    --config_name ${resource}/${tokenizer} \
-                    --learning_rate ${learning_rate} --train_batch_size ${batch_size} --num_train_epochs 10 --warmup_ratio ${warmup_ratio} --patience 100000 \
-                    --max_seq_length 128 --metric_key macro_f1 --gpus ${gpu_num} --num_workers 16
-                
-                done
+                  # resource dir
+                  if [[ `echo "${tokenizer: (-8):1}"` == "T" ]]; then
+                      resource="./resources/v6_without_dummy_letter_grammatical_symbol_T"
+                  elif [[ `echo "${tokenizer: (-8):1}"` == "F" ]]; then
+                      resource="./resources/v6_without_dummy_letter_grammatical_symbol_F"
+                  else
+                      echo "tokenizer_name ERROR"
+                  fi
 
-            done
+                  python run_klue.py train \
+                  --task ${task} \
+                  --output_dir ${OUTPUT_DIR}  \
+                  --data_dir ${DATA_DIR}/${task}-${VERSION} \
+                  --model_name_or_path ${resource}/${tokenizer} \
+                  --tokenizer_name ${resource}/${tokenizer} \
+                  --config_name ${resource}/${tokenizer} \
+                  --learning_rate ${learning_rate} --train_batch_size ${batch_size} --num_train_epochs 10 --warmup_ratio 0.1 --patience 100000 \
+                  --max_seq_length 128 --metric_key macro_f1 --gpus ${gpu_num} --num_workers 16
 
-        done
+              done
+
+          done
 
     done
 
