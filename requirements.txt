@@ -1,4 +1,4 @@
-torch==1.4.0    # https://pytorch.org/get-started/previous-versions/                                                        # pip install torch==1.5.0+cu101 torchvision==0.6.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html
+torch==1.7.1    # https://pytorch.org/get-started/previous-versions/                                                        # pip install torch==1.5.0+cu101 torchvision==0.6.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html
                 # pip3 install torch==1.7.0 torchvision==0.8.1 -f https://download.pytorch.org/whl/cu101/torch_stable.html  # https://varhowto.com/install-pytorch-cuda-10-1/
 transformers==4.12.5
 
@@ -6,7 +6,7 @@ tweepy==3.10.0
 namu-wiki-extractor==0.2.2
 
 numpy==1.18.0
-scikit-learn
+scikit-learn==0.24.1
 scipy
 
 sentencepiece==0.1.96
@@ -19,3 +19,10 @@ attrdict
 soynlp==0.0.493
 
 tensorboard==2.3.0
+
+
+# KLUE
+pytorch-lightning==1.1.0
+fsspec==2021.4.0 # due to pytorch lightning
+overrides==3.1.0
+seqeval
