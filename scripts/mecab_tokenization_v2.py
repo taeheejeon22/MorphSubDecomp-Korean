@@ -271,8 +271,6 @@ if __name__ == "__main__":
 
 
 
-    elapsed_time = time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time))
-    print(f"complete tokenization for all files. (elapsed time: {elapsed_time})")
 
     # mecab tokenized corpus
     # if args["use_original"] == True:
@@ -312,3 +310,7 @@ if __name__ == "__main__":
 
     print("saved in:", os.path.join(OUTPUT_DIR_sub, os.path.basename(file_name)) )
     print("done.")
+
+    elapsed_time = time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time))
+    print(f"complete tokenization for all files. (elapsed time: {elapsed_time})")
+

@@ -91,6 +91,7 @@ class BaseTransformer(pl.LightningModule):
             self.tokenizer = AutoTokenizer.from_pretrained(
                 self.hparams.tokenizer_name if self.hparams.tokenizer_name else self.hparams.model_name_or_path,
                 cache_dir=cache_dir,
+                use_fast=False ### our: transformers 4
             )
         else:
             print("\n\n\n######tokenizer else\n\n\n###")

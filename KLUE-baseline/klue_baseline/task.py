@@ -32,6 +32,7 @@ class KlueTask:
 
         tokenizer = AutoTokenizer.from_pretrained(
             args.tokenizer_name if args.tokenizer_name else args.model_name_or_path,
+            use_fast=False ### our: transformers 4
         )
 
 
