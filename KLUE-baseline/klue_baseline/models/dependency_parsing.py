@@ -100,7 +100,7 @@ class DPTransformer(BaseTransformer):
         **inputs: torch.Tensor,
     ) -> Tuple[torch.Tensor, torch.Tensor]:
 
-        outputs = self.model(**inputs, return_dict=False)
+        outputs = self.model(**inputs)
 
         # print(f"outputs: {outputs}")    ### our
 
