@@ -40,7 +40,7 @@ for batch_size in "${batch_sizes[@]}"; do
             echo "### log_dir: $log_dir ###"
             echo "### summary_dir: $summary_dir ###"
         
-            for tokenizer in "${tokenizers}"; do 
+            for tokenizer in "${tokenizers[@]}"; do
                 echo "### tokenizer: ${tokenizer} ###"
 
                 # resource dir
