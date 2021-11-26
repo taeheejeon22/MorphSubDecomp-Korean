@@ -104,7 +104,7 @@ def make_klue_trainer(
     args.output_dir = csv_logger.log_dir
 
     if logging_callback is None:
-        logging_callback = LoggingCallback()
+        logging_callback = LoggingCallback(args)
 
     # add custom checkpoints
     metric_key = f"valid/{args.metric_key}"
