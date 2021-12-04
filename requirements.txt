@@ -1,4 +1,4 @@
-# torch==1.7.1    # https://pytorch.org/get-started/previous-versions/                                        
+torch==1.7.1    # https://pytorch.org/get-started/previous-versions/                                        
                 # pip3 install torch==1.7.0 torchvision==0.8.1 -f https://download.pytorch.org/whl/cu101/torch_stable.html  # https://varhowto.com/install-pytorch-cuda-10-1/
 # mecab-python @ git+https://bitbucket.org/eunjeon/mecab-python-0.996.git@ac44c1e23785be09bb60f29b83f2463848314796
 
