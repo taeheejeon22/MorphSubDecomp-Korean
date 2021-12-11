@@ -173,7 +173,7 @@ if __name__ == "__main__":
     if args["space_symbol"] == "":
         with_space_symbol = "F"
     else:
-        with_sapce_symbol = "T"
+        with_space_symbol = "T"
 
     if args["dummy_letter"] == "":
         with_dummy_letter = "F"
