@@ -544,7 +544,7 @@ class Mecab():
         return [s for s, t in tagged if t.startswith('N')]
 
     def __init__(self, dicpath='/usr/local/lib/mecab/dic/mecab-ko-dic', use_original=False):
-        self.use_original = use_original    # wheter to use the original version
+        self.use_original = use_original    # whether to use the original version
 
         self.dicpath = dicpath
         try:
