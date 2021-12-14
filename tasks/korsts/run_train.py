@@ -68,6 +68,7 @@ def main(args):
     tokenizer_dir = os.path.join(config.resource_dir, config.tokenizer)
     pretrained_bert_files = [file for file in os.listdir(tokenizer_dir) if file.endswith("pth")]
 
+    print(f"len(pretrained_bert_files): {len(pretrained_bert_files)}")
     assert (len(pretrained_bert_files) == 1), 'There are more than one bert model files!!!!!!!'
 
 
