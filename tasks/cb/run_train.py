@@ -162,7 +162,8 @@ def main(args):
 
     # 모델에 넣을 데이터 준비
     # label-to-index
-    label_to_index = {"neutral": 0, "entailment": 1, "contradiction": 2}
+    # label_to_index = {"neutral": 0, "entailment": 1, "contradiction": 2}  # KorNLI
+    label_to_index = {"Entailment": 0, "Contradict": 1} # CB
     # Train
     logger.info(f"read training data from {config.train_path}")
     train_sentence_as, train_sentence_bs, train_labels = load_data(config.train_path, label_to_index)

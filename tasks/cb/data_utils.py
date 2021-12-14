@@ -12,6 +12,7 @@ def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str]
     2. sentence_b
     3. label
     """
+    
     # sentence_as = []
     # sentence_bs = []
     # labels = []
@@ -30,6 +31,12 @@ def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str]
 
     sentence_as = data["Discourse"].to_list()
     sentence_bs = data["Proposition"].to_list()
-    labels = data["class_Restrict"].to_list()
+    labels = label_to_index(data["class_Restrict"]).to_list()
 
     return sentence_as, sentence_bs, labels
+
+
+# label_to_index = {"Entailment": 0, "Contradict": 1}
+# file_path ="/home/kist/Desktop/git_ee/ACL_tokenization/acl_tokenization/dataset/nlu_tasks/cb/NIKL_CB_2020_train.csv"
+# label_to_index = {"neutral": 0, "entailment": 1, "contradiction": 2}  # KorNLI
+# file_path ="/home/kist/Desktop/git_ee/ACL_tokenization/acl_tokenization/dataset/nlu_tasks/kornli/xnli.dev.ko.tsv"
