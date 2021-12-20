@@ -221,7 +221,7 @@ def main(args):
     trainer.train()
     
     import pandas as pd
-    with open('tokenized_result/cb_prediction_results.csv', "w", encoding='utf-8') as f:
+    with open('tokenized_result/pc_prediction_results.csv', "w", encoding='utf-8') as f:
         f.write('\t'.join(['tokenizer', 'sentence1', 'sentence2', 'tokenized1', 'tokenized2', 'target', 'prediction']))
         
         for test1, test2, target, prediction in zip(dev_sentence_as, dev_sentence_bs, dev_targets, dev_predictions):
