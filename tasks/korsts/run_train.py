@@ -225,13 +225,13 @@ def main(args):
 
     ### 원문장 출력 test    
 
-    _, dev_targets, dev_predictions = trainer._validation(dev_data_loader)
+    _, test_targets, test_predictions = trainer._validation(test_data_loader)
 
     import pandas as pd
     with open('tokenized_result/korsts_prediction_results.csv', "w", encoding='utf-8') as f:
         f.write('\t'.join(['tokenizer', 'sentence1', 'sentence2', 'tokenized1', 'tokenized2', 'target', 'prediction']))
         
-        for test1, test2, target, prediction in zip(dev_sentence_as, dev_sentence_bs, dev_targets, dev_predictions):
+        for test1, test2, target, prediction in zip(test_sentence_as, test_sentence_bs, test_targets, test_predictions):
             # print('\t'.join([config.tokenizer, test1, test2, str(tokenizer.tokenize(test1)), str(tokenizer.tokenize(test2)), str(target), str(prediction)]))
             f.write('\n')
             f.write('\t'.join([config.tokenizer, test1, test2, str(tokenizer.tokenize(test1)[1:-2]), str(tokenizer.tokenize(test2)[1:-2]), str(target), str(prediction)]))

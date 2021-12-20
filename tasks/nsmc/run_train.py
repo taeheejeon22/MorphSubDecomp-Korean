@@ -220,13 +220,15 @@ def main(args):
     trainer = Trainer(config, model, train_data_loader, dev_data_loader, test_data_loader, logger, summary_writer)
     trainer.train()
 
-
+    
+    
     ### 원문장 출력 test
+    _, test_targets, test_predictions = trainer._validation(test_data_loader)
     import pandas as pd
     with open('tokenized_result/nsmc_prediction_results.csv', "w", encoding='utf-8') as f:
-        for test, target, prediction in zip(test_sentences, trainer.test_targets, trainer.test_predictions):
+        for test, target, prediction in zip(test_sentences, test_targets, test_predictions):
             f.write('\t'.join(['tokenizer', 'sentence', 'tokenized', 'target', 'prediction']))
-            f.write(config.tokenizer, test, tokenizer.tokenize(test), target, prediction)
+            f.write(config.tokenizer, test, str(tokenizer.tokenize(test)), target, prediction)
  
 
 
