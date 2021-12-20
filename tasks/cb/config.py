@@ -27,11 +27,11 @@ class TrainConfig(NamedTuple):
     #: random seed
     seed: int = 42
     #: epoch 도는 횟수
-    num_epochs: int = 3
+    num_epochs: int = 5
     #: 훈련 시의 batch size
     batch_size: int = 64
     #: learning rate
-    learning_rate: float = 1e-4
+    learning_rate: float = 1e-5
     #: bert fine tuning 레이어의 dropout 확률
     dropout_prob: float = 0.1
     #: warmup step의 비율 (warmup step = total step * warmup step ratio)
