@@ -20,7 +20,7 @@ from tokenizer import (
 
 
 
-def get_tokenizer(tokenizer_name: str, resource_dir: str, token_type, tokenizer_type: str , decomposition_type: str, space_symbol: str, dummy_letter: str, nfd: bool, grammatical_symbol: list = ["", ""]):
+def get_tokenizer(tokenizer_name: str, resource_dir: str, token_type, tokenizer_type: str , decomposition_type: str, space_symbol: str, dummy_letter: str, nfd: bool, grammatical_symbol: list = ["", ""], skip_special_tokens: bool = True):
     tokenizer_dir = os.path.join(resource_dir, tokenizer_name)
 
     if tokenizer_name.startswith("sp-"):
@@ -40,7 +40,7 @@ def get_tokenizer(tokenizer_name: str, resource_dir: str, token_type, tokenizer_
 
 
     elif tokenizer_name.startswith("eojeol") or tokenizer_name.startswith("morpheme"):
-        wp = WordPieceTokenizer(os.path.join(tokenizer_dir, "bert_tokenizer.json"))
+        wp = WordPieceTokenizer(os.path.join(tokenizer_dir, "bert_tokenizer.json"), skip_special_tokens=skip_special_tokens)
         mecab = MeCabTokenizer_all(token_type=token_type, tokenizer_type=tokenizer_type, decomposition_type=decomposition_type, space_symbol=space_symbol, dummy_letter=dummy_letter, nfd=nfd, grammatical_symbol=grammatical_symbol)
         tokenizer = MeCabWordPieceTokenizer(mecab=mecab, wp=wp) # mecab_wp.py
 
