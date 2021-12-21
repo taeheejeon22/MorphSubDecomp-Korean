@@ -1,5 +1,6 @@
 from typing import Dict, List, Tuple
-
+import re
+p_kakao = re.compile(r"[^ㄱ-ㅎㅏ-ㅣ가-힣\x20-\x7F]*")  # 타 언어 문자, 특수 기호 제거
 
 def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str], List[int]]:
     """
@@ -20,5 +21,6 @@ def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str]
                 continue
             sentences.append(splitted[0])
             labels.append(label_to_index[splitted[1]])
+    sentences = [re.sub(p_kakao, "", s) for s in sentences]
 
     return sentences, labels

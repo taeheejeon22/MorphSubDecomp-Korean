@@ -33,7 +33,7 @@ class WordPieceTokenizer(BaseTokenizer):
     def tokenize(self, text: str) -> List[str]:
         output = self.bert_tokenizer.encode(text.strip())
 
-        tokenized = self.bert_tokenizer.decode(output.ids, skip_special_tokens=True)
+        tokenized = self.bert_tokenizer.decode(output.ids, skip_special_tokens=False) # False로 하면 UNK 나옴
 
         tokenized = [token for token in tokenized.split(" ")]
 
