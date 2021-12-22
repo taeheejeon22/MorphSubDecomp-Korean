@@ -60,34 +60,34 @@ def save_tokenized_corpus(args, tokenized_corpus: list):
 
 
 
-def main(args):
-    corpus = load_corpus(args["corpus_path"])
-
-    Tokenizer = get_tokenizer(tokenizer_name=args["tokenizer_name"], resource_dir=args["resource_dir"],
-                              token_type=args["token_type"],
-                              tokenizer_type=args["tokenizer_type"],
-                              decomposition_type=args["decomposition_type"],
-                              space_symbol=args["space_symbol"],
-                              dummy_letter=args["dummy_letter"], nfd=args["nfd"],
-                              grammatical_symbol=args["grammatical_symbol"],
-                              skip_special_tokens=args["skip_sepcial_tokens"])
-
-    example = Tokenizer.tokenize("훌륭한 예시이다")
-
-    def tokenize_fun(text: str):
-        tokenized = Tokenizer.tokenize(text)
-        return tokenized
-
-    print(f"tokenized exmaple: {example}")
-
-    fn = partial(tokenize_fun)
-
-
-    with Pool(args["threads"]) as p:
-        tokenized_corpus = p.map(fn, corpus)    # 라인별로 mecab + BPE 토큰화한 코퍼스
-
-
-    save_tokenized_corpus(args=args, tokenized_corpus=tokenized_corpus)
+# def main(args):
+#     corpus = load_corpus(args["corpus_path"])
+#
+#     Tokenizer = get_tokenizer(tokenizer_name=args["tokenizer_name"], resource_dir=args["resource_dir"],
+#                               token_type=args["token_type"],
+#                               tokenizer_type=args["tokenizer_type"],
+#                               decomposition_type=args["decomposition_type"],
+#                               space_symbol=args["space_symbol"],
+#                               dummy_letter=args["dummy_letter"], nfd=args["nfd"],
+#                               grammatical_symbol=args["grammatical_symbol"],
+#                               skip_special_tokens=args["skip_sepcial_tokens"])
+#
+#     example = Tokenizer.tokenize("훌륭한 예시이다")
+#
+#     def tokenize_fun(text: str):
+#         tokenized = Tokenizer.tokenize(text)
+#         return tokenized
+#
+#     print(f"tokenized exmaple: {example}")
+#
+#     fn = partial(tokenize_fun)
+#
+#
+#     with Pool(args["threads"]) as p:
+#         tokenized_corpus = p.map(fn, corpus)    # 라인별로 mecab + BPE 토큰화한 코퍼스
+#
+#
+#     save_tokenized_corpus(args=args, tokenized_corpus=tokenized_corpus)
 
 
 
@@ -117,6 +117,8 @@ if __name__ == "__main__":
 
 
     parser.add_argument("--corpus_path", type=str, default="/home/jht/rsync/namuwiki_20210301_with_preprocessing_v5_kss.txt")
+    parser.add_argument("--tokenizer_name", type=str, default="")
+    parser.add_argument("--resource_dir", type=str, default="")
 
     parser.add_argument("--token_type", type=str, default="")   # eojeol / morpheme # v2에서 추가
     parser.add_argument("--tokenizer_type", type=str, default="mecab_orig")  # mecab_orig / mecab_fixed
@@ -135,9 +137,43 @@ if __name__ == "__main__":
 
 
     start_time = time.time
-    print(f"start tokenization ...")
+    print(f"start ...")
 
-    main(args)
+
+
+    ### main
+    corpus = load_corpus(args["corpus_path"])
+
+    Tokenizer = get_tokenizer(tokenizer_name=args["tokenizer_name"], resource_dir=args["resource_dir"],
+                              token_type=args["token_type"],
+                              tokenizer_type=args["tokenizer_type"],
+                              decomposition_type=args["decomposition_type"],
+                              space_symbol=args["space_symbol"],
+                              dummy_letter=args["dummy_letter"], nfd=args["nfd"],
+                              grammatical_symbol=args["grammatical_symbol"],
+                              skip_special_tokens=args["skip_sepcial_tokens"])
+
+    example = Tokenizer.tokenize("훌륭한 예시이다")
+
+    def tokenize_fun(text: str):
+        tokenized = Tokenizer.tokenize(text)
+        return tokenized
+
+    print(f"tokenized exmaple: {example}")
+
+    fn = partial(tokenize_fun)
+
+
+    with Pool(args["threads"]) as p:
+        tokenized_corpus = p.map(fn, corpus)    # 라인별로 mecab + BPE 토큰화한 코퍼스
+
+
+    save_tokenized_corpus(args=args, tokenized_corpus=tokenized_corpus)
+    ###
+
+
+
+
 
     elapsed_time = time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time))
     print(f"complete tokenization for all files. (elapsed time: {elapsed_time})")
@@ -145,8 +181,9 @@ if __name__ == "__main__":
 
 
 
-# python ./etc/get_bpe_tokenized.py --corpus_path="/home/jht/rsync/namuwiki_20210301_with_preprocessing_v5_kss.txt" \
-#                              --token_type="eojeol" --tokenized_type="mecab_orig" --decomposition_type="composed" \
-#                              --nfd \
+# python ./etc/get_bpe_tokenized.py --corpus_path="/home/jth/rsync/namuwiki_20210301_with_preprocessing_v5_kss.txt" \
+#                             --tokenizer_name="eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k" \
+#                             --resource_dir="./resources/v6_without_dummy_letter_grammatical_symbol_F" \
+#                             --token_type="eojeol" --tokenizer_type="mecab_fixed" --decomposition_type="composed" \
+#                             --nfd --threads=58
 #                              # --grammatical_symbol=⫸⭧
-
