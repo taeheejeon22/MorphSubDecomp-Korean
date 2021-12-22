@@ -5,12 +5,16 @@ import time
 from functools import partial
 from multiprocessing import Pool
 from tqdm import tqdm
+
+import sys
+sys.path.insert(0, '.')
+
 from tokenizer.get_tokenizer import get_tokenizer
 
 
 # load a corpus
 def load_corpus(corpus_path: str):
-    with open(corpus_path, "r" as f:
+    with open(corpus_path, "r") as f:
         corpus = f.readlines()
     corpus = [line[:-1] for line in corpus]
     return corpus
