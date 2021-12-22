@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # setting:
-batch_sizes=(64 32 16)
+batch_sizes=(32 16)
 learning_rates=(1e-5 2e-5 3e-5 5e-5)
-tasks=("dp")
+tasks=("klue-dp")
 # epoch = 10으로 고정
 
 # 사용할 gpu 선택
@@ -11,14 +11,11 @@ echo -e "gpu num 0 1 2 3 ? "
 read gpu_num
 echo "gpu_num == ${gpu_num}"
 
-tokenizers=("morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
+tokenizers=("morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k"
-"morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_grammatical_pure_symbol_T_wp-64k"
-)
-
-    #"eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
-#"eojeol_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k"
-#"morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
+"morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
+"morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
+"morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k")
 
 # klue 경로
 OUTPUT_DIR="run_outputs"
@@ -63,7 +60,7 @@ for batch_size in "${batch_sizes[@]}"; do
                   --tokenizer_name ${resource}/${tokenizer} \
                   --config_name ${resource}/${tokenizer} \
                   --learning_rate ${learning_rate} --train_batch_size ${batch_size} --num_train_epochs 10 --warmup_ratio 0.1 --patience 100000 \
-                  --max_seq_length 128 --metric_key macro_f1 --gpus ${gpu_num} --num_workers 16
+                  --max_seq_length 128 --metric_key uas_macro_f1 --gpus ${gpu_num} --num_workers 16
 
               done
 
