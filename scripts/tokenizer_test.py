@@ -40,7 +40,6 @@ def get_tokenizer(token_type: str, tokenizer_type: str, decomposition_type: str,
 
     if (token_type == "eojeol") and (decomposition_type == "composed"):
         tokenizer = wp
-
     else:
         mecab = MeCabTokenizer_all(token_type=token_type, tokenizer_type=tokenizer_type,
                            decomposition_type=decomposition_type,
@@ -136,4 +135,8 @@ sent = "이 지도는 축척이 그럴지도 몰라"
 sent = "그럴지도 모르지만 이 옷이 비쌌어" # 맞다
 sent = "이 옷이 비쌀지도 모르지만 난 샀어"
 sent = "이 옷이 비쌀지도 모르지만 난 구매했어"
+
+
+sent = "쉶퓀이 묿다"
+
 show_tokenizations(string=sent)
