@@ -24,6 +24,8 @@ corpus/tfrecord/*
 # log
 run_outputs/*
 output_sp/*
+tokenized_result/*
+scripts/tokenizer_test*
 
 # code
 ckpt_to_pytorch.txt
