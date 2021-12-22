@@ -12,8 +12,9 @@ from tokenizers.processors import TemplateProcessing
 
 
 class WordPieceTokenizer(BaseTokenizer):
-    def __init__(self, model_path: str, reverse: bool = False):
+    def __init__(self, model_path: str, reverse: bool = False, skip_special_tokens: bool = True):
         self.bert_tokenizer = Tokenizer.from_file(model_path)
+        self.skip_special_tokens = skip_special_tokens
         # self.bert_tokenizer.decoder = decoders.WordPiece()
 
         # self.bert_tokenizer.normalizer = normalizers.Sequence([StripAccents()])  # normalizer
@@ -33,7 +34,7 @@ class WordPieceTokenizer(BaseTokenizer):
     def tokenize(self, text: str) -> List[str]:
         output = self.bert_tokenizer.encode(text.strip())
 
-        tokenized = self.bert_tokenizer.decode(output.ids, skip_special_tokens=False) # False로 하면 UNK 나옴
+        tokenized = self.bert_tokenizer.decode(output.ids, skip_special_tokens=self.skip_special_tokens) # False로 하면 UNK 나옴
 
         tokenized = [token for token in tokenized.split(" ")]
 

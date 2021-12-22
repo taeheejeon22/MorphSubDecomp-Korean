@@ -41,7 +41,6 @@ def get_tokenizer(token_type: str, tokenizer_type: str, decomposition_type: str,
 
     if (token_type == "eojeol") and (decomposition_type == "composed"):
         tokenizer = wp
-
     else:
         mecab = MeCabTokenizer_all(token_type=token_type, tokenizer_type=tokenizer_type,
                            decomposition_type=decomposition_type,
@@ -123,6 +122,7 @@ def show_tokenizations(string):
 
 
 
+<<<<<<< HEAD
 
 sent = "뱌뵵뵤벼벼벼추퓨를 먹었다."
 # sent = "소고기덮밥을 먹었다"
@@ -210,3 +210,21 @@ with open('tokenized_result/paws_test.csv', "w", encoding='utf-8') as f:
 
 
 
+=======
+sent = "이 친구가 그럴 사람이 아닌데 실수를 했었나 봐"
+sent = "난 탈락할 줄 알았  이 친구는 그럴 사람이 아닌데."
+sent = "이 친구는 그럴 사람이 아닌데 너무너무 많이 샀어"
+sent = "그렇긴 해도 난 이 옷이 너무너무 지쳤어"
+sent = '난 그럴지도 몰라'
+sent = "난 이 부분이 그럴지도 몰라"
+sent = "난 왜 그런지도 몰라"
+sent = "이 지도는 축척이 그럴지도 몰라"
+sent = "그럴지도 모르지만 이 옷이 비쌌어" # 맞다
+sent = "이 옷이 비쌀지도 모르지만 난 샀어"
+sent = "이 옷이 비쌀지도 모르지만 난 구매했어"
+
+
+sent = "쉶퓀이 묿다"
+
+show_tokenizations(string=sent)
+>>>>>>> 48f0df46152e8d215b52456d7b589683a1fb065c

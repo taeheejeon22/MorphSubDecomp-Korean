@@ -84,6 +84,12 @@ transformers-cli convert --model_type bert\
   --pytorch_dump_output=./bert_model_v6_without_dummy_letter_morpheme_mecab_fixed_decomposed_lexical_wp-64k_model.ckpt-600000.pth
 
 
+## decomposed_grammatical
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./convert_bert/bert_model_v6_without_dummy_letter_morpheme_mecab_fixed_decomposed_grammatical_wp-64k_model.ckpt-1000000 \
+  --config=./resources/v6_without_dummy_letter_grammatical_symbol_F/morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k/config.json \
+  --pytorch_dump_output=./bert_model_v6_without_dummy_letter_morpheme_mecab_fixed_decomposed_grammatical_wp-64k_model.ckpt-1000000.pth
+
 
 
 

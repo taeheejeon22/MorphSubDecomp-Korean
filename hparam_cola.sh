@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # setting:
-batch_sizes=(64 32 16)
+#batch_sizes=(32 16 64)
+batch_sizes=(64)
+
 learning_rates=(1e-5 2e-5 3e-5 5e-5)
 num_epochs=5
 tasks=("cola")
@@ -12,11 +14,10 @@ echo -e "gpu num 0 1 2 3 ? "
 read gpu_num
 echo "gpu_num == ${gpu_num}"
 
-tokenizers=("morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
+tokenizers=("morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k"
-"morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_grammatical_pure_symbol_T_wp-64k"
-)
-
+"morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
+"morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k")
 
 # 각 배치사이즈, 각 학습률 별로 태스크를 수행함.
 # 에포크 수는 5회로 통일.
