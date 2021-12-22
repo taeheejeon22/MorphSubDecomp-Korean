@@ -182,7 +182,7 @@ if __name__ == "__main__":
 
 
 
-# python ./etc/get_bpe_tokenized.py --corpus_path="/home/jth/rsync/namuwiki_20210301_with_preprocessing_v5_kss.txt" \
+# python etc/get_bpe_tokenized.py --corpus_path="/home/jth/rsync/namuwiki_20210301_with_preprocessing_v5_kss.txt" \
 #                             --tokenizer_name="eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k" \
 #                             --resource_dir="./resources/v6_without_dummy_letter_grammatical_symbol_F" \
 #                             --token_type="eojeol" --tokenizer_type="mecab_fixed" --decomposition_type="composed" \
