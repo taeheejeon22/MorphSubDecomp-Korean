@@ -49,6 +49,8 @@ def load_corpus(corpus_path: str):
 
 
 def save_tokenized_corpus(args, tokenized_corpus: list):
+    os.makedirs("./corpus/bpe_tokenized", exist_ok=True)
+
     output_path = os.path.join("./corpus/bpe_tokenized", "_".join([args["token_type"], args["tokenizer_type"], args["decomposition_type"], "grammatical_symbol", "F" if args["grammatical_symbol"] == ["", ""] else "T", "txt"]) )
 
     # os.makedirs(output_dir,  exist_ok=True)
@@ -138,7 +140,7 @@ if __name__ == "__main__":
 
 
     start_time = time.time
-    print(f"start ...")
+    print(f"\n\nstart ...")
 
 
 
@@ -177,7 +179,7 @@ if __name__ == "__main__":
 
 
     elapsed_time = time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time))
-    print(f"complete tokenization for all files. (elapsed time: {elapsed_time})")
+    print(f"complete tokenization for all files. (elapsed time: {elapsed_time})\n")
 
 
 
