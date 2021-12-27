@@ -1,0 +1,4 @@
+{
+    "vocab_size": 32000,
+    "tokenized_corpus_path": "/run/user/1000/gvfs/afp-volume:host=L8221.local,user=bongseok,volume=\uacf5\uc720\ud3f4\ub354/\uc804\ud0dc\ud76c/ACL/corpus/tokenized/v6/space_F_dummy_F_grammatical_F/morpheme_mecab_orig/composed"
+}
