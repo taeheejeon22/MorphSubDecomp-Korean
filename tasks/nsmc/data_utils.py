@@ -1,6 +1,9 @@
 from typing import Dict, List, Tuple
 import re
-p_kakao = re.compile(r"[^ㄱ-ㅎㅏ-ㅣ가-힣\x20-\x7F]*")  # 타 언어 문자, 특수 기호 제거
+# p_kakao = re.compile(r"[^ㄱ-ㅎㅏ-ㅣ가-힣\x20-\x7F]*")  # 타 언어 문자, 특수 기호 제거
+# 띄어쓰기
+from quickspacer import Spacer
+spacer = Spacer()
 
 def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str], List[int]]:
     """
@@ -19,8 +22,11 @@ def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str]
             if len(splitted) != 2:
                 #print(f"[ERROR] {repr(line)}, line {i}")
                 continue
+            # 띄어쓰기
+            splitted[0] = spacer.space([splitted[0]])[0]
+            
             sentences.append(splitted[0])
             labels.append(label_to_index[splitted[1]])
-    sentences = [re.sub(p_kakao, "", s) for s in sentences]
+    # sentences = [re.sub(p_kakao, "", s) for s in sentences]
 
     return sentences, labels
