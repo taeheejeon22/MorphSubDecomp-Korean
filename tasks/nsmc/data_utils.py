@@ -27,6 +27,6 @@ def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str]
             
             sentences.append(splitted[0])
             labels.append(label_to_index[splitted[1]])
-    # sentences = [re.sub(p_kakao, "", s) for s in sentences]
+    sentences = [re.sub(p_kakao, "", s) for s in sentences]
 
     return sentences, labels
