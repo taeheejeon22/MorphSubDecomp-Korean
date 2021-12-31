@@ -4,7 +4,7 @@ import pandas as pd
 
 import re
 
-p_kakao = re.compile(r"[^ㄱ-ㅎㅏ-ㅣ가-힣\x20-\x7F]*")  # 타 언어 문자, 특수 기호 제거
+# p_kakao = re.compile(r"[^ㄱ-ㅎㅏ-ㅣ가-힣\x20-\x7F]*")  # 타 언어 문자, 특수 기호 제거
 
 def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str], List[str], List[int]]:
     """
@@ -38,7 +38,7 @@ def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str]
     label_to_idx = lambda x: 0 if x == "Entailment" else 1
     labels = [label_to_idx(label) for label in data["class_Restrict"].to_list()]
 
-    sentence_as = [re.sub(p_kakao, "", sentence) for sentence in sentence_as]
-    sentence_bs = [re.sub(p_kakao, "", sentence) for sentence in sentence_bs]
+    # sentence_as = [re.sub(p_kakao, "", sentence) for sentence in sentence_as]
+    # sentence_bs = [re.sub(p_kakao, "", sentence) for sentence in sentence_bs]
 
     return sentence_as, sentence_bs, labels
