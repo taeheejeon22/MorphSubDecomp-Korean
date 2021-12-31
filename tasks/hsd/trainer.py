@@ -3,7 +3,7 @@ from logging import Logger
 import torch
 import csv
 import os
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import f1_score, classification_report
 from torch import nn
 from torch.optim.adamw import AdamW
 from torch.utils.data.dataloader import DataLoader
@@ -107,11 +107,11 @@ class Trainer:
 
                 if (step + 1) % self.config.logging_interval == 0:
                     train_loss = running_loss / self.config.logging_interval
-                    train_acc = accuracy_score(train_targets, train_predictions)
-                    self.logger.info(f"Epoch {epoch}, Step {step + 1}\t| Loss {train_loss:.4f}  Acc {train_acc:.4f}")
+                    train_f1 = f1_score(train_targets, train_predictions, average='macro')
+                    self.logger.info(f"Epoch {epoch}, Step {step + 1}\t| Loss {train_loss:.4f}  Acc {train_f1:.4f}")
 
                     self.summary_writer.add_scalar("hsd/train/loss", train_loss, self.global_step)
-                    self.summary_writer.add_scalar("hsd/train/accuracy", train_acc, self.global_step)
+                    self.summary_writer.add_scalar("hsd/train/macro_f1", train_f1, self.global_step)
 
                     running_loss = 0.0
                     train_targets = []
@@ -124,9 +124,9 @@ class Trainer:
             self.logger.info(f"Loss {dev_loss:.4f}")
             self.logger.info(f"\n{dev_report}\n")
 
-            dev_acc = accuracy_score(dev_targets, dev_predictions)
+            dev_f1 = f1_score(dev_targets, dev_predictions, average='macro')
             self.summary_writer.add_scalar("hsd/dev/loss", dev_loss, self.global_step)
-            self.summary_writer.add_scalar("hsd/dev/accuracy", dev_acc, self.global_step)
+            self.summary_writer.add_scalar("hsd/dev/macro_f1", dev_f1, self.global_step)
 
             # test every epoch
             test_loss, test_targets, test_predictions = self._validation(self.test_data_loader)
@@ -135,9 +135,9 @@ class Trainer:
             self.logger.info(f"Loss {test_loss:.4f}")
             self.logger.info(f"\n{test_report}\n")
 
-            test_acc = accuracy_score(test_targets, test_predictions)
+            test_f1 = f1_score(test_targets, test_predictions, average='macro')
             self.summary_writer.add_scalar("hsd/test/loss", test_loss, self.global_step)
-            self.summary_writer.add_scalar("hsd/test/accuracy", test_acc, self.global_step)
+            self.summary_writer.add_scalar("hsd/test/macro_f1", test_f1, self.global_step)
 
             # output_path = os.path.join(self.config.checkpoint_dir, f"model-epoch-{epoch}.pth")
             # torch.save(self.model.state_dict(), output_path)
@@ -152,8 +152,8 @@ class Trainer:
             if os.path.isfile('./run_outputs/total_log.csv') == False:
                 with open ('./run_outputs/total_log.csv', 'w', newline="") as f:
                     wr = csv.writer(f)
-                    self.dev_result = round(dev_acc * 100, 2)
-                    self.test_result = round(test_acc * 100, 2)
+                    self.dev_result = round(dev_f1 * 100, 2)
+                    self.test_result = round(test_f1 * 100, 2)
                     wr.writerow(['time', 'task', 'model', 'tokenizer', 'batch_size', 'lr', 'epoch', 'dev', 'test'])
                     wr.writerow([self.begin_time, 'hsd', self.pretrained_bert_file_name, self.config.tokenizer, self.config.batch_size, self.config.learning_rate, epoch, self.dev_result, self.test_result])
                     print("making total_log.csv...")
@@ -162,8 +162,8 @@ class Trainer:
             else:
                 with open ('./run_outputs/total_log.csv', 'a', newline="") as f:
                     wr = csv.writer(f)
-                    self.dev_result = round(dev_acc * 100, 2)
-                    self.test_result = round(test_acc * 100, 2)
+                    self.dev_result = round(dev_f1 * 100, 2)
+                    self.test_result = round(test_f1 * 100, 2)
                     wr.writerow([self.begin_time, 'hsd', self.pretrained_bert_file_name, self.config.tokenizer, self.config.batch_size, self.config.learning_rate, epoch, self.dev_result, self.test_result])
                     print("logging dev, test...")
 
