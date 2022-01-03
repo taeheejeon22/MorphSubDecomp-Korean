@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # setting:
-batch_sizes=(16)
-learning_rates=(1e-5 2e-5)
+batch_sizes=(64)
+learning_rates=(1e-5 2e-5 3e-5 5e-5)
 num_epochs=5
-tasks=("nsmc")
+tasks=("hsd")
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
 # 사용할 gpu 선택
@@ -15,8 +15,8 @@ echo "gpu_num == ${gpu_num}"
 tokenizers=("morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k"
 "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
-"morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k")
-
+"morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
+"morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
 
 # 각 배치사이즈, 각 학습률 별로 태스크를 수행함.
 # 에포크 수는 5회로 통일.
