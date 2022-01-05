@@ -2,8 +2,8 @@
 
 # setting:
 batch_sizes=(16)
-learning_rates=(2e-5 3e-5)
-num_epochs=5
+learning_rates=(3e-5)
+num_epochs=3
 tasks=("hsd")
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 

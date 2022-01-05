@@ -234,14 +234,14 @@ def main(args):
 
     
     
-    ### 원문장 출력 test
-    _, test_targets, test_predictions = trainer._validation(test_data_loader)
-    import pandas as pd
-    with open('tokenized_result/nsmc_prediction_results.csv', "a", encoding='utf-8') as f:
-        for test, target, prediction in zip(test_sentences, test_targets, test_predictions):
-            # f.write('\t'.join(['tokenizer', 'sentence', 'tokenized', 'target', 'prediction']))
-            f.write('\n')
-            f.write('\t'.join([config.tokenizer, test, str(tokenizer.tokenize(test)), str(target), str(prediction)]))
+    # ### 원문장 출력 test
+    # _, test_targets, test_predictions = trainer._validation(test_data_loader)
+    # import pandas as pd
+    # with open('tokenized_result/nsmc_prediction_results.csv', "a", encoding='utf-8') as f:
+    #     for test, target, prediction in zip(test_sentences, test_targets, test_predictions):
+    #         # f.write('\t'.join(['tokenizer', 'sentence', 'tokenized', 'target', 'prediction']))
+    #         f.write('\n')
+    #         f.write('\t'.join([config.tokenizer, test, str(tokenizer.tokenize(test)), str(target), str(prediction)]))
 
 
 if __name__ == "__main__":

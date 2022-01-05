@@ -47,7 +47,7 @@ class TrainConfig(NamedTuple):
     #: train data 파일 경로
     train_path: str = "./dataset/nlu_tasks/nsmc/ratings_train.tsv"
     #: test data 파일 경로
-    dev_path: str = "./dataset/nlu_tasks/nsmc/ratings_dev.tsv"
+    dev_path: str = "./dataset/nlu_tasks/nsmc/ratings_test.tsv"
     #: test data 파일 경로
     test_path: str = "./dataset/nlu_tasks/nsmc/ratings_test.tsv"
     #: output dir
