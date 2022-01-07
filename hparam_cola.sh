@@ -7,7 +7,7 @@ batch_sizes=(64)
 learning_rates=(1e-5)
 num_epochs=3
 tasks=("cola")
-seeds = (670488 116740 26226 777573 288390)
+seeds=(670488 116740 26226 777573 288390)
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
 # 사용할 gpu 선택
@@ -20,7 +20,7 @@ tokenizers=("morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_T_wp-64k" "
 "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
-# 각 배치사이즈, 각 학습률 별로 태스크를 수행함.
+
 
 for seed in "${seeds[@]}"; do
 
@@ -59,7 +59,7 @@ for seed in "${seeds[@]}"; do
                     --log_dir ${log_dir} \
                     --summary_dir ${summary_dir} \
                     --num_epochs ${num_epochs} \
-                    --seeds ${seed}
+                    --seed ${seed}
                 done
 
             done

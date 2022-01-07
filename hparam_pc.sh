@@ -5,7 +5,7 @@ batch_sizes=(64)
 learning_rates=(1e-5)
 num_epochs=2
 tasks=("pc")
-seeds = (670488 116740 26226 777573 288390)
+seeds=(670488 116740 26226 777573 288390)
 
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
@@ -57,7 +57,7 @@ for seed in "${seeds[@]}"; do
                     --log_dir ${log_dir} \
                     --summary_dir ${summary_dir} \
                     --num_epochs ${num_epochs} \
-                    --seeds ${seed}
+                    --seed ${seed}
                 done
 
             done

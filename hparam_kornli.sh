@@ -56,7 +56,7 @@ for seed in "${seeds[@]}"; do
                     --log_dir ${log_dir} \
                     --summary_dir ${summary_dir} \
                     --num_epochs ${num_epochs} \
-                    --seeds ${seed}
+                    --seed ${seed}
                 done
 
             done
