@@ -5,7 +5,8 @@ batch_sizes=(32)
 learning_rates=(2e-5)
 num_epochs=2
 tasks=("nsmc")
-seed = (670488 116740 26226 777573 288390)
+seeds=(42)
+spacing=True
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
 # 사용할 gpu 선택
@@ -13,9 +14,7 @@ echo -e "gpu num 0 1 2 3 ? "
 read gpu_num
 echo "gpu_num == ${gpu_num}"
 
-tokenizers=("morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
-"morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k"
-"morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
+tokenizers=("morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
 
@@ -56,7 +55,8 @@ for batch_size in "${batch_sizes[@]}"; do
                 --learning_rate $learning_rate \
                 --log_dir $log_dir \
                 --summary_dir $summary_dir \
-                --num_epochs $num_epochs
+                --num_epochs $num_epochs \
+                --spacing $spacing
 
             done
 
