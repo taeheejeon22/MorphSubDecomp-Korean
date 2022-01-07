@@ -231,12 +231,12 @@ def main(args):
     trainer.train()
 
 
-    ### 원문장 출력 test
-    import pandas as pd
-    with open('tokenized_result/korsts_prediction_results.csv', "w", encoding='utf-8') as f:
-        for test, target, prediction in zip(test_sentences, trainer.test_targets, trainer.test_predictions):
-            f.write('\t'.join(['tokenizer', 'sentence', 'tokenized', 'target', 'prediction']))
-            f.write(config.tokenizer, test, tokenizer.tokenize(test), target, prediction)
+    # ### 원문장 출력 test
+    # import pandas as pd
+    # with open('tokenized_result/korsts_prediction_results.csv', "w", encoding='utf-8') as f:
+    #     for test, target, prediction in zip(test_sentences, trainer.test_targets, trainer.test_predictions):
+    #         f.write('\t'.join(['tokenizer', 'sentence', 'tokenized', 'target', 'prediction']))
+    #         f.write(config.tokenizer, test, tokenizer.tokenize(test), target, prediction)
             
 
 if __name__ == "__main__":

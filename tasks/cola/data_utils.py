@@ -12,10 +12,19 @@ def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str]
     sentences: List[str] = []
     labels: List[int] = []
 
-    with open(file_path, "r", encoding="utf-8") as f:
-        for i, line in enumerate(f.readlines()[1:]):
-            splitted = line.strip().split("\t")
-            sentences.append(splitted[3])
-            labels.append(label_to_index[splitted[1]])
+    # for test set
+    if file_path == "./dataset/nlu_tasks/cola/NIKL_CoLA_in_domain_test_with_answer.tsv":
+        with open(file_path, "r", encoding="utf-8") as f:
+            for i, line in enumerate(f.readlines()[1:]):
+                splitted = line.strip().split("\t")
+                sentences.append(splitted[2])
+                labels.append(label_to_index[splitted[1]])
+
+    else:
+        with open(file_path, "r", encoding="utf-8") as f:
+            for i, line in enumerate(f.readlines()[1:]):
+                splitted = line.strip().split("\t")
+                sentences.append(splitted[3])
+                labels.append(label_to_index[splitted[1]])
 
     return sentences, labels
