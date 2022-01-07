@@ -28,6 +28,8 @@ def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str]
                 spacer = Spacer()
                 splitted[0] = spacer.space([splitted[0]])[0]
                 splitted[1] = spacer.space([splitted[1]])[0]
+                sentence_as.append(splitted[0])
+                sentence_bs.append(splitted[1])
             else:
                 sentence_as.append(splitted[0])
                 sentence_bs.append(splitted[1])
