@@ -7,8 +7,7 @@ ee2.py
 *.pkl
 corpus/preprocessed/*
 corpus/tokenized/*
-corpus/bpe_tokenized/*
-corpus/bpe_tokenized_64k/*
+corpus/bpe_tokenized*/*
 pretrain_corpus/tokenized/*
 dataset/nlu_tasks/*
 *.pth

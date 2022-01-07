@@ -5,6 +5,7 @@ batch_sizes=(32)
 learning_rates=(2e-5)
 num_epochs=2
 tasks=("nsmc")
+seed = (670488 116740 26226 777573 288390)
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
 # 사용할 gpu 선택
