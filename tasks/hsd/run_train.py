@@ -268,6 +268,8 @@ if __name__ == "__main__":
     parser.add_argument("--log_dir", type=str)
     parser.add_argument("--summary_dir", type=str)
 
+    # spacing
+    parser.add_argument("--spacing", type=bool, default=False)
 
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 
