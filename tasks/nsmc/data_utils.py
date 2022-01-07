@@ -17,7 +17,7 @@ def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str]
     labels: List[int] = []
 
     with open(file_path, "r", encoding="utf-8") as f:
-        for i, line in enumerate(f.readlines()):
+        for i, line in enumerate(f.readlines()[1:]):
             splitted = line.strip().split("\t")
             if len(splitted) != 2:
                 #print(f"[ERROR] {repr(line)}, line {i}")
