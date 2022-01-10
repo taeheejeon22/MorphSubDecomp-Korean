@@ -5,7 +5,7 @@ batch_sizes=(64)
 learning_rates=(1e-5)
 tasks=("ynat")
 seeds=(670488 116740 26226 777573 288390)
-num_epochs = 3
+num_epochs=3
 
 # 사용할 gpu 선택
 echo -e "gpu num 0 1 2 3 ? " 
@@ -62,8 +62,8 @@ for seed in "${seeds[@]}"; do
                     --model_name_or_path ${resource}/${tokenizer} \
                     --tokenizer_name ${resource}/${tokenizer} \
                     --config_name ${resource}/${tokenizer} \
-                    --learning_rate ${learning_rate} --train_batch_size ${batch_size} --num_train_epochs 10 --warmup_ratio 0.1 --patience 100000 \
-                    --max_seq_length 128 --metric_key uas_macro_f1 --gpus ${gpu_num} --num_workers 16 \
+                    --learning_rate ${learning_rate} --train_batch_size ${batch_size} --num_train_epochs ${num_epochs} --warmup_ratio 0.1 --patience 100000 \
+                    --max_seq_length 128 --metric_key macro_f1 --gpus ${gpu_num} --num_workers 16 \
                     --seed ${seed}
 
                 done

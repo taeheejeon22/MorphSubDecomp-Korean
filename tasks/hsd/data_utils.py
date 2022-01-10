@@ -23,17 +23,19 @@ def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str]
             if len(splitted) != 5:
                 #print(f"[ERROR] {repr(line)}, line {i}")
                 continue
-            # 띄어쓰기
-            if TrainConfig.spaing:
-                spacer = Spacer()
-                splitted[0] = spacer.space([splitted[0]])[0]
-                splitted[1] = spacer.space([splitted[1]])[0]
-                sentence_as.append(splitted[0])
-                sentence_bs.append(splitted[1])
-            else:
-                sentence_as.append(splitted[0])
-                sentence_bs.append(splitted[1])
-                
+            # # 띄어쓰기
+            # if TrainConfig.spacing:
+            #     spacer = Spacer()
+            #     splitted[0] = spacer.space([splitted[0]])[0]
+            #     splitted[1] = spacer.space([splitted[1]])[0]
+            #     sentence_as.append(splitted[0])
+            #     sentence_bs.append(splitted[1])
+            # else:
+            #     sentence_as.append(splitted[0])
+            #     sentence_bs.append(splitted[1])
+            sentence_as.append(splitted[0])
+            sentence_bs.append(splitted[1])
+
             labels.append(label_to_index[splitted[4]])
 
     return sentence_as, sentence_bs, labels

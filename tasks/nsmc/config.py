@@ -8,7 +8,7 @@ class TrainConfig(NamedTuple):
     use_tpu: str = "gpu"
 
     # spacing
-    spacing: bool = "False"
+    spacing: bool = True
 
     """
     Model Hyperparameters

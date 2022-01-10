@@ -480,3 +480,6 @@ CUDA_VISIBLE_DEVICES=3 python3 paws_run_train.py --tokenizer sp-64k
 ./hparam_dp.sh
 3
 
+
+./hparam_nsmc1.sh
+2

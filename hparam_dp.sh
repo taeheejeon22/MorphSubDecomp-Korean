@@ -5,7 +5,7 @@ batch_sizes=(16)
 learning_rates=(5e-5)
 tasks=("klue-dp")
 seeds=(670488 116740 26226 777573 288390)
-num_epochs = 10
+num_epochs=10
 
 # 사용할 gpu 선택
 echo -e "gpu num 0 1 2 3 ? " 

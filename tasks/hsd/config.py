@@ -6,7 +6,8 @@ class TrainConfig(NamedTuple):
 
     # use_kortok: bool = False    # kortok 토크나이저 사용 확인용
     use_tpu: str = ""
-
+    # spacing
+    spacing: bool = False
     """
     Model Hyperparameters
     """
@@ -40,6 +41,7 @@ class TrainConfig(NamedTuple):
     max_sequence_length: int = 128
     #: logging을 진행할 단위 step
     logging_interval: int = 100
+
 
     """
     Data Hyperparameters
