@@ -62,20 +62,24 @@ class LoggingCallback(pl.Callback):
             
             # for total_log
             if k in total_log_keys:
+                self.epoch = 0
+                
                 if os.path.isfile('./run_outputs/klue_total_log.csv') == False:
                     with open ('./run_outputs/klue_total_log.csv', 'w', newline="") as f:
                         wr = csv.writer(f)
                         dev_result = k + '_' + re.findall("\d+\.\d+", str(v).split(',')[0])[0] # example of v: tensor(81.8213, device='cuda:0', dtype=torch.float64)
-                        wr.writerow(['time', 'task', 'model', 'tokenizer', 'batch_size', 'lr', 'epoch', 'dev'])
-                        wr.writerow([begin_time, self.args.task, pretrained_bert_file_name, self.args.tokenizer_name.split('/')[-1], self.args.seed, self.args.train_batch_size, self.args.learning_rate, dev_result])
+                        wr.writerow(['time', 'task', 'model', 'tokenizer', 'batch_size', 'lr', 'epoch', 'metric', 'dev'])
+                        wr.writerow([begin_time, self.args.task, pretrained_bert_file_name, self.args.tokenizer_name.split('/')[-1], self.args.seed, self.args.train_batch_size, self.args.learning_rate, self.epoch, dev_result.split('_')[0], dev_result.split('_')[1])
                         print("making total_log.csv...")
                         print("logging dev, test...")
                 else:
                     with open ('./run_outputs/klue_total_log.csv', 'a', newline="") as f:
                         wr = csv.writer(f)
                         dev_result = k + '_' + re.findall("\d+\.\d+", str(v).split(',')[0])[0] 
-                        wr.writerow([begin_time, self.args.task, pretrained_bert_file_name, self.args.tokenizer_name.split('/')[-1], self.args.seed, self.args.train_batch_size, self.args.learning_rate, dev_result])
+                        wr.writerow([begin_time, self.args.task, pretrained_bert_file_name, self.args.tokenizer_name.split('/')[-1], self.args.seed, self.args.train_batch_size, self.args.learning_rate, self.epoch, dev_result.split('_')[0], dev_result.split('_')[1])
                         print("logging dev, test...")
+                        
+                self.epoch += 1
                                        
 
     def on_test_end(self, trainer: pl.Trainer, pl_module: pl.LightningModule) -> None:
