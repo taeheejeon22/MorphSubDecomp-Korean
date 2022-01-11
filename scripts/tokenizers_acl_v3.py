@@ -811,6 +811,8 @@ class tokenizers():
 #
 # tok = tokenizers(dummy_letter="", space_symbol="", grammatical_symbol=["⫸", "⭧"], nfd=True)
 #
+# tok = tokenizers(dummy_letter="", space_symbol="", nfd=True)
+#
 # self = tok
 # tok.mecab_tokenizer()
 #
@@ -840,7 +842,8 @@ class tokenizers():
 # sent = "호스팅이 필요한지 여부로 판단한다"
 # sent = "뭔지 모르지만"
 # sent = "이듬해, 견심은 주공소공의 고사를 본받아 평안을 좌백에, 견풍을 우백에 임명해야 한다는 내용의 부명을 지어 바쳤고, 왕망은 곧바로 부명대로 하였다. 그런데 견풍이 정식으로 취임하기 직전에 견심이 부명을 또 지어 바쳤는데, 내용은 이러하였다."
-#
+# sent = "해당 종은 건생식물, 리아나, 열대식물, 균상종속영양생물, 다양한 식물 대표군을 포함해 서로 다른 생태군입니다."
+# sent = "생물, 다양한"
 #
 # # eojeol
 # ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="composed", flatten=False); print(ee)
@@ -863,7 +866,8 @@ class tokenizers():
 # ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="composed", flatten=False); print(ee)
 # ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure"); print(ee)
 # ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure", flatten=False); print(ee)
-# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_lexical"); print(ee)
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_lexical", flatten=True); print(ee)
+# ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_lexical", flatten=False); print(ee)
 # ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_grammatical"); print(ee)
 #
 #

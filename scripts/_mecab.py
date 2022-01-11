@@ -93,7 +93,11 @@ def parse_fixed(result, allattrs=False, join=False):
     def split(elem, join=False):
             # elem: an analysed result of an eojeol (e.g. 뭔지 > 뭔지\tNP+VCP+EC,*,F,뭔지,Inflect,NP,EC,뭐/NP/*+이/VCP/*+ㄴ지/EC/*)
 
-        if not elem: return ('', 'SY')
+        if not elem:
+            if join == False:
+                return ('', 'SY')
+            elif join == True:
+                return '/SY'
 
         s, t = elem.split('\t') # s: an eojeol (e.g. 위한)   # t: analysed resulf of an eojeol (e.g. VV+ETM,*,T,위한,Inflect,VV,ETM,위하/VV/*+ᆫ/ETM/*)
         token_pos = t.split(',')[0] # original token POS of mecab-ko (e.g. 위한: VV+ETM)
@@ -334,6 +338,10 @@ class Mecab():
                     # '알\tVV,*,T,알,*,*,*,*',
                     # '아\tEF,*,F,아,*,*,*,*',
                     # '.\tSF,*,*,*,*,*,*,*']
+
+
+                    # troubleshooting an unanalyzable character: 
+                    result_mor_lst = [x if x != "" else '\tSY,*,*,*,*,*,*,*' for x in result_mor_lst ]
 
 
                     ## 2) adding indices of eojeols to result_mor_lst
