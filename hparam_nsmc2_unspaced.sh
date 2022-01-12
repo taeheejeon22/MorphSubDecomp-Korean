@@ -7,7 +7,7 @@ num_epochs=2
 tasks=("nsmc")
 # seeds=(670488 116740 26226 777573 288390)
 seeds=(288390)
-spacing=True
+spacing=False
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
 # 사용할 gpu 선택

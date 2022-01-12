@@ -6,8 +6,8 @@ learning_rates=(3e-5)
 num_epochs=2
 tasks=("nsmc")
 # seeds=(670488 116740 26226 777573 288390)
-seeds=(288390)
-spacing=True
+seeds=(26226 777573)
+spacing=False
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
 # 사용할 gpu 선택
@@ -21,8 +21,6 @@ tokenizers=("morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_T_wp-64k" "
 "morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
 
-# 각 배치사이즈, 각 학습률 별로 태스크를 수행함.
-# 에포크 수는 5회로 통일.
 
 for seed in "${seeds[@]}"; do
 
@@ -33,15 +31,14 @@ for seed in "${seeds[@]}"; do
             for task in "${tasks[@]}"; do
                 log_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/logs
                 summary_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/summaries
-
+                
                 echo "### batch_size: ${batch_size} ###"
                 echo "### learning_rate: ${learning_rate} ###"
                 echo "### vocab_size: ${vocab_size} ###"
                 echo "### task: ${task} ###"
                 echo "### log_dir: ${log_dir} ###"
                 echo "### summary_dir: ${summary_dir} ###"
-                echo "### seed: ${seed} ###"
-
+            
                 for tokenizer in "${tokenizers[@]}"; do
                     echo "### tokenizer: ${tokenizer} ###"
 
@@ -62,7 +59,7 @@ for seed in "${seeds[@]}"; do
                     --summary_dir ${summary_dir} \
                     --num_epochs ${num_epochs} \
                     --seed ${seed} \
-                    --spacing $spacing
+                    --spacing ${spacing}
                 done
 
             done
@@ -72,5 +69,6 @@ for seed in "${seeds[@]}"; do
     done
 
 done
+
 
 

@@ -5,7 +5,7 @@ batch_sizes=(16)
 learning_rates=(5e-5)
 tasks=("klue-dp")
 #seeds=(670488 116740 26226 777573 288390)
-seeds=(26226) # 26226 lexical T ~
+seeds=(670488) # 26226 lexical T ~
 num_epochs=10
 
 # 사용할 gpu 선택
@@ -16,6 +16,7 @@ echo "gpu_num == ${gpu_num}"
 tokenizers=("morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
+
 
 # klue 경로
 OUTPUT_DIR="run_outputs"
