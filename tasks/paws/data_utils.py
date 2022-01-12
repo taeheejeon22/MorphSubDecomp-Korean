@@ -2,10 +2,6 @@ from typing import Dict, List, Tuple
 
 import re
 
-# 띄어쓰기
-
-
-
 # p_kakao = re.compile(r"[^ㄱ-ㅎㅏ-ㅣ가-힣\x20-\x7F]*")  # 타 언어 문자, 특수 기호 제거
 
 def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str], List[str], List[int]]:

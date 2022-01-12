@@ -6,6 +6,7 @@ learning_rates=(3e-5)
 num_epochs=2
 tasks=("hsd")
 seeds=(670488 116740 26226 777573 288390)
+spacing=True
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
 # 사용할 gpu 선택
@@ -57,7 +58,8 @@ for seed in "${seeds[@]}"; do
                     --log_dir ${log_dir} \
                     --summary_dir ${summary_dir} \
                     --num_epochs ${num_epochs} \
-                    --seed ${seed}
+                    --seed ${seed} \
+                    --spacing ${spacing}
                 done
 
             done

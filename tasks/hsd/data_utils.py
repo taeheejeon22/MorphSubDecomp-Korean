@@ -2,7 +2,7 @@ from typing import Dict, List, Tuple
 import re
 from tasks.hsd.config import TrainConfig
 from quickspacer import Spacer
-
+spacer = Spacer()
 
 def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str], List[str], List[int]]:
     """
@@ -24,17 +24,16 @@ def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str]
                 #print(f"[ERROR] {repr(line)}, line {i}")
                 continue
             # # 띄어쓰기
-            # if TrainConfig.spacing:
-            #     spacer = Spacer()
-            #     splitted[0] = spacer.space([splitted[0]])[0]
-            #     splitted[1] = spacer.space([splitted[1]])[0]
-            #     sentence_as.append(splitted[0])
-            #     sentence_bs.append(splitted[1])
-            # else:
-            #     sentence_as.append(splitted[0])
-            #     sentence_bs.append(splitted[1])
-            sentence_as.append(splitted[0])
-            sentence_bs.append(splitted[1])
+            if TrainConfig.spacing:
+                # comment
+                splitted[1] = spacer.space([splitted[1]])[0]
+                sentence_as.append(splitted[0])
+                sentence_bs.append(splitted[1])
+            else:
+                sentence_as.append(splitted[0])
+                sentence_bs.append(splitted[1])
+            # sentence_as.append(splitted[0])
+            # sentence_bs.append(splitted[1])
 
             labels.append(label_to_index[splitted[4]])
 
