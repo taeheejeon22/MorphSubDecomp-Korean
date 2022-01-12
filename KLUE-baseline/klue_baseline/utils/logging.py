@@ -56,13 +56,15 @@ class LoggingCallback(pl.Callback):
     
         # get metrics
         for k, v in metrics.items():
+            self.epoch = 0
+            
             if k in self.SKIP_KEYS:
                 continue
             rank_zero_info(f"{k} = {v}")           
             
             # for total_log
             if k in total_log_keys:
-                self.epoch = 0
+                
                 
                 if os.path.isfile('./run_outputs/klue_total_log.csv') == False:
                     with open ('./run_outputs/klue_total_log.csv', 'w', newline="") as f:
@@ -72,14 +74,16 @@ class LoggingCallback(pl.Callback):
                         wr.writerow([begin_time, self.args.task, pretrained_bert_file_name, self.args.tokenizer_name.split('/')[-1], self.args.seed, self.args.train_batch_size, self.args.learning_rate, self.epoch, dev_result.split('_')[0:-1], dev_result.split('_')[-1]])
                         print("making total_log.csv...")
                         print("logging dev, test...")
+                        self.epoch += 1
                 else:
                     with open ('./run_outputs/klue_total_log.csv', 'a', newline="") as f:
                         wr = csv.writer(f)
                         dev_result = k + '_' + re.findall("\d+\.\d+", str(v).split(',')[0])[0] 
                         wr.writerow([begin_time, self.args.task, pretrained_bert_file_name, self.args.tokenizer_name.split('/')[-1], self.args.seed, self.args.train_batch_size, self.args.learning_rate, self.epoch, dev_result.split('_')[0:-1], dev_result.split('_')[-1]])
                         print("logging dev, test...")
+                        self.epoch += 1
                         
-                self.epoch += 1
+                
                                        
 
     def on_test_end(self, trainer: pl.Trainer, pl_module: pl.LightningModule) -> None:
