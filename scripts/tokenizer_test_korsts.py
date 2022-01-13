@@ -191,7 +191,6 @@ with open('tokenized_result/sts_test.csv', "w", encoding='utf-8') as f:
     show_tokenizations("뱌뵵뵤벼벼벼추퓨를 먹었다.")
     
     
-    
     for sent1, sent2 in zip(sts_test[0], sts_test[1]):
         f.write(show_tokenizations(string=sent1))
         f.write(show_tokenizations(string=sent2))
