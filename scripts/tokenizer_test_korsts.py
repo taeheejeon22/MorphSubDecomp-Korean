@@ -79,47 +79,92 @@ def get_tokenized_result(tokenizer, string, nfd: bool = True):
 
 
 
+# def show_tokenizations(string):
+#     # grammatical symbol F
+#     tokenizer = get_tokenizer(token_type = "eojeol", tokenizer_type = "mecab_fixed", decomposition_type = "composed", grammatical_symbol = ["", ""])
+#     eojeol_composed_F = 'eojeol_composed_F' + '\t' + get_tokenized_result(tokenizer, string)
+#
+#     tokenizer = get_tokenizer(token_type = "eojeol", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_pure", grammatical_symbol = ["", ""])
+#     eojeol_pure_F = 'eojeol_pure_F' + '\t' + get_tokenized_result(tokenizer, string)
+#
+#     tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_orig", decomposition_type = "composed", grammatical_symbol = ["", ""])
+#     orig_composed_F = 'orig_composed_F' + '\t' + get_tokenized_result(tokenizer, string)
+#
+#
+#     tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_orig", decomposition_type = "decomposed_pure", grammatical_symbol = ["", ""])
+#     orig_pure_F = 'orig_pure_F' + '\t' + get_tokenized_result(tokenizer, string)
+#
+#     tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "composed", grammatical_symbol = ["", ""])
+#     fixed_composed_F = 'fixed_composed_F' + '\t' + get_tokenized_result(tokenizer, string)
+#
+#     tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_pure", grammatical_symbol = ["", ""])
+#     fixed_pure_F = 'fixed_pure_F' + '\t' + get_tokenized_result(tokenizer, string)
+#
+#     tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_grammatical", grammatical_symbol = ["", ""])
+#     fixed_grammatical_F = 'fixed_grammatical_F' + '\t' + get_tokenized_result(tokenizer, string)
+#
+#     tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_lexical", grammatical_symbol = ["", ""])
+#     fixed_lexical_F = 'fixed_lexical_F' + '\t' + get_tokenized_result(tokenizer, string)
+#
+#     # grammatical symbol T
+#     tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "composed", grammatical_symbol = ["⫸", "⭧"])
+#     fixed_composed_T = 'fixed_composed_T' + '\t' + get_tokenized_result(tokenizer, string)
+#
+#     tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_pure", grammatical_symbol = ["⫸", "⭧"])
+#     fixed_pure_T = 'fixed_pure_T' + '\t'+ get_tokenized_result(tokenizer, string)
+#
+#     tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_grammatical", grammatical_symbol = ["⫸", "⭧"])
+#     fixed_grammatical_T = 'fixed_grammatical_T' + '\t' + get_tokenized_result(tokenizer, string)
+#
+#     tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_lexical", grammatical_symbol = ["⫸", "⭧"])
+#     fixed_lexical_T = 'fixed_lexical_T' + '\t' + get_tokenized_result(tokenizer, string)
+#
+#     return "\n".join(['\n'+eojeol_composed_F, eojeol_pure_F, orig_composed_F, orig_pure_F, fixed_composed_F, fixed_pure_F, fixed_grammatical_F, fixed_lexical_F, fixed_composed_T, fixed_pure_T,fixed_grammatical_T,fixed_lexical_T])
+
+
+
+
+
+
+
+### 2022-01-14
+tokenizer_eojeol_composed_F = get_tokenizer(token_type = "eojeol", tokenizer_type = "mecab_fixed", decomposition_type = "composed", grammatical_symbol = ["", ""])
+tokenizer_eojeol_pure_F = get_tokenizer(token_type = "eojeol", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_pure", grammatical_symbol = ["", ""])
+tokenizer_orig_composed_F = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_orig", decomposition_type = "composed", grammatical_symbol = ["", ""])
+tokenizer_orig_pure_F = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_orig", decomposition_type = "decomposed_pure", grammatical_symbol = ["", ""])
+tokenizer_fixed_composed_F = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "composed", grammatical_symbol = ["", ""])
+tokenizer_fixed_pure_F = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_pure", grammatical_symbol = ["", ""])
+tokenizer_fixed_grammatical_F = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_grammatical", grammatical_symbol = ["", ""])
+tokenizer_fixed_lexical_F = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_lexical", grammatical_symbol = ["", ""])
+tokenizer_fixed_composed_T = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "composed", grammatical_symbol = ["⫸", "⭧"])
+tokenizer_fixed_pure_T = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_pure", grammatical_symbol = ["⫸", "⭧"])
+tokenizer_fixed_grammatical_T = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_grammatical", grammatical_symbol = ["⫸", "⭧"])
+tokenizer_fixed_lexical_T = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_lexical", grammatical_symbol = ["⫸", "⭧"])
+
+
+
+
 def show_tokenizations(string):
     # grammatical symbol F
-    tokenizer = get_tokenizer(token_type = "eojeol", tokenizer_type = "mecab_fixed", decomposition_type = "composed", grammatical_symbol = ["", ""])
-    eojeol_composed_F = 'eojeol_composed_F' + '\t' + get_tokenized_result(tokenizer, string)
-
-    tokenizer = get_tokenizer(token_type = "eojeol", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_pure", grammatical_symbol = ["", ""])
-    eojeol_pure_F = 'eojeol_pure_F' + '\t' + get_tokenized_result(tokenizer, string)
-
-    tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_orig", decomposition_type = "composed", grammatical_symbol = ["", ""])
-    orig_composed_F = 'orig_composed_F' + '\t' + get_tokenized_result(tokenizer, string)
-    
-
-    tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_orig", decomposition_type = "decomposed_pure", grammatical_symbol = ["", ""])
-    orig_pure_F = 'orig_pure_F' + '\t' + get_tokenized_result(tokenizer, string)
-
-    tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "composed", grammatical_symbol = ["", ""])
-    fixed_composed_F = 'fixed_composed_F' + '\t' + get_tokenized_result(tokenizer, string)
-
-    tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_pure", grammatical_symbol = ["", ""])
-    fixed_pure_F = 'fixed_pure_F' + '\t' + get_tokenized_result(tokenizer, string)
-
-    tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_grammatical", grammatical_symbol = ["", ""])
-    fixed_grammatical_F = 'fixed_grammatical_F' + '\t' + get_tokenized_result(tokenizer, string)
-
-    tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_lexical", grammatical_symbol = ["", ""])
-    fixed_lexical_F = 'fixed_lexical_F' + '\t' + get_tokenized_result(tokenizer, string)
+    eojeol_composed_F = 'eojeol_composed_F' + '\t' + get_tokenized_result(tokenizer_eojeol_composed_F, string)
+    eojeol_pure_F = 'eojeol_pure_F' + '\t' + get_tokenized_result(tokenizer_eojeol_pure_F, string)
+    orig_composed_F = 'orig_composed_F' + '\t' + get_tokenized_result(tokenizer_orig_composed_F, string)
+    orig_pure_F = 'orig_pure_F' + '\t' + get_tokenized_result(tokenizer_orig_pure_F, string)
+    fixed_composed_F = 'fixed_composed_F' + '\t' + get_tokenized_result(tokenizer_fixed_composed_F, string)
+    fixed_pure_F = 'fixed_pure_F' + '\t' + get_tokenized_result(tokenizer_fixed_pure_F, string)
+    fixed_grammatical_F = 'fixed_grammatical_F' + '\t' + get_tokenized_result(tokenizer_fixed_grammatical_F, string)
+    fixed_lexical_F = 'fixed_lexical_F' + '\t' + get_tokenized_result(tokenizer_fixed_lexical_F, string)
 
     # grammatical symbol T
-    tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "composed", grammatical_symbol = ["⫸", "⭧"])
-    fixed_composed_T = 'fixed_composed_T' + '\t' + get_tokenized_result(tokenizer, string)
+    fixed_composed_T = 'fixed_composed_T' + '\t' + get_tokenized_result(tokenizer_fixed_composed_T, string)
+    fixed_pure_T = 'fixed_pure_T' + '\t'+ get_tokenized_result(tokenizer_fixed_pure_T, string)
+    fixed_grammatical_T = 'fixed_grammatical_T' + '\t' + get_tokenized_result(tokenizer_fixed_grammatical_T, string)
+    fixed_lexical_T = 'fixed_lexical_T' + '\t' + get_tokenized_result(tokenizer_fixed_lexical_T, string)
 
-    tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_pure", grammatical_symbol = ["⫸", "⭧"])
-    fixed_pure_T = 'fixed_pure_T' + '\t'+ get_tokenized_result(tokenizer, string)
+    return "\n".join(['\n'+eojeol_composed_F, eojeol_pure_F, orig_composed_F, orig_pure_F, fixed_composed_F, fixed_pure_F, fixed_grammatical_F, fixed_lexical_F, fixed_composed_T, fixed_pure_T,fixed_grammatical_T,fixed_lexical_T])
 
-    tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_grammatical", grammatical_symbol = ["⫸", "⭧"])
-    fixed_grammatical_T = 'fixed_grammatical_T' + '\t' + get_tokenized_result(tokenizer, string)
 
-    tokenizer = get_tokenizer(token_type = "morpheme", tokenizer_type = "mecab_fixed", decomposition_type = "decomposed_lexical", grammatical_symbol = ["⫸", "⭧"])
-    fixed_lexical_T = 'fixed_lexical_T' + '\t' + get_tokenized_result(tokenizer, string)
 
-    return "\n".join(['\n'+eojeol_composed_F, eojeol_pure_F, orig_composed_F, orig_pure_F, fixed_composed_F, fixed_pure_F, fixed_grammatical_F, fixed_lexical_F, fixed_composed_T, fixed_pure_T,fixed_grammatical_T,fixed_lexical_T])  
 
 
 
@@ -187,10 +232,35 @@ def load_data(file_path: str) -> Tuple[List[str], List[str]]:
 
 sts_test = load_data('dataset/nlu_tasks/korsts/sts-test.tsv')
 
+# with open('tokenized_result/sts_test.csv', "w", encoding='utf-8') as f:
+#     show_tokenizations("뱌뵵뵤벼벼벼추퓨를 먹었다.")
+#
+#     for sent1, sent2 in zip(sts_test[0], sts_test[1]):
+#         f.write(show_tokenizations(string=sent1))
+#         f.write(show_tokenizations(string=sent2))
+
+
+# jth 2022-01-14
+# orig로 형태소 분석 시 형태소 토큰화 제대로 안 되는 것들(mc.pos("훌륭한")  # [('훌륭', 'XR'), ('한', 'XSA+ETM')])을 pure가 얼마나 잘 분석하는
+mc_orig = Mecab(use_original=True)
+mc_orig.pos("훌륭한")
+
+def check_orig_pos(sent):
+    plus_count = sum([1 if "+" in mor_pos[-1] else 0 for mor_pos in mc_orig.pos(sent)])
+
+    if plus_count > 0:
+        return True
+    else:
+        return False
+
+
+
 with open('tokenized_result/sts_test.csv', "w", encoding='utf-8') as f:
     show_tokenizations("뱌뵵뵤벼벼벼추퓨를 먹었다.")
-    
-    
+
     for sent1, sent2 in zip(sts_test[0], sts_test[1]):
-        f.write(show_tokenizations(string=sent1))
-        f.write(show_tokenizations(string=sent2))
+
+        if check_orig_pos(sent1) == True:
+            f.write(show_tokenizations(string=sent1))
+        if check_orig_pos(sent2) == True:
+            f.write(show_tokenizations(string=sent2))
