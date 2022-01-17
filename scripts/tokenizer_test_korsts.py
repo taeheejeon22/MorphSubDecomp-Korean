@@ -161,7 +161,8 @@ def show_tokenizations(string):
     fixed_grammatical_T = 'fixed_grammatical_T' + '\t' + get_tokenized_result(tokenizer_fixed_grammatical_T, string)
     fixed_lexical_T = 'fixed_lexical_T' + '\t' + get_tokenized_result(tokenizer_fixed_lexical_T, string)
 
-    return "\n".join(['\n'+eojeol_composed_F, eojeol_pure_F, orig_composed_F, orig_pure_F, fixed_composed_F, fixed_pure_F, fixed_grammatical_F, fixed_lexical_F, fixed_composed_T, fixed_pure_T,fixed_grammatical_T,fixed_lexical_T])
+    # return "\n".join(['\n'+eojeol_composed_F, eojeol_pure_F, orig_composed_F, orig_pure_F, fixed_composed_F, fixed_pure_F, fixed_grammatical_F, fixed_lexical_F, fixed_composed_T, fixed_pure_T,fixed_grammatical_T,fixed_lexical_T])
+    return "\n".join(['\n'+orig_pure_F])
 
 
 
