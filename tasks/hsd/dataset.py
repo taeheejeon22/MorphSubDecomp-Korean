@@ -3,7 +3,7 @@ from typing import List, Tuple
 import torch
 from torch.utils.data import Dataset
 
-from tasks.bert_utils import convert_pair_to_feature, pad_sequences
+from tasks.bert_utils import convert_single_to_feature, pad_sequences
 from tokenizer import BaseTokenizer, Vocab
 
 
@@ -18,22 +18,22 @@ class HSDDataset(Dataset):
 
     def __init__(
         self,
-        sentence_as: List[str],
-        sentence_bs: List[str],
+        sentences: List[str],
+        # sentence_bs: List[str],
         labels: List[int],
         vocab: Vocab,
         tokenizer: BaseTokenizer,
         max_sequence_length: int,
     ):
-        self.sentence_as = sentence_as
-        self.sentence_bs = sentence_bs
+        self.sentences = sentences
+        # self.sentence_bs = sentence_bs
         self.labels = torch.tensor(labels)
 
         self.vocab = vocab
         self.tokenizer = tokenizer
         self.max_sequence_length = max_sequence_length
 
-        self.bert_inputs = self._prepare_data(sentence_as, sentence_bs)
+        self.bert_inputs = self._prepare_data(sentences)
 
     def __len__(self) -> int:
         return self.labels.size(0)
@@ -47,10 +47,10 @@ class HSDDataset(Dataset):
         )
         return batch
 
-    def _prepare_data(self, sentence_as: List[str], sentence_bs: List[str]) -> Tuple[torch.Tensor, ...]:
+    def _prepare_data(self, sentences: List[str]) -> Tuple[torch.Tensor, ...]:
         input_features = [
-            convert_pair_to_feature(sentence_a, sentence_b, self.tokenizer, self.vocab, self.max_sequence_length)
-            for sentence_a, sentence_b in zip(sentence_as, sentence_bs)
+            convert_single_to_feature(sentence, self.tokenizer, self.vocab, self.max_sequence_length)
+            for sentence in sentences
         ]
 
         padded_token_ids = torch.tensor(

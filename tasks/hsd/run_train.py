@@ -175,20 +175,24 @@ def main(args):
     label_to_index = {"none": 0, "offensive": 1, "hate": 2}
     # Train
     logger.info(f"read training data from {config.train_path}")
-    train_sentence_as, train_sentence_bs, train_labels = load_data(config.train_path, label_to_index)
+    # train_sentence_as, train_sentence_bs, train_labels = load_data(config.train_path, label_to_index)
+    train_sentence, train_labels = load_data(config.train_path, label_to_index)
+    
     # Dev
     logger.info(f"read dev data from {config.dev_path}")
-    dev_sentence_as, dev_sentence_bs, dev_labels = load_data(config.dev_path, label_to_index)
+    # dev_sentence_as, dev_sentence_bs, dev_labels = load_data(config.dev_path, label_to_index)
+    dev_sentence, dev_labels = load_data(config.dev_path, label_to_index)
+    
     # Test
     logger.info(f"read test data from {config.test_path}")
-    test_sentence_as, test_sentence_bs, test_labels = load_data(config.test_path, label_to_index)
-
+    # test_sentence_as, test_sentence_bs, test_labels = load_data(config.test_path, label_to_index)
+    test_sentence, test_labels = load_data(config.test_path, label_to_index)
 
     # 토큰화 데모
-    print(f"original sample 1: {train_sentence_as[0]}")
-    print(f"tokenization sample 1: {tokenizer.tokenize(train_sentence_as[0])}")
-    print(f"original sample 2: {train_sentence_bs[0]}")
-    print(f"tokenization sample 2: {tokenizer.tokenize(train_sentence_bs[0])}")
+    print(f"original sample 1: {train_sentence[0]}")
+    print(f"tokenization sample 1: {tokenizer.tokenize(train_sentence[0])}")
+    print(f"original sample 2: {train_sentence[0]}")
+    print(f"tokenization sample 2: {tokenizer.tokenize(train_sentence[0])}")
 
 
 
@@ -196,20 +200,20 @@ def main(args):
     # Train
     logger.info("create data loader using training data")
     train_dataset = HSDDataset(
-        train_sentence_as, train_sentence_bs, train_labels, vocab, tokenizer, config.max_sequence_length
+        train_sentence, train_labels, vocab, tokenizer, config.max_sequence_length
     )
     train_random_sampler = RandomSampler(train_dataset)
     train_data_loader = DataLoader(train_dataset, sampler=train_random_sampler, batch_size=config.batch_size)
     # Dev
     logger.info("create data loader using dev data")
     dev_dataset = HSDDataset(
-        dev_sentence_as, dev_sentence_bs, dev_labels, vocab, tokenizer, config.max_sequence_length
+        dev_sentence, dev_labels, vocab, tokenizer, config.max_sequence_length
     )
     dev_data_loader = DataLoader(dev_dataset, batch_size=1024)
     # Test
     logger.info("create data loader using test data")
     test_dataset = HSDDataset(
-        test_sentence_as, test_sentence_bs, test_labels, vocab, tokenizer, config.max_sequence_length
+        test_sentence, test_labels, vocab, tokenizer, config.max_sequence_length
     )
     test_data_loader = DataLoader(test_dataset, batch_size=1024)
 
