@@ -9,7 +9,7 @@ num_epochs=3
 tasks=("cola")
 seeds=(670488 116740 26226 777573 288390)
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
-
+max_sequence_length=136
 # 사용할 gpu 선택
 echo -e "gpu num 0 1 2 3 ? " 
 read gpu_num
@@ -59,7 +59,8 @@ for seed in "${seeds[@]}"; do
                     --log_dir ${log_dir} \
                     --summary_dir ${summary_dir} \
                     --num_epochs ${num_epochs} \
-                    --seed ${seed}
+                    --seed ${seed} \
+                    --max_sequence_length ${max_sequence_length}
                 done
 
             done

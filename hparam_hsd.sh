@@ -6,7 +6,7 @@ learning_rates=(2e-5)
 num_epochs=2
 tasks=("hsd")
 seeds=(670488 116740 26226 777573 288390)
-
+max_sequence_length=160
 # spacing=True
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
@@ -60,6 +60,7 @@ for seed in "${seeds[@]}"; do
                     --summary_dir ${summary_dir} \
                     --num_epochs ${num_epochs} \
                     --seed ${seed} \
+                    --max_sequence_length ${max_sequence_length}
                     # --spacing ${spacing}
                 done
 

@@ -37,7 +37,7 @@ class TrainConfig(NamedTuple):
     #: warmup step의 비율 (warmup step = total step * warmup step ratio)
     warmup_step_ratio: float = 0.1
     #: max sequence length
-    max_sequence_length: int = 136
+    max_sequence_length: int = 128
     #: logging을 진행할 단위 step
     logging_interval: int = 10
 
