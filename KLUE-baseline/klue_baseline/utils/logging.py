@@ -116,15 +116,15 @@ class LoggingCallback(pl.Callback):
                     with open ('./run_outputs/klue_total_log.csv', 'w', newline="") as f:
                         wr = csv.writer(f)
                         dev_result = k + '_' + re.findall("\d+\.\d+", str(v).split(',')[0])[0] # example of v: tensor(81.8213, device='cuda:0', dtype=torch.float64)
-                        wr.writerow(['time', 'task', 'model', 'tokenizer', 'batch_size', 'lr', 'epoch', 'metric', 'dev'])
-                        wr.writerow([begin_time, self.args.task, pretrained_bert_file_name, self.args.tokenizer_name.split('/')[-1], self.args.seed, self.args.train_batch_size, self.args.learning_rate, self.epoch, dev_result.split('_')[0:-1], dev_result.split('_')[-1]])
+                        wr.writerow(['time', 'task', 'model', 'tokenizer', 'batch_size', 'lr', 'metric', 'dev'])
+                        wr.writerow([begin_time, self.args.task, pretrained_bert_file_name, self.args.tokenizer_name.split('/')[-1], self.args.seed, self.args.train_batch_size, self.args.learning_rate, dev_result.split('_')[0:-1], dev_result.split('_')[-1]])
                         print("making total_log.csv...")
                         print("logging dev, test...")
                 else:
                     with open ('./run_outputs/klue_total_test_log.csv', 'a', newline="") as f:
                         wr = csv.writer(f)
                         dev_result = k + '_' + re.findall("\d+\.\d+", str(v).split(',')[0])[0] 
-                        wr.writerow([begin_time, self.args.task, pretrained_bert_file_name, self.args.tokenizer_name.split('/')[-1], self.args.seed, self.args.train_batch_size, self.args.learning_rate, self.epoch, dev_result.split('_')[0:-1], dev_result.split('_')[-1]])
+                        wr.writerow([begin_time, self.args.task, pretrained_bert_file_name, self.args.tokenizer_name.split('/')[-1], self.args.seed, self.args.train_batch_size, self.args.learning_rate, dev_result.split('_')[0:-1], dev_result.split('_')[-1]])
                         print("logging dev, test...")
 
     def _write_predictions(self, dataloaders: DataLoader, pl_module: pl.LightningModule) -> None:
