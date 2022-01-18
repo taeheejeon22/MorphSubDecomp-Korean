@@ -260,6 +260,9 @@ if __name__ == "__main__":
     parser.add_argument("--log_dir", type=str)
     parser.add_argument("--summary_dir", type=str)
 
+    # max_seq_length
+    parser.add_argument("--max_sequence_length", type=int, default=128)
+    
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 
     main(args)

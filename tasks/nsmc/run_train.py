@@ -272,6 +272,9 @@ if __name__ == "__main__":
     # spacing
     parser.add_argument("--spacing", type=bool, default=False)
     
+    # max_seq_length
+    parser.add_argument("--max_sequence_length", type=int, default=128)
+    
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
 
     main(args)
