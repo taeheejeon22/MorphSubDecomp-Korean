@@ -5,6 +5,7 @@ batch_sizes=(32)
 learning_rates=(1e-5)
 num_epochs=3
 tasks=("kornli")
+seeds=(670488)
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
 # 사용할 gpu 선택
@@ -17,7 +18,6 @@ tokenizers=("morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_T_wp-64k" "
 "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
-
 
 for seed in "${seeds[@]}"; do
 
@@ -36,7 +36,7 @@ for seed in "${seeds[@]}"; do
                 echo "### log_dir: ${log_dir} ###"
                 echo "### summary_dir: ${summary_dir} ###"
                 echo "### seed: ${seed} ###"
-                
+            
                 for tokenizer in "${tokenizers[@]}"; do
                     echo "### tokenizer: ${tokenizer} ###"
 
@@ -66,4 +66,6 @@ for seed in "${seeds[@]}"; do
     done
 
 done
+
+
 

@@ -5,7 +5,7 @@ batch_sizes=(16)
 learning_rates=(5e-5)
 tasks=("klue-dp")
 #seeds=(670488 116740 26226 777573 288390)
-seeds=(777573 288390) # 26226 lexical T ~
+seeds=(42)
 num_epochs=10
 
 # 사용할 gpu 선택
@@ -65,7 +65,7 @@ for seed in "${seeds[@]}"; do
                     --tokenizer_name ${resource}/${tokenizer} \
                     --config_name ${resource}/${tokenizer} \
                     --learning_rate ${learning_rate} --train_batch_size ${batch_size} --num_train_epochs ${num_epochs} --warmup_ratio 0.1 --patience 100000 \
-                    --max_seq_length 128 --metric_key uas_macro_f1 --gpus ${gpu_num} --num_workers 16 \
+                    --max_seq_length 160 --metric_key uas_macro_f1 --gpus ${gpu_num} --num_workers 32 \
                     --seed ${seed}
 
                 done

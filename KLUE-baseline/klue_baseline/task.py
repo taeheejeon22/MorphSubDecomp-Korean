@@ -21,6 +21,7 @@ class KlueTask:
         metrics: Task-specific metrics.
     """
 
+
     def __init__(self, processor_type: DataProcessor, model_type: BaseTransformer, metrics: dict) -> None:
         self.processor_type = processor_type
         self.model_type = model_type

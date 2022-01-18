@@ -2,12 +2,12 @@
 
 # setting:
 batch_sizes=(64)
-learning_rates=(3e-5)
+learning_rates=(2e-5)
 num_epochs=2
 tasks=("nsmc")
 # seeds=(670488 116740 26226 777573 288390)
 seeds=(670488 116740)
-spacing=False
+#spacing=False
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
 # 사용할 gpu 선택
@@ -60,7 +60,7 @@ for seed in "${seeds[@]}"; do
                     --summary_dir ${summary_dir} \
                     --num_epochs ${num_epochs} \
                     --seed ${seed} \
-                    --spacing $spacing
+#                    --spacing $spacing
                 done
 
             done

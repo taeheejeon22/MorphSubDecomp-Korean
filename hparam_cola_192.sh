@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # setting:
+#batch_sizes=(32 16 64)
 batch_sizes=(64)
-learning_rates=(2e-5)
-num_epochs=2
-tasks=("nsmc")
-# seeds=(670488 116740 26226 777573 288390)
-seeds=(26226 777573)
-#spacing=True
+
+learning_rates=(1e-5)
+num_epochs=3
+tasks=("cola")
+seeds=(670488 116740 26226 777573 288390)
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
 # 사용할 gpu 선택
@@ -38,6 +38,7 @@ for seed in "${seeds[@]}"; do
                 echo "### task: ${task} ###"
                 echo "### log_dir: ${log_dir} ###"
                 echo "### summary_dir: ${summary_dir} ###"
+                echo "### seed: ${seed} ###"
             
                 for tokenizer in "${tokenizers[@]}"; do
                     echo "### tokenizer: ${tokenizer} ###"
@@ -58,8 +59,7 @@ for seed in "${seeds[@]}"; do
                     --log_dir ${log_dir} \
                     --summary_dir ${summary_dir} \
                     --num_epochs ${num_epochs} \
-                    --seed ${seed} \
-#                    --spacing ${spacing}
+                    --seed ${seed}
                 done
 
             done
@@ -69,6 +69,5 @@ for seed in "${seeds[@]}"; do
     done
 
 done
-
 
 

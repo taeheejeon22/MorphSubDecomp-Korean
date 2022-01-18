@@ -1,13 +1,11 @@
 #!/bin/bash
 
 # setting:
-batch_sizes=(64)
-learning_rates=(2e-5)
+batch_sizes=(16)
+learning_rates=(5e-5)
 num_epochs=2
-tasks=("nsmc")
-# seeds=(670488 116740 26226 777573 288390)
-seeds=(26226 777573)
-#spacing=True
+tasks=("korsts")
+seeds=(670488 116740 26226 777573 288390)
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
 # 사용할 gpu 선택
@@ -20,7 +18,6 @@ tokenizers=("morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_T_wp-64k" "
 "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
-
 
 for seed in "${seeds[@]}"; do
 
@@ -38,6 +35,7 @@ for seed in "${seeds[@]}"; do
                 echo "### task: ${task} ###"
                 echo "### log_dir: ${log_dir} ###"
                 echo "### summary_dir: ${summary_dir} ###"
+                echo "### seed: ${seed} ###"
             
                 for tokenizer in "${tokenizers[@]}"; do
                     echo "### tokenizer: ${tokenizer} ###"
@@ -58,8 +56,7 @@ for seed in "${seeds[@]}"; do
                     --log_dir ${log_dir} \
                     --summary_dir ${summary_dir} \
                     --num_epochs ${num_epochs} \
-                    --seed ${seed} \
-#                    --spacing ${spacing}
+                    --seed ${seed}
                 done
 
             done
