@@ -47,11 +47,11 @@ class LoggingCallback(pl.Callback):
 
         # # total_log.csv 파일에 저장 (for klue)
 
-        begin_time = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
-        tokenizer_dir = os.path.join(self.args.tokenizer_name)
-        pretrained_bert_files = [file for file in os.listdir(tokenizer_dir) if file.endswith("pth")]
-        pretrained_bert_file_name = pretrained_bert_files[0]
-        total_log_keys=['valid/macro_f1', 'valid/las_macro_f1', 'valid/uas_macro_f1']
+        # begin_time = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
+        # tokenizer_dir = os.path.join(self.args.tokenizer_name)
+        # pretrained_bert_files = [file for file in os.listdir(tokenizer_dir) if file.endswith("pth")]
+        # pretrained_bert_file_name = pretrained_bert_files[0]
+        # total_log_keys=['valid/macro_f1', 'valid/las_macro_f1', 'valid/uas_macro_f1']
         
     
         # get metrics
@@ -100,6 +100,15 @@ class LoggingCallback(pl.Callback):
                 rank_zero_info(f"{k} = {v}")
                 writer.write(f"{k} = {v}\n")
                 
+        
+        # # total_log.csv 파일에 저장 (for klue)
+
+        begin_time = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
+        tokenizer_dir = os.path.join(self.args.tokenizer_name)
+        pretrained_bert_files = [file for file in os.listdir(tokenizer_dir) if file.endswith("pth")]
+        pretrained_bert_file_name = pretrained_bert_files[0]
+        total_log_keys=['valid/macro_f1', 'valid/las_macro_f1', 'valid/uas_macro_f1']
+        
         # for total_log
         for k, v in metrics.items():
             if k in total_log_keys:
