@@ -6,6 +6,7 @@ learning_rates=(2e-5)
 num_epochs=5
 tasks=("paws")
 seeds=(670488 116740 26226 777573 288390)
+max_sequence_length=160
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
 # 사용할 gpu 선택
@@ -55,7 +56,8 @@ for seed in "${seeds[@]}"; do
                     --log_dir ${log_dir} \
                     --summary_dir ${summary_dir} \
                     --num_epochs ${num_epochs} \
-                    --seed ${seed}
+                    --seed ${seed} \
+                    --max_sequence_length ${max_sequence_length}
                 done
 
             done

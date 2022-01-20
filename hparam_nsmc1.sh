@@ -8,6 +8,7 @@ tasks=("nsmc")
 # seeds=(670488 116740 26226 777573 288390)
 seeds=(670488 116740)
 spacing=True
+max_sequence_length=136
 # tasks=("korsts" "nsmc" "paws" "cola" "pc" "kornli")
 
 # 사용할 gpu 선택
@@ -60,7 +61,8 @@ for seed in "${seeds[@]}"; do
                     --summary_dir ${summary_dir} \
                     --num_epochs ${num_epochs} \
                     --seed ${seed} \
-                    --spacing $spacing
+                    --spacing $spacing \
+                    --max_sequence_length ${max_sequence_length}
                 done
 
             done

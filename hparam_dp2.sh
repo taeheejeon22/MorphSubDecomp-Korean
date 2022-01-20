@@ -4,8 +4,8 @@
 batch_sizes=(16)
 learning_rates=(5e-5)
 tasks=("klue-dp")
-#seeds=(670488 116740 26226 777573 288390)
-seeds=(670488) # 26226 lexical T ~
+seeds=(777573 288390)
+#seeds=(42)
 num_epochs=10
 
 # 사용할 gpu 선택
@@ -13,11 +13,11 @@ echo -e "gpu num 0 1 2 3 ? "
 read gpu_num
 echo "gpu_num == ${gpu_num}"
 
-#tokenizers=("morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
-#"morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
-#"morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
-tokenizers=("morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k")
-
+tokenizers=("morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
+"morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k"
+"morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
+"morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
+"morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
 
 # klue 경로
 OUTPUT_DIR="run_outputs"
@@ -65,7 +65,7 @@ for seed in "${seeds[@]}"; do
                     --tokenizer_name ${resource}/${tokenizer} \
                     --config_name ${resource}/${tokenizer} \
                     --learning_rate ${learning_rate} --train_batch_size ${batch_size} --num_train_epochs ${num_epochs} --warmup_ratio 0.1 --patience 100000 \
-                    --max_seq_length 128 --metric_key uas_macro_f1 --gpus ${gpu_num} --num_workers 16 \
+                    --max_seq_length 160 --metric_key uas_macro_f1 --gpus ${gpu_num} --num_workers 32 \
                     --seed ${seed}
 
                 done
