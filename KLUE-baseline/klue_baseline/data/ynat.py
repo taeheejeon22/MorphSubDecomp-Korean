@@ -106,6 +106,7 @@ class YNATProcessor(DataProcessor):
             examples.append(InputExample(guid=guid, text_a=title, label=label))
 
 
+        ### our
         ### from klue_re.py ###
         for i in range(5):
             logger.info("*** Example ***")

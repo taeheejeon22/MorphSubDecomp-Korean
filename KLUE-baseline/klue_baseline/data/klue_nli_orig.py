@@ -12,36 +12,6 @@ from transformers import PreTrainedTokenizer
 from klue_baseline.data.base import DataProcessor, InputExample, InputFeatures, KlueDataModule
 from klue_baseline.data.utils import convert_examples_to_features
 
-### our ###
-import json
-import inspect
-import os
-import sys
-
-# currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-# parentdir = os.path.dirname( os.path.dirname(currentdir) )
-# sys.path.insert(0, parentdir)
-
-from tokenizer import (
-    # CharTokenizer,
-    # JamoTokenizer,
-    # MeCabSentencePieceTokenizer_orig,
-    # MeCabSentencePieceTokenizer_fixed,
-    # MeCabSentencePieceTokenizer,
-    MeCabWordPieceTokenizer,
-    # MeCabTokenizer,
-    # MeCabTokenizer_orig,
-    # MeCabTokenizer_fixed,    # MeCabSentencePieceTokenizer_kortok,
-    MeCabTokenizer_all,
-    # MeCabTokenizer_kortok,
-    # SentencePieceTokenizer,
-    WordPieceTokenizer,
-    Vocab,
-    # WordTokenizer,
-)
-###
-
-
 logger = logging.getLogger(__name__)
 
 
@@ -53,18 +23,8 @@ class KlueNLIProcessor(DataProcessor):
 
     datamodule_type = KlueDataModule
 
-    # def __init__(self, args: argparse.Namespace, tokenizer: PreTrainedTokenizer) -> None:
-    #     super().__init__(args, tokenizer)
-
-    ### our ### morpheme pretokenizer
-    def __init__(self, args: argparse.Namespace, tokenizer: PreTrainedTokenizer, path_rsc: str) -> None:
-        super().__init__(args, tokenizer, path_rsc)
-
-        with open(os.path.join(self.path_rsc, "tok.json")) as f:
-            tokenizer_config: dict = json.load(f)
-
-        self.pretokenizer = MeCabTokenizer_all(token_type=tokenizer_config["token_type"], tokenizer_type=tokenizer_config["tokenizer_type"], decomposition_type=tokenizer_config["decomposition_type"], space_symbol=tokenizer_config["space_symbol"], dummy_letter=tokenizer_config["dummy_letter"], nfd=tokenizer_config["nfd"], grammatical_symbol=tokenizer_config["grammatical_symbol"])
-    ###
+    def __init__(self, args: argparse.Namespace, tokenizer: PreTrainedTokenizer) -> None:
+        super().__init__(args, tokenizer)
 
     @overrides
     def get_train_dataset(self, data_dir: str, file_name: Optional[str] = None) -> TensorDataset:
@@ -118,23 +78,7 @@ class KlueNLIProcessor(DataProcessor):
 
         for data in data_lst:
             guid, pre, hyp, label = data["guid"], data["premise"], data["hypothesis"], data["gold_label"]
-            pre = " ".join(self.pretokenizer.tokenize(pre.strip()))  ### our ### pretokenization
-            hyp = " ".join(self.pretokenizer.tokenize(hyp.strip()))  ### our ### pretokenization
             examples.append(InputExample(guid=guid, text_a=pre, text_b=hyp, label=label))
-
-
-        ### our
-        ### from klue_re.py ###
-        for i in range(5):
-            logger.info("*** Example ***")
-            logger.info("guid: %s" % (examples[i].guid))
-            logger.info("origin example: %s" % examples[i].text_a)
-            logger.info("origin tokens: %s" % self.tokenizer.tokenize(examples[i].text_a))
-            # logger.info("fixed tokens: %s" % tokenized_examples[i])
-            logger.info("features: %s" % examples[i])
-        ###
-
-
         return examples
 
     def _convert_features(self, examples: List[InputExample]) -> List[InputFeatures]:
