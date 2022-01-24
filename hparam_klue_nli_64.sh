@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # setting:
-batch_sizes=(16 32 64)
+batch_sizes=(64)
 learning_rates=(1e-5 2e-5 3e-5 5e-5)
-task=("klue-nli")
-seeds=(670488 116740 26226 777573 288390)
+tasks=("klue-nli")
+seeds=(42)
 num_epochs=5
 
 # 사용할 gpu 선택
@@ -15,8 +15,7 @@ echo "gpu_num == ${gpu_num}"
 tokenizers=("morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k"
 "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
-"morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
-"morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
+"morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
 
 # klue 경로
 OUTPUT_DIR="run_outputs"
