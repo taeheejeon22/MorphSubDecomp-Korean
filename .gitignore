@@ -21,6 +21,8 @@ corpus/tfrecord/*
 #model
 *.bin
 
+# analysis
+dataset_analysis
 
 # log
 run_outputs/*
