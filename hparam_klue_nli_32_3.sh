@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # setting:
-batch_sizes=(64)
-learning_rates=(1e-5 2e-5 3e-5 5e-5)
+batch_sizes=(32)
+learning_rates=(3e-5)
 tasks=("klue-nli")
 seeds=(42)
 num_epochs=5
@@ -15,7 +15,8 @@ echo "gpu_num == ${gpu_num}"
 tokenizers=("morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_composed_grammatical_symbol_T_wp-64k"
 "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
-"morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
+"morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
+"morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
 
 # klue 경로
 OUTPUT_DIR="run_outputs"
@@ -61,7 +62,7 @@ for seed in "${seeds[@]}"; do
                     --model_name_or_path ${resource}/${tokenizer} \
                     --tokenizer_name ${resource}/${tokenizer} \
                     --config_name ${resource}/${tokenizer} \
-                    --learning_rate ${learning_rate} --train_batch_size ${batch_size} --num_train_epochs ${num_epochs} --max_grad_norm 1.0 --warmup_ratio 0.1 --weight_decay 0   \
+                    --learning_rate ${learning_rate} --train_batch_size ${batch_size} --num_train_epochs ${num_epochs} --warmup_ratio 0.1 --weight_decay 0 --patience 100 \
                     --max_seq_length 128 --metric_key accuracy --gpus ${gpu_num} --num_workers 32 \
                     --seed ${seed}
 
