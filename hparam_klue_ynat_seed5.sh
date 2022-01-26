@@ -4,7 +4,7 @@
 batch_sizes=(16 32 64)
 learning_rates=(1e-5 2e-5 3e-5 5e-5)
 tasks=("ynat")
-seeds=(121958, 671155, 131932, 365838, 259178)
+seeds=(121958 671155 131932 365838 259178)
 num_epochs=5
 
 # 사용할 gpu 선택
