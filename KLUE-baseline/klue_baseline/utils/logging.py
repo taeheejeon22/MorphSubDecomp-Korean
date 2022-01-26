@@ -51,7 +51,7 @@ class LoggingCallback(pl.Callback):
         tokenizer_dir = os.path.join(self.args.tokenizer_name)
         pretrained_bert_files = [file for file in os.listdir(tokenizer_dir) if file.endswith("pth")]
         pretrained_bert_file_name = pretrained_bert_files[0]
-        total_log_keys=['valid/macro_f1', 'valid/las_macro_f1', 'valid/uas_macro_f1', 'valid/accuracy']
+        total_log_keys=['valid/macro_f1', 'valid/las_macro_f1', 'valid/uas_macro_f1', 'valid/accuracy', 'valid/pearsonr', 'valid/f1']
         
     
         # get metrics
@@ -62,7 +62,7 @@ class LoggingCallback(pl.Callback):
             
             # # for total_log
             if k in total_log_keys:
-                
+                print('##### k: ', k)
                 if os.path.isfile('./run_outputs/klue_total_log.csv') == False:
                     with open ('./run_outputs/klue_total_log.csv', 'w', newline="") as f:
                         wr = csv.writer(f)
@@ -107,7 +107,7 @@ class LoggingCallback(pl.Callback):
         tokenizer_dir = os.path.join(self.args.tokenizer_name)
         pretrained_bert_files = [file for file in os.listdir(tokenizer_dir) if file.endswith("pth")]
         pretrained_bert_file_name = pretrained_bert_files[0]
-        total_log_keys=['valid/macro_f1', 'valid/las_macro_f1', 'valid/uas_macro_f1', 'valid/accuracy']
+        total_log_keys=['valid/macro_f1', 'valid/las_macro_f1', 'valid/uas_macro_f1', 'valid/accuracy', 'valid/pearsonr', 'valid/f1']
         
         # for total_log
         for k, v in metrics.items():
