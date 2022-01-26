@@ -69,8 +69,11 @@ class KlueDPInputExample:
     """
 
     def __init__(
-        self, guid: str, text: str, sent_id: int, token_id: int, token: str, pos: str, head: str, dep: str
-    ) -> None:
+    #     self, guid: str, text: str, sent_id: int, token_id: int, token: str, pos: str, head: str, dep: str
+    # ) -> None:
+        self, orig_text: str, guid: str, text: str, sent_id: int, token_id: int, token: str, pos: str, head: str, dep: str
+    ) -> None: ### our ###
+        self.orig_text = orig_text, ### our ###
         self.guid = guid
         self.text = text
         self.sent_id = sent_id
@@ -228,6 +231,8 @@ class KlueDPProcessor(DataProcessor):
                     if len(parsed) != 2:  # metadata line about dataset
                         continue
                     else:
+                        orig_text = parsed[1]   ### our ###
+
                         sent_id += 1
 
                         if self.tokenizer_config["token_type"] == "eojeol" and self.tokenizer_config["decomposition_type"] == "composed":
@@ -272,6 +277,7 @@ class KlueDPProcessor(DataProcessor):
 
                     examples.append(
                         KlueDPInputExample(
+                            orig_text=orig_text,
                             guid=guid,
                             text=text,
                             sent_id=sent_id,
@@ -450,12 +456,15 @@ class KlueDPProcessor(DataProcessor):
         ### our
         ### from klue_re.py ###
         for i in range(5):
+            print(f"i: {i}")
             logger.info("*** Example ***")
             logger.info("guid: %s" % (examples[i].guid))
-            logger.info("origin example: %s" % examples[i].text)
-            logger.info("origin tokens: %s" % self.tokenizer.tokenize(examples[i].text))
+            # logger.info("origin example: %s" % examples[i].text)
+            # logger.info("origin tokens: %s" % self.tokenizer.tokenize(examples[i].text))
+            logger.info("origin example: %s" % examples[i].orig_text)
+            logger.info("pretokenized example: %s" % examples[i].text)
             # logger.info("fixed tokens: %s" % tokenized_examples[i])
-            logger.info("features: %s" % examples[i])
+            # logger.info("features: %s" % examples[i])
         ###
 
 

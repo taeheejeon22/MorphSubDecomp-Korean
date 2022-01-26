@@ -111,8 +111,10 @@ class YNATProcessor(DataProcessor):
         for i in range(5):
             logger.info("*** Example ***")
             logger.info("guid: %s" % (examples[i].guid))
-            logger.info("origin example: %s" % examples[i].text_a)
-            logger.info("origin tokens: %s" % self.tokenizer.tokenize(examples[i].text_a))
+            # logger.info("origin example: %s" % examples[i].text_a)
+            # logger.info("origin tokens: %s" % self.tokenizer.tokenize(examples[i].text_a))
+            logger.info("origin example: %s" % data_lst[i]["title"])
+            logger.info("pretokenized example: %s" % self.pretokenizer.tokenize(data_lst[i]["title"]))
             # logger.info("fixed tokens: %s" % tokenized_examples[i])
             logger.info("features: %s" % examples[i])
         ###
