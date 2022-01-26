@@ -270,7 +270,7 @@ if __name__ == "__main__":
     parser.add_argument("--summary_dir", type=str)
 
     # spacing
-    parser.add_argument("--spacing", type=bool, default=False)
+    parser.add_argument("--spacing", type=str, default="unspacing")
     
     # max_seq_length
     parser.add_argument("--max_sequence_length", type=int, default=128)

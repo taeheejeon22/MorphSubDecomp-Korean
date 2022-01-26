@@ -24,7 +24,7 @@ def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str]
                 #print(f"[ERROR] {repr(line)}, line {i}")
                 continue
             # # 띄어쓰기
-            if TrainConfig.spacing:
+            if TrainConfig.spacing == "spacing":
                 # comment
                 splitted[1] = spacer.space([splitted[1]])[0]
                 sentence.append(splitted[0])

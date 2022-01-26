@@ -4,7 +4,7 @@
 batch_sizes=(16)
 learning_rates=(5e-5)
 tasks=("klue-dp")
-seeds=(116740 26226)
+seeds=(121958, 671155, 131932, 365838, 259178)
 #seeds=(42)
 num_epochs=10
 
