@@ -4,7 +4,7 @@
 batch_sizes=(16 32 64)
 learning_rates=(1e-5 2e-5 3e-5 5e-5)
 tasks=("klue-sts")
-seeds=(259178)
+seeds=(121958, 671155, 131932, 365838, 259178)
 num_epochs=5
 
 # 사용할 gpu 선택
@@ -19,7 +19,7 @@ tokenizers=("eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k" "eojeol_me
 "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
 
 # klue 경로
-OUTPUT_DIR="run_outputs"
+OUTPUT_DIR="/run/user/1004/gvfs/afp-volume:host=L8221.local,user=bongseok,volume=공유폴더/양봉석/klue_run_outputs"
 DATA_DIR="KLUE-baseline/data/klue_benchmark"  # default submodule for data from https://github.com/KLUE-benchmark/KLUE
 VERSION="v1.1"
 

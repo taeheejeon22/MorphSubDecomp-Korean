@@ -252,6 +252,8 @@ if __name__ == "__main__":
     parser.add_argument("--learning_rate", type=float)
     parser.add_argument("--token_type", type=str)
 
+    # spacing
+    parser.add_argument("--spacing", type=str, default="unspacing")
 
     # use tpu
     parser.add_argument("--use_tpu", type=str, default="gpu")
