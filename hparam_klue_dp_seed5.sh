@@ -1,21 +1,23 @@
 #!/bin/bash
 
 # setting:
-batch_sizes=(32)
-learning_rates=(2e-5)
-tasks=("klue-nli")
-seeds=(42)
-num_epochs=5
+batch_sizes=(16 32 64)
+learning_rates=(1e-5 2e-5 3e-5 5e-5)
+tasks=("klue-dp")
+seeds=(259178)
+
+num_epochs=10
 
 # 사용할 gpu 선택
 echo -e "gpu num 0 1 2 3 ? " 
 read gpu_num
 echo "gpu_num == ${gpu_num}"
 
-tokenizers=("morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k"
-"morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_T_wp-64k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_T_wp-64k"
-"morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_T_wp-64k"
-"morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k")
+tokenizers=("eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k" "eojeol_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k" 
+"morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
+"morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
+"morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
+"morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
 
 # klue 경로
 OUTPUT_DIR="run_outputs"
@@ -24,6 +26,7 @@ VERSION="v1.1"
 
 # 각 배치사이즈, 각 학습률 별로 태스크를 수행함.
 # 에포크 수는 5회로 통일.
+
 for seed in "${seeds[@]}"; do
 
     for batch_size in "${batch_sizes[@]}"; do
@@ -61,8 +64,8 @@ for seed in "${seeds[@]}"; do
                     --model_name_or_path ${resource}/${tokenizer} \
                     --tokenizer_name ${resource}/${tokenizer} \
                     --config_name ${resource}/${tokenizer} \
-                    --learning_rate ${learning_rate} --train_batch_size ${batch_size} --num_train_epochs ${num_epochs} --max_grad_norm 1.0 --warmup_ratio 0.1 --weight_decay 0   \
-                    --max_seq_length 128 --metric_key accuracy --gpus ${gpu_num} --num_workers 32 \
+                    --learning_rate ${learning_rate} --train_batch_size ${batch_size} --num_train_epochs ${num_epochs} --warmup_ratio 0.1 --patience 100000 \
+                    --max_seq_length 128 --metric_key uas_macro_f1 --gpus ${gpu_num} --num_workers 32 \
                     --seed ${seed}
 
                 done
@@ -74,19 +77,4 @@ for seed in "${seeds[@]}"; do
     done
 
 done
-#nli
-#python run_klue.py train
-#--task ${task}
-#--output_dir ${OUTPUT_DIR}
-#--data_dir ${DATA_DIR}/${task}-${VERSION}
-#--model_name_or_path ${model_name}
-#--learning_rate 5e-5
-#--num_train_epochs 5
-#--train_batch_size 32
-#--max_grad_norm 1.0
-#--warmup_ratio 0.1
-#--weight_decay 0
-#--max_seq_length 128
-#--metric_key accuracy
-#--gpus 0
-#--num_workers 4
+
