@@ -48,11 +48,11 @@ class TrainConfig(NamedTuple):
     Data Hyperparameters
     """
     #: train data 파일 경로
-    train_path: str = "./dataset/nlu_tasks/nsmc/ratings_train.tsv"
+    train_path: str = "./dataset/nlu_tasks/nsmc/spaced_ratings_train.tsv"
     #: test data 파일 경로
-    dev_path: str = "./dataset/nlu_tasks/nsmc/ratings_dev.tsv"
+    dev_path: str = "./dataset/nlu_tasks/nsmc/spaced_ratings_dev.tsv"
     #: test data 파일 경로
-    test_path: str = "./dataset/nlu_tasks/nsmc/ratings_test.tsv"
+    test_path: str = "./dataset/nlu_tasks/nsmc/spaced_ratings_test.tsv"
     #: output dir
     log_dir: str = "./run_outputs/{}/nsmc/logs"
     summary_dir: str = "./run_outputs/{}/nsmc/summaries"
