@@ -115,8 +115,8 @@ def make_klue_trainer(
             dirpath=Path(args.output_dir).joinpath("checkpoint"),
             monitor=metric_key,
             filename="{epoch:02d}-{step}=" + filename_for_metric,
-            save_top_k=0,
-            save_last=True,
+            save_top_k=0, # best 모델 저장
+            save_last=True, # 마지막 에포크의 모델 저장
             auto_insert_metric_name=True,
             mode="max",
         )
