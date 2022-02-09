@@ -1,7 +1,7 @@
 from typing import Dict, List, Tuple
 from tasks.nsmc.config import TrainConfig
 from quickspacer import Spacer
-spacer = Spacer()
+# spacer = Spacer()
 
 def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str], List[int]]:
     """
