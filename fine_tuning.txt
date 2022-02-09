@@ -452,32 +452,63 @@ CUDA_VISIBLE_DEVICES=3 python3 paws_run_train.py --tokenizer sp-64k
 
 
 #####
-./hparam_klue_ynat_seed5.sh
-0
-
 ./hparam_nsmc_seed5.sh
 0
+
+./hparam_nsmc_seed5_tmp.sh
+0
+
+./hparam_nsmc_seed5_tmp3.sh
+0
+
+
 
 ./hparam_hsd_seed5.sh
 0
 
+./hparam_klue_ynat_seed5.sh
+0
 
-./hparam_klue_sts_seed5.sh
-1
+
+
+
+
 
 ./hparam_paws_seed5.sh
 1
 
+./hparam_paws_seed5_tmp2.sh
+1
 
-./hparam_klue_nli_seed5.sh
-2
+./hparam_paws_seed5_tmp3.sh
+1
+
+./hparam_paws_seed5_tmp4.sh
+1
+
+./hparam_klue_sts_seed5.sh
+1
+
+
+
 
 ./hparam_cola_seed5.sh
 2
 
-
+./hparam_cola_seed5_tmp2.sh
+2
 
 ./hparam_klue_dp_seed5.sh
+2
+
+
+
+
+
+./finding_hparam_total_4_tmp2.sh
+3
+
+./hparam_klue_nli_seed5.sh
 3
 
 

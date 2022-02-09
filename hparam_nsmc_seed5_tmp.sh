@@ -9,8 +9,8 @@
 
 # setting:
 
-batch_sizes=(32 64)
-learning_rates=(1e-5 2e-5 3e-5 5e-5)
+batch_sizes=(16)
+learning_rates=(2e-5 3e-5 5e-5)
 num_epochs=5
 seeds=(259178)
 tasks=("nsmc")

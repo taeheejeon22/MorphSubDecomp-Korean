@@ -111,13 +111,13 @@ def make_klue_trainer(
     if checkpoint_callback is None:
         filename_for_metric = "{" + metric_key + ":.2f}"
 
-        # checkpoint_callback = ModelCheckpoint(
-        #     dirpath=Path(args.output_dir).joinpath("checkpoint"),
-        #     monitor=metric_key,
-        #     filename="{epoch:02d}-{step}=" + filename_for_metric,
-        #     save_top_k=1,
-        #     mode="max",
-        # )
+        checkpoint_callback = ModelCheckpoint(
+            dirpath=Path(args.output_dir).joinpath("checkpoint"),
+            monitor=metric_key,
+            filename="{epoch:02d}-{step}=" + filename_for_metric,
+            save_top_k=0,
+            mode="max",
+        )
     early_stopping_callback = EarlyStopping(monitor=metric_key, patience=args.patience, mode=args.early_stopping_mode)
     extra_callbacks.append(early_stopping_callback)
 

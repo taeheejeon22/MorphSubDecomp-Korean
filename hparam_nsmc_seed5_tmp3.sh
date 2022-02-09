@@ -9,8 +9,8 @@
 
 # setting:
 
-batch_sizes=(32 64)
-learning_rates=(1e-5 2e-5 3e-5 5e-5)
+batch_sizes=(16)
+learning_rates=(1e-5)
 num_epochs=5
 seeds=(259178)
 tasks=("nsmc")
@@ -23,9 +23,7 @@ echo -e "gpu num 0 1 2 3 ? "
 read gpu_num
 echo "gpu_num == ${gpu_num}"
 
-tokenizers=("eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k" "eojeol_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k" 
-"morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
-"morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
+tokenizers=("morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
 
