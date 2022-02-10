@@ -116,8 +116,8 @@ def make_klue_trainer(
             monitor=metric_key,
             filename="{epoch:02d}-{step}=" + filename_for_metric,
             save_top_k=0, # best 모델 저장
-            save_last=True, # 마지막 에포크의 모델 저장
-            auto_insert_metric_name=True,
+            # save_last=True, # 마지막 에포크의 모델 저장
+            # auto_insert_metric_name=True,
             mode="max",
         )
     early_stopping_callback = EarlyStopping(monitor=metric_key, patience=args.patience, mode=args.early_stopping_mode)
