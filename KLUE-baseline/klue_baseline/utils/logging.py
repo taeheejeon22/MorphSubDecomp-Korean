@@ -55,11 +55,13 @@ class LoggingCallback(pl.Callback):
         
     
         # get metrics
+        epoch = 0
         for k, v in metrics.items():
             if k in self.SKIP_KEYS:
                 continue
             rank_zero_info(f"{k} = {v}")           
             
+            epoch += 1
             # # for total_log
             if k in total_log_keys:
                 print('##### k: ', k)
@@ -67,15 +69,15 @@ class LoggingCallback(pl.Callback):
                     with open ('./run_outputs/klue_total_log.csv', 'w', newline="") as f:
                         wr = csv.writer(f)
                         dev_result = k + '_' + re.findall("\d+\.*\d*", str(v).split(',')[0])[0] # example of v: tensor(81.8213, device='cuda:0', dtype=torch.float64)
-                        wr.writerow(['time', 'task', 'model', 'tokenizer', 'seed', 'batch_size', 'lr', 'metric', 'dev'])
-                        wr.writerow([begin_time, self.args.task, pretrained_bert_file_name, self.args.tokenizer_name.split('/')[-1], self.args.seed, self.args.train_batch_size, self.args.learning_rate, dev_result.split('_')[0:-1], dev_result.split('_')[-1]])
+                        wr.writerow(['time', 'task', 'model', 'tokenizer', 'seed', 'batch_size', 'lr', 'metric', 'dev', 'epoch'])
+                        wr.writerow([begin_time, self.args.task, pretrained_bert_file_name, self.args.tokenizer_name.split('/')[-1], self.args.seed, self.args.train_batch_size, self.args.learning_rate, dev_result.split('_')[0:-1], dev_result.split('_')[-1]], epoch)
                         print("making total_log.csv...")
                         print("logging dev, test...")
                 else:
                     with open ('./run_outputs/klue_total_log.csv', 'a', newline="") as f:
                         wr = csv.writer(f)
                         dev_result = k + '_' + re.findall("\d+\.*\d*", str(v).split(',')[0])[0]
-                        wr.writerow([begin_time, self.args.task, pretrained_bert_file_name, self.args.tokenizer_name.split('/')[-1], self.args.seed, self.args.train_batch_size, self.args.learning_rate, dev_result.split('_')[0:-1], dev_result.split('_')[-1]])
+                        wr.writerow([begin_time, self.args.task, pretrained_bert_file_name, self.args.tokenizer_name.split('/')[-1], self.args.seed, self.args.train_batch_size, self.args.learning_rate, dev_result.split('_')[0:-1], dev_result.split('_')[-1]], epoch)
                         print("logging dev, test...")
                         
                 
