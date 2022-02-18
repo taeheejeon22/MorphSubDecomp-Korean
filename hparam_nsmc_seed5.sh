@@ -38,12 +38,12 @@ for seed in "${seeds[@]}"; do
         for learning_rate in "${learning_rates[@]}"; do
 
             for task in "${tasks[@]}"; do
-                # 띄어쓰기 적용 여부
-                if [[ ${task} == "nsmc" ]]; then
-                    spacing="spacing"
-                else
-                    spacing="unspacing"
-                fi
+                # # 띄어쓰기 적용 여부
+                # if [[ ${task} == "nsmc" ]]; then
+                #     spacing="spacing"
+                # else
+                #     spacing="unspacing"
+                # fi
 
                 log_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/logs
                 summary_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/summaries
