@@ -12,7 +12,7 @@
 batch_sizes=(16 32 64)
 learning_rates=(1e-5 2e-5 3e-5 5e-5)
 num_epochs=5
-seeds=(259178)
+seeds=(121958 671155 131932 365838 259178)
 tasks=("nsmc")
 
 # 띄어쓰기 교정 적용 여부(nsmc, hsd만 해당). 
