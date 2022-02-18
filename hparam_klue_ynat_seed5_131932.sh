@@ -3,8 +3,8 @@
 # setting:
 batch_sizes=(16 32 64)
 learning_rates=(1e-5 2e-5 3e-5 5e-5)
-tasks=("klue-nli")
-seeds=(259178)
+tasks=("ynat")
+seeds=(131932)
 num_epochs=5
 
 # 사용할 gpu 선택
@@ -63,7 +63,7 @@ for seed in "${seeds[@]}"; do
                     --tokenizer_name ${resource}/${tokenizer} \
                     --config_name ${resource}/${tokenizer} \
                     --learning_rate ${learning_rate} --train_batch_size ${batch_size} --num_train_epochs ${num_epochs} --warmup_ratio 0.1 --patience 100000 \
-                    --max_seq_length 128 --metric_key accuracy --gpus ${gpu_num} --num_workers 32 \
+                    --max_seq_length 128 --metric_key macro_f1 --gpus ${gpu_num} --num_workers 16 \
                     --seed ${seed}
 
                 done
@@ -75,19 +75,4 @@ for seed in "${seeds[@]}"; do
     done
 
 done
-#nli
-#python run_klue.py train
-#--task ${task}
-#--output_dir ${OUTPUT_DIR}
-#--data_dir ${DATA_DIR}/${task}-${VERSION}
-#--model_name_or_path ${model_name}
-#--learning_rate 5e-5
-#--num_train_epochs 5
-#--train_batch_size 32
-#--max_grad_norm 1.0
-#--warmup_ratio 0.1
-#--weight_decay 0
-#--max_seq_length 128
-#--metric_key accuracy
-#--gpus 0
-#--num_workers 4
+
