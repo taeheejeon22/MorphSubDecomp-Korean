@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # setting:
-batch_sizes=(32 64)
-learning_rates=(1e-5 2e-5 3e-5 5e-5)
+batch_sizes=(16)
+learning_rates=(3e-5 5e-5)
 tasks=("ynat")
-seeds=(131932)
+seeds=(671155)
 num_epochs=5
 
 # 사용할 gpu 선택

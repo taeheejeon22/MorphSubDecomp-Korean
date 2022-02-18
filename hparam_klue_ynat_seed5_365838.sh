@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # setting:
-batch_sizes=(16 32 64)
+batch_sizes=(32 64)
 learning_rates=(1e-5 2e-5 3e-5 5e-5)
 tasks=("ynat")
 seeds=(365838)

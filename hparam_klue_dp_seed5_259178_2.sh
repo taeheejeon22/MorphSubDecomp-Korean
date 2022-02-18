@@ -1,11 +1,12 @@
 #!/bin/bash
 
 # setting:
-batch_sizes=(32 64)
-learning_rates=(1e-5 2e-5 3e-5 5e-5)
-tasks=("ynat")
-seeds=(131932)
-num_epochs=5
+batch_sizes=(16)
+learning_rates=(5e-5)
+tasks=("klue-dp")
+seeds=(259178)
+
+num_epochs=10
 
 # 사용할 gpu 선택
 echo -e "gpu num 0 1 2 3 ? " 
@@ -25,6 +26,7 @@ VERSION="v1.1"
 
 # 각 배치사이즈, 각 학습률 별로 태스크를 수행함.
 # 에포크 수는 5회로 통일.
+
 for seed in "${seeds[@]}"; do
 
     for batch_size in "${batch_sizes[@]}"; do
@@ -63,7 +65,7 @@ for seed in "${seeds[@]}"; do
                     --tokenizer_name ${resource}/${tokenizer} \
                     --config_name ${resource}/${tokenizer} \
                     --learning_rate ${learning_rate} --train_batch_size ${batch_size} --num_train_epochs ${num_epochs} --warmup_ratio 0.1 --patience 100000 \
-                    --max_seq_length 128 --metric_key macro_f1 --gpus ${gpu_num} --num_workers 16 \
+                    --max_seq_length 128 --metric_key uas_macro_f1 --gpus ${gpu_num} --num_workers 32 \
                     --seed ${seed}
 
                 done
