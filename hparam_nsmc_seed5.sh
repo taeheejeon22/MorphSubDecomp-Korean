@@ -4,7 +4,7 @@
 # 하이퍼파라미터를 찾기 위해 각 세팅별로 run_train.py를 반복하는 코드입니다.
 # batch_size, learning_rate, epoch 수, task 종류, seed, tokenizer 사용할 gpu를 설정할 수 있습니다.
 # 각 하이퍼파라미터에 여러 세팅을 입력하면 입력한 수만큼 반복하여 실행하게 됩니다.
-# spacing 옵션을 True로 하여 포함시키게 되면 데이터 전처리 시 띄어쓰기 교정을 수행하게 됩니다. 단, spacing은 nsmc, hsd task에 대해서만 가능합니다.
+# spacing 옵션을 'spacing'으로 하여 포함시키게 되면 데이터 전처리 시 띄어쓰기 교정을 수행하게 됩니다. 단, spacing은 nsmc, hsd task에 대해서만 가능합니다.
 #############################
 
 # setting:
@@ -15,7 +15,8 @@ num_epochs=5
 seeds=(259178)
 tasks=("nsmc")
 
-# 띄어쓰기 교정 적용 여부(nsmc, hsd만 해당). spacing을 사용하려면 아래의 주석 처리를 해제하고, for문 아래의 run_train.py의 주석처리 또한 해제하시면 됩니다.
+# 띄어쓰기 교정 적용 여부(nsmc, hsd만 해당). 
+spacing="unspacing"
 
 
 # 사용할 gpu 선택
