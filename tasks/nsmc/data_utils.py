@@ -28,7 +28,7 @@ def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str]
             #     sentences.append(splitted[0])
             # else:
             #     sentences.append(splitted[0])
-            # sentences.append(splitted[0])
+            sentences.append(splitted[0])
             labels.append(label_to_index[splitted[1]])
 
     return sentences, labels
