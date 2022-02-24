@@ -9,10 +9,10 @@
 
 # setting:
 
-batch_sizes=(64)
-learning_rates=(5e-5)
+batch_sizes=(32)
+learning_rates=(2e-5)
 num_epochs=5
-seeds=(365838)
+seeds=(259178)
 tasks=("nsmc")
 
 # 띄어쓰기 교정 적용 여부(nsmc, hsd만 해당). 

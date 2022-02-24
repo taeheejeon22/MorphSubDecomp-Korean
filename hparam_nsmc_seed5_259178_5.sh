@@ -1,12 +1,23 @@
 #!/bin/bash
 
-# setting:
-batch_sizes=(16)
-learning_rates=(5e-5)
-tasks=("klue-dp")
-seeds=(259178)
+#############################
+# 하이퍼파라미터를 찾기 위해 각 세팅별로 run_train.py를 반복하는 코드입니다.
+# batch_size, learning_rate, epoch 수, task 종류, seed, tokenizer 사용할 gpu를 설정할 수 있습니다.
+# 각 하이퍼파라미터에 여러 세팅을 입력하면 입력한 수만큼 반복하여 실행하게 됩니다.
+# spacing 옵션을 'spacing'으로 하여 포함시키게 되면 데이터 전처리 시 띄어쓰기 교정을 수행하게 됩니다. 단, spacing은 nsmc, hsd task에 대해서만 가능합니다.
+#############################
 
-num_epochs=10
+# setting:
+
+batch_sizes=(16)
+learning_rates=(2e-5 3e-5 5e-5)
+num_epochs=5
+seeds=(259178)
+tasks=("nsmc")
+
+# 띄어쓰기 교정 적용 여부(nsmc, hsd만 해당). 
+spacing="unspacing"
+
 
 # 사용할 gpu 선택
 echo -e "gpu num 0 1 2 3 ? " 
@@ -19,13 +30,6 @@ tokenizers=("eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k" "eojeol_me
 "morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
 "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
 
-# klue 경로
-OUTPUT_DIR="./run_outputs"
-DATA_DIR="KLUE-baseline/data/klue_benchmark"  # default submodule for data from https://github.com/KLUE-benchmark/KLUE
-VERSION="v1.1"
-
-# 각 배치사이즈, 각 학습률 별로 태스크를 수행함.
-# 에포크 수는 5회로 통일.
 
 for seed in "${seeds[@]}"; do
 
@@ -34,17 +38,24 @@ for seed in "${seeds[@]}"; do
         for learning_rate in "${learning_rates[@]}"; do
 
             for task in "${tasks[@]}"; do
-                # log_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/logs
-                # summary_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/summaries
+                # 띄어쓰기 적용 여부
+#                if [[ ${task} == "nsmc" ]]; then
+#                    spacing="spacing"
+#                else
+#                    spacing="unspacing"
+#                fi
 
+                log_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/logs
+                summary_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/summaries
+                
                 echo "### batch_size: ${batch_size} ###"
                 echo "### learning_rate: ${learning_rate} ###"
                 echo "### vocab_size: ${vocab_size} ###"
                 echo "### task: ${task} ###"
-                echo "### log_dir: $log_dir ###"
-                echo "### summary_dir: $summary_dir ###"
+                echo "### log_dir: ${log_dir} ###"
+                echo "### summary_dir: ${summary_dir} ###"
                 echo "### seed: ${seed} ###"
-                
+            
                 for tokenizer in "${tokenizers[@]}"; do
                     echo "### tokenizer: ${tokenizer} ###"
 
@@ -57,17 +68,15 @@ for seed in "${seeds[@]}"; do
                         echo "tokenizer_name ERROR"
                     fi
 
-                    python run_klue.py train \
-                    --task ${task} \
-                    --output_dir ${OUTPUT_DIR}  \
-                    --data_dir ${DATA_DIR}/${task}-${VERSION} \
-                    --model_name_or_path ${resource}/${tokenizer} \
-                    --tokenizer_name ${resource}/${tokenizer} \
-                    --config_name ${resource}/${tokenizer} \
-                    --learning_rate ${learning_rate} --train_batch_size ${batch_size} --num_train_epochs ${num_epochs} --warmup_ratio 0.1 --patience 100000 \
-                    --max_seq_length 128 --metric_key uas_macro_f1 --gpus ${gpu_num} --num_workers 32 \
-                    --seed ${seed}
-
+                    CUDA_VISIBLE_DEVICES=${gpu_num} python3 tasks/$task/run_train.py --tokenizer ${tokenizer} \
+                    --resource_dir ${resource} \
+                    --batch_size ${batch_size} \
+                    --learning_rate ${learning_rate} \
+                    --log_dir ${log_dir} \
+                    --summary_dir ${summary_dir} \
+                    --num_epochs ${num_epochs} \
+                    --seed ${seed} \
+                    --spacing ${spacing}
                 done
 
             done
@@ -77,4 +86,5 @@ for seed in "${seeds[@]}"; do
     done
 
 done
+
 
