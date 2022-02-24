@@ -65,7 +65,7 @@ do
     echo "RESORCE_DIR: ${RESOURCE_DIR}"
     # 코퍼스 조각 -> tfrecord로 만드는 작업을 백그라운드에서 실행
     command=nohup \
-    python3 bert-sentencepiece/create_pretraining_data.py \
+    python bert-sentencepiece/create_pretraining_data.py \
     --input_file=${file} \
     --output_file=gs://${OUTPUT_DIR}/${file_name}.tfrecord \
     --vocab_file=gs://${RESOURCE_DIR}/vocab.txt \

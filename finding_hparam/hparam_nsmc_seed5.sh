@@ -62,7 +62,7 @@ for seed in "${seeds[@]}"; do
                         echo "tokenizer_name ERROR"
                     fi
 
-                    CUDA_VISIBLE_DEVICES=${gpu_num} python3 ./tasks/$task/run_train.py --tokenizer ${tokenizer} \
+                    CUDA_VISIBLE_DEVICES=${gpu_num} python ./tasks/$task/run_train.py --tokenizer ${tokenizer} \
                     --resource_dir ${resource} \
                     --batch_size ${batch_size} \
                     --learning_rate ${learning_rate} \

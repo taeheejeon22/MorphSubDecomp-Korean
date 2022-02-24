@@ -42,7 +42,12 @@ echo -e "bert_model_dir: "
 read MODEL_DIR
 echo "bert_model_dir == $MODEL_DIR"
 
-# tpu name, region 입력 받기
+# project_name, tpu name, region 입력 받기
+echo "project name을 입력하세요."
+echo -e "project_name: "
+read PROJECT_NAME
+echo "PROJECT_NAME == $PROJECT_NAME"
+
 echo "tpu name을 입력하세요."
 echo -e "tpu_name: "
 read TPU_NAME
@@ -78,7 +83,7 @@ echo model_dir == $MODEL_DIR
 if [[ $INIT == "F" ]]; then
 
     nohup \
-    python3 bert-sentencepiece/run_pretraining.py \
+    python bert-sentencepiece/run_pretraining.py \
     --input_file=gs://$TFRECORD_DIR/*.tfrecord \
     --output_dir=gs://$MODEL_DIR \
     --do_train=True \
@@ -94,11 +99,11 @@ if [[ $INIT == "F" ]]; then
     --use_tpu=True \
     --tpu_name=$TPU_NAME \
     --tpu_zone=$REGION \
-    --gcp_project=smooth-loop-327807 \
+    --gcp_project=$PROJECT_NAME \
     --num_tpu_cores=8 > ${TOKENIZER}.log 2>&1 &
 else
     nohup \
-    python3 bert-sentencepiece/run_pretraining.py \
+    python bert-sentencepiece/run_pretraining.py \
     --input_file=gs://$TFRECORD_DIR/*.tfrecord \
     --output_dir=gs://$MODEL_DIR \
     --do_train=True \
@@ -115,7 +120,7 @@ else
     --use_tpu=True \
     --tpu_name=$TPU_NAME \
     --tpu_zone=$REGION \
-    --gcp_project=smooth-loop-327807 \
+    --gcp_project=$PROJECT_NAME \
     --num_tpu_cores=8 > ${TOKENIZER}.log 2>&1 &
 fi
 

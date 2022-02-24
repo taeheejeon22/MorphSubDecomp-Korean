@@ -1,7 +1,9 @@
 #!/bin/bash
 
+# google cloud platform의 TPU를 사용하는 스크립트입니다.
 # pretraining_code_stage1.sh 를 실행시켜서 만든 tfrecord 파일들로 
-# ckpt 파일을 만드는 작업
+# ckpt 파일을 만드는 작업입니다.
+# ckpt 파일이 최종 BERT 모델로 사용됩니다.
 
 # 필요한 도구 받기
 
@@ -41,7 +43,12 @@ echo -e "bert_model_dir: "
 read MODEL_DIR
 echo "bert_model_dir == $MODEL_DIR"
 
-# tpu name, region 입력 받기
+# project name, tpu name, region 입력 받기
+echo "project name을 입력하세요."
+echo -e "project_name: "
+read PROJECT_NAME
+echo "PROJECT_NAME == $PROJECT_NAME"
+
 echo "tpu name을 입력하세요."
 echo -e "tpu_name: "
 read TPU_NAME
@@ -53,6 +60,7 @@ read REGION
 echo "region == $REGION"
 
 # init_checkpoints의 여부
+# 기존에 저장된 checkpoint부터 학습을 이어갈 수 있습니다.
 echo "init_checkpoints 쓰면 T, 안 쓰면 F"
 echo -e "T or F: "
 read INIT
@@ -77,7 +85,7 @@ echo model_dir == $MODEL_DIR
 if [[ $INIT == "F" ]]; then
 
     nohup \
-    python3 bert/run_pretraining.py \
+    python bert/run_pretraining.py \
     --input_file=gs://$TFRECORD_DIR/*.tfrecord \
     --output_dir=gs://$MODEL_DIR \
     --do_train=True \
@@ -89,16 +97,16 @@ if [[ $INIT == "F" ]]; then
     --num_train_steps=1000000 \
     --num_warmup_steps=10000 \
     --learning_rate=5e-5 \
-    --save_checkpoints_steps=20000 \
+    --save_checkpoints_steps=20000 \ # 20000스텝마다 checkpoint를 저장합니다.
     --use_tpu=True \
     --do_lower_case=False \
     --tpu_name=$TPU_NAME \
     --tpu_zone=$REGION \
-    --gcp_project=smooth-loop-327807 \
+    --gcp_project=$PROJECT_NAME \
     --num_tpu_cores=8 > ${TOKENIZER}.log 2>&1 &
 else
     nohup \
-    python3 bert/run_pretraining.py \
+    python bert/run_pretraining.py \
     --input_file=gs://$TFRECORD_DIR/*.tfrecord \
     --output_dir=gs://$MODEL_DIR \
     --do_train=True \
@@ -116,7 +124,7 @@ else
     --do_lower_case=False \
     --tpu_name=$TPU_NAME \
     --tpu_zone=$REGION \
-    --gcp_project=smooth-loop-327807 \
+    --gcp_project=$PROJECT_NAME \
     --num_tpu_cores=8 > ${TOKENIZER}.log 2>&1 &
 fi
 
