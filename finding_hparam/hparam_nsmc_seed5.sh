@@ -15,7 +15,7 @@ num_epochs=5
 seeds=(121958 671155 131932 365838 259178)
 tasks=("nsmc")
 
-# 띄어쓰기 교정 적용 여부(nsmc, hsd만 해당). 
+# 띄어쓰기 교정 적용 여부(nsmc만 해당). 
 spacing="unspacing"
 
 
@@ -38,12 +38,6 @@ for seed in "${seeds[@]}"; do
         for learning_rate in "${learning_rates[@]}"; do
 
             for task in "${tasks[@]}"; do
-                # # 띄어쓰기 적용 여부
-                # if [[ ${task} == "nsmc" ]]; then
-                #     spacing="spacing"
-                # else
-                #     spacing="unspacing"
-                # fi
 
                 log_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/logs
                 summary_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/summaries

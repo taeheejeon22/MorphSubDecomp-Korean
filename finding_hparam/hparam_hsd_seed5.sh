@@ -4,7 +4,7 @@
 # 하이퍼파라미터를 찾기 위해 각 세팅별로 run_train.py를 반복하는 코드입니다.
 # batch_size, learning_rate, epoch 수, task 종류, seed, tokenizer 사용할 gpu를 설정할 수 있습니다.
 # 각 하이퍼파라미터에 여러 세팅을 입력하면 입력한 수만큼 반복하여 실행하게 됩니다.
-# spacing 옵션을 'spacing'으로 하여 포함시키게 되면 데이터 전처리 시 띄어쓰기 교정을 수행하게 됩니다. 단, spacing은 nsmc, hsd task에 대해서만 가능합니다.
+# spacing 옵션을 True로 하여 포함시키게 되면 데이터 전처리 시 띄어쓰기 교정을 수행하게 됩니다. 단, spacing은 nsmc, hsd task에 대해서만 가능합니다.
 #############################
 
 # setting:
@@ -12,12 +12,8 @@
 batch_sizes=(16 32 64)
 learning_rates=(1e-5 2e-5 3e-5 5e-5)
 num_epochs=5
-seeds=(121958)
-tasks=("nsmc")
-
-# 띄어쓰기 교정 적용 여부(nsmc, hsd만 해당). 
-spacing="unspacing"
-
+seeds=(259178)
+tasks=("hsd")
 
 # 사용할 gpu 선택
 echo -e "gpu num 0 1 2 3 ? " 
@@ -38,12 +34,6 @@ for seed in "${seeds[@]}"; do
         for learning_rate in "${learning_rates[@]}"; do
 
             for task in "${tasks[@]}"; do
-                # 띄어쓰기 적용 여부
-#                if [[ ${task} == "nsmc" ]]; then
-#                    spacing="spacing"
-#                else
-#                    spacing="unspacing"
-#                fi
 
                 log_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/logs
                 summary_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/summaries
@@ -75,8 +65,7 @@ for seed in "${seeds[@]}"; do
                     --log_dir ${log_dir} \
                     --summary_dir ${summary_dir} \
                     --num_epochs ${num_epochs} \
-                    --seed ${seed} \
-                    --spacing ${spacing}
+                    --seed ${seed}
                 done
 
             done

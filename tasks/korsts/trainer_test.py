@@ -16,7 +16,7 @@ from tasks.korsts.model import KorSTSModel
 import torch_xla
 import torch_xla.core.xla_model as xm # for using tpu
 import torch_xla.distributed.xla_multiprocessing as xmp
-import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
+# import torch_xla.distributed.parallel_loader as pl # for using multiple tpu core
 
 from time import gmtime, strftime
 

@@ -9,14 +9,11 @@
 
 # setting:
 
-batch_sizes=(16 32 64)
+batch_sizes=(64)
 learning_rates=(1e-5 2e-5 3e-5 5e-5)
 num_epochs=5
 seeds=(259178)
-tasks=("cola")
-
-# 띄어쓰기 교정 적용 여부(nsmc, hsd만 해당). spacing을 사용하려면 아래의 주석 처리를 해제하고, for문 아래의 run_train.py의 주석처리 또한 해제하시면 됩니다.
-
+tasks=("paws")
 
 # 사용할 gpu 선택
 echo -e "gpu num 0 1 2 3 ? " 
@@ -37,12 +34,6 @@ for seed in "${seeds[@]}"; do
         for learning_rate in "${learning_rates[@]}"; do
 
             for task in "${tasks[@]}"; do
-                # 띄어쓰기 적용 여부
-                if [[ ${task} == "nsmc" ]]; then
-                    spacing="spacing"
-                else
-                    spacing="unspacing"
-                fi
 
                 log_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/logs
                 summary_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/summaries
@@ -74,8 +65,7 @@ for seed in "${seeds[@]}"; do
                     --log_dir ${log_dir} \
                     --summary_dir ${summary_dir} \
                     --num_epochs ${num_epochs} \
-                    --seed ${seed} \
-                    --spacing ${spacing}
+                    --seed ${seed}
                 done
 
             done
