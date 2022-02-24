@@ -19,8 +19,8 @@ tokenizers=("eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k" "eojeol_me
 "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
 
 # klue 경로
-OUTPUT_DIR="./run_outputs"
-DATA_DIR="KLUE-baseline/data/klue_benchmark"  # default submodule for data from https://github.com/KLUE-benchmark/KLUE
+OUTPUT_DIR="../run_outputs"
+DATA_DIR="./KLUE-baseline/data/klue_benchmark"  # default submodule for data from https://github.com/KLUE-benchmark/KLUE
 VERSION="v1.1"
 
 # 각 배치사이즈, 각 학습률 별로 태스크를 수행함.
@@ -49,9 +49,9 @@ for seed in "${seeds[@]}"; do
 
                     # resource dir
                     if [[ `echo "${tokenizer: (-8):1}"` == "T" ]]; then
-                        resource="./resources/v6_without_dummy_letter_grammatical_symbol_T"
+                        resource="../resources/v6_without_dummy_letter_grammatical_symbol_T"
                     elif [[ `echo "${tokenizer: (-8):1}"` == "F" ]]; then
-                        resource="./resources/v6_without_dummy_letter_grammatical_symbol_F"
+                        resource="../resources/v6_without_dummy_letter_grammatical_symbol_F"
                     else
                         echo "tokenizer_name ERROR"
                     fi
