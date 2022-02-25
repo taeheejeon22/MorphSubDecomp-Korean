@@ -34,6 +34,11 @@ CUDA_VISIBLE_DEVICES=0 python ./tasks/$task/run_train.py --tokenizer ${tokenizer
 
 ## 3. hyperparameter 찾기
 finding_hparam 디렉토리에 있는 script를 실행하면 각 task별로 여러 개의 hyperparameter를 설정하고 실험해볼 수 있습니다.
+ex)
+```
+./hparam_nsmc.sh
+1 # gpu number
+```
 
 ## 4. log 확인
 학습을 진행하는 동안 `run_outputs` 디렉토리에 log가 저장됩니다.
