@@ -33,4 +33,6 @@ CUDA_VISIBLE_DEVICES=0 python ./tasks/$task/run_train.py --tokenizer ${tokenizer
 ```
 
 ## 3. hyperparameter 찾기
-# finding_hparam 디렉토리에 있는 script를 실행하면 각 task별로 여러 개의 hyperparameter 를 설정하고 실험해볼 수 있습니다.
+finding_hparam 디렉토리에 있는 script를 실행하면 각 task별로 여러 개의 hyperparameter를 설정하고 실험해볼 수 있습니다.
+
+## log
