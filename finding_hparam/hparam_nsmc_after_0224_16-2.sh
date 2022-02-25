@@ -6,12 +6,25 @@
 # 각 하이퍼파라미터에 여러 세팅을 입력하면 입력한 수만큼 반복하여 실행하게 됩니다.
 #############################
 
+# 0224 이후 남은 세팅
+# seed  batch   lr  tokenizer
+# 259178    16  1   morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k
+# 259178    16  3   전체
+# 259178    16  5   전체
+# 259178    32  1   어절 2개 제외 전체
+# 259178    32  5   morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k
+# 259178    64  2   morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k
+# 259178    64  3   전체
+# 259178    64  5   전체
+
+
+
 # setting:
 
-batch_sizes=(16 32 64)
-learning_rates=(1e-5 2e-5 3e-5 5e-5)
+batch_sizes=(16)
+learning_rates=(5e-5)
 num_epochs=5
-seeds=(121958 671155 131932 365838 259178)
+seeds=(259178)
 tasks=("nsmc")
 
 
@@ -65,7 +78,7 @@ for seed in "${seeds[@]}"; do
                     --log_dir ${log_dir} \
                     --summary_dir ${summary_dir} \
                     --num_epochs ${num_epochs} \
-                    --seed ${seed} 
+                    --seed ${seed}
                 done
 
             done
