@@ -64,7 +64,7 @@ ex)
   - https://docs.google.com/spreadsheets/d/1rHuXSwGfvQJciZmJQt2SbnB9kdkFzbMhQ8UAb7jdxMc/edit#gid=1889642085 에 접속합니다.
 
   5.2. 기록 붙여넣기
-  - 현재 사용하고 있는 탭은 모두 탭 이름 아래 빨간 밑줄이 그어져 있습니다.
+  - (현재 사용하고 있는 탭은 모두 탭 이름 아래 빨간 밑줄이 그어져 있습니다.)
   - `total_log.csv`: 쌓인 로그를 "final_hparam" 탭에 붙여넣기합니다.
   - `klue_total_log.csv`: 쌓인 로그를 "final_klue" 탭에 붙여넣기합니다.
   - (이전 실험의 기록들이 있는 탭은 전부 '숨기기'처리가 되어있습니다. 숨겨진 탭을 보려면 창 하단의 가로줄 4개짜리 버튼을 누른 후 원하는 탭을 클릭하면 됩니다.)
@@ -83,7 +83,7 @@ ex)
     - 2위에 밑줄 적용하기: `서식 - 조건부서식 - 범위 선택 - 형식규칙: '맞춤수식', =(rank(첫번째칸, 범위)=2) - 서식지정스타일: 밑줄`
 
 
-## 기타 수정사항
+## 기타 수정한 사항
 - 원활한 finetuning을 위해 원본 코드를 수정한 내역
   
   1. `KLUE-baseline/klue_baseline/utils/logging.py` line 67
@@ -130,3 +130,8 @@ ex)
       #self.optimizer.step()
       self.scheduler.step()
       ```
+
+  4. nsmc spacing
+    - `tasks/nsmc/data_utils.py` line 5-7, line 26-31, `tasks/nsmc/config.py` line 11
+    - 주석 처리를 해제하고, `run_train.py`를 돌릴 때 `--spacing` 인자에 "spacing"을 넣으면 데이터셋에 대해서 띄어쓰기 교정을 먼저 수행한 후 토크나이징 및 학습을 시행함.
+    - 또는, `tasks/nsmc/config.py` line 51, 53, 55에서 `train_path`, `dev_path`, `test_path` 를 `ratings...tsv` -> `spaced_ratings..tsv`로 수정한 후 학습 진행. 이 방법이 위의 방법보다 훨씬 속도가 빠름.

@@ -22,7 +22,11 @@ corpus/tfrecord/*
 *.bin
 
 # analysis
-dataset_analysis
+dataset_analysis/.ipynb_checkpoints/*
+dataset_analysis/__pycache__
+dataset_analysis/*.csv
+dataset_analysis/*.tsv
+dataset_analysis/*.zip
 
 # log
 run_outputs/*
