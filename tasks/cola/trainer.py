@@ -173,6 +173,8 @@ class Trainer:
         loss = self.criterion(outputs, labels)
         loss.backward()
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
+        
+        # for tpu
         if self.config.use_tpu == "tpu":
             # optimizer for TPU (Note: Cloud TPU-specific code!)
             import torch_xla.core.xla_model as xm # for using tpu

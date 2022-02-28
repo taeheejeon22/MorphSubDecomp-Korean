@@ -24,7 +24,8 @@ python run_klue.py train \
 
 예시
 ```
-CUDA_VISIBLE_DEVICES=0 python ./tasks/$task/run_train.py --tokenizer ${tokenizer} \
+CUDA_VISIBLE_DEVICES=0 python ./tasks/$task/run_train.py \
+--tokenizer ${tokenizer} \
 --resource_dir ./resource_dir \
 --batch_size 16 \
 --learning_rate 1e-5 \
@@ -36,6 +37,8 @@ CUDA_VISIBLE_DEVICES=0 python ./tasks/$task/run_train.py --tokenizer ${tokenizer
 
 ## 3. hyperparameter 찾기 
 finding_hparam 디렉토리에 있는 shell script를 실행하면 각 task별로 여러 개의 hyperparameter를 설정하고 실험해볼 수 있습니다.
+- (seed는 `random_seeds` 파일에 있습니다.)
+
 
 ex)
 ```
@@ -73,10 +76,57 @@ ex)
   - **dev set 평균 1위인 세팅**을 best hyperparameter로 선정합니다. **metric이 여러 개인 경우, 각 metric별 평균이 1위인 세팅**을 선정합니다.
 
   5.4. 결과 비교
-  - "final_hparam_table"에 best hyperparameter 값을 입력합니다. (`토크나이저 순서를 "final_hparam_table" 탭과 일치시킨 후 복사 - 붙일 칸에서 마우스 오른쪽 버튼 클릭 - 선택하여 붙여넣기 - 순서 바꾸기` 순으로 붙여넣기를 하면 가로로 나열된 데이터를 세로칸에 붙여넣을 수 있습니다.)
+  - "final_hparam_table"에 best hyperparameter 값을 입력합니다. (표의 토크나이저 순서를 "final_hparam_table" 탭과 일치시킨 후, 해당 파라미터 세팅의 점수들이 있는 행을 `복사 - 붙일 칸에서 마우스 오른쪽 버튼 클릭 - 선택하여 붙여넣기 - 순서 바꾸기` 순으로 붙여넣기를 하면 가로로 나열된 데이터를 세로칸에 붙여넣을 수 있습니다.)
   - 각 칼럼별로 점수 순위가 색으로 표현됩니다.
   - 굵은 글씨 + 밑줄: 1위, 밑줄: 2위
     - 1위에 굵은글씨+밑줄 적용하기: `서식 - 조건부서식 - 범위 선택 - 형식규칙: '같음', =subtotal(104, 범위) - 서식지정스타일: 굵은글씨, 밑줄`
     - 2위에 밑줄 적용하기: `서식 - 조건부서식 - 범위 선택 - 형식규칙: '맞춤수식', =(rank(첫번째칸, 범위)=2) - 서식지정스타일: 밑줄`
 
 
+## 기타 수정사항
+- 원활한 finetuning을 위해 원본 코드를 수정한 내역
+  
+  1. `KLUE-baseline/klue_baseline/utils/logging.py` line 67
+    - `klue_total_log.csv` 기록을 위해 코드를 추가함.
+      ```
+      # # for total_log
+      if k in total_log_keys:
+          print('##### k: ', k)
+          if os.path.isfile('./run_outputs/klue_total_log.csv') == False:
+              with open ('./run_outputs/klue_total_log.csv', 'w', newline="") as f:
+                  wr = csv.writer(f)
+                  ...
+                  ...
+      ```
+
+  2. `tasks/cola/trainer.py` 및 hsd, paws 등의 tasks의 train.py 파일들
+    - `total_log.csv` 기록을 위한 코드 추가
+      ```
+      # dev,test 결과만 따로 저장
+      self.begin_time = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
+      tokenizer_dir = os.path.join(self.config.resource_dir, self.config.tokenizer)
+      self.pretrained_bert_files = [file for file in os.listdir(tokenizer_dir) if file.endswith("pth")]
+      self.pretrained_bert_file_name = self.pretrained_bert_files[0]
+
+      if os.path.isfile('./run_outputs/total_log.csv') == False:
+          with open ('./run_outputs/total_log.csv', 'w', newline="") as f:
+              wr = csv.writer(f)
+              ...
+              ...
+      ```
+
+  3. `tasks/cola/trainer.py` 및 hsd, paws 등의 tasks의 train.py 파일들
+    - (과거) TPU 사용 fine tuning을 위한 코드
+    - TPU로 fine tuning 학습 시 필요한 부분 (cola, paws 등에만 추가됨. klue는 오리지널 코드에 이미 tpu 사용 코드가 있음.)
+    - `run_train.py` 실행 시 --use_tpu 인자에 `tpu`를 넣어주게 되면 실행됨. (단, 현재 코드로는 1개의 코어로 학습이 수행됨.)
+      ```
+      if self.config.use_tpu == "tpu":
+        # optimizer for TPU (Note: Cloud TPU-specific code!)
+        import torch_xla.core.xla_model as xm # for using tpu
+        xm.optimizer_step(self.optimizer, barrier=True) # multi core 사용 시 barrier=True 불필요
+      else:
+          self.optimizer.step()
+
+      #self.optimizer.step()
+      self.scheduler.step()
+      ```
