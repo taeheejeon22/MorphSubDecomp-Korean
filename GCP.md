@@ -43,3 +43,18 @@ GCP 사용법(https://baekyeongmin.github.io/dev/tpu-recipe/)
           ```
           
       5.3. 5.2 과정 이후 학습이 진행됨. 명령어 log는 `command.log`에 저장되고, 학습 로그는 `토크나이저명.log`에 저장됨.
+
+
+6. 기타 사용법
+        - gcp 명령어로 스토리지와 로컬, 스토리지외 vm 간 파일 전송
+            - 웹상에서 진행해도 되나 `gsutil cp 옮길자료가있는원주소 자료를옮길주소` 를 사용할 수 있음.
+            - 이때 gcp 스토리지의 주소를 가리킬 때는 주소 맨 앞에 `gs://` 기입 필요.
+
+        - gcp 명령어로 tpu 만들기
+            ```
+            ctpu up --zone=europe-west4-a \
+            --tf-version=2.3.0 \
+            --tpu-size=v3-8 
+            --machine-type=n1-standard-1 \
+            --disk-size-gb=20 --name={$VM_NAME}
+            ```
