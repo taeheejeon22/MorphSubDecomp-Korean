@@ -93,7 +93,7 @@ python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./co
 
 
 python scripts/mecab_tokenization_v2_1.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed --lexical_grammatical
-python scripts/mecab_tokenization_v2_1.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --lexical_grammatical --nfd --n_jobs=24
+python scripts/mecab_tokenization_v2_1.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --lexical_grammatical --nfd
 python scripts/mecab_tokenization_v2_1.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_lexical --lexical_grammatical --nfd
 python scripts/mecab_tokenization_v2_1.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_grammatical --lexical_grammatical --nfd
 ```
@@ -107,10 +107,10 @@ python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./co
 python scripts/mecab_tokenization_v2.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_grammatical --nfd --grammatical_symbol=⫸⭧
 
 
-python scripts/mecab_tokenization_v2_1.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed --lexical_grammatical --nfd 
-python scripts/mecab_tokenization_v2_1.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --lexical_grammatical --nfd 
-python scripts/mecab_tokenization_v2_1.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_lexical --lexical_grammatical --nfd 
-python scripts/mecab_tokenization_v2_1.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_grammatical --lexical_grammatical --nfd 
+python scripts/mecab_tokenization_v2_1.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=composed --lexical_grammatical --nfd --n_jobs=16
+python scripts/mecab_tokenization_v2_1.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_pure --lexical_grammatical --nfd --n_jobs=16
+python scripts/mecab_tokenization_v2_1.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_lexical --lexical_grammatical --nfd --n_jobs=16
+python scripts/mecab_tokenization_v2_1.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_v3_nn.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_grammatical --lexical_grammatical --nfd --n_jobs=16
 ```
 
 ## namuwiki
