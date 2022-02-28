@@ -25,7 +25,9 @@ GCP 사용법(https://baekyeongmin.github.io/dev/tpu-recipe/)
     5.1. 터미널 창에서 vm을 ssh로 접속
   
     5.2. acl_tokenization에서 `pretrain_code/wp_pretraining_code_stage2.sh` 실행
+    
           - (tfrecord 만들기는 `wp_offline_pretraining_code_stage1.sh` 를 로컬 pc에서 실행)
+          
           ```
           # 쉘 스크립트 실행 (첫 실행 시에는 스크립트 첫 번째 단에 있는 `pip install...`을 주석 해제하여 필요한 도구들을 다운로드해야 함.)
           ./wp_pretraining_code_stage2.sh 
@@ -39,4 +41,5 @@ GCP 사용법(https://baekyeongmin.github.io/dev/tpu-recipe/)
 
           # 만약 checkpoint 저장 간격을 바꾸고자 한타면 스크립트 내에서 `--save_checkpoints_steps` 인자를 수정하면 됨.
           ```
+          
       5.3. 5.2 과정 이후 학습이 진행됨. 명령어 log는 `command.log`에 저장되고, 학습 로그는 `토크나이저명.log`에 저장됨.
