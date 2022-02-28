@@ -21,6 +21,7 @@ GCP 사용법(https://baekyeongmin.github.io/dev/tpu-recipe/)
 4. tfrecord 파일, resource 파일들을 storage에 업로드
 
 5. VM 실행
+
     5.1. 터미널 창에서 vm을 ssh로 접속
   
     5.2. acl_tokenization에서 `pretrain_code/wp_pretraining_code_stage2.sh` 실행
