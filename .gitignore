@@ -31,7 +31,6 @@ dataset_analysis/*.zip
 # log
 run_outputs/*
 output_sp/*
-tokenized_result/*
 
 # code
 ckpt_to_pytorch.txt
