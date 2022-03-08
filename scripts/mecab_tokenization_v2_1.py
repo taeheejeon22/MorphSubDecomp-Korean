@@ -5,7 +5,7 @@
 
 
 # v2
-# kortok 토크나이저 버리고 내 거로만. tokenizers_acl_v3_1.py
+# kortok 토크나이저 버리고 내 거로만. tokenizers_acl_v3_2.py
 
 # 9900K / DDR4 3200MHz 32GB / 12 threads
 # eojeol    none        composed                00:00:05
@@ -43,7 +43,7 @@ sys.path.insert(0, '.')
 # from tokenizer.mecab_fixed_v2 import MeCabTokenizer_fixed
 # import scripts.tokenizers_acl_v2 as tok
 # import tokenization.tokenizers_acl_v3_1 as Tokenizers
-import scripts.tokenizers_acl_v3_1 as Tokenizers
+import scripts.tokenizers_acl_v3_2 as Tokenizers
 
 
 # import MeCab
@@ -165,7 +165,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--space_symbol", type=str, default="")  # "▃" chr(9603)
 
-    parser.add_argument("--n_jobs", type=int, default=12)
+    parser.add_argument("--threads", type=int, default=12)
 
 
         # 추가한 것들
@@ -193,6 +193,7 @@ if __name__ == "__main__":
     # args = {"space_symbol": "▃", "n_jobs": 16, "decomposition_type": "decomposed_pure", "dummy_letter": "", "grammatical_symbol": ["", ""], "token_type": "morpheme", "tokenizer_type": "mecab_fixed", "nfd": "True", "corpus_path": "../namuwiki_20210301_with_preprocessing_v5_kss_00"}
     # args = {"space_symbol": "▃", "n_jobs": 16, "decomposition_type": "composed", "dummy_letter": "", "grammatical_symbol": ["", ""], "token_type": "lexical_grammatical", "tokenizer_type": "mecab_fixed", "nfd": "True", "corpus_path": "../namuwiki_20210301_with_preprocessing_v5_kss_00"}
     # args = {"space_symbol": "▃", "n_jobs": 16, "decomposition_type": "composed", "dummy_letter": "", "grammatical_symbol": ["", ""], "token_type": "morpheme", "tokenizer_type": "mecab_orig", "nfd": False, "corpus_path": "../namuwiki_20210301_with_preprocessing_v5_kss_sampled.txt", "lexical_grammatical": False}
+    # args = {"space_symbol": "▃", "n_jobs": 16, "decomposition_type": "composed", "dummy_letter": "", "grammatical_symbol": ["", ""], "token_type": "morpheme", "tokenizer_type": "mecab_orig", "nfd": False, "corpus_path": "./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn_sample.txt", "lexical_grammatical": True}
 
 
     args = vars(parser.parse_args())
@@ -308,7 +309,7 @@ if __name__ == "__main__":
 
     else:   # 형태소 분석할 경우
         with open(INPUT_CORPUS, "r", encoding="utf-8") as f:
-            with Pool(args["n_jobs"]) as p:
+            with Pool(args["threads"]) as p:
                 tokenized = p.map(tokenize_fn, f)
         # with open(INPUT_CORPUS, "r", encoding="utf-8") as f:
         #     texts = f.readlines()

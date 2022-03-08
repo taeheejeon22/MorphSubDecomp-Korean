@@ -169,14 +169,14 @@ if __name__ == "__main__":
     parser.add_argument("--tokenized_corpus_path", type=str, default="")  # 토큰화한 코퍼스 경로
 
 
-    args = {"vocab_size": 64000,
-            "tokenizer_type": "mecab_fixed",
-            "composition_type": "composed",
-            "token_type": "eojeol",
-            "with_dummy_letter": False,
-            "tokenized_corpus_path": "./corpus/tokenized/space_F_dummy_F_grammatical_F/eojeol_mecab_fixed/composed",
-            # "tokenized_corpus_path": "./convert_bert",
-            }
+    # args = {"vocab_size": 64000,
+    #         "tokenizer_type": "mecab_fixed",
+    #         "composition_type": "composed",
+    #         "token_type": "eojeol",
+    #         "with_dummy_letter": False,
+    #         "tokenized_corpus_path": "./corpus/tokenized/space_F_dummy_F_grammatical_F/eojeol_mecab_fixed/composed",
+    #         # "tokenized_corpus_path": "./convert_bert",
+    #         }
 
 
     args = vars(parser.parse_args())
@@ -193,7 +193,12 @@ if __name__ == "__main__":
     # token_type = args["token_type"]
     # tokenizer_type = args["tokenizer_type"]
     # composition_type = args["composition_type"]
-    token_type = tok_json["token_type"]
+
+    if tok_json["lexical_grammatical"] == False:
+        token_type = tok_json["token_type"]
+    elif tok_json["lexical_grammatical"] == True:
+        token_type = "LG"
+
     tokenizer_type = tok_json["tokenizer_type"]
     decomposition_type = tok_json["decomposition_type"]
 
