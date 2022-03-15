@@ -48,8 +48,8 @@ for seed in "${seeds[@]}"; do
 
             for task in "${tasks[@]}"; do
 
-                log_dir="../run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/logs
-                summary_dir="../run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/summaries
+                log_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/logs
+                summary_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/summaries
                 
                 echo "### batch_size: ${batch_size} ###"
                 echo "### learning_rate: ${learning_rate} ###"
@@ -64,9 +64,9 @@ for seed in "${seeds[@]}"; do
 
                     # resource dir
                     if [[ `echo "${tokenizer: (-8):1}"` == "T" ]]; then
-                        resource="../resources/v6_without_dummy_letter_grammatical_symbol_T"
+                        resource="./resources/v6_without_dummy_letter_grammatical_symbol_T"
                     elif [[ `echo "${tokenizer: (-8):1}"` == "F" ]]; then
-                        resource="../resources/v6_without_dummy_letter_grammatical_symbol_F"
+                        resource="./resources/v6_without_dummy_letter_grammatical_symbol_F"
                     else
                         echo "tokenizer_name ERROR"
                     fi
