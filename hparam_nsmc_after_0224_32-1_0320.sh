@@ -26,7 +26,7 @@ seeds=(259178)
 tasks=("nsmc")
 
 
-사용할 gpu 선택
+# 사용할 gpu 선택
 echo -e "gpu num 0 1 2 3 ? " 
 read gpu_num
 echo "gpu_num == ${gpu_num}"
