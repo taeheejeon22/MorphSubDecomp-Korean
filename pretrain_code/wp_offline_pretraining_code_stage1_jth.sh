@@ -69,21 +69,20 @@ do
     echo "코퍼스 파일: ${file_name}" 
     echo "OUTPUT_DIR: ${OUTPUT_DIR}"
     echo "RESORCE_DIR: ${RESOURCE_DIR}"
-    # 코퍼스 조각 -> tfrecord로 만드는 작업을 백그라운드에서 실행
+
     nohup \
     python bert/create_pretraining_data.py \
-    --input_file=${file} \ # pretraining에 사용할 코퍼스 파일 조각
-    --output_file=${OUTPUT_DIR}/${TOKENIZER}/${file_name}.tfrecord \ # tfrecord 파일을 저장할 위치
-    --vocab_file=${RESOURCE_DIR}/vocab.txt \ # vocabulary 파일
-    --do_lower_case=False \ # lower_case 여부
-    --max_predictions_per_seq=20 \ # the maximum number of masked LM predictions per sequence
-    --max_seq_length=128 \ # sequence의 최대 길이
-    --masked_lm_prob=0.15 \ # masking할 비율
+    --input_file=${file} \
+    --output_file=${OUTPUT_DIR}/${TOKENIZER}/${file_name}.tfrecord \
+    --vocab_file=${RESOURCE_DIR}/vocab.txt \
+    --do_lower_case=False \
+    --max_predictions_per_seq=20 \
+    --max_seq_length=128 \
+    --masked_lm_prob=0.15 \
     --random_seed=12345 \
-    --dupe_factor=5 > ${TOKENIZER}'_'${file_name}.log 2>&1 & # dupe_factor: 동일한 sequence를 총 몇 번 학습에 사용할 것인가 # log 저장
+    --dupe_factor=5 > ${TOKENIZER}'_'${file_name}.log 2>&1 &
 
-    # save command log
-    echo $TOKENIZER' ### '$file_name' ### '$CORPUS_DIR' ### '$RESOURCE_DIR' ### '${OUTPUT_DIR}/${file_name}.tfrecord &> ${file_name}'_'command.log   
+    echo $TOKENIZER' ### '$file_name' ### '$CORPUS_DIR' ### '$RESOURCE_DIR' ### '${OUTPUT_DIR}/${file_name}.tfrecord &> ${file_name}'_'command.log      
 
 done
 
