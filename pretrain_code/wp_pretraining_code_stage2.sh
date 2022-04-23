@@ -17,6 +17,8 @@ echo "eojeol_fixed_composed"
 echo "eojeol_fixed_pure"
 echo "morpheme_orig_composed    morpheme_orig_decomposed_pure"
 echo "morpheme_fixed_composed    morpheme_fixed_decomposed_pure"
+echo "LG_mecab_fixed_composed_F    LG_mecab_fixed_decomposed_grammatical_F"
+echo "LG_mecab_fixed_decomposed_lexical_F    LG_mecab_fixed_pure_F"
 
 echo "morpheme_fixed_composed_T    morpheme_fixed_decomposed_pure_T"
 echo "morpheme_fixed_decomposed_lexical_T    morpheme_fixed_decomposed_grammatical_T"
@@ -97,7 +99,7 @@ if [[ $INIT == "F" ]]; then
     --num_train_steps=1000000 \
     --num_warmup_steps=10000 \
     --learning_rate=5e-5 \
-    --save_checkpoints_steps=20000 \ # 20000스텝마다 checkpoint를 저장합니다.
+    --save_checkpoints_steps=20000 \
     --use_tpu=True \
     --do_lower_case=False \
     --tpu_name=$TPU_NAME \
