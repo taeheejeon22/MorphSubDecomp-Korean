@@ -194,10 +194,13 @@ if __name__ == "__main__":
     # tokenizer_type = args["tokenizer_type"]
     # composition_type = args["composition_type"]
 
-    if tok_json["lexical_grammatical"] == False:
+    try:
+        if tok_json["lexical_grammatical"] == False:
+            token_type = tok_json["token_type"]
+        elif tok_json["lexical_grammatical"] == True:
+            token_type = "LG"
+    except KeyError:
         token_type = tok_json["token_type"]
-    elif tok_json["lexical_grammatical"] == True:
-        token_type = "LG"
 
     tokenizer_type = tok_json["tokenizer_type"]
     decomposition_type = tok_json["decomposition_type"]
