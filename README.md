@@ -223,6 +223,30 @@ python scripts/make_bert_files.py --root_path=output_sp/ --vocab_size=64000 --mo
 # 4. pretrain BERT
 파일 분할 by size (https://stackoverflow.com/questions/17592725/get-file-size-and-split-the-file-based-on-size)
 
+
+wiki (without dummy letter) split
+```bash
+split -d -l 8000000 namuwiki_20200302_none_composed.txt namuwiki_20200302_none_composed_
+
+split -d -l 6000000 namuwiki_20200302_mecab_orig_composed.txt namuwiki_20200302_mecab_orig_composed_
+split -d -l 3300000 namuwiki_20200302_mecab_orig_decomposed_pure.txt namuwiki_20200302_mecab_orig_decomposed_pure_
+split -d -l 4000000 namuwiki_20200302_mecab_orig_decomposed_morphological.txt namuwiki_20200302_mecab_orig_decomposed_morphological_
+
+split -d -l 6000000 namuwiki_20200302_tokenized_mecab_fixed_composed.txt namuwiki_20200302_tokenized_mecab_fixed_composed_
+split -d -l 3000000 namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure.txt namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure_
+split -d -l 5000000 namuwiki_20200302_tokenized_mecab_fixed_decomposed_morphological.txt namuwiki_20200302_tokenized_mecab_fixed_decomposed_morphological_
+
+split -d -l 6000000 namuwiki_20200302_tokenized_mecab_fixed_composed.txt namuwiki_20200302_tokenized_mecab_fixed_composed_
+
+
+split -d -l 1500000 wikiko_20210901_LG_mecab_fixed_composed_dummy_F.txt wikiko_20210901_LG_mecab_fixed_composed_dummy_F_
+split -d -l 1500000 wikiko_20210901_LG_mecab_fixed_decomposed_grammatical_dummy_F.txt wikiko_20210901_LG_mecab_fixed_decomposed_grammatical_dummy_F_
+split -d -l 800000 wikiko_20210901_LG_mecab_fixed_decomposed_lexical_dummy_F.txt wikiko_20210901_LG_mecab_fixed_decomposed_lexical_dummy_F_
+split -d -l 800000 wikiko_20210901_LG_mecab_fixed_decomposed_pure_dummy_F.txt wikiko_20210901_LG_mecab_fixed_decomposed_pure_dummy_F_
+
+```
+
+
 namuwiki (without dummy letter) split
 ```bash
 split -d -l 8000000 namuwiki_20200302_none_composed.txt namuwiki_20200302_none_composed_
@@ -237,6 +261,12 @@ split -d -l 5000000 namuwiki_20200302_tokenized_mecab_fixed_decomposed_morpholog
 
 
 split -d -l 6000000 namuwiki_20200302_tokenized_mecab_fixed_composed.txt namuwiki_20200302_tokenized_mecab_fixed_composed_
+
+
+split -d -l 1500000 namuwiki_20200302_LG_mecab_fixed_composed_dummy_F.txt namuwiki_20200302_LG_mecab_fixed_composed_dummy_F_
+split -d -l 2000000 namuwiki_20200302_LG_mecab_fixed_decomposed_grammatical_dummy_F.txt namuwiki_20200302_LG_mecab_fixed_decomposed_grammatical_dummy_F_
+split -d -l 900000 namuwiki_20200302_LG_mecab_fixed_decomposed_lexical_dummy_F.txt namuwiki_20200302_LG_mecab_fixed_decomposed_lexical_dummy_F_
+split -d -l 1000000 namuwiki_20200302_LG_mecab_fixed_decomposed_pure_dummy_F.txt namuwiki_20200302_LG_mecab_fixed_decomposed_pure_dummy_F_
 
 
 ```
