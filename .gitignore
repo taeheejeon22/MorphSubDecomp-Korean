@@ -17,6 +17,7 @@ convert_bert
 bert-base
 dataset.zip
 corpus/tfrecord/*
+corpus/tmp_for_tfrecord/*
 
 #model
 *.bin

@@ -157,12 +157,10 @@ python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized
 ### *OUR*
 ```bash
 python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_fixed/composed --vocab_size=64000
+python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_fixed/decomposed_lexical --vocab_size=64000
+python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_fixed/decomposed_pure --vocab_size=64000
 
-python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_T/morpheme_mecab_fixed/composed --vocab_size=64000
-python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_T/morpheme_mecab_fixed/decomposed_lexical --vocab_size=64000
-python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_T/morpheme_mecab_fixed/decomposed_pure --vocab_size=64000
-
-python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_T/morpheme_mecab_fixed/decomposed_grammatical --vocab_size=64000
+python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_fixed/decomposed_grammatical --vocab_size=64000
 
 # LG
 python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/LG_mecab_fixed/composed_dummy_F --vocab_size=64000
@@ -171,16 +169,6 @@ python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized
 
 python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/LG_mecab_fixed/decomposed_grammatical_dummy_F --vocab_size=64000
 ```
-
-### additional
-```bash
-python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_fixed/decomposed_pure --vocab_size=64000
-python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_fixed/decomposed_lexical --vocab_size=64000
-python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_F/morpheme_mecab_fixed/decomposed_grammatical --vocab_size=64000
-
-python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/space_F_dummy_F_grammatical_T/morpheme_mecab_fixed/decomposed_grammatical --vocab_size=64000
-```
-
 
 
 ## Sentencepiece
@@ -226,7 +214,22 @@ python scripts/make_bert_files.py --root_path=output_sp/ --vocab_size=64000 --mo
 
 wiki (without dummy letter) split
 ```bash
-split -d -l 8000000 namuwiki_20200302_none_composed.txt namuwiki_20200302_none_composed_
+split -d -l 2000000 namuwiki_20200302_none_composed.txt namuwiki_20200302_none_composed_
+split -d -l 1500000 wikiko_20210901_eojeol_mecab_fixed_composed.txt wikiko_20210901_eojeol_mecab_fixed_composed_
+
+split -d -l 1000000 namuwiki_20200302_eojeol_mecab_fixed_decomposed_pure_nfd.txt namuwiki_20200302_eojeol_mecab_fixed_decomposed_pure_nfd_
+split -d -l 1000000 wikiko_20210901_eojeol_mecab_fixed_decomposed_pure.txt wikiko_20210901_eojeol_mecab_fixed_decomposed_pure_
+
+
+split -d -l 1500000 namuwiki_20200302_morpheme_mecab_orig_composed.txt namuwiki_20200302_morpheme_mecab_orig_composed_
+split -d -l 1500000 wikiko_20210901_morpheme_mecab_orig_composed.txt wikiko_20210901_morpheme_mecab_orig_composed_
+
+split -d -l 800000 namuwiki_20200302_morpheme_mecab_orig_decomposed_pure_nfd.txt namuwiki_20200302_morpheme_mecab_orig_decomposed_pure_nfd_
+split -d -l 600000 wikiko_20210901_morpheme_mecab_orig_decomposed_pure.txt wikiko_20210901_morpheme_mecab_orig_decomposed_pure_
+
+
+
+
 
 split -d -l 6000000 namuwiki_20200302_mecab_orig_composed.txt namuwiki_20200302_mecab_orig_composed_
 split -d -l 3300000 namuwiki_20200302_mecab_orig_decomposed_pure.txt namuwiki_20200302_mecab_orig_decomposed_pure_
