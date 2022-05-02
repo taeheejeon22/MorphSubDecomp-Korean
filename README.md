@@ -214,6 +214,7 @@ python scripts/make_bert_files.py --root_path=output_sp/ --vocab_size=64000 --mo
 
 wiki (without dummy letter) split
 ```bash
+# eojeol
 split -d -l 2000000 namuwiki_20200302_none_composed.txt namuwiki_20200302_none_composed_
 split -d -l 1500000 wikiko_20210901_eojeol_mecab_fixed_composed.txt wikiko_20210901_eojeol_mecab_fixed_composed_
 
@@ -221,11 +222,51 @@ split -d -l 1000000 namuwiki_20200302_eojeol_mecab_fixed_decomposed_pure_nfd.txt
 split -d -l 1000000 wikiko_20210901_eojeol_mecab_fixed_decomposed_pure.txt wikiko_20210901_eojeol_mecab_fixed_decomposed_pure_
 
 
+# orig
 split -d -l 1500000 namuwiki_20200302_morpheme_mecab_orig_composed.txt namuwiki_20200302_morpheme_mecab_orig_composed_
 split -d -l 1500000 wikiko_20210901_morpheme_mecab_orig_composed.txt wikiko_20210901_morpheme_mecab_orig_composed_
 
 split -d -l 800000 namuwiki_20200302_morpheme_mecab_orig_decomposed_pure_nfd.txt namuwiki_20200302_morpheme_mecab_orig_decomposed_pure_nfd_
 split -d -l 600000 wikiko_20210901_morpheme_mecab_orig_decomposed_pure.txt wikiko_20210901_morpheme_mecab_orig_decomposed_pure_
+
+
+# fixed
+split -d -l 1200000 namuwiki_20200302_morpheme_mecab_fixed_composed.txt namuwiki_20200302_morpheme_mecab_fixed_composed_
+split -d -l 1200000 wikiko_20210901_morpheme_mecab_fixed_composed.txt wikiko_20210901_morpheme_mecab_fixed_composed_
+
+split -d -l 700000 namuwiki_20200302_morpheme_mecab_fixed_decomposed_pure.txt namuwiki_20200302_morpheme_mecab_fixed_decomposed_pure_
+split -d -l 700000 wikiko_20210901_morpheme_mecab_fixed_decomposed_pure.txt wikiko_20210901_morpheme_mecab_fixed_decomposed_pure_
+
+split -d -l 700000 namuwiki_20200302_morpheme_mecab_fixed_decomposed_lexical.txt namuwiki_20200302_morpheme_mecab_fixed_decomposed_lexical_
+split -d -l 700000 wikiko_20210901_morpheme_mecab_fixed_decomposed_lexical.txt wikiko_20210901_morpheme_mecab_fixed_decomposed_lexical_
+
+
+split -d -l 900000 namuwiki_20200302_morpheme_mecab_fixed_decomposed_grammatical.txt namuwiki_20200302_morpheme_mecab_fixed_decomposed_grammatical_
+split -d -l 900000 wikiko_20210901_morpheme_mecab_fixed_decomposed_grammatical.txt wikiko_20210901_morpheme_mecab_fixed_decomposed_grammatical_
+
+
+
+
+# LG
+split -d -l 1500000 namuwiki_20200302_LG_mecab_fixed_composed_dummy_F.txt namuwiki_20200302_LG_mecab_fixed_composed_dummy_F_
+split -d -l 1500000 wikiko_20210901_LG_mecab_fixed_composed_dummy_F.txt wikiko_20210901_LG_mecab_fixed_composed_dummy_F_
+
+split -d -l 700000 namuwiki_20200302_LG_mecab_fixed_decomposed_pure_dummy_F.txt namuwiki_20200302_LG_mecab_fixed_decomposed_pure_dummy_F_
+split -d -l 700000 wikiko_20210901_LG_mecab_fixed_decomposed_pure_dummy_F.txt wikiko_20210901_LG_mecab_fixed_decomposed_pure_dummy_F_
+
+split -d -l 700000 namuwiki_20200302_LG_mecab_fixed_decomposed_lexical_dummy_F.txt namuwiki_20200302_LG_mecab_fixed_decomposed_lexical_dummy_F_
+split -d -l 700000 wikiko_20210901_LG_mecab_fixed_decomposed_lexical_dummy_F.txt wikiko_20210901_LG_mecab_fixed_decomposed_lexical_dummy_F_
+
+
+split -d -l 900000 namuwiki_20200302_LG_mecab_fixed_decomposed_grammatical_dummy_F.txt namuwiki_20200302_LG_mecab_fixed_decomposed_grammatical_dummy_F_
+split -d -l 900000 wikiko_20210901_LG_mecab_fixed_decomposed_grammatical_dummy_F.txt wikiko_20210901_LG_mecab_fixed_decomposed_grammatical_dummy_F_
+
+
+
+
+
+
+
 
 
 
