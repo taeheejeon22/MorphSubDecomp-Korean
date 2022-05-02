@@ -4,6 +4,13 @@ transformers-cli convert --model_type bert\
   --config=./resources/v5_without_dummy_letter/sp-64k/config.json \
   --pytorch_dump_output=./bert_model_v5_without_dummy_letter_none_composed_model.ckpt-400000.pth
 
+    # root 위치에 pth 파일 생성됨
+
+
+## v7 32k
+## eojeol
+
+
 
 
 
@@ -90,6 +97,23 @@ transformers-cli convert --model_type bert\
   --config=./resources/v6_without_dummy_letter_grammatical_symbol_F/morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k/config.json \
   --pytorch_dump_output=./bert_model_v6_without_dummy_letter_morpheme_mecab_fixed_decomposed_grammatical_wp-64k_model.ckpt-1000000.pth
 
+
+
+## LG
+# composed
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./convert_bert/bert_model_LG_mecab_fixed_composed_grammatical_symbol_F_wp-64k_model.ckpt-1000000 \
+  --config=./resources/v6_without_dummy_letter_grammatical_symbol_F/LG_mecab_fixed_composed_grammatical_symbol_F_wp-64k/config.json \
+  --pytorch_dump_output=./bert_model_LG_mecab_fixed_composed_grammatical_symbol_F_wp-64k_model.ckpt-1000000.pth
+
+
+
+
+# grammatical
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./convert_bert/bert_model_LG_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k_model.ckpt-1000000 \
+  --config=./resources/v6_without_dummy_letter_grammatical_symbol_F/LG_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k/config.json \
+  --pytorch_dump_output=./bert_model_LG_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k_model.ckpt-1000000.pth
 
 
 
