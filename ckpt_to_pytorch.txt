@@ -9,6 +9,10 @@ transformers-cli convert --model_type bert\
 
 ## v7 32k
 ## eojeol
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./convert_bert/bert_model_wp-32k_eojeol_composed_model.ckpt-1000000 \
+  --config=./resources/v7_without_dummy_letter_grammatical_symbol_F/eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-32k/config.json \
+  --pytorch_dump_output=./bert_model_wp-32k_eojeol_composed_model.ckpt-1000000.pth
 
 
 
@@ -106,8 +110,17 @@ transformers-cli convert --model_type bert\
   --config=./resources/v6_without_dummy_letter_grammatical_symbol_F/LG_mecab_fixed_composed_grammatical_symbol_F_wp-64k/config.json \
   --pytorch_dump_output=./bert_model_LG_mecab_fixed_composed_grammatical_symbol_F_wp-64k_model.ckpt-1000000.pth
 
+# pure
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./convert_bert/bert_model_LG_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k_model.ckpt-1000000 \
+  --config=./resources/v6_without_dummy_letter_grammatical_symbol_F/LG_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k/config.json \
+  --pytorch_dump_output=./bert_model_LG_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k_model.ckpt-1000000.pth
 
-
+# lexical
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./convert_bert/bert_model_LG_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k_model.ckpt-1000000 \
+  --config=./resources/v6_without_dummy_letter_grammatical_symbol_F/LG_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k/config.json \
+  --pytorch_dump_output=./bert_model_LG_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k_model.ckpt-1000000.pth
 
 # grammatical
 transformers-cli convert --model_type bert\
