@@ -13,15 +13,21 @@ echo -e "gpu num 0 1 2 3 ? "
 read gpu_num
 echo "gpu_num == ${gpu_num}"
 
-tokenizers=("eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k" "eojeol_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k" 
-"morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
-"morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
-"morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
-"morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
+# 기존
+# tokenizers=("eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-64k" "eojeol_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k" 
+# "morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-64k"
+# "morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k"
+# "morpheme_mecab_orig_composed_grammatical_symbol_F_wp-64k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-64k"
+# "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
+
+# LG
+tokenizers=("LG_mecab_fixed_composed_grammatical_symbol_F_wp-64k" "LG_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k"
+"LG_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k" "LG_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k"
+)
 
 # klue 경로
 OUTPUT_DIR="../run_outputs"
-DATA_DIR="./KLUE-baseline/data/klue_benchmark"  # default submodule for data from https://github.com/KLUE-benchmark/KLUE
+DATA_DIR="../KLUE-baseline/data/klue_benchmark"  # default submodule for data from https://github.com/KLUE-benchmark/KLUE
 VERSION="v1.1"
 
 # 각 배치사이즈, 각 학습률 별로 태스크를 수행함.
