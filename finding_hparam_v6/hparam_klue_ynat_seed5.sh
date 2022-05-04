@@ -59,7 +59,7 @@ for seed in "${seeds[@]}"; do
                         echo "tokenizer_name ERROR"
                     fi
 
-                    python run_klue.py train \
+                    python ../run_klue.py train \
                     --task ${task} \
                     --output_dir ${OUTPUT_DIR}  \
                     --data_dir ${DATA_DIR}/${task}-${VERSION} \
