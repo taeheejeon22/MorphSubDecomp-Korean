@@ -109,8 +109,11 @@ def main(args):
                               decomposition_type=tokenizer_config["decomposition_type"],
                               space_symbol=tokenizer_config["space_symbol"],
                               dummy_letter=tokenizer_config["dummy_letter"], nfd=tokenizer_config["nfd"],
-                              grammatical_symbol=tokenizer_config["grammatical_symbol"])
+                              grammatical_symbol=tokenizer_config["grammatical_symbol"],
+                              lexical_grammatical=tokenizer_config["lexical_grammatical"])  # for LG
 
+    example_sent = "난 내셔날 지오그래픽이 재밌다"
+    print(f"tokenization sample 0: {tokenizer.tokenize(example_sent)}\n")
 
     # if config.tokenizer.startswith("sp-"):
     #     tokenizer = SentencePieceTokenizer(os.path.join(tokenizer_dir, "tok.model"))

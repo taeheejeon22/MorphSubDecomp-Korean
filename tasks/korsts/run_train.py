@@ -103,7 +103,8 @@ def main(args):
                               decomposition_type=tokenizer_config["decomposition_type"],
                               space_symbol=tokenizer_config["space_symbol"],
                               dummy_letter=tokenizer_config["dummy_letter"], nfd=tokenizer_config["nfd"],
-                              grammatical_symbol=tokenizer_config["grammatical_symbol"])
+                              grammatical_symbol=tokenizer_config["grammatical_symbol"],
+                              lexical_grammatical=tokenizer_config["lexical_grammatical"])  # for LG
 
     # print(tokenizer.tokenize('훌륭한 예시이다'))
 
