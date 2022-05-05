@@ -29,9 +29,13 @@ echo "gpu_num == ${gpu_num}"
 # "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k")
 
 # LG
-tokenizers=("LG_mecab_fixed_composed_grammatical_symbol_F_wp-64k" "LG_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k"
-"LG_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k" "LG_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k"
-)
+# tokenizers=("LG_mecab_fixed_composed_grammatical_symbol_F_wp-64k" "LG_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-64k"
+# "LG_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k" "LG_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k"
+# )
+tokenizers=("LG_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k")
+
+
+
 
 for seed in "${seeds[@]}"; do
 
@@ -56,13 +60,14 @@ for seed in "${seeds[@]}"; do
                     echo "### tokenizer: ${tokenizer} ###"
 
                     # resource dir
-                    if [[ `echo "${tokenizer: (-8):1}"` == "T" ]]; then
-                        resource="./resources/v6_without_dummy_letter_grammatical_symbol_T"
-                    elif [[ `echo "${tokenizer: (-8):1}"` == "F" ]]; then
-                        resource="./resources/v6_without_dummy_letter_grammatical_symbol_F"
-                    else
-                        echo "tokenizer_name ERROR"
-                    fi
+                    # if [[ `echo "${tokenizer: (-8):1}"` == "T" ]]; then
+                    #     resource="./resources/v6_without_dummy_letter_grammatical_symbol_T"
+                    # elif [[ `echo "${tokenizer: (-8):1}"` == "F" ]]; then
+                    #     resource="./resources/v6_without_dummy_letter_grammatical_symbol_F"
+                    # else
+                    #     echo "tokenizer_name ERROR"
+                    # fi
+                    resource="./resources/v6_without_dummy_letter_grammatical_symbol_F"
 
                     CUDA_VISIBLE_DEVICES=${gpu_num} python ./tasks/$task/run_train.py --tokenizer ${tokenizer} \
                     --resource_dir ${resource} \
