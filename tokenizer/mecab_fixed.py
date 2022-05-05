@@ -23,124 +23,125 @@ from soynlp.hangle import compose, decompose, character_is_korean, character_is_
 from tokenizer.base import BaseTokenizer
 
 
-import scripts.tokenizers_acl_v2 as tok
+# import scripts.tokenizers_acl_v2 as tok
 # import scripts.tokenizers_acl_v3 as tok
+import scripts.tokenizers_acl_v3_2 as tok   # LG (lexical grammatical) 기능 추가
 
 
 
-regexp = re.compile(".+(?=/[^A-Z])") # a pattern for only morphemes and their POS (e.g. 불태워/VV/* > 불태워/VV)
-doublespace_pattern = re.compile('\s+')
-
-
-def mecab_tokenize(elem, join=False):
-    # elem: an analysed result of an eojeol (e.g. 뭔지 > 뭔지\tNP+VCP+EC,*,F,뭔지,Inflect,NP,EC,뭐/NP/*+이/VCP/*+ㄴ지/EC/*)
-
-    if not elem: return ('', 'SY')
-
-    s, t = elem.split(
-        '\t')  # s: an eojeol (e.g. 위한)   # t: analysed resulf of an eojeol (e.g. VV+ETM,*,T,위한,Inflect,VV,ETM,위하/VV/*+ᆫ/ETM/*)
-    token_pos = t.split(',')[0]  # original token POS of mecab-ko (e.g. 위한: VV+ETM)
-    lst_morpos = t.split(',')[-1].split(
-        "+")  # splitting the last attr (인덱스 표현) of 't' by morpheme (e.g. 위하/VV/*+ᆫ/ETM/* > ["위하/VV/*", "ᆫ/ETM/*"])
-
-    if join:
-        if not t.split(',')[4].startswith(
-                "Inflect"):  # If an eojeol is not Inflect (= a concatenation of morphemes is equal to its original eojeol. e.g. 해수욕장 == 해수 + 욕 + 장)
-            return s + '/' + token_pos  # eojeol + / + POS (e.g. 위한/VV+ETM)
-            # return [s + '/' + token_pos]  # eojeol + / + POS (e.g. 위한/VV+ETM)   # mecab_fixed에서는 걍 string으로 반환했었던 것 수정
-
-        else:  # If an eojeol is Inflect (= a concatenation of morphemes is not equal to its original eojeol) (e.g. 불태워졌다 != 불태우 + 어 + 지 + 었 + 다)
-            mor_info = [regexp.search(x).group() for x in
-                        lst_morpos]  # make a list of morphemes with their POSs (e.g. ['줍/VV', '어서/EC'])
-
-            # There is a bug that outputs of mecab-ko-dic are different according to OS, and OS versions. This is a make-shift.
-            if len(mor_info) > 1:
-                return mor_info
-            elif len(mor_info) == 1:
-                return [s + "/" + token_pos]
-            # return [regexp.search(x).group() for x in lst_morpos]   # make a list of morphemes with their POSs (e.g. ['줍/VV', '어서/EC'] )
-
-    else:
-        if not t.split(',')[4].startswith("Inflect"):
-            # return (s, token_pos)
-            return [(s, token_pos)] # mecab_fixed에서는 걍 1차원으로 반환했었던 것 수정
-
-        else:
-            mor_info = [tuple(regexp.search(x).group().split("/")) for x in
-                        lst_morpos]  # make a list of morphemes with their POSs (e.g. [('줍', 'VV'), ('어서', 'EC')] )
-
-            # There is a bug that outputs of mecab-ko-dic are different according to OS, and OS versions. This is a make-shift.
-            if len(mor_info) > 1:
-                return mor_info
-            elif len(mor_info) == 1:
-                return (s, token_pos)
-
-
-# mor_poss = split(mor)   # ['나/NP', 'ᆫ/JX']
+# regexp = re.compile(".+(?=/[^A-Z])") # a pattern for only morphemes and their POS (e.g. 불태워/VV/* > 불태워/VV)
+# doublespace_pattern = re.compile('\s+')
 #
-#    " ".join([mor_pos.split("/")[0] for mor_pos in split(mor)])
-
-
-
-
-# pure decomposition
-def str2jamo(text, grammatical=False, dummy_letter=""):
-    def transform(char):
-        if char == ' ':
-            return char
-        cjj = decompose(char)
-        if len(cjj) == 1:
-            return cjj
-        cjj_ = ''.join(c if c != ' ' else dummy_letter for c in cjj)
-        return cjj_
-
-    def transform_grammatical(char, grammatical):
-        if char == ' ':
-            return char
-        cjj = decompose(char)
-        if len(cjj) == 1:
-            return cjj
-
-        if grammatical == False:
-            cjj_ = ''.join(c if c != ' ' else dummy_letter for c in cjj)
-            return cjj_
-
-        elif grammatical == True:
-            cjj_without_blank = [x for x in cjj if x != " "] # remove " " from cjj
-
-            if len(cjj_without_blank) == 1:   # if it is a jamo character (e.g. ㄴ, ㄹ, 'ㄴ'다)
-                cjj_ = dummy_letter * 2 + cjj_without_blank[0]
-
-            elif len(cjj_without_blank) != 1:   # if it is a syllable character (e.g. 은, 을, 는다)
-                cjj_ = ''.join(c if c != ' ' else dummy_letter for c in cjj)
-
-            return cjj_
-
-            # cjj_ = ''.join(c if c != ' ' else self.dummy_letter for c in cjj)
-            # return cjj_
-
-
-        # if jamo_morpheme == False:
-        #     text_ = []
-        #     for char in text:
-        #         if character_is_korean(char):
-        #             text_.append(transform(char))
-        #         else:
-        #             text_.append(char)
-        #     text_ = doublespace_pattern.sub(' ', ''.join(text_))
-        #     return text_
-        #
-        # if jamo_morpheme == True:   # for jamo morphemes like ㄴ, ㄹ, ...
-        #     return self.dummy_letter*2 + text   # '##ㄴ'
-
-    text_ = []
-    for char in text:
-        if character_is_korean(char):
-            text_.append(transform_grammatical(char, grammatical=grammatical))
-        else:
-            text_.append(char)
-    text_ = doublespace_pattern.sub(' ', ''.join(text_))
-    return text_
+#
+# def mecab_tokenize(elem, join=False):
+#     # elem: an analysed result of an eojeol (e.g. 뭔지 > 뭔지\tNP+VCP+EC,*,F,뭔지,Inflect,NP,EC,뭐/NP/*+이/VCP/*+ㄴ지/EC/*)
+#
+#     if not elem: return ('', 'SY')
+#
+#     s, t = elem.split(
+#         '\t')  # s: an eojeol (e.g. 위한)   # t: analysed resulf of an eojeol (e.g. VV+ETM,*,T,위한,Inflect,VV,ETM,위하/VV/*+ᆫ/ETM/*)
+#     token_pos = t.split(',')[0]  # original token POS of mecab-ko (e.g. 위한: VV+ETM)
+#     lst_morpos = t.split(',')[-1].split(
+#         "+")  # splitting the last attr (인덱스 표현) of 't' by morpheme (e.g. 위하/VV/*+ᆫ/ETM/* > ["위하/VV/*", "ᆫ/ETM/*"])
+#
+#     if join:
+#         if not t.split(',')[4].startswith(
+#                 "Inflect"):  # If an eojeol is not Inflect (= a concatenation of morphemes is equal to its original eojeol. e.g. 해수욕장 == 해수 + 욕 + 장)
+#             return s + '/' + token_pos  # eojeol + / + POS (e.g. 위한/VV+ETM)
+#             # return [s + '/' + token_pos]  # eojeol + / + POS (e.g. 위한/VV+ETM)   # mecab_fixed에서는 걍 string으로 반환했었던 것 수정
+#
+#         else:  # If an eojeol is Inflect (= a concatenation of morphemes is not equal to its original eojeol) (e.g. 불태워졌다 != 불태우 + 어 + 지 + 었 + 다)
+#             mor_info = [regexp.search(x).group() for x in
+#                         lst_morpos]  # make a list of morphemes with their POSs (e.g. ['줍/VV', '어서/EC'])
+#
+#             # There is a bug that outputs of mecab-ko-dic are different according to OS, and OS versions. This is a make-shift.
+#             if len(mor_info) > 1:
+#                 return mor_info
+#             elif len(mor_info) == 1:
+#                 return [s + "/" + token_pos]
+#             # return [regexp.search(x).group() for x in lst_morpos]   # make a list of morphemes with their POSs (e.g. ['줍/VV', '어서/EC'] )
+#
+#     else:
+#         if not t.split(',')[4].startswith("Inflect"):
+#             # return (s, token_pos)
+#             return [(s, token_pos)] # mecab_fixed에서는 걍 1차원으로 반환했었던 것 수정
+#
+#         else:
+#             mor_info = [tuple(regexp.search(x).group().split("/")) for x in
+#                         lst_morpos]  # make a list of morphemes with their POSs (e.g. [('줍', 'VV'), ('어서', 'EC')] )
+#
+#             # There is a bug that outputs of mecab-ko-dic are different according to OS, and OS versions. This is a make-shift.
+#             if len(mor_info) > 1:
+#                 return mor_info
+#             elif len(mor_info) == 1:
+#                 return (s, token_pos)
+#
+#
+# # mor_poss = split(mor)   # ['나/NP', 'ᆫ/JX']
+# #
+# #    " ".join([mor_pos.split("/")[0] for mor_pos in split(mor)])
+#
+#
+#
+#
+# # pure decomposition
+# def str2jamo(text, grammatical=False, dummy_letter=""):
+#     def transform(char):
+#         if char == ' ':
+#             return char
+#         cjj = decompose(char)
+#         if len(cjj) == 1:
+#             return cjj
+#         cjj_ = ''.join(c if c != ' ' else dummy_letter for c in cjj)
+#         return cjj_
+#
+#     def transform_grammatical(char, grammatical):
+#         if char == ' ':
+#             return char
+#         cjj = decompose(char)
+#         if len(cjj) == 1:
+#             return cjj
+#
+#         if grammatical == False:
+#             cjj_ = ''.join(c if c != ' ' else dummy_letter for c in cjj)
+#             return cjj_
+#
+#         elif grammatical == True:
+#             cjj_without_blank = [x for x in cjj if x != " "] # remove " " from cjj
+#
+#             if len(cjj_without_blank) == 1:   # if it is a jamo character (e.g. ㄴ, ㄹ, 'ㄴ'다)
+#                 cjj_ = dummy_letter * 2 + cjj_without_blank[0]
+#
+#             elif len(cjj_without_blank) != 1:   # if it is a syllable character (e.g. 은, 을, 는다)
+#                 cjj_ = ''.join(c if c != ' ' else dummy_letter for c in cjj)
+#
+#             return cjj_
+#
+#             # cjj_ = ''.join(c if c != ' ' else self.dummy_letter for c in cjj)
+#             # return cjj_
+#
+#
+#         # if jamo_morpheme == False:
+#         #     text_ = []
+#         #     for char in text:
+#         #         if character_is_korean(char):
+#         #             text_.append(transform(char))
+#         #         else:
+#         #             text_.append(char)
+#         #     text_ = doublespace_pattern.sub(' ', ''.join(text_))
+#         #     return text_
+#         #
+#         # if jamo_morpheme == True:   # for jamo morphemes like ㄴ, ㄹ, ...
+#         #     return self.dummy_letter*2 + text   # '##ㄴ'
+#
+#     text_ = []
+#     for char in text:
+#         if character_is_korean(char):
+#             text_.append(transform_grammatical(char, grammatical=grammatical))
+#         else:
+#             text_.append(char)
+#     text_ = doublespace_pattern.sub(' ', ''.join(text_))
+#     return text_
 
 
 # # morphological decomposition
@@ -240,14 +241,18 @@ def str2jamo(text, grammatical=False, dummy_letter=""):
 
 
 class MeCabTokenizer_fixed(BaseTokenizer):
-    def __init__(self, tokenizer_type: str, decomposition_type: str, space_symbol: str = "▃", dummy_letter: str = ""):
+    # def __init__(self, tokenizer_type: str, decomposition_type: str, space_symbol: str = "▃", dummy_letter: str = ""):
+    def __init__(self, tokenizer_type: str, decomposition_type: str, space_symbol: str = "▃", dummy_letter: str = "", token_type: str ="morpheme", lexical_grammatical: bool = False):
         assert (tokenizer_type in ["mecab_orig", "mecab_fixed"] ), 'check the tokenizer type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-        assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+        assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological", "decomposed_lexical", "decomposed_grammatical"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 
         self.mecab = MeCab.Tagger(f"--dicdir /usr/local/lib/mecab/dic/mecab-ko-dic")
         # self.use_original = use_original    # True: mecab orig  False: mecab fixed
         self.tokenizer_type = tokenizer_type  # mecab_orig  / mecab_fixed
 
+        self.lexical_grammatical = lexical_grammatical  # LG 적용 여부 (내셔널 지오 그래픽 vs. 내셔널지오그래픽)
+
+        self.token_type = token_type
         self.decomposition_type = decomposition_type    # composed  decomposed_pure  decomposed_morphological
         self.space_symbol = space_symbol    # 단어 사이 특수 문자
         self.dummy_letter = dummy_letter    # 초성/중성/종성 자리 채우기용 더미 문자
@@ -316,7 +321,11 @@ class MeCabTokenizer_fixed(BaseTokenizer):
         text = text.strip()
 
         # return self.tok.mecab_tokenizer(text, use_original=self.use_original, pure_decomposition=self.pure_decomposition, morphological=self.morphological)
-        return self.tok.mecab_tokenizer(text, tokenizer_type=self.tokenizer_type, decomposition_type=self.decomposition_type)
+        # return self.tok.mecab_tokenizer(text, tokenizer_type=self.tokenizer_type, decomposition_type=self.decomposition_type)
+
+        tokenizer = self.tok.mecab_tokenizer(text, tokenizer_type=self.tokenizer_type, token_type=self.token_type, decomposition_type=self.decomposition_type, lexical_grammatical=self.lexical_grammatical)
+
+        return tokenizer
 
 
 
@@ -335,14 +344,20 @@ class MeCabTokenizer_fixed(BaseTokenizer):
 
 
 
-# mc = MeCabTokenizer_fixed(tokenizer_type="mecab_orig", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )                    # ['사람', '은', '▃', '널', '▃', '진짜', '▃', '원해', '.']
 # mc = MeCabTokenizer_fixed(tokenizer_type="mecab_orig", decomposition_type="decomposed_pure", space_symbol= "▃", dummy_letter= "" )
-# mc = MeCabTokenizer_fixed(tokenizer_type="mecab_orig", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "" )
+# mc = MeCabTokenizer_fixed(tokenizer_type="mecab_orig", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )                    # ['사람', '은', '▃', '널', '▃', '진짜', '▃', '원해', '.']
+# # mc = MeCabTokenizer_fixed(tokenizer_type="mecab_orig", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "" )
 # mc = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )                    # ['사람', '은', '▃', '널', '▃', '진짜', '▃', '원해', '.']
 # mc = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure", space_symbol= "▃", dummy_letter= "" )
-# mc = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "" )
+# # mc = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "" )
+# mc = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_lexical", space_symbol= "▃", dummy_letter= "" )
+# mc = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_grammatical", space_symbol= "▃", dummy_letter= "" )
 #
-# mc = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "⊸" )   # ['나', '⊸⊸ㄴ', '▃', '너', '⊸⊸ㄹ', '▃', '진짜', '▃', '원하', 'ㅇㅏ⊸', '.']
+# mc = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="composed", space_symbol= "▃", dummy_letter= "", lexical_grammatical=True)
+# mc = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure", space_symbol= "▃", dummy_letter= "", lexical_grammatical=True)
+# # mc = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "" )
+# mc = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_lexical", space_symbol= "▃", dummy_letter= "", lexical_grammatical=True)
+# mc = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_grammatical", space_symbol= "▃", dummy_letter= "", lexical_grammatical=True)
 #
 #
 #
@@ -357,6 +372,9 @@ class MeCabTokenizer_fixed(BaseTokenizer):
 # sent = "어디서 콜라비 좀 사 와"
 # sent = "들어간다"
 # sent = "넌 들어간다"
+# sent = "발생하는 한국고려대학교에서는 빨리는 먹지는 못해서요."
+# sent = "내셔날 지오그래픽은 재밌다"
+#
 # mc.tokenize(sent)
 #
 # self = mc

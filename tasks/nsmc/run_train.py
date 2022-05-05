@@ -63,7 +63,7 @@ def set_seed(seed):
 
 def main(args):
     # config
-    config = TrainConfig(**args)
+    config = TrainConfig(**args)    # 커맨드로 입력한 args를 ./config.py의 TrainConfig 클래스에 덮어 씀.
     config = config._replace(
         log_dir=config.log_dir.format(config.tokenizer),
         summary_dir=config.summary_dir.format(config.tokenizer),
@@ -112,7 +112,11 @@ def main(args):
                               decomposition_type=tokenizer_config["decomposition_type"],
                               space_symbol=tokenizer_config["space_symbol"],
                               dummy_letter=tokenizer_config["dummy_letter"], nfd=tokenizer_config["nfd"],
-                              grammatical_symbol=tokenizer_config["grammatical_symbol"])
+                              grammatical_symbol=tokenizer_config["grammatical_symbol"],
+                              lexical_grammatical=tokenizer_config["lexical_grammatical"])  # for LG
+
+    example_sent = "난 내셔날 지오그래픽이 재밌다"
+    print(f"tokenization sample 0: {tokenizer.tokenize(example_sent)}")
 
 
 

@@ -1,6 +1,6 @@
 {
     "space_symbol": "",
-    "n_jobs": 16,
+    "threads": 12,
     "dummy_letter": "",
     "grammatical_symbol": [
         "",
@@ -9,6 +9,7 @@
     "token_type": "morpheme",
     "tokenizer_type": "mecab_fixed",
     "decomposition_type": "decomposed_lexical",
+    "lexical_grammatical": false,
     "nfd": true,
     "corpus_path": "./corpus/preprocessed/wikiko_20210901_with_preprocessing_v3_nn.txt"
 }

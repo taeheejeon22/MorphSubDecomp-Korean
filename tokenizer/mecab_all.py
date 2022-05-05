@@ -27,7 +27,8 @@ from tokenizer.base import BaseTokenizer
 
 
 # import scripts.tokenizers_acl_v2 as tok
-import scripts.tokenizers_acl_v3 as tok
+# import scripts.tokenizers_acl_v3 as tok
+import scripts.tokenizers_acl_v3_2 as tok   # LG (lexical grammatical) 기능 추가
 
 
 
@@ -243,7 +244,9 @@ def str2jamo(text, grammatical=False, dummy_letter=""):
 
 
 class MeCabTokenizer_all(BaseTokenizer):
-    def __init__(self, token_type: str, tokenizer_type: str, decomposition_type: str, space_symbol: str = "", dummy_letter: str = "", nfd: bool = True, grammatical_symbol: list = ["", ""]):
+    # def __init__(self, token_type: str, tokenizer_type: str, decomposition_type: str, space_symbol: str = "", dummy_letter: str = "", nfd: bool = True, grammatical_symbol: list = ["", ""]):
+    def __init__(self, token_type: str, tokenizer_type: str, decomposition_type: str, space_symbol: str = "", dummy_letter: str = "", nfd: bool = True, grammatical_symbol: list = ["", ""], lexical_grammatical: bool = False):   # for LG
+
         assert (token_type in ["eojeol", "morpheme"] ), 'check the token type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
         assert (tokenizer_type in ["mecab_orig", "mecab_fixed"] ), 'check the tokenizer type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
         # assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological", "composed_nfd", "decomposed_pure_nfd", "decomposed_morphological_nfd"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
@@ -253,6 +256,7 @@ class MeCabTokenizer_all(BaseTokenizer):
 
         self.token_type = token_type    # eojeol / morpheme
         self.tokenizer_type = tokenizer_type  # mecab_orig  / mecab_fixed
+        self.lexical_grammatical = lexical_grammatical  # LG 적용 여부 (내셔널 지오 그래픽 vs. 내셔널지오그래픽)
 
         self.decomposition_type = decomposition_type    # composed  decomposed_pure  decomposed_morphological
         self.space_symbol = space_symbol    # 단어 사이 특수 문자   # "▃"
@@ -262,7 +266,7 @@ class MeCabTokenizer_all(BaseTokenizer):
 
         self.grammatical_pos = ["JKS", "JKC", "JKG", "JKO", "JKB", "JKV", "JKQ", "JX", "JC", "EP", "EF", "EC", "ETN", "ETM"]    # 어미, 조사
 
-        self.tok = tok.tokenizers(dummy_letter=self.dummy_letter , space_symbol=self.space_symbol, nfd=self.nfd, grammatical_symbol=self.grammatical_symbol)
+        self.tok = tok.tokenizers(dummy_letter=self.dummy_letter , space_symbol=self.space_symbol, nfd=self.nfd, grammatical_symbol=self.grammatical_symbol)    # 토크나이저 인스턴스 생성
 
 
     # # kortok API based
@@ -324,9 +328,10 @@ class MeCabTokenizer_all(BaseTokenizer):
         text = text.strip()
 
         # return self.tok.mecab_tokenizer(text, use_original=self.use_original, pure_decomposition=self.pure_decomposition, morphological=self.morphological)
-        return self.tok.mecab_tokenizer(text, token_type=self.token_type, tokenizer_type=self.tokenizer_type, decomposition_type=self.decomposition_type)
+        # return self.tok.mecab_tokenizer(text, token_type=self.token_type, tokenizer_type=self.tokenizer_type, decomposition_type=self.decomposition_type)
 
-
+        tokenizer = self.tok.mecab_tokenizer(text, tokenizer_type=self.tokenizer_type, token_type=self.token_type, decomposition_type=self.decomposition_type, lexical_grammatical=self.lexical_grammatical)
+        return tokenizer
 
     # orig composed에 대해서만 작동
     def detokenize(self, tokens: List[str]) -> str:
@@ -362,9 +367,18 @@ class MeCabTokenizer_all(BaseTokenizer):
 # mc = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological_nfd", space_symbol= "▃", dummy_letter= "" )
 #
 #
+# mc = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" , lexical_grammatical=True)    # ['나', '는', '▃', '너', 'ㄹ', '▃', '먹', '는데', '.']
+# mc = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure", space_symbol= "▃", dummy_letter= "", lexical_grammatical=True)
+# mc = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_lexical", space_symbol= "▃", dummy_letter= "", lexical_grammatical=True)
+# mc = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_grammatical", space_symbol= "▃", dummy_letter= "", lexical_grammatical=True)
 #
 #
-# mc = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )   # ['나', '는', '▃', '너', 'ㄹ', '▃', '먹', '는데', '.']
+# sent = "난 내셔날 지오그래픽은 좋았다"; print(mc.tokenize(sent))
+#
+#
+# # mc = MeCabTokenizer_all(token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )   # ['나', '는', '▃', '너', 'ㄹ', '▃', '먹', '는데', '.']
+#
+#
 #
 #
 # mc = MeCabTokenizer_all(tokenizer_type="mecab_fixed", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )                    # ['사람', '은', '▃', '널', '▃', '진짜', '▃', '원해', '.']
