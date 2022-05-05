@@ -24,6 +24,8 @@ from tasks.cola.dataset import COLADataset
 from tasks.cola.model import COLAModel
 from tasks.cola.trainer import Trainer
 
+print("#######################import success#######################")
+
 from tokenizer.get_tokenizer import get_tokenizer
 from tokenizer import Vocab
 

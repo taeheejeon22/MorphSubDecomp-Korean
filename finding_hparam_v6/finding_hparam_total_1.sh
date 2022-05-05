@@ -33,6 +33,7 @@ tokenizers=("LG_mecab_fixed_composed_grammatical_symbol_F_wp-64k" "LG_mecab_fixe
 "LG_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64k" "LG_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-64k"
 )
 
+
 for seed in "${seeds[@]}"; do
 
     for batch_size in "${batch_sizes[@]}"; do
@@ -41,8 +42,8 @@ for seed in "${seeds[@]}"; do
 
             for task in "${tasks[@]}"; do
 
-                log_dir="../run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/logs
-                summary_dir="../run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/summaries
+                log_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/logs
+                summary_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/summaries
                 
                 echo "### batch_size: ${batch_size} ###"
                 echo "### learning_rate: ${learning_rate} ###"
