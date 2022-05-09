@@ -4,7 +4,6 @@
 # 하이퍼파라미터를 찾기 위해 각 세팅별로 run_train.py를 반복하는 코드입니다.
 # batch_size, learning_rate, epoch 수, task 종류, seed, tokenizer 사용할 gpu를 설정할 수 있습니다.
 # 각 하이퍼파라미터에 여러 세팅을 입력하면 입력한 수만큼 반복하여 실행하게 됩니다.
-
 #############################
 
 # setting:
@@ -12,7 +11,7 @@
 batch_sizes=(16 32 64)
 learning_rates=(1e-5 2e-5 3e-5 5e-5)
 num_epochs=5
-seeds=(121958)
+seeds=(365838)
 tasks=("cola" "nsmc" "paws" "hsd")
 
 
@@ -22,10 +21,6 @@ read gpu_num
 echo "gpu_num == ${gpu_num}"
 
 tokenizers=("eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-32k" "eojeol_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-32k"
-"LG_mecab_fixed_composed_grammatical_symbol_F_wp-32k" "LG_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-32k"
-"LG_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-32k" "LG_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-32k"
-"morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-32k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-32k"
-"morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-32k" "morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-32k"
 "morpheme_mecab_orig_composed_grammatical_symbol_F_wp-32k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-32k")
 
 

@@ -3,7 +3,7 @@
 # setting:
 batch_sizes=(16 32 64)
 learning_rates=(1e-5 2e-5 3e-5 5e-5)
-tasks=("klue-nli")
+tasks=("ynat")
 seeds=(121958 671155 131932 365838 259178)
 num_epochs=5
 
@@ -13,10 +13,6 @@ read gpu_num
 echo "gpu_num == ${gpu_num}"
 
 tokenizers=("eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-32k" "eojeol_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-32k"
-"LG_mecab_fixed_composed_grammatical_symbol_F_wp-32k" "LG_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-32k"
-"LG_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-32k" "LG_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-32k"
-"morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-32k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-32k"
-"morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-32k" "morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-32k"
 "morpheme_mecab_orig_composed_grammatical_symbol_F_wp-32k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-32k")
 
 # klue 경로
@@ -33,8 +29,6 @@ for seed in "${seeds[@]}"; do
         for learning_rate in "${learning_rates[@]}"; do
 
             for task in "${tasks[@]}"; do
-                # log_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/logs
-                # summary_dir="./run_outputs/batch_"${batch_size}"_lr_"${learning_rate}/$task/summaries
 
                 echo "### batch_size: ${batch_size} ###"
                 echo "### learning_rate: ${learning_rate} ###"
@@ -64,7 +58,7 @@ for seed in "${seeds[@]}"; do
                     --tokenizer_name ${resource}/${tokenizer} \
                     --config_name ${resource}/${tokenizer} \
                     --learning_rate ${learning_rate} --train_batch_size ${batch_size} --num_train_epochs ${num_epochs} --warmup_ratio 0.1 --patience 100000 \
-                    --max_seq_length 128 --metric_key accuracy --gpus ${gpu_num} --num_workers 32 \
+                    --max_seq_length 128 --metric_key macro_f1 --gpus ${gpu_num} --num_workers 16 \
                     --seed ${seed}
 
                 done
@@ -76,3 +70,4 @@ for seed in "${seeds[@]}"; do
     done
 
 done
+
