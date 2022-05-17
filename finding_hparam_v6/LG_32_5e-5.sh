@@ -24,7 +24,7 @@ paws
 batch_sizes=(32)
 learning_rates=(5e-5)
 num_epochs=5
-seeds=(121958)
+seeds=(365838)
 tasks=("nsmc" "paws" "hsd")
 
 
