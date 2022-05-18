@@ -61,9 +61,9 @@ for seed in "${seeds[@]}"; do
 
                     # resource dir
                     if [[ `echo "${tokenizer: (-8):1}"` == "T" ]]; then
-                        resource="./resources/v7_without_dummy_letter_grammatical_symbol_T"
+                        resource="./resources/v6_without_dummy_letter_grammatical_symbol_T"
                     elif [[ `echo "${tokenizer: (-8):1}"` == "F" ]]; then
-                        resource="./resources/v7_without_dummy_letter_grammatical_symbol_F"
+                        resource="./resources/v6_without_dummy_letter_grammatical_symbol_F"
                     else
                         echo "tokenizer_name ERROR"
                     fi
