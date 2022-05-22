@@ -12,10 +12,7 @@ echo -e "gpu num 0 1 2 3 ? "
 read gpu_num
 echo "gpu_num == ${gpu_num}"
 
-tokenizers=("LG_mecab_fixed_composed_grammatical_symbol_F_wp-32k" "LG_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-32k"
-"LG_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-32k" "LG_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-32k"
-"morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-32k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-32k"
-"morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-32k" "morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-32k")
+tokenizers=("LG_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-32k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-32k")
 
 # klue 경로
 OUTPUT_DIR="./run_outputs"

@@ -3,7 +3,7 @@
 # setting:
 batch_sizes=(16 32 64)
 learning_rates=(1e-5 2e-5 3e-5 5e-5)
-tasks=("klue-sts")
+tasks=("klue-nli")
 seeds=(121958 671155 131932 365838 259178)
 num_epochs=5
 
@@ -12,10 +12,13 @@ echo -e "gpu num 0 1 2 3 ? "
 read gpu_num
 echo "gpu_num == ${gpu_num}"
 
-tokenizers=("LG_mecab_fixed_composed_grammatical_symbol_F_wp-32k" "LG_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-32k"
-"LG_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-32k" "LG_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-32k"
-"morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-32k" "morpheme_mecab_fixed_decomposed_grammatical_grammatical_symbol_F_wp-32k"
-"morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-32k" "morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-32k")
+tokenizers=("eojeol_mecab_fixed_composed_grammatical_symbol_F_wp-32k" "eojeol_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-32k"
+"morpheme_mecab_orig_composed_grammatical_symbol_F_wp-32k" "morpheme_mecab_orig_decomposed_pure_grammatical_symbol_F_wp-32k"
+"LG_mecab_fixed_composed_grammatical_symbol_F_wp-32k" "LG_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-32k"
+"LG_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-32k"
+"morpheme_mecab_fixed_composed_grammatical_symbol_F_wp-32k" "morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-32k"
+"morpheme_mecab_fixed_decomposed_pure_grammatical_symbol_F_wp-32k"
+)
 
 # klue 경로
 OUTPUT_DIR="./run_outputs"
@@ -24,7 +27,6 @@ VERSION="v1.1"
 
 # 각 배치사이즈, 각 학습률 별로 태스크를 수행함.
 # 에포크 수는 5회로 통일.
-
 for seed in "${seeds[@]}"; do
 
     for batch_size in "${batch_sizes[@]}"; do
@@ -63,7 +65,7 @@ for seed in "${seeds[@]}"; do
                     --tokenizer_name ${resource}/${tokenizer} \
                     --config_name ${resource}/${tokenizer} \
                     --learning_rate ${learning_rate} --train_batch_size ${batch_size} --num_train_epochs ${num_epochs} --warmup_ratio 0.1 --patience 100000 \
-                    --max_seq_length 128 --metric_key pearsonr --gpus ${gpu_num} --num_workers 32 \
+                    --max_seq_length 128 --metric_key accuracy --gpus ${gpu_num} --num_workers 32 \
                     --seed ${seed}
 
                 done
