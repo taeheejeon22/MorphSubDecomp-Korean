@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # setting:
-batch_sizes=(16 32 64)
+batch_sizes=(16 32)
 learning_rates=(1e-5 2e-5 3e-5 5e-5)
 tasks=("klue-dp")
-seeds=(121958 671155 131932 365838 259178)
+seeds=(671155)
 
 num_epochs=10
 
