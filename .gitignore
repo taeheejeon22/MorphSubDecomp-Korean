@@ -28,6 +28,9 @@ dataset_analysis/__pycache__
 dataset_analysis/*.csv
 dataset_analysis/*.tsv
 dataset_analysis/*.zip
+dataset_analysis/results/*
+dataset_analysis/tokenized/*
+
 
 # log
 run_outputs/*
