@@ -48,13 +48,15 @@ from soynlp.hangle import compose, decompose, character_is_korean, character_is_
 
 # from tokenization.jamo2str import moasseugi
 
+from scripts.decompose_letters import jamo_split    # BTS식 분해
+
 
 doublespace_pattern = re.compile('\s+')
 
 
 # class process_jamo():
 class tokenizers():
-    def __init__(self, dummy_letter: str = "", space_symbol: str = "", grammatical_symbol: list =["", ""], nfd: bool = True):
+    def __init__(self, dummy_letter: str = "", space_symbol: str = "", grammatical_symbol: list =["", ""], nfd: bool = True, BTS: bool = False):
         self.dummy_letter = dummy_letter    # 초성/중성/종성 더미 문자
         self.space_symbol = space_symbol    # 띄어쓰기 더미 문자
         self.grammatical_symbol = grammatical_symbol    # 문법 형태소 표지 # ["⭧", "⭨"]
@@ -88,6 +90,8 @@ class tokenizers():
 
 
         self.not_hangul_pos = ["SF", "SE", "SSO", "SSC", "SC", "SY", "SL", "SH", "SN"]
+
+        self.BTS = BTS  # BTS 활용 여부
 
 
 
@@ -343,7 +347,9 @@ class tokenizers():
 
     # def mecab_tokenizer(self, sent: str, tokenizer_type: str, decomposition_type: str):
 
+    # def mecab_tokenizer(self, sent: str, token_type: str, tokenizer_type: str, decomposition_type: str, flatten: bool = True, lexical_grammatical: bool = False):
     def mecab_tokenizer(self, sent: str, token_type: str, tokenizer_type: str, decomposition_type: str, flatten: bool = True, lexical_grammatical: bool = False):
+
     # def mecab_tokenizer(self, sent: str, token_type: str,  tokenizer_type: str = "mecab_fixed", decomposition_type: str = "composed", flatten: bool = True):
         assert (tokenizer_type in ["none", "mecab_orig", "mecab_fixed"] ), 'check the tokenizer type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
         # assert (decomposition_type in ["composed", "decomposed_pure", "decomposed_morphological", "composed_nfd", "decomposed_pure_nfd", "decomposed_morphological_nfd"] ), 'check the decomposition type!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
@@ -351,7 +357,18 @@ class tokenizers():
         # eojeol tokenization
         if token_type == "eojeol":
         # if tokenizer_type == "none":
-            mecab_tokenized = self.eojeol_tokenizer(sent=sent, decomposition_type=decomposition_type)
+
+            # mecab_tokenized = self.eojeol_tokenizer(sent=sent, decomposition_type=decomposition_type)
+
+        ### BTS
+            # print("BTS", self.BTS)
+
+            if self.BTS == False:
+                mecab_tokenized = self.eojeol_tokenizer(sent=sent, decomposition_type=decomposition_type)
+
+            else:
+                mecab_tokenized = self.bts_tokenizer(sent=sent)
+
 
         # morpheme tokenization
         elif token_type == "morpheme":
@@ -862,6 +879,11 @@ class tokenizers():
         # return new_sent_with_special_token
 
 
+    ## 1-3. BTS
+    def bts_tokenizer(self, sent):
+        bts_tokenized = [jamo_split(sentence=ej, split_stroke=True, split_cji=True) for ej in sent.split(" ")]
+        return bts_tokenized
+
 
 
 ## 자모 분해된 것을 원래 문장으로 복원. 완벽하지 않음.
@@ -984,6 +1006,10 @@ class tokenizers():
 # tok = tokenizers(dummy_letter="", space_symbol="", grammatical_symbol=[chr(7777), chr(9999)], nfd=False)
 # self = tok
 #
+# tok_bts = tokenizers(dummy_letter="", space_symbol="", grammatical_symbol=[chr(7777), chr(9999)], nfd=False, BTS=True)
+# self = tok_bts
+#
+#
 # sent = "이것이 아니다"
 # sent = "재밌음ㅋㅋ"
 # sent = "재밌음ㅠㅠ"
@@ -1027,6 +1053,11 @@ class tokenizers():
 # ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="none", decomposition_type="decomposed_pure"); print(ee)
 # # ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_lexical"); print(ee)
 # # ee = tok.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="mecab_fixed", decomposition_type="decomposed_grammatical"); print(ee)
+#
+# # BTS
+# ee = tok_bts.mecab_tokenizer(sent, token_type="eojeol", tokenizer_type="none", decomposition_type="decomposed_pure", ); print(ee)
+#
+#
 #
 # # morpheme
 # ee = tok.mecab_tokenizer(sent, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="composed", flatten=True); print(ee)

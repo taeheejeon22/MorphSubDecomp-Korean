@@ -29,3 +29,8 @@ pytorch-lightning==1.1.0
 fsspec==2021.4.0 # due to pytorch lightning
 overrides==3.1.0
 seqeval
+
+
+# BTS (https://github.com/irishev/BTS)
+jamotools==0.1.10
+hgtk==0.2.0
