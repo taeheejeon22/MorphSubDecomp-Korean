@@ -23,7 +23,7 @@ gcloud projects list
 ```
 
 
-### 과정 요약 정리
+### 과정 요약
 1. 프로젝트 생성 및 설정
 2. TPU 노드 생성(메뉴 - compute engine - TPU - TPU 노드 만들기)
     - 이름, 영역, tpu 유형, tpu 소프트웨어 버전(tensorflow or torch) 설정
@@ -31,7 +31,7 @@ gcloud projects list
       - TPU 3: 지역=`europe-west4-a`, 최대 5개 가능
       - TPU 2: 지역=`us-central1-f`, 최대 5개 가능
       - TPU 2 preempitible: `us-central1-f`, 최대 100개 가능
-    - TPU 권한 설정 관련: https://cloud.google.com/tpu/docs/storage-buckets?hl=ko#console_1
+    - TPU 권한 설정 관련 참고 링크: https://cloud.google.com/tpu/docs/storage-buckets?hl=ko#console_1
 3. VM, Storage 설정
     - VM: TPU만 쓰고자 한다면 최소 사양으로 설정. (n1-strandard)
     - Storage: 데이터 및 모델 저장 공간. tpu와 동일한 지역에 만들 것을 권장함.
@@ -43,9 +43,9 @@ gcloud projects list
 
     5.1. 터미널 창에서 vm에 ssh로 접속
   
-    5.2. acl_tokenization에서 `pretrain_code/wp_pretraining_code_stage2.sh` 실행
+    5.2. `pretrain_code/wp_pretraining_code_stage2.sh` 실행
     
-    - (tfrecord 만들기는 `wp_offline_pretraining_code_stage1.sh` 를 로컬 pc에서 실행)
+    - (tfrecord 만들기는 `wp_offline_pretraining_code_stage1.sh` 를 로컬에서 실행)
           
           
         - 쉘 스크립트 실행 (첫 실행 시에는 스크립트 첫 번째 단에 있는 `pip install...`을 주석 해제하여 필요한 도구들을 다운로드해야 함.)
@@ -102,4 +102,3 @@ gcloud projects list
 
 7. vm 삭제 및 tpu 삭제
     - 웹에서 진행.
-    - 
