@@ -1,4 +1,0 @@
-{
-    "vocab_size": 32000,
-    "tokenized_corpus_path": "./corpus/tokenized/LG_mecab_fixed/decomposed_pure_dummy_F"
-}
