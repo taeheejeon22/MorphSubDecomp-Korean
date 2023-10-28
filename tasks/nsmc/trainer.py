@@ -145,30 +145,6 @@ class Trainer:
             # torch.save(self.model.state_dict(), output_path)
             # self.logger.info(f"MODEL IS SAVED AT {output_path}\n")
 
-            # dev,test 결과만 따로 저장
-            self.begin_time = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
-            tokenizer_dir = os.path.join(self.config.resource_dir, self.config.tokenizer)
-            self.pretrained_bert_files = [file for file in os.listdir(tokenizer_dir) if file.endswith("pth")]
-            self.pretrained_bert_file_name = self.pretrained_bert_files[0]
-
-            if os.path.isfile('./run_outputs/total_log.csv') == False:
-                with open ('./run_outputs/total_log.csv', 'w', newline="") as f:
-                    wr = csv.writer(f)
-                    self.dev_result = round(dev_acc * 100, 2)
-                    self.test_result = round(test_acc * 100, 2)
-                    wr.writerow(['time', 'task', 'model', 'tokenizer', 'seed', 'batch_size', 'lr', 'epoch', 'dev', 'test'])
-                    wr.writerow([self.begin_time, 'nsmc', self.pretrained_bert_file_name, self.config.tokenizer, self.config.seed, self.config.batch_size, self.config.learning_rate, epoch, self.dev_result, self.test_result])
-                    print("making total_log.csv...")
-                    print("logging dev, test...")
-            
-            else:
-                with open ('./run_outputs/total_log.csv', 'a', newline="") as f:
-                    wr = csv.writer(f)
-                    self.dev_result = round(dev_acc * 100, 2)
-                    self.test_result = round(test_acc * 100, 2)
-                    wr.writerow([self.begin_time, 'nsmc', self.pretrained_bert_file_name, self.config.tokenizer, self.config.seed, self.config.batch_size, self.config.learning_rate, epoch, self.dev_result, self.test_result])
-                    print("logging dev, test...")
-
 
     def _train_step(self, input_token_ids, attention_mask, token_type_ids, labels):
         self.optimizer.zero_grad()
