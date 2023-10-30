@@ -14,27 +14,14 @@ def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str]
     3. label
     """
     sentence = []
-    # sentence_bs = []
     labels = []
 
     with open(file_path, "r", encoding="utf-8") as f:
         for i, line in enumerate(f.readlines()[1:]):
             splitted = line.strip().split("\t")
             if len(splitted) != 4:
-                #print(f"[ERROR] {repr(line)}, line {i}")
                 continue
-            # # 띄어쓰기
-            if TrainConfig.spacing == "spacing":
-                # comment
-                splitted[1] = spacer.space([splitted[1]])[0]
-                sentence.append(splitted[0])
-                # sentence_bs.append(splitted[1])
-            else:
-                sentence.append(splitted[0])
-                # sentence_bs.append(splitted[1])
-            # sentence_as.append(splitted[0])
-            # sentence_bs.append(splitted[1])
-
+            sentence.append(splitted[0])
             labels.append(label_to_index[splitted[3]])
 
     return sentence, labels

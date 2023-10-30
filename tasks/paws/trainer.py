@@ -160,7 +160,6 @@ class Trainer:
         else:
             self.optimizer.step()
 
-        #self.optimizer.step()
         self.scheduler.step()
 
         return loss.item(), outputs

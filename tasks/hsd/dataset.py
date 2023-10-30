@@ -19,14 +19,12 @@ class HSDDataset(Dataset):
     def __init__(
         self,
         sentences: List[str],
-        # sentence_bs: List[str],
         labels: List[int],
         vocab: Vocab,
         tokenizer: BaseTokenizer,
         max_sequence_length: int,
     ):
         self.sentences = sentences
-        # self.sentence_bs = sentence_bs
         self.labels = torch.tensor(labels)
 
         self.vocab = vocab

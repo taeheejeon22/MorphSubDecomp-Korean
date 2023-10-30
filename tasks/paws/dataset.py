@@ -56,12 +56,6 @@ class PAWSDataset(Dataset):
             for sentence_a, sentence_b in zip(sentence_as, sentence_bs)
         ]
 
-        # input_features = list()
-        # for sentence_a, sentence_b in zip(sentence_as, sentence_bs):
-        #     print(sentence_a, sentence_b, sep="\n")
-        #     input_features.append(convert_pair_to_feature(sentence_a, sentence_b, self.tokenizer, self.vocab, self.max_sequence_length))
-        #
-        #
 
         padded_token_ids = torch.tensor(
             pad_sequences(
