@@ -1,11 +1,6 @@
 from typing import Dict, List, Tuple
 from tasks.nsmc.config import TrainConfig
 
-
-# if TrainConfig.spacing == "spacing":
-#   from quickspacer import Spacer
-#   spacer = Spacer()
-
 def load_data(file_path: str, label_to_index: Dict[str, int]) -> Tuple[List[str], List[int]]:
     """
     file_path에 존재하는 tsv를 읽어서 bert_data.InputIds 형태로 변경해주는 함수입니다.

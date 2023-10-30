@@ -84,7 +84,6 @@ class Trainer:
         self.logger.info(f"steps per epoch       : {self.steps_per_epoch}")
         self.logger.info(f"total steps           : {self.total_steps}")
         self.logger.info(f"warmup steps          : {self.warmup_steps}")
-        self.logger.info(f"spacing               : {self.config.spacing}\n")
 
         for epoch in range(self.config.num_epochs):
             running_loss = 0.0
