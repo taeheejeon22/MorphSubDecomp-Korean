@@ -6,9 +6,19 @@ ee2.py
 # corpus
 *.pkl
 corpus/preprocessed/*
+!corpus/preprocessed/.keep
+
 corpus/tokenized/*
+!corpus/tokenized/.keep
+
 corpus/bpe_tokenized*/*
+
+corpus/raw_corpus/*
+!corpus/raw_corpus/.keep
+
 pretrain_corpus/tokenized/*
+!pretrain_corpus/tokenized/.keep
+
 dataset/nlu_tasks/*
 *.pth
 *ckpt
