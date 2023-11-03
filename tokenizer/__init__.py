@@ -15,7 +15,7 @@ from tokenizer.base import BaseTokenizer
 
 from tokenizer.mecab_orig_sp import MeCabSentencePieceTokenizer_orig
 from tokenizer.mecab_fixed_sp import MeCabSentencePieceTokenizer_fixed
-from tokenizer.mecab_sp import MeCabSentencePieceTokenizer
+# from tokenizer.mecab_sp import MeCabSentencePieceTokenizer
 from tokenizer.mecab_wp import MeCabWordPieceTokenizer
 
 # from tokenizer.mecab_sp_kortok import MeCabSentencePieceTokenizer_kortok
@@ -32,7 +32,7 @@ from tokenizer.mecab_all import MeCabTokenizer_all
 
 from tokenizer.sentencepiece import SentencePieceTokenizer
 from tokenizer.wordpiece import WordPieceTokenizer
-from tokenizer.vocab import Vocab
+# from tokenizer.vocab import Vocab
 # from tokenizer.word import WordTokenizer
 
 __all__ = [
@@ -41,7 +41,7 @@ __all__ = [
     # "JamoTokenizer",
     "MeCabSentencePieceTokenizer_orig",
     "MeCabSentencePieceTokenizer_fixed",
-    "MeCabSentencePieceTokenizer",
+    # "MeCabSentencePieceTokenizer",
     "MeCabWordPieceTokenizer",
     # "MeCabTokenizer",
     # "MeCabSentencePieceTokenizer_kortok",
@@ -55,6 +55,6 @@ __all__ = [
     "SentencePieceTokenizer",
     "WordPieceTokenizer",
 
-    "Vocab",
+    # "Vocab",
     # "WordTokenizer",
 ]

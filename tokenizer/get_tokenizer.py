@@ -1,3 +1,8 @@
+# in 'old' folder
+    # mecab.py
+    # mecab_kortok.py
+    # vocab.py
+
 import os
 
 from tokenizer import (
@@ -5,7 +10,7 @@ from tokenizer import (
     # JamoTokenizer,
     MeCabSentencePieceTokenizer_orig,
     MeCabSentencePieceTokenizer_fixed,
-    MeCabSentencePieceTokenizer,
+    # MeCabSentencePieceTokenizer,
     MeCabWordPieceTokenizer,
     # MeCabTokenizer,
     MeCabTokenizer_orig,
@@ -14,14 +19,14 @@ from tokenizer import (
     # MeCabTokenizer_kortok,
     SentencePieceTokenizer,
     WordPieceTokenizer,
-    Vocab,
+    # Vocab,
     # WordTokenizer,
 )
 
 
 
-# def get_tokenizer(tokenizer_name: str, resource_dir: str, token_type, tokenizer_type: str , decomposition_type: str, space_symbol: str, dummy_letter: str, nfd: bool, grammatical_symbol: list = ["", ""], skip_special_tokens: bool = True):
 def get_tokenizer(tokenizer_name: str, resource_dir: str, token_type, tokenizer_type: str , decomposition_type: str, space_symbol: str, dummy_letter: str, nfd: bool, grammatical_symbol: list = ["", ""], skip_special_tokens: bool = True, lexical_grammatical: bool = False):   # for LG
+    # tokenizer_name: resources 내 폴더명
     tokenizer_dir = os.path.join(resource_dir, tokenizer_name)
 
     if tokenizer_name.startswith("sp-"):
@@ -40,11 +45,10 @@ def get_tokenizer(tokenizer_name: str, resource_dir: str, token_type, tokenizer_
             tokenizer = MeCabSentencePieceTokenizer_fixed(mecab, sp, use_fixed=True) # mecab_fixed.py
 
 
-    # elif tokenizer_name.startswith("eojeol") or tokenizer_name.startswith("morpheme"):
+    # 현 버전에서는 WordPieceTokenizer만 사용함
     elif tokenizer_name.startswith("eojeol") or tokenizer_name.startswith("morpheme") or tokenizer_name.startswith("LG"):   # LG도 처리할 수 있도록
         wp = WordPieceTokenizer(os.path.join(tokenizer_dir, "bert_tokenizer.json"), skip_special_tokens=skip_special_tokens)
-        # mecab = MeCabTokenizer_all(token_type=token_type, tokenizer_type=tokenizer_type, decomposition_type=decomposition_type, space_symbol=space_symbol, dummy_letter=dummy_letter, nfd=nfd, grammatical_symbol=grammatical_symbol)
-        mecab = MeCabTokenizer_all(token_type=token_type, tokenizer_type=tokenizer_type, decomposition_type=decomposition_type, space_symbol=space_symbol, dummy_letter=dummy_letter, nfd=nfd, grammatical_symbol=grammatical_symbol, lexical_grammatical=lexical_grammatical)   # for LG
+        mecab = MeCabTokenizer_all(token_type=token_type, tokenizer_type=tokenizer_type, decomposition_type=decomposition_type, space_symbol=space_symbol, dummy_letter=dummy_letter, nfd=nfd, grammatical_symbol=grammatical_symbol, lexical_grammatical=lexical_grammatical)
         tokenizer = MeCabWordPieceTokenizer(mecab=mecab, wp=wp) # mecab_wp.py
 
 

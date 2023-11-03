@@ -1,10 +1,6 @@
-# mecab_fixed_sp, mecab_orig_sp 통합하고, mecab_all도 처리할 수 있도록 함.
-
-# mecab orig / fixed / all 선택
-# use_fixed: bool
+# WordPiece + mecab
 
 from typing import List
-
 from tokenizer.base import BaseTokenizer
 
 # from tokenizer.mecab import MeCabTokenizer
@@ -19,15 +15,9 @@ class MeCabWordPieceTokenizer(BaseTokenizer):
     def __init__(self, mecab, wp: WordPieceTokenizer):
         self.mecab = mecab
         self.wp = wp
-        # self.use_fixed = use_fixed
 
 
     def tokenize(self, text: str) -> List[str]:
-        # if self.use_fixed == False: # kortok API based tokenizer
-        #     tokenized = self.mecab.tokenize(text)   # ['나', 'ᆫ', '▃', '너', 'ᆯ', '▃', '좋아하', '아']
-        # elif self.use_fixed == True:  # our tokenizer (konlpy based)
-        #     tokenized = self.mecab.tokenize(text)  # ['나', 'ᆫ', '▃', '너', 'ᆯ', '▃', '좋아하', '아']
-
         tokenized = self.mecab.tokenize(text)  # ['나', 'ᆫ', '▃', '너', 'ᆯ', '▃', '좋아하', '아']     # ['내', '⭧가', '먹', '⭧다']
 
         tokenized = self.wp.tokenize(" ".join(tokenized))   # ['▁나', '▁ㄴ', '▁▃', '▁너', '▁ㄹ', '▁▃', '▁좋아하', '▁아']
@@ -109,7 +99,6 @@ class MeCabWordPieceTokenizer(BaseTokenizer):
 #
 # # mc-wp
 # text = "나는 널 좋아해"
-# text = "전태희는 널 좋아해"
 # mc = MeCabWordPieceTokenizer(mecab=mecab, wp=wp)
 # mecab.tokenize(text)
 # mc.tokenize(text)
@@ -128,8 +117,6 @@ class MeCabWordPieceTokenizer(BaseTokenizer):
 #
 # text = "나는 장풍을 했다."
 # text = "나는 장소를 했다."
-#
-# text = "전태희는 한국대학교에 묵었었다"
 #
 #
 # text = "사람은 머리는 크다"

@@ -1,5 +1,4 @@
 # 전처리된 코퍼스 파일의 토큰화
-
 import argparse
 import json
 import os
@@ -16,7 +15,7 @@ import sys
 sys.path.insert(0, '.')
 
 
-import scripts.tokenizers as Tokenizers
+import scripts.tokenizer_collection as Tokenizers
 
 
 # konlpy-based tokenizer
@@ -25,8 +24,6 @@ def preprocessed_corpus_tokenizer(text: str, token_type: str, tokenizer_type: st
     tokenized = tok.mecab_tokenizer(text, token_type=token_type, tokenizer_type=tokenizer_type, decomposition_type=decomposition_type, flatten=flatten, lexical_grammatical=lexical_grammatical)
 
     return tokenized
-
-
 
 
 
@@ -93,17 +90,9 @@ if __name__ == "__main__":
     symbol_josa = args["grammatical_symbol"][0]
     symbol_eomi = args["grammatical_symbol"][1]
 
-
     tok = Tokenizers.tokenizers(dummy_letter=args["dummy_letter"], space_symbol=args["space_symbol"], grammatical_symbol=[symbol_josa, symbol_eomi], nfd=args["nfd"])
 
     tokenize_fn = partial(preprocessed_corpus_tokenizer, token_type=args["token_type"], tokenizer_type=args["tokenizer_type"], decomposition_type=args["decomposition_type"], lexical_grammatical=args["lexical_grammatical"])
-    # tokenize_fn = partial(preprocessed_corpus_tokenizer, tokenizer=tokenizer, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_lexical", lexical_grammatical=False)
-    # tokenize_fn = partial(preprocessed_corpus_tokenizer, tokenizer=tokenizer, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_grammatical", lexical_grammatical=False)
-    # tokenize_fn = partial(preprocessed_corpus_tokenizer, tokenizer=tokenizer, token_type="morpheme", tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure", lexical_grammatical=False)
-    # tokenize_fn = partial(preprocessed_corpus_tokenizer, tokenizer=tokenizer, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="composed", lexical_grammatical=False)
-    # tokenize_fn = partial(preprocessed_corpus_tokenizer, tokenizer=tokenizer, token_type="morpheme", tokenizer_type="mecab_orig", decomposition_type="decomposed_pure", lexical_grammatical=False)
-    # tokenize_fn = partial(preprocessed_corpus_tokenizer, tokenizer=tokenizer, token_type="eojeol", tokenizer_type="none", decomposition_type="composed", lexical_grammatical=False)
-    # tokenize_fn = partial(preprocessed_corpus_tokenizer, tokenizer=tokenizer, token_type="eojeol", tokenizer_type="none", decomposition_type="decomposed_pure", lexical_grammatical=False)
 
 
     # example = preprocessed_corpus_tokenizer(text="훌륭한 사망 플래그의 예시이다", tokenizer=tokenizer, token_type=args["token_type"], tokenizer_type=args["tokenizer_type"], decomposition_type=args["decomposition_type"], lexical_grammatical=args["lexical_grammatical"])
@@ -131,17 +120,12 @@ if __name__ == "__main__":
         with open(INPUT_CORPUS, "r", encoding="utf-8") as f:
             with Pool(args["threads"]) as p:
                 tokenized = p.map(tokenize_fn, f)
-        # with open(INPUT_CORPUS, "r", encoding="utf-8") as f:
-        #     texts = f.readlines()
-        #     with Pool(args["n_jobs"]) as p:
-        #         tokenized = p.map(tokenize_fn, texts)
 
 
     if args["lexical_grammatical"] == False:
         OUTPUT_DIR_sub = OUTPUT_DIR + "_".join([args["token_type"], args["tokenizer_type"] ]) + "/" + "_".join([args["decomposition_type"], with_dummy_letter])
     elif args["lexical_grammatical"] == True:  # lexical_grammtical 사용하면 morpheme 대신 LG로 명명
         OUTPUT_DIR_sub = OUTPUT_DIR + "_".join(["LG", args["tokenizer_type"] ]) + "/" + "_".join([args["decomposition_type"], with_dummy_letter])
-
 
     os.makedirs(OUTPUT_DIR_sub, exist_ok=True)
 
@@ -158,17 +142,14 @@ if __name__ == "__main__":
                 f.write(" ".join(tokens) + "\n")
 
 
-
     # mecab config
     print("write mecab config file...\n")
     output_config_path = os.path.join(OUTPUT_DIR_sub, "tok.json")
     with open(output_config_path, "w", encoding="utf-8") as f:
         json.dump(args, f, indent=4)
 
-
     print(f"saved in: {os.path.join(OUTPUT_DIR_sub, os.path.basename(file_name))}\n")
     print(f"done.\n")
-
 
     elapsed_time = time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time))
     print(f"tokenization completed for all files. (elapsed time: {elapsed_time})\n")

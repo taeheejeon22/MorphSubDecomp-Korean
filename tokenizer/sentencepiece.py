@@ -1,3 +1,5 @@
+# SentencePiece 토크나이저
+
 from typing import List
 
 import sentencepiece as spm
@@ -9,9 +11,6 @@ class SentencePieceTokenizer(BaseTokenizer):
     def __init__(self, model_path: str, reverse: bool = False):
         self.sp = spm.SentencePieceProcessor()
         self.sp.Load(model_path)
-
-        # self.sp.Load("./resources/v3_without_dummy_letter/32k/tok.model")
-
         self.reverse = reverse
 
     def tokenize(self, text: str) -> List[str]:

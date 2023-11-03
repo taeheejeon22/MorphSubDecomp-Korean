@@ -1,0 +1,4 @@
+{
+    "vocab_size": 64000,
+    "tokenized_corpus_path": "./corpus/tokenized/eojeol_mecab_fixed/decomposed_simple_dummy_F"
+}

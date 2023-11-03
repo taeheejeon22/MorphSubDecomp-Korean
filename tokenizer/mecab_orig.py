@@ -1,16 +1,5 @@
-# mecab_orig
+#  mecab_orig
 # kortok API 이용해 자모 분해까지 덧붙인 버전
-
-
-# mecab_fixed_v2
-# konlpy 방식. OS마다 결과 다른 거 땜에 어쩔 수 없이 내 버전 써야 됨.
-# mecab.py + mecab_fixed.py 합친 것
-
-
-# mecab fixed decomposition pure (추후 simple로 교체 예정)
-# _init_에 추가하기, 아니면 걍 mecab_fixed에 통합하는 게 나을 듯.
-
-
 
 import json
 import os
@@ -22,9 +11,7 @@ import MeCab
 from soynlp.hangle import compose, decompose, character_is_korean, character_is_complete_korean, character_is_moum, character_is_jaum
 from tokenizer.base import BaseTokenizer
 
-
-import scripts.tokenizers_acl_v2 as tok
-
+import scripts.tokenizer_collection as tok
 
 
 regexp = re.compile(".+(?=/[^A-Z])") # a pattern for only morphemes and their POS (e.g. 불태워/VV/* > 불태워/VV)
@@ -75,12 +62,6 @@ def mecab_tokenize(elem, join=False):
                 return (s, token_pos)
 
 
-# mor_poss = split(mor)   # ['나/NP', 'ᆫ/JX']
-#
-#    " ".join([mor_pos.split("/")[0] for mor_pos in split(mor)])
-
-
-
 
 # pure decomposition
 def str2jamo(text, grammatical=False, dummy_letter=""):
@@ -119,19 +100,6 @@ def str2jamo(text, grammatical=False, dummy_letter=""):
             # return cjj_
 
 
-        # if jamo_morpheme == False:
-        #     text_ = []
-        #     for char in text:
-        #         if character_is_korean(char):
-        #             text_.append(transform(char))
-        #         else:
-        #             text_.append(char)
-        #     text_ = doublespace_pattern.sub(' ', ''.join(text_))
-        #     return text_
-        #
-        # if jamo_morpheme == True:   # for jamo morphemes like ㄴ, ㄹ, ...
-        #     return self.dummy_letter*2 + text   # '##ㄴ'
-
     text_ = []
     for char in text:
         if character_is_korean(char):
@@ -140,100 +108,6 @@ def str2jamo(text, grammatical=False, dummy_letter=""):
             text_.append(char)
     text_ = doublespace_pattern.sub(' ', ''.join(text_))
     return text_
-
-
-# # morphological decomposition
-# def mecab_with_morphological_decomposition(sent, use_original, dummy_letter, space_symbol):
-#     '''
-#     :param sent: 자모 변환할 문장      '너를 좋아해'
-#     :param morpheme_analysis:
-#         False: 자모 변환만 수행    (어절 토큰화 문장을 자모로 변환하는 데에 그대로 이용 가능)
-#         True: 형태소 분석 + 자모 변환
-#     :param use_original: konlpy original mecab 쓸지
-#     :return: 자모 변환된 문장          '너ㅡㄹ 좋아해' or '너 ㄹㅡㄹ 좋아해'
-#     '''
-#
-#     # 음절 분해용: 난 > ㄴㅏㄴ
-#     # https://github.com/ratsgo/embedding/blob/master/preprocess/unsupervised_nlputils.py
-#     def transform_v2(char):
-#         if char == ' ':  # 공백은 그대로 출력
-#             return char
-#
-#         cjj = decompose(char)  # soynlp 이용해 분해
-#
-#         # 자모 하나만 나오는 경우 처리 # ㄴ ㅠ
-#         try:
-#             if cjj.count(" ") == 2:
-#                 if character_is_jaum(cjj[0]):  # 그 자모가 자음이면
-#                     cjj = (dummy_letter, dummy_letter, cjj[0])  # ('ㄴ', ' ', ' ') > ('-', 'ㄴ', '-')
-#                 elif character_is_moum(cjj[0]):  # 그 자모가 모음이면
-#                     cjj = (dummy_letter, cjj[1], dummy_letter)  # (' ', 'ㅠ', ' ') > ('-', 'ㅠ', '-')
-#         except AttributeError:  # 혹시라도 한글 아닌 것이 들어올 경우 대비해
-#             pass
-#
-#         if len(cjj) == 1:
-#             return cjj
-#
-#         cjj_ = ''.join(c if c != ' ' else dummy_letter for c in cjj)
-#         return cjj_
-#
-#
-#
-#     if use_original == True:
-#         mors_ejs_in_sent = mc_orig.pos(sent, flatten=False)  # 형태소 분석
-#     elif use_original == False:
-#         mors_ejs_in_sent = mc_fixed.pos(sent, flatten=False)  # 형태소 분석
-#
-#
-#
-#
-#
-#
-#
-#     new_sent = list()
-#     for ix in range(len(mors_ejs_in_sent)):
-#         eojeol = mors_ejs_in_sent[ix]  # [('나', 'NP'), ('는', 'JX')]
-#
-#         new_eojeol = list()  # ['나', 'ㄴㅡㄴ']
-#         for jx in range(len(eojeol)):
-#             morpheme, pos = eojeol[jx]  # '너', 'NP'
-#
-#             # 문법 형태소가 아니면
-#             # if not pos in grammatical_pos:    # 잔다 VV+EC 등을 분해하지 않음
-#             if sum([1 for pos in pos.split("+") if pos in grammatical_pos]) < 1:  # 잔다 VV+EC 등을 분해함
-#                 decomposed_morpheme = morpheme[:]
-#
-#             # 문법 형태소이면
-#             # elif pos in grammatical_pos:  # 잔다 VV+EC 등을 분해하지 않음
-#             elif sum([1 for pos in pos.split("+") if pos in grammatical_pos]) >= 1:  # 잔다 VV+EC 등을 분해함
-#                 decomposed_morpheme = "".join(
-#                     [transform_v2(char) if character_is_korean(char) else char for char in morpheme])
-#
-#             new_eojeol.append(decomposed_morpheme)
-#
-#         new_sent.append(new_eojeol)
-#
-#         # if morpheme_tokenization == False:  # 형태소 토큰화 없이 어절 그대로 자모로 변환만 한다면
-#         #     # if flatten == True:
-#         #     #     new_sent.append("".join(new_eojeol))
-#         #     # elif flatten == False:
-#         #     new_sent.append(new_eojeol)
-#         # elif morpheme_tokenization == True:  # 형태소 토큰화 + 자모 변환 한다면
-#         #     # if flatten == True:
-#         #     #     new_sent += new_eojeol
-#         #     # elif flatten == False:
-#         #     new_sent.append(new_eojeol)
-#
-#     # if flatten == True:
-#     #     new_sent = doublespace_pattern.sub(" ", " ".join(new_sent))
-#     # elif flatten == False:
-#     #     pass
-#
-#     new_sent_with_special_token = list(chain.from_iterable(intersperse(new_sent, space_symbol)))
-#
-#     return new_sent_with_special_token
-
-
 
 
 
@@ -293,29 +167,9 @@ class MeCabTokenizer_orig(BaseTokenizer):
                         elif sum([1 for pos in pos.split("+") if pos in self.grammatical_pos]) >= 1:  # VV+EC 등 고려해서 문법 형태소 있으면
                             tokenized.append(str2jamo(token, grammatical=False, dummy_letter=self.dummy_letter))   # 자모 분해 후 추가
 
-                # # elif self.use_original == False:    # mecab fixed
-                # elif self.tokenizer_type == "mecab_fixed":  # mecab fixed
-                #     if self.decomposition_type == "composed":
-                #         mecab_tokenized = [mor_pos[0] for mor_pos in mecab_tokenize(mor)]  # ['나', 'ᆫ'] 진짜 형태소로 쪼개진 토큰들 저장
-                #         tokenized += mecab_tokenized
-                #     elif self.decomposition_type == "decomposed_pure":
-                #         mecab_tokenized = [mor_pos[0] for mor_pos in mecab_tokenize(mor)]  # ['나', 'ᆫ'] 진짜 형태소로 쪼개진 토큰들 저장
-                #         tokenized += [str2jamo(token, grammatical=False, dummy_letter=self.dummy_letter) for token in mecab_tokenized] # 자모 분해 후 추가
-                #     elif self.decomposition_type == "decomposed_morphological":
-                #         mecab_tokenized_with_pos = mecab_tokenize(mor)[:]  # [('나', 'NP'), ('ᆫ', 'JX')] 진짜 형태소로 쪼개진 토큰들 저장 with POS tag
-                #         tokenized += [mor_pos[0] if (not mor_pos[-1] in self.grammatical_pos) else str2jamo(mor_pos[0], grammatical=False, dummy_letter=self.dummy_letter) for mor_pos in mecab_tokenized_with_pos]    # 어휘 형태소는 그대로, 문법 형태소는 자모 분해 후 추가
-
                 text_ptr += len(token)
 
         return tokenized
-
-
-    # # our (konlpy based)
-    # def tokenize_our(self, text: str) -> List[str]:
-    #     text = text.strip()
-    #
-    #     # return self.tok.mecab_tokenizer(text, use_original=self.use_original, pure_decomposition=self.pure_decomposition, morphological=self.morphological)
-    #     return self.tok.mecab_tokenizer(text, tokenizer_type=self.tokenizer_type, decomposition_type=self.decomposition_type)
 
 
 

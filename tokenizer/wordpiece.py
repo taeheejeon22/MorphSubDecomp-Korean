@@ -1,5 +1,6 @@
-from typing import List
+# WordPiece 토크나이저
 
+from typing import List
 
 from tokenizer.base import BaseTokenizer
 

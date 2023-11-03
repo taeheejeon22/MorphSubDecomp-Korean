@@ -1,13 +1,8 @@
-# mecab orig / fixed 선택
-# use_fixed: bool
+# SentencePiece + mecab_fixed
 
 from typing import List
-
 from tokenizer.base import BaseTokenizer
-
-# from tokenizer.mecab import MeCabTokenizer
 from tokenizer.mecab_fixed import MeCabTokenizer_fixed
-
 from tokenizer.sentencepiece import SentencePieceTokenizer
 
 
@@ -17,35 +12,9 @@ class MeCabSentencePieceTokenizer_fixed(BaseTokenizer):
         self.sp = sp
         self.use_fixed = use_fixed
 
-        # self.mecab = MeCabTokenizer_fixed(config_path="./resources/mecab_orig_composed_sp-64k/tok.json")
-        # self.sp = MeCabSentencePieceTokenizer_fixed(model_path="./resources/mecab_orig_composed_sp-64k/tok.model")
-        # self.mecab = MeCabTokenizer(config_path="./resources/mecab_fixed_composed_sp-64k/tok.json")
-        # self.sp = SentencePieceTokenizer(model_path="./resources/mecab_fixed_composed_sp-64k/tok.model")
-
-
-        # self.mecab = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="composed", space_symbol= "▃", dummy_letter= "" )                    # ['사람', '은', '▃', '널', '▃', '진짜', '▃', '원해', '.']
-        # self.sp = SentencePieceTokenizer(model_path="./resources/v5_without_dummy_letter/mecab_fixed_composed_sp-64k/tok.model")
-
-        # self.mecab = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_pure", space_symbol= "▃", dummy_letter= "" )
-        # self.sp = SentencePieceTokenizer(model_path="./resources/v5_without_dummy_letter/mecab_fixed_decomposed_pure_sp-64k/tok.model")
-        # self.mecab = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "" )
-        # self.sp = SentencePieceTokenizer(model_path="./resources/v5_without_dummy_letter/mecab_fixed_decomposed_morphological_sp-64k/tok.model")
-
-        # self.mecab = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "" )
-        # self.sp = SentencePieceTokenizer(model_path="./output_sp/mecab_fixed_decomposed_morphological_sp-32k/tok.model")
-
-
-
-        # self.mecab = MeCabTokenizer_fixed(tokenizer_type="mecab_fixed", decomposition_type="decomposed_morphological", space_symbol= "▃", dummy_letter= "⊸" )
-        # self.sp = SentencePieceTokenizer(model_path="./resources/v3_with_dummy_letter/mecab_fixed_decomposed_morphological_sp-32k/tok.model")
 
 
     def tokenize(self, text: str) -> List[str]:
-        # if self.use_fixed == False: # kortok API based tokenizer
-        #     tokenized = self.mecab.tokenize(text)   # ['나', 'ᆫ', '▃', '너', 'ᆯ', '▃', '좋아하', '아']
-        # elif self.use_fixed == True:  # our tokenizer (konlpy based)
-        #     tokenized = self.mecab.tokenize(text)  # ['나', 'ᆫ', '▃', '너', 'ᆯ', '▃', '좋아하', '아']
-
         tokenized = self.mecab.tokenize(text)  # ['나', 'ᆫ', '▃', '너', 'ᆯ', '▃', '좋아하', '아']
 
         tokenized = self.sp.tokenize(" ".join(tokenized))   # ['▁나', '▁ㄴ', '▁▃', '▁너', '▁ㄹ', '▁▃', '▁좋아하', '▁아']    # ['▁나', '▁⊸⊸', 'ㄴ', '▁▃', '▁너', '▁⊸⊸', 'ㄹ', '▁▃', '▁좋아하', '▁ㅇㅏ', '⊸']
@@ -59,6 +28,8 @@ class MeCabSentencePieceTokenizer_fixed(BaseTokenizer):
             output.append(tokenized[i])
 
         return output   # ['▁나', '▁ㄴ', '▃', '▁너', '▁ㄹ', '▃', '▁좋아하', '▁아']
+
+
 
     def detokenize(self, tokens: List[str]) -> str:
         text = "".join(tokens).replace("▁", "").replace(" ", "").replace("▃", " ").strip()
@@ -93,7 +64,6 @@ class MeCabSentencePieceTokenizer_fixed(BaseTokenizer):
 #
 # self = mc
 # self.tokenize(text)
-
 
 
 

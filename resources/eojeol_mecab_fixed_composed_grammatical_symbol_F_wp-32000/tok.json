@@ -1,0 +1,15 @@
+{
+    "space_symbol": "",
+    "threads": 32,
+    "dummy_letter": "",
+    "grammatical_symbol": [
+        "",
+        ""
+    ],
+    "token_type": "eojeol",
+    "tokenizer_type": "mecab_fixed",
+    "decomposition_type": "composed",
+    "lexical_grammatical": false,
+    "nfd": false,
+    "corpus_path": "./corpus/preprocessed/namuwiki_20200302_with_preprocessing.txt"
+}

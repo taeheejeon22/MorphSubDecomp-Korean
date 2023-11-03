@@ -24,7 +24,8 @@
   * 실험에 사용한 파일의 버전: 21/09/01
 
 ### 1-2) 텍스트 추출
-- 다운받은 덤프 파일로부터 Wikiextractor (https://github.com/attardi/wikiextractor) 이용하여 텍스트 추출함. 
+- 다운받은 덤프 파일로부터 Wikiextractor (https://github.com/attardi/wikiextractor) 이용하여 텍스트 추출함.
+  * Wikiextractor를 이용한 텍스트 추출 과정은 본 저장소의 코드에 포함되어 있지 않음. 자세한 이용 방법은 https://github.com/attardi/wikiextractor 참고할 것. 
 
 ### 1-3) 추출된 텍스트 파일 옮기기
 - Wikiextractor 사용 후 생성된 'text' 폴더를 다음 경로에 위치시키기. 
@@ -40,41 +41,48 @@
 - namuwiki 덤프 파일의 텍스트 추출 과정은 전처리 과정과 통합되어 있으므로 생략함.
 
 ### 2-3) 덤프 파일 옮기기
-- 다운받은 덤프 파일의 압축을 푼 후, json 파일 (예: namuwiki200302.json)을, .
-
+- 다운받은 덤프 파일의 압축을 푼 후, json 파일 (예: namuwiki200302.json) 다음 경로에 위치시키기.
+  * ./corpus/raw_corpus
 
 
 # 1. 코퍼스 전처리하기
 ```bash
-python ./scripts/parse_Wikiko_with_preprocessing.py --input_path ./corpus/raw_corpus/text --output_path ./corpus/preprocessed/wikiko_20210901_with_preprocessing.txt
-python ./scripts/parse_namuWiki_with_preprocessing.py --input_path ./corpus/raw_corpus/namuwiki200302.json --output_path ./corpus/preprocessed/namuwiki_20200302_with_preprocessing.txt   
+python ./scripts/parse_Wikiko_with_preprocessing.py --input_path ./corpus/raw_corpus/text --output_path ./corpus/preprocessed/wikiko_20210901_preprocessed.txt
+python ./scripts/parse_namuWiki_with_preprocessing.py --input_path ./corpus/raw_corpus/namuwiki200302.json --output_path ./corpus/preprocessed/namuwiki_20200302_preprocessed.txt   
 ```
-
+- 출력 파일은 ./pretrain_corpus/preprocessed 에 저장됨.
 
 
 # 2. 코퍼스 토큰화
-- ./scripts/mecab_tokenization_v2_1.py
-- 출력 파일은 ./pretrain_corpus/tokenized 에 저장됨.
+- *token_type*과 *decomposition_type*은 paper의 tokenization methods와 관련됨.
+  * WP: --token_type=eojeol --decomposition_type=composed
+  * WP-SD --token_type=eojeol --decomposition_type=decomposed_simple
+  * MorWP: --token_type=morpheme --decomposition_type=composed
+  * MorWP-SD: --token_type=morpheme --decomposition_type=decomposed_simple
+  * MorWP-MD: --token_type=morpheme --decomposition_type=decomposed_lexical
 
 ## wiki-ko
 ```bash
-python scripts/mecab_tokenization.py --token_type=eojeol --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing.txt --tokenizer_type=mecab_fixed --decomposition_type=composed --threads 32
-python scripts/mecab_tokenization.py --token_type=eojeol --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_simple --nfd --threads 32
+python scripts/mecab_tokenization.py --token_type=eojeol --decomposition_type=composed --corpus_path=./corpus/preprocessed/wikiko_20210901_preprocessed.txt --tokenizer_type=mecab_fixed --threads 32
+python scripts/mecab_tokenization.py --token_type=eojeol --decomposition_type=decomposed_simple --corpus_path=./corpus/preprocessed/wikiko_20210901_preprocessed.txt --tokenizer_type=mecab_fixed --nfd --threads 32
 
-python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing.txt --tokenizer_type=mecab_fixed --decomposition_type=composed --threads 32
-python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_simple --nfd --threads 32
-python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpus/preprocessed/wikiko_20210901_with_preprocessing.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_lexical --nfd --threads 32 
+python scripts/mecab_tokenization.py --token_type=morpheme --decomposition_type=composed --corpus_path=./corpus/preprocessed/wikiko_20210901_preprocessed.txt --tokenizer_type=mecab_fixed --threads 32
+python scripts/mecab_tokenization.py --token_type=morpheme --decomposition_type=decomposed_simple --corpus_path=./corpus/preprocessed/wikiko_20210901_preprocessed.txt --tokenizer_type=mecab_fixed --nfd --threads 32
+python scripts/mecab_tokenization.py --token_type=morpheme --decomposition_type=decomposed_lexical --corpus_path=./corpus/preprocessed/wikiko_20210901_preprocessed.txt --tokenizer_type=mecab_fixed --nfd --threads 32 
 ```
 
 ## namuwiki
 ```bash
-python scripts/mecab_tokenization.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing.txt --tokenizer_type=mecab_fixed --decomposition_type=composed --threads 32
-python scripts/mecab_tokenization.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_simple --nfd --threads 32
+python scripts/mecab_tokenization.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_preprocessed.txt --tokenizer_type=mecab_fixed --decomposition_type=composed --threads 32
+python scripts/mecab_tokenization.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_preprocessed.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_simple --nfd --threads 32
 
-python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing.txt --tokenizer_type=mecab_fixed --decomposition_type=composed --threads 32
-python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_simple --nfd --threads 32 
-python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_lexical --nfd --threads 32
+python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_preprocessed.txt --tokenizer_type=mecab_fixed --decomposition_type=composed --threads 32
+python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_preprocessed.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_simple --nfd --threads 32 
+python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_preprocessed.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_lexical --nfd --threads 32
 ```
+
+- 출력 파일은 ./pretrain_corpus/tokenized 에 저장됨.
+
 
 ### 메모리 부족으로 인해 코드 중단되는 경우의 대안
 1. 전처리된 코퍼스 파일 분할
@@ -101,34 +109,70 @@ python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpu
 
 
 
-
-# 2. Wordpiece, Sentencepiece 학습
-[comment]: <> (## mecab 토큰화)
-
-[comment]: <> (./build_vocab/build_mecab_vocab_our.py &#40;자동화 위해 코드 수정 필요&#41;)
-
-[comment]: <> (```bash)
-
-[comment]: <> (python build_vocab/build_mecab_vocab_our.py --vocab_size=64000)
-
-[comment]: <> (```)
-
-
-- 현재는 ./output_sp 디렉토리에 출력됨. 추후 resources로 가도록 수정해야 함.
-
-
-## Wordpiece
-./build_vocab/train_wordsentencepiece.py
-### *baselines*
+# 3. Wordpiece 학습
+- 32k
 ```bash
-python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/eojeol_mecab_fixed/composed_dummy_F --vocab_size=64000
-python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/eojeol_mecab_fixed/decomposed_pure_dummy_F --vocab_size=64000
+python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/eojeol_mecab_fixed/composed_dummy_F --vocab_size=32000
+python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/eojeol_mecab_fixed/decomposed_simple_dummy_F --vocab_size=32000
 
-python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized//morpheme_mecab_fixed/composed_dummy_F --vocab_size=64000
-python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized//morpheme_mecab_fixed/decomposed_lexical_dummy_F --vocab_size=64000
-python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized//morpheme_mecab_fixed/decomposed_pure_dummy_F --vocab_size=64000
+python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized//morpheme_mecab_fixed/composed_dummy_F --vocab_size=32000
+python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized//morpheme_mecab_fixed/decomposed_simple_dummy_F --vocab_size=32000
+python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized//morpheme_mecab_fixed/decomposed_lexical_dummy_F --vocab_size=32000
+````
 
-```
+- 64k
+```bash
+python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/eojeol_mecab_fixed/composed_dummy_F --vocab_size=64000
+python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/eojeol_mecab_fixed/decomposed_simple_dummy_F --vocab_size=64000
+
+python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized//morpheme_mecab_fixed/composed_dummy_F --vocab_size=64000
+python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized//morpheme_mecab_fixed/decomposed_simple_dummy_F --vocab_size=64000
+python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized//morpheme_mecab_fixed/decomposed_lexical_dummy_F --vocab_size=64000
+````
+
+- 출력 파일은 ./resources에 저장됨.
+
+[//]: # ([comment]: <> &#40;## mecab 토큰화&#41;)
+
+[//]: # ()
+[//]: # ([comment]: <> &#40;./build_vocab/build_mecab_vocab_our.py &#40;자동화 위해 코드 수정 필요&#41;&#41;)
+
+[//]: # ()
+[//]: # ([comment]: <> &#40;```bash&#41;)
+
+[//]: # ()
+[//]: # ([comment]: <> &#40;python build_vocab/build_mecab_vocab_our.py --vocab_size=64000&#41;)
+
+[//]: # ()
+[//]: # ([comment]: <> &#40;```&#41;)
+
+[//]: # ()
+[//]: # ()
+[//]: # (- 현재는 ./output_sp 디렉토리에 출력됨. 추후 resources로 가도록 수정해야 함.)
+
+[//]: # ()
+[//]: # ()
+[//]: # (## Wordpiece)
+
+[//]: # (./build_vocab/train_wordsentencepiece.py)
+
+[//]: # (### *baselines*)
+
+[//]: # (```bash)
+
+[//]: # (python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/eojeol_mecab_fixed/composed_dummy_F --vocab_size=64000)
+
+[//]: # (python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/eojeol_mecab_fixed/decomposed_pure_dummy_F --vocab_size=64000)
+
+[//]: # ()
+[//]: # (python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized//morpheme_mecab_fixed/composed_dummy_F --vocab_size=64000)
+
+[//]: # (python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized//morpheme_mecab_fixed/decomposed_lexical_dummy_F --vocab_size=64000)
+
+[//]: # (python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized//morpheme_mecab_fixed/decomposed_pure_dummy_F --vocab_size=64000)
+
+[//]: # ()
+[//]: # (```)
 
 
 [//]: # (## Sentencepiece)
@@ -176,140 +220,39 @@ python build_vocab/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized
 
 
 
-
-
-
-# 3. make BERT files 
+# 4. make BERT files 
+- BERT 학습에 필요한 파일 생성하기.
 ```bash
-python scripts/make_bert_files.py --root_path=output_sp/ --vocab_size=64000 --model_max_length=128
+python scripts/make_bert_files.py --root_path=resources --model_max_length=128
 ```
 실행 후 파일들 resources로 옮기기. 수동으로.  # 추후 자동화.
 
 
 
-# 4. pretrain BERT
-파일 분할 by size (https://stackoverflow.com/questions/17592725/get-file-size-and-split-the-file-based-on-size)
+# 5. pretrain BERT
+- Make tfrecord files for BERT pretraining.
+  * We used the official code (https://github.com/google-research/bert).
+-  It is highly recommended to split corpus files into multiple files for better time-saving.  
 
+## 1) 토큰화된 코퍼스 분할
+- ./corpus/tokinized 에 위치한 토큰화된 코퍼스 파일들을 분할
+- example 1: WP
+  ```bash
+  split -d -l wikiko_20210901_eojeol_mecab_fixed_composed_dummy_F.txt wikiko_20210901_eojeol_mecab_fixed_composed_dummy_F_
+  split -d -l namuwiki_20200302_eojeol_mecab_fixed_composed_dummy_F.txt namuwiki_20200302_eojeol_mecab_fixed_composed_dummy_F_
+  ```
+- example 2: MorWP
+  ```bash
+  split -d -l wikiko_20210901_morpheme_mecab_fixed_decomposed_lexical_dummy_F.txt wikiko_20210901_morpheme_mecab_fixed_decomposed_lexical_dummy_F_
+  split -d -l namuwiki_20200302_morpheme_mecab_fixed_decomposed_lexical_dummy_F.txt namuwiki_20200302_morpheme_mecab_fixed_decomposed_lexical_dummy_F_
+  ```
 
-wiki (without dummy letter) split
-```bash
-# eojeol
-split -d -l 2000000 namuwiki_20200302_none_composed.txt namuwiki_20200302_none_composed_
-split -d -l 1500000 wikiko_20210901_eojeol_mecab_fixed_composed.txt wikiko_20210901_eojeol_mecab_fixed_composed_
+## 2) pretraining
+- Follow the instructions in the official github repository of BERT (https://github.com/google-research/bert).
 
-split -d -l 1000000 namuwiki_20200302_eojeol_mecab_fixed_decomposed_pure_nfd.txt namuwiki_20200302_eojeol_mecab_fixed_decomposed_pure_nfd_
-split -d -l 1000000 wikiko_20210901_eojeol_mecab_fixed_decomposed_pure.txt wikiko_20210901_eojeol_mecab_fixed_decomposed_pure_
+## input
+- tfrecord files: from tokenized corpus files
+- tok.vocab: in ./resources/**tokenization method & vocab size**/
+- bert_config.json: in ./resources/**tokenization method & vocab size**/
 
-
-# orig
-split -d -l 1500000 namuwiki_20200302_morpheme_mecab_orig_composed.txt namuwiki_20200302_morpheme_mecab_orig_composed_
-split -d -l 1500000 wikiko_20210901_morpheme_mecab_orig_composed.txt wikiko_20210901_morpheme_mecab_orig_composed_
-
-split -d -l 800000 namuwiki_20200302_morpheme_mecab_orig_decomposed_pure_nfd.txt namuwiki_20200302_morpheme_mecab_orig_decomposed_pure_nfd_
-split -d -l 600000 wikiko_20210901_morpheme_mecab_orig_decomposed_pure.txt wikiko_20210901_morpheme_mecab_orig_decomposed_pure_
-
-
-# fixed
-split -d -l 1200000 namuwiki_20200302_morpheme_mecab_fixed_composed.txt namuwiki_20200302_morpheme_mecab_fixed_composed_
-split -d -l 1200000 wikiko_20210901_morpheme_mecab_fixed_composed.txt wikiko_20210901_morpheme_mecab_fixed_composed_
-
-split -d -l 700000 namuwiki_20200302_morpheme_mecab_fixed_decomposed_pure.txt namuwiki_20200302_morpheme_mecab_fixed_decomposed_pure_
-split -d -l 700000 wikiko_20210901_morpheme_mecab_fixed_decomposed_pure.txt wikiko_20210901_morpheme_mecab_fixed_decomposed_pure_
-
-split -d -l 700000 namuwiki_20200302_morpheme_mecab_fixed_decomposed_lexical.txt namuwiki_20200302_morpheme_mecab_fixed_decomposed_lexical_
-split -d -l 700000 wikiko_20210901_morpheme_mecab_fixed_decomposed_lexical.txt wikiko_20210901_morpheme_mecab_fixed_decomposed_lexical_
-
-
-split -d -l 900000 namuwiki_20200302_morpheme_mecab_fixed_decomposed_grammatical.txt namuwiki_20200302_morpheme_mecab_fixed_decomposed_grammatical_
-split -d -l 900000 wikiko_20210901_morpheme_mecab_fixed_decomposed_grammatical.txt wikiko_20210901_morpheme_mecab_fixed_decomposed_grammatical_
-
-
-
-
-# LG
-split -d -l 1500000 namuwiki_20200302_LG_mecab_fixed_composed_dummy_F.txt namuwiki_20200302_LG_mecab_fixed_composed_dummy_F_
-split -d -l 1500000 wikiko_20210901_LG_mecab_fixed_composed_dummy_F.txt wikiko_20210901_LG_mecab_fixed_composed_dummy_F_
-
-split -d -l 700000 namuwiki_20200302_LG_mecab_fixed_decomposed_pure_dummy_F.txt namuwiki_20200302_LG_mecab_fixed_decomposed_pure_dummy_F_
-split -d -l 700000 wikiko_20210901_LG_mecab_fixed_decomposed_pure_dummy_F.txt wikiko_20210901_LG_mecab_fixed_decomposed_pure_dummy_F_
-
-split -d -l 700000 namuwiki_20200302_LG_mecab_fixed_decomposed_lexical_dummy_F.txt namuwiki_20200302_LG_mecab_fixed_decomposed_lexical_dummy_F_
-split -d -l 700000 wikiko_20210901_LG_mecab_fixed_decomposed_lexical_dummy_F.txt wikiko_20210901_LG_mecab_fixed_decomposed_lexical_dummy_F_
-
-
-split -d -l 900000 namuwiki_20200302_LG_mecab_fixed_decomposed_grammatical_dummy_F.txt namuwiki_20200302_LG_mecab_fixed_decomposed_grammatical_dummy_F_
-split -d -l 900000 wikiko_20210901_LG_mecab_fixed_decomposed_grammatical_dummy_F.txt wikiko_20210901_LG_mecab_fixed_decomposed_grammatical_dummy_F_
-
-
-
-
-
-
-
-
-
-
-
-
-split -d -l 6000000 namuwiki_20200302_mecab_orig_composed.txt namuwiki_20200302_mecab_orig_composed_
-split -d -l 3300000 namuwiki_20200302_mecab_orig_decomposed_pure.txt namuwiki_20200302_mecab_orig_decomposed_pure_
-split -d -l 4000000 namuwiki_20200302_mecab_orig_decomposed_morphological.txt namuwiki_20200302_mecab_orig_decomposed_morphological_
-
-split -d -l 6000000 namuwiki_20200302_tokenized_mecab_fixed_composed.txt namuwiki_20200302_tokenized_mecab_fixed_composed_
-split -d -l 3000000 namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure.txt namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure_
-split -d -l 5000000 namuwiki_20200302_tokenized_mecab_fixed_decomposed_morphological.txt namuwiki_20200302_tokenized_mecab_fixed_decomposed_morphological_
-
-split -d -l 6000000 namuwiki_20200302_tokenized_mecab_fixed_composed.txt namuwiki_20200302_tokenized_mecab_fixed_composed_
-
-
-split -d -l 1500000 wikiko_20210901_LG_mecab_fixed_composed_dummy_F.txt wikiko_20210901_LG_mecab_fixed_composed_dummy_F_
-split -d -l 1500000 wikiko_20210901_LG_mecab_fixed_decomposed_grammatical_dummy_F.txt wikiko_20210901_LG_mecab_fixed_decomposed_grammatical_dummy_F_
-split -d -l 800000 wikiko_20210901_LG_mecab_fixed_decomposed_lexical_dummy_F.txt wikiko_20210901_LG_mecab_fixed_decomposed_lexical_dummy_F_
-split -d -l 800000 wikiko_20210901_LG_mecab_fixed_decomposed_pure_dummy_F.txt wikiko_20210901_LG_mecab_fixed_decomposed_pure_dummy_F_
-
-```
-
-
-namuwiki (without dummy letter) split
-```bash
-split -d -l 8000000 namuwiki_20200302_none_composed.txt namuwiki_20200302_none_composed_
-
-split -d -l 6000000 namuwiki_20200302_mecab_orig_composed.txt namuwiki_20200302_mecab_orig_composed_
-split -d -l 3300000 namuwiki_20200302_mecab_orig_decomposed_pure.txt namuwiki_20200302_mecab_orig_decomposed_pure_
-split -d -l 4000000 namuwiki_20200302_mecab_orig_decomposed_morphological.txt namuwiki_20200302_mecab_orig_decomposed_morphological_
-
-split -d -l 6000000 namuwiki_20200302_tokenized_mecab_fixed_composed.txt namuwiki_20200302_tokenized_mecab_fixed_composed_
-split -d -l 3000000 namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure.txt namuwiki_20200302_tokenized_mecab_fixed_decomposed_pure_
-split -d -l 5000000 namuwiki_20200302_tokenized_mecab_fixed_decomposed_morphological.txt namuwiki_20200302_tokenized_mecab_fixed_decomposed_morphological_
-
-
-split -d -l 6000000 namuwiki_20200302_tokenized_mecab_fixed_composed.txt namuwiki_20200302_tokenized_mecab_fixed_composed_
-
-
-split -d -l 1500000 namuwiki_20200302_LG_mecab_fixed_composed_dummy_F.txt namuwiki_20200302_LG_mecab_fixed_composed_dummy_F_
-split -d -l 2000000 namuwiki_20200302_LG_mecab_fixed_decomposed_grammatical_dummy_F.txt namuwiki_20200302_LG_mecab_fixed_decomposed_grammatical_dummy_F_
-split -d -l 900000 namuwiki_20200302_LG_mecab_fixed_decomposed_lexical_dummy_F.txt namuwiki_20200302_LG_mecab_fixed_decomposed_lexical_dummy_F_
-split -d -l 1000000 namuwiki_20200302_LG_mecab_fixed_decomposed_pure_dummy_F.txt namuwiki_20200302_LG_mecab_fixed_decomposed_pure_dummy_F_
-
-
-```
-
-namuwiki (with dummy letter) split
-```bash
-split -d -l 2800000 namuwiki_20200302_tokenized_mecab_orig_decomposed_pure.txt namuwiki_20200302_tokenized_mecab_orig_decomposed_pure_
-split -d -l 4000000 namuwiki_20200302_mecab_orig_decomposed_morphological.txt namuwiki_20200302_mecab_orig_decomposed_morphological_
-
-
-split -d -l 2700000 namuwiki_20200302_mecab_fixed_decomposed_pure.txt namuwiki_20200302_mecab_fixed_decomposed_pure_
-split -d -l 4300000 namuwiki_20200302_mecab_fixed_decomposed_morphological.txt namuwiki_20200302_mecab_fixed_decomposed_morphological_
-
-```
-
-
-
-
-
-## input 
-- tokenized corpus:
-- tok.vocab: ./resources/xx/
-- bert_config.json: ./resources/xx/
+- *Please make sure that the input files (tfrecord fiels, tok.vocab, bert_config.json) have the same tokenized method and vocab size when you pretrain a BERT model.*
