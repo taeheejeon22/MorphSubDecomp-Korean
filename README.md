@@ -80,7 +80,17 @@ The training process is performed on a Google Cloud TPU v3-8 and typically compl
 |            | MorWP-SD     | 65.54         | 67.09          | 92.38       | 87.28       | ***90.96***    | 90.38     | ***68.55***   | 76.90        | 79.61      | 75.57       | 0.49         | 6.98                        |
 |            | MorWP-MD     | ***66.32***      | ***69.64***          | 92.84       | 87.27       | 90.95    | 90.39     | 66.62   | ***78.01***        | 79.42      | ***76.22***       | 0.72         | 6.88                        |
 
-Performance of various models on several NLP tasks and OOV rate, Wordpiece Subtoken Rate (WSR) of each model. The best scores in each column are bold-faced and italicized. The metrics of each task are as follows: NIKL-CoLA: Accuracy, KLUE-DP: Macro F1 (UAS, LAS), NSMC: Accuracy, HSD: Macro F1, KLUE-NLI: Accuracy, PAWS-X: Accuracy. And OOV Rate, WSR are caculated as: OOV Rate = The number of OOV tokens / The number of tokens * 100, WSR = The number of Wordpiece subtokens / The number of tokens * 100
+Performance of various models on several NLP tasks and OOV rate, Wordpiece Subtoken Rate (WSR) of each model. The best scores in each column are bold-faced and italicized. The metrics of each task are as follows:
+- NIKL-CoLA: Accuracy
+- KLUE-DP: Macro F1 (UAS, LAS)
+- NSMC: Accuracy
+- HSD: Macro F1
+- KLUE-NLI: Accuracy
+- PAWS-X: Accuracy.
+
+OOV Rate, WSR are caculated as:
+- OOV Rate = The number of OOV tokens / The number of tokens * 100
+- WSR = The number of Wordpiece subtokens / The number of tokens * 100
 
 
 # Citation
