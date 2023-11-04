@@ -2,7 +2,7 @@
 - [arXiv link]
 
 - Authors: Taehee Jeon*, Bongseok Yang*, Changxhwan Kim, Yoonseob Lim
-  <br> *: Equal Contribution
+  <br> *: Equal contribution
 
 - Abstract <br>
 We introduce a morpheme-aware subword tokenization method that utilizes sub-character decomposition to address the challenges of applying Byte Pair Encoding (BPE) to Korean, a language characterized by its rich morphology and unique writing system. Our approach balances linguistic accuracy with computational efficiency in Pre-trained Language Models (PLMs). Our evaluations show that this technique achieves good performances overall, notably improving results in the syntactic task of NIKL-CoLA. This suggests that integrating morpheme type information can enhance language models' syntactic and semantic capabilities, indicating that adopting more linguistic insights can further improve performance beyond standard morphological analysis.
