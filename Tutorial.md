@@ -141,7 +141,7 @@ python scripts/make_bert_files.py --root_path=resources --model_max_length=128
 
 
 
-# 5. Pretraining BERT
+# 5. Pre-training BERT
 - To pretrain a BERT model, one needs to first convert the tokenized corpus into a format that BERT understands - typically tfrecord files. As you pointed out, splitting the corpus into multiple smaller files can be beneficial for managing resources and improving training time efficiency.
 
 
@@ -162,15 +162,15 @@ You have provided commands for splitting the tokenized corpus into smaller files
 - Please note that the -l option in the split command dictates the number of lines each split file should contain. Adjust this number based on the size of your corpus and the memory limitations of your training environment.
 
 
-## 2) Pretraining
+## 2) Pre-training
 Following the official BERT GitHub repository (https://github.com/google-research/bert)'s instructions is crucial. Here is a simplified overview of the steps:
 
 1. **Create tfrecord files**: Using the BERT repository scripts, convert the split tokenized corpus files into tfrecord files.
-2. **Prepare configuration files**: Make sure you have the correct bert_config.json configuration file which matches the architecture of the model you're planning to pretrain.
+2. **Prepare configuration files**: Make sure you have the correct bert_config.json configuration file which matches the architecture of the model you're planning to pre-trian.
 3. **Set up training environment**: Make sure your training environment is correctly configured with all necessary libraries and dependencies installed.
-4. **Begin pretraining**: Using the BERT repository's pretraining script, start the training process with the appropriate flags set for your tfrecord files, vocabulary file, and configuration file.
+4. **Begin pre-trianing**: Using the BERT repository's pre-trianing script, start the training process with the appropriate flags set for your tfrecord files, vocabulary file, and configuration file.
 
-## Input Files for the Pretraining Process
+## Input Files for the Pre-training Process
 - **tfrecord files**: Generated from the split tokenized corpus files.
 - **tok.vocab**: Located in ./resources/**tokenization method & vocab size**/
 - **bert_config.json**: Located in ./resources/**tokenization method & vocab size**/
