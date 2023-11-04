@@ -176,3 +176,106 @@ Following the official BERT GitHub repository (https://github.com/google-researc
 - **bert_config.json**: Located in ./resources/**tokenization method & vocab size**/
 
 *It's essential that all input files (tfrecord files, tok.vocab, bert_config.json) are consistent in terms of the tokenization method and vocabulary size used. Inconsistencies could lead to errors or suboptimal training results.*
+
+# 6. Finetuning
+- We will now use the pre-trained BERT to perform downstream tasks. The excution methods of KLUE-NLI, KLUE-DP, and NIKL-CoLA, PAWS, NSMC, and HSD are different, respectively.
+
+## Dataset
+- Information on each dataset is presented in the following table.
+
+|Task|Link|Paper|
+|---|---|---|
+|KLUE-DP, KLUE-NLI|https://github.com/KLUE-benchmark/KLUE/tree/1cc52e64c0e0b6915577244f7439c55a42199a64|[Park et al. (2021)](https://arxiv.org/abs/2105.09680)
+|HSD|https://github.com/kocohub/korean-hate-speech |[Moon et al. (2020)](https://aclanthology.org/2020.socialnlp-1.4/) |
+|NSMC|https://github.com/e9t/nsmc| - |
+|NIKL-CoLA|https://corpus.korean.go.kr/request/reausetMain.do?lang=ko | - |
+|PAWS-X| https://github.com/google-research-datasets/paws/tree/master/pawsx | [Yang et al. (2019)](https://arxiv.org/abs/1908.11828)|
+
+## 1) Convert TensorFlow model to PyTorch model  
+- Our pre-trained checkpoint is the TensorFlow-based model, and the fine-tuning framework is the PyTorch and Transformers. Therefore, it is necessary to convert the tenserflow model so that it can be used in pytorch and transformers framework. You can execute the following code.
+```
+transformers-cli convert --model_type bert\
+  --tf_checkpoint=./{checkpoint file path} \
+  --config=./resources/{tokenizer name}/config.json \
+  --pytorch_dump_output=./{output model file name}
+```
+
+## 2) KLUE-tasks
+Fine-tuning of KLUE-tasks is performed according to the [KLUE_baseline repository](https://github.com/KLUE-benchmark/KLUE-baseline).
+
+- Run the file `run_klue.py`` as follows. The location of the model and hyperparameters can be customized.
+1. KLUE-DP
+```
+python run_klue.py train \
+--task klue-dp \
+--output_dir {output dir}  \
+--data_dir ./KLUE-baseline/data/klue_benchmark/klue-dp-1.1 \
+--model_name_or_path {model path} \
+--tokenizer_name {tokenizer path} \
+--learning_rate {learning rate} 
+--train_batch_size {batch size} 
+--num_train_epochs {epoch} \
+--metric_key uas_macro_f1 --gpus 0 --num_workers 8 \
+--seed {seed}
+```
+
+2. KLUE-NLI
+```
+python run_klue.py train \
+--task klue-nli \
+--output_dir {output dir}  \
+--data_dir ./KLUE-baseline/data/klue_benchmark/klue-nli-1.1 \
+--model_name_or_path {model path} \
+--tokenizer_name {tokenizer path} \
+--learning_rate {learning rate} 
+--train_batch_size {batch size} 
+--num_train_epochs {epoch} 
+--metric_key accuracy --gpus 0 --num_workers 8 \
+--seed {seed}
+```
+
+## 3) HSD, NSMC, NIKL-CoLA, PAWS-X
+Run the file `tasks/{task}/run_train.py`.
+1. HSD
+```
+python ./tasks/hsd/run_train.py \
+--tokenizer {tokenizer} \
+--resource_dir {resource dir} \
+--batch_size {batch size} \
+--learning_rate {learning rate} \
+--num_epochs {epoch} \
+--seed {seed}
+```
+
+2. NSMC
+```
+python ./tasks/nsmc/run_train.py \
+--tokenizer {tokenizer} \
+--resource_dir {resource dir} \
+--batch_size {batch size} \
+--learning_rate {learning rate} \
+--num_epochs {epoch} \
+--seed {seed}
+```
+
+3. NIKL-CoLA
+```
+python ./tasks/cola/run_train.py \
+--tokenizer {tokenizer} \
+--resource_dir {resource dir} \
+--batch_size {batch size} \
+--learning_rate {learning rate} \
+--num_epochs {epoch} \
+--seed {seed}
+```
+
+4. PAWS-X
+```
+python ./tasks/paws/run_train.py \
+--tokenizer {tokenizer} \
+--resource_dir {resource dir} \
+--batch_size {batch size} \
+--learning_rate {learning rate} \
+--num_epochs {epoch} \
+--seed {seed}
+```
