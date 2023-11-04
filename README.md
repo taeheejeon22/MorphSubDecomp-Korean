@@ -1,281 +1,87 @@
+# Improving Korean NLP Tasks with Linguistically Informed Subword Tokenization and Sub-character Decomposition
+- [arXiv link]
+
+- Taehee Jeon*, Bongseok Yang*, Changxhwan Kim, Yoonseob Lim
+  * *: Equal Contribution
+
+- Abstract <br>
+We introduce a morpheme-aware subword tokenization method that utilizes sub-character decomposition to address the challenges of applying Byte Pair Encoding (BPE) to Korean, a language characterized by its rich morphology and unique writing system. Our approach balances linguistic accuracy with computational efficiency in Pre-trained Language Models (PLMs). Our evaluations show that this technique achieves good performances overall, notably improving results in the syntactic task of NIKL-CoLA. This suggests that integrating morpheme type information can enhance language models' syntactic and semantic capabilities, indicating that adopting more linguistic insights can further improve performance beyond standard morphological analysis.
+
+
+
 # Tutorial
-
-# tokenization stratagies
-- WP (WordPiece): Subword Tokenization
-- WP-SD: Subword Tokenization with Simple Sub-character Decomposition
-- MorWP: Morpheme-aware Subword Tokenization
-- MorWP-SD: Morpheme-aware Subword Tokenization with Simple Sub-character Decomposition
-- MorWP-MD: Morpheme-aware Subword Tokenization with Morphological Sub-character Decomposition  
-
-# 0. Preparing the Raw Corpus
-## 1) wiki-ko
-### 1-1) Dowloading the File
-- Dump file repository: https://dumps.wikimedia.org/kowiki/latest/
-  * Download the *pages-articles.xml.bz2* file.
-  * Version of the file used in the experiment: 09/01/21 (MM/DD/YY)
-
-### 1-2) Extracting Text
-- Use Wikiextractor (https://github.com/attardi/wikiextractor) to extract text from the downloaded dump file.
-  * The text extraction process using Wikiextractor is not included in the code of this repository. For detailed usage, refer to https://github.com/attardi/wikiextractor. 
-
-### 1-3) Moving the Extracted Text Files
-- After using Wikiextractor, place the created 'text' folder in the following path: 
-  * ./corpus/raw_corpus
-
-## 2) namuwiki
-### 2-1) Dowloading the File
-- Dump file repository: https://mu-star.net/wikidb
-  * The file used in the experiment was downloaded from http://dump.thewiki.kr/, but it seems to be inaccessible as of November 2023. The above site appears to provide the same file.
-  * Version of the file used in the experiment: 03/02/20 (MM/DD/YY)
-
-### 2-2) Extracting Text
-- The text extraction process for namuwiki dump files is integrated with the preprocessing steps, so it is omitted here.
-
-### 2-3) Moving the Dump File
-- After decompressing the downloaded dump file, place the json file (e.g., namuwiki200302.json) in the following path:
-  * ./corpus/raw_corpus
+- If you want to reproduce our experiment, please refer to [link](./Tutorial.md).
 
 
 
-# 1. Preprocessing the Corpus
-```bash
-python ./scripts/parse_Wikiko_with_preprocessing.py --input_path ./corpus/raw_corpus/text --output_path ./corpus/preprocessed/wikiko_20210901_preprocessed.txt
-python ./scripts/parse_namuWiki_with_preprocessing.py --input_path ./corpus/raw_corpus/namuwiki200302.json --output_path ./corpus/preprocessed/namuwiki_20200302_preprocessed.txt   
-```
-- The output files are saved in the following path:
-  * ./pretrain_corpus/preprocessed
+# Tokenization Methods
+**Tokenization** | **Tokenized Sequence**
+--- | ---
+Raw Text | 나<u>라면</u> 해물<u>라면</u>을 먹었을걸.
+<span style="display: block; border-bottom: 2px solid #000; margin: 10px 0;"></span> | <span style="display: block; border-bottom: 2px solid #000; margin: 10px 0;"></span>
+WP | 나라/ \#\#면/ 해/ \#\#물/ \#\#라면/ \#\#을/ 먹었/ \#\#을/ \#\#걸 \#\#.
+WP-SD | ㄴㅏㄹㅏ/ \#\#ㅁㅕㄴ/ ㅎㅐ/ \#\#ㅁㅜㄹ/ \#\#ㄹㅏㅁㅕㄴ/ \#\#ㅇㅡㄹ/ ㅁㅓㄱㅇㅓㅆㅇㅡㄹ/ \#\#걸.
+MorWP | 나/ 이/ 라면/ 해물/ 라면/ 을/ 먹/ 었/ 을걸/ .
+MorWP-SD | ㄴㅏ/ ㅇㅣ/ <i><u>ㄹㅏㅁㅕㄴ</u></i>/ ㅎㅐㅁㅜㄹ/  <u>ㄹㅏㅁㅕㄴ</u>/ ㅇㅡㄹ/ ㅁㅓㄱ/ ㅇㅓㅆ/ ㅇㅡㄹㄱㅓㄹ/ .
+MorWP-MD | ㄴㅏ/ 이/ **<u>라면</u>**/ ㅎㅐㅁㅜㄹ/ **<u>ㄹㅏㅁㅕㄴ</u>**/ 을/  ㅁㅓㄱ/ 었/ 을걸/ .
+
+1. WP (WordPiece): Subword Tokenization
+2. WP-SD: Subword Tokenization with Simple Sub-character Decomposition
+3. MorWP: Morpheme-aware Subword Tokenization
+4. MorWP-SD: Morpheme-aware Subword Tokenization with Simple Sub-character Decomposition
+5. MorWP-MD: Morpheme-aware Subword Tokenization with Morphological Sub-character Decomposition  
 
 
 
-# 2. Tokenization of Corpus
-- *token_type* and *decomposition_type* relate to the tokenization methods discussed in the paper.
-  * WP: --token_type=eojeol --decomposition_type=composed
-  * WP-SD --token_type=eojeol --decomposition_type=decomposed_simple
-  * MorWP: --token_type=morpheme --decomposition_type=composed
-  * MorWP-SD: --token_type=morpheme --decomposition_type=decomposed_simple
-  * MorWP-MD: --token_type=morpheme --decomposition_type=decomposed_lexical
+# Pre-training
+We have trained BERT-Base models utilizing the official BERT codebase (https://github.com/google-research/bert). The pre-training corpus comprises dump files from Korean Wikipedia (https://dumps.wikimedia.org/kowiki/latest/) and Namuwiki (https://mu-star.net/wikidb), ensuring a comprehensive linguistic representation. Our training strictly follows empirical best practices, and we employ the following hyperparameters:
 
-## wiki-ko
-```bash
-python scripts/mecab_tokenization.py --token_type=eojeol --decomposition_type=composed --corpus_path=./corpus/preprocessed/wikiko_20210901_preprocessed.txt --tokenizer_type=mecab_fixed --threads 32
-python scripts/mecab_tokenization.py --token_type=eojeol --decomposition_type=decomposed_simple --corpus_path=./corpus/preprocessed/wikiko_20210901_preprocessed.txt --tokenizer_type=mecab_fixed --nfd --threads 32
+- Batch size: 1024
+- Warm-up steps: 10,000
+- Learning rate: 0.00005
+- Maximum sequence length: 128
+- Case sensitivity: Case-sensitive (do not convert to lowercase)
+- Duplicate factor: 5
+- Optimizer: AdamW
 
-python scripts/mecab_tokenization.py --token_type=morpheme --decomposition_type=composed --corpus_path=./corpus/preprocessed/wikiko_20210901_preprocessed.txt --tokenizer_type=mecab_fixed --threads 32
-python scripts/mecab_tokenization.py --token_type=morpheme --decomposition_type=decomposed_simple --corpus_path=./corpus/preprocessed/wikiko_20210901_preprocessed.txt --tokenizer_type=mecab_fixed --nfd --threads 32
-python scripts/mecab_tokenization.py --token_type=morpheme --decomposition_type=decomposed_lexical --corpus_path=./corpus/preprocessed/wikiko_20210901_preprocessed.txt --tokenizer_type=mecab_fixed --nfd --threads 32 
-```
+The training process is performed on a Google Cloud TPU v3-8 and typically completes within 4-5 days for each model.
 
-## namuwiki
-```bash
-python scripts/mecab_tokenization.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_preprocessed.txt --tokenizer_type=mecab_fixed --decomposition_type=composed --threads 32
-python scripts/mecab_tokenization.py --token_type=eojeol --corpus_path=./corpus/preprocessed/namuwiki_20200302_preprocessed.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_simple --nfd --threads 32
-
-python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_preprocessed.txt --tokenizer_type=mecab_fixed --decomposition_type=composed --threads 32
-python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_preprocessed.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_simple --nfd --threads 32 
-python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_preprocessed.txt --tokenizer_type=mecab_fixed --decomposition_type=decomposed_lexical --nfd --threads 32
-```
-
-- The output files are stored in the following path:
-  * ./pretrain_corpus/tokenized
+**Acknowledgement**: For pre-training models, Cloud TPUs from the TensorFlow Research Cloud program were employed.
 
 
-### Alternative solutions in case the code is interrupted due to insufficient memory
-1. Split the preprocessed corpus file
-```bash
-split -d -l 11000000 namuwiki_20200302_with_preprocessing.txt namuwiki_20200302_with_preprocessing_
-```
+# Fine-tuning
+- **Frameworks**: Pytorch, Huggingface Transformers
+- **Tasks**: KLUE-NLI, NIKL-CoLA, NSMC, and others using adapted benchmark codes
+  * KLUE-NLI, KLUE-DP: https://github.com/KLUE-benchmark/KLUE
+  * PAWS-X: https://paperswithcode.com/dataset/paws-x
+  * NIKL-CoLA (문법성 판단 말뭉치): https://corpus.korean.go.kr/request/reausetMain.do?lang=ko#down
+  * NSMC: https://github.com/e9t/nsmc
+  * HSD: https://github.com/kocohub/korean-hate-speech
+- **Hyperparameters**:
+- **Batch size**: 32 or 64
+- **Learning rate**: 1e-5 to 5e-5
+- **Epochs**: 1 to 10
+- **Optimizer**: AdamW
+- **Selection**: Chosen based on highest average dev set performance over 5 seeds; for KLUE-DP, best LAS and UAS averages
+- **Hardware**: Each task fine-tuned on an individual RTX 2080 Ti GPU, with four used in total
 
-2. Perform tokenization on each split file
-- For the *decomposed_simple* method:
-```bash
-python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_00 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_simple --nfd --threads 32
-python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_01 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_simple --nfd --threads 32
-python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_02 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_simple --nfd --threads 32
-```
 
-- For the *decomposed_lexical* method:
-```bash
-python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_00 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_lexical --nfd --threads 32
-python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_01 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_lexical --nfd --threads 32
-python scripts/mecab_tokenization.py --token_type=morpheme --corpus_path=./corpus/preprocessed/namuwiki_20200302_with_preprocessing_02 --tokenizer_type=mecab_fixed --decomposition_type=decomposed_lexical --nfd --threads 32
-```
-
-- If memory issues occur with other methods (e.g., *decomposed_pure* for wiki-ko, composed for namuwiki), the same splitting strategy can be employed.
+## Results
+| Vocab Size | Tokenization | NIKL-CoLA Dev | NIKL-CoLA Test | KLUE-DP UAS | KLUE-DP LAS | NSMC Dev | NSMC Test | HSD Dev | KLUE-NLI Dev | PAWS-X Dev | PAWS-X Test | OOV Rate (%) | Wordpiece Subtoken Rate (%) |
+|------------|--------------|---------------|----------------|-------------|-------------|----------|-----------|---------|--------------|------------|-------------|--------------|-----------------------------|
+| **32K**    | WP           | 57.62         | 61.64          | 92.56       | 87.02       | 90.06    | 89.52     | 64.82   | 76.20        | 76.60      | 72.39       | 0.78         | 54.63                       |
+|            | WP-SD        | 59.61         | 59.85          | 92.58       | 87.21       | 89.69    | 89.38     | 64.09   | 76.23        | 78.20      | 75.23       | 0.57         | 51.42                       |
+|            | MorWP        | 63.62         | 67.87          | 92.55       | 87.15       | 90.65    | 90.11     | 65.81   | 76.55        | 77.90      | 73.99       | 0.68         | 12.79                       |
+|            | MorWP-SD     | 64.79         | 67.34          | 92.63       | 87.30       | 90.92    | 90.20     | 66.67   | 76.85        | 78.57      | 75.12       | 0.47         | 10.43                       |
+|            | MorWP-MD     | 65.19         | 67.21          | 92.63       | ***87.30***       | 90.84    | 90.24     | 65.46   | 76.83        | 79.37      | 75.27       | 0.69         | 10.37                       |
+| **64K**    | WP           | 59.15         | 60.21          | 92.65       | 87.06       | 89.73    | 89.53     | 61.98   | 76.99        | 78.14      | 73.57       | 0.90         | 47.96                       |
+|            | WP-SD        | 58.76         | 60.91          | ***92.88***       | 87.12       | 89.82    | 89.63     | 62.20   | 76.72        | 79.33      | 74.49       | 0.63         | 46.58                       |
+|            | MorWP        | 64.66         | 67.47          | 92.74       | 87.29       | 90.82    | ***90.40***     | 66.07   | 76.84        | ***79.76***      | 75.88       | 0.72         | 7.55                        |
+|            | MorWP-SD     | 65.54         | 67.09          | 92.38       | 87.28       | ***90.96***    | 90.38     | ***68.55***   | 76.90        | 79.61      | 75.57       | 0.49         | 6.98                        |
+|            | MorWP-MD     | ***66.32***      | ***69.64***          | 92.84       | 87.27       | 90.95    | 90.39     | 66.62   | ***78.01***        | 79.42      | ***76.22***       | 0.72         | 6.88                        |
 
 
 
-# 3. Wordpiece Model Training
-For training WordPiece models with different vocabulary sizes, the following bash commands can be used. The first set is for a vocabulary size of 32,000, and the second set is for 64,000. The output files from this training will be stored in the ./resources directory.
+# Citation
+citation
 
-- For a vocabulary size of 32k:
-```bash
-python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/eojeol_mecab_fixed/composed_dummy_F --vocab_size=32000
-python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/eojeol_mecab_fixed/decomposed_simple_dummy_F --vocab_size=32000
-
-python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized//morpheme_mecab_fixed/composed_dummy_F --vocab_size=32000
-python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized//morpheme_mecab_fixed/decomposed_simple_dummy_F --vocab_size=32000
-python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized//morpheme_mecab_fixed/decomposed_lexical_dummy_F --vocab_size=32000
-````
-
-- For a vocabulary size of 64k:
-```bash
-python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/eojeol_mecab_fixed/composed_dummy_F --vocab_size=64000
-python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized/eojeol_mecab_fixed/decomposed_simple_dummy_F --vocab_size=64000
-
-python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized//morpheme_mecab_fixed/composed_dummy_F --vocab_size=64000
-python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized//morpheme_mecab_fixed/decomposed_simple_dummy_F --vocab_size=64000
-python scripts/train_wordpiece.py --tokenized_corpus_path=./corpus/tokenized//morpheme_mecab_fixed/decomposed_lexical_dummy_F --vocab_size=64000
-````
-
-- The output files are stored in the following path:
-  * ./resources
-
-
-
-# 4. Creating Files for BERT Training 
-To generate the necessary files for training a BERT model, you can use the following bash command. This script will take the trained WordPiece models and other resources to prepare the input files that BERT needs for pretraining:
-```bash
-python scripts/make_bert_files.py --root_path=resources --model_max_length=128
-```
-- This command assumes that all the necessary resources, including the WordPiece vocabulary files and tokenized corpus, are stored under a resources directory. The --model_max_length argument specifies the maximum sequence length that the model will support. In this case, sequences will be padded or truncated to a length of 128 tokens.
-
-
-
-# 5. Pretraining BERT
-- To pretrain a BERT model, one needs to first convert the tokenized corpus into a format that BERT understands - typically tfrecord files. As you pointed out, splitting the corpus into multiple smaller files can be beneficial for managing resources and improving training time efficiency.
-
-
-## 1) Splitting the Tokenized Corpus
-You have provided commands for splitting the tokenized corpus into smaller files, which is done to facilitate the handling during the creation of tfrecord files for BERT pretraining.
-
-- For WordPiece (WP):
-  ```bash
-  split -d -l wikiko_20210901_eojeol_mecab_fixed_composed_dummy_F.txt wikiko_20210901_eojeol_mecab_fixed_composed_dummy_F_
-  split -d -l namuwiki_20200302_eojeol_mecab_fixed_composed_dummy_F.txt namuwiki_20200302_eojeol_mecab_fixed_composed_dummy_F_
-  ```
-
-- For Morpheme WordPiece (MorWP):
-  ```bash
-  split -d -l wikiko_20210901_morpheme_mecab_fixed_decomposed_lexical_dummy_F.txt wikiko_20210901_morpheme_mecab_fixed_decomposed_lexical_dummy_F_
-  split -d -l namuwiki_20200302_morpheme_mecab_fixed_decomposed_lexical_dummy_F.txt namuwiki_20200302_morpheme_mecab_fixed_decomposed_lexical_dummy_F_
-  ```
-- Please note that the -l option in the split command dictates the number of lines each split file should contain. Adjust this number based on the size of your corpus and the memory limitations of your training environment.
-
-
-## 2) Pretraining
-Following the official BERT GitHub repository (https://github.com/google-research/bert)'s instructions is crucial. Here is a simplified overview of the steps:
-
-1. **Create tfrecord files**: Using the BERT repository scripts, convert the split tokenized corpus files into tfrecord files.
-2. **Prepare configuration files**: Make sure you have the correct bert_config.json configuration file which matches the architecture of the model you're planning to pretrain.
-3. **Set up training environment**: Make sure your training environment is correctly configured with all necessary libraries and dependencies installed.
-4. **Begin pretraining**: Using the BERT repository's pretraining script, start the training process with the appropriate flags set for your tfrecord files, vocabulary file, and configuration file.
-
-## Input Files for the Pretraining Process
-- **tfrecord files**: Generated from the split tokenized corpus files.
-- **tok.vocab**: Located in ./resources/**tokenization method & vocab size**/
-- **bert_config.json**: Located in ./resources/**tokenization method & vocab size**/
-
-*It's essential that all input files (tfrecord files, tok.vocab, bert_config.json) are consistent in terms of the tokenization method and vocabulary size used. Inconsistencies could lead to errors or suboptimal training results.*
-
-# 6. Finetuning
-- We will now use the pre-trained BERT to perform downstream tasks. The excution methods of KLUE-NLI, KLUE-DP, and NIKL-CoLA, PAWS, NSMC, and HSD are different, respectively.
-
-## Dataset
-- Information on each dataset is presented in the following table.
-
-|Task|Link|Paper|
-|---|---|---|
-|KLUE-DP, KLUE-NLI|https://github.com/KLUE-benchmark/KLUE/tree/1cc52e64c0e0b6915577244f7439c55a42199a64|[Park et al. (2021)](https://arxiv.org/abs/2105.09680)
-|HSD|https://github.com/kocohub/korean-hate-speech |[Moon et al. (2020)](https://aclanthology.org/2020.socialnlp-1.4/) |
-|NSMC|https://github.com/e9t/nsmc| - |
-|NIKL-CoLA|https://corpus.korean.go.kr/request/reausetMain.do?lang=ko | - |
-|PAWS-X| https://github.com/google-research-datasets/paws/tree/master/pawsx | [Yang et al. (2019)](https://arxiv.org/abs/1908.11828)|
-
-## 1) Convert TensorFlow model to PyTorch model  
-- Our pre-trained checkpoint is the TensorFlow-based model, and the fine-tuning framework is the PyTorch and Transformers. Therefore, it is necessary to convert the tenserflow model so that it can be used in pytorch and transformers framework. You can execute the following code.
-```
-transformers-cli convert --model_type bert\
-  --tf_checkpoint=./{checkpoint file path} \
-  --config=./resources/{tokenizer name}/config.json \
-  --pytorch_dump_output=./{output model file name}
-```
-
-## 2) KLUE-tasks
-Fine-tuning of KLUE-tasks is performed according to the [KLUE_baseline repository](https://github.com/KLUE-benchmark/KLUE-baseline).
-
-- Run the file `run_klue.py`` as follows. The location of the model and hyperparameters can be customized.
-1. KLUE-DP
-```
-python run_klue.py train \
---task klue-dp \
---output_dir {output dir}  \
---data_dir ./KLUE-baseline/data/klue_benchmark/klue-dp-1.1 \
---model_name_or_path {model path} \
---tokenizer_name {tokenizer path} \
---learning_rate {learning rate} 
---train_batch_size {batch size} 
---num_train_epochs {epoch} \
---metric_key uas_macro_f1 --gpus 0 --num_workers 8 \
---seed {seed}
-```
-
-2. KLUE-NLI
-```
-python run_klue.py train \
---task klue-nli \
---output_dir {output dir}  \
---data_dir ./KLUE-baseline/data/klue_benchmark/klue-nli-1.1 \
---model_name_or_path {model path} \
---tokenizer_name {tokenizer path} \
---learning_rate {learning rate} 
---train_batch_size {batch size} 
---num_train_epochs {epoch} 
---metric_key accuracy --gpus 0 --num_workers 8 \
---seed {seed}
-```
-
-## 3) HSD, NSMC, NIKL-CoLA, PAWS-X
-Run the file `tasks/{task}/run_train.py`.
-1. HSD
-```
-python ./tasks/hsd/run_train.py \
---tokenizer {tokenizer} \
---resource_dir {resource dir} \
---batch_size {batch size} \
---learning_rate {learning rate} \
---num_epochs {epoch} \
---seed {seed}
-```
-
-2. NSMC
-```
-python ./tasks/nsmc/run_train.py \
---tokenizer {tokenizer} \
---resource_dir {resource dir} \
---batch_size {batch size} \
---learning_rate {learning rate} \
---num_epochs {epoch} \
---seed {seed}
-```
-
-3. NIKL-CoLA
-```
-python ./tasks/cola/run_train.py \
---tokenizer {tokenizer} \
---resource_dir {resource dir} \
---batch_size {batch size} \
---learning_rate {learning rate} \
---num_epochs {epoch} \
---seed {seed}
-```
-
-4. PAWS-X
-```
-python ./tasks/paws/run_train.py \
---tokenizer {tokenizer} \
---resource_dir {resource dir} \
---batch_size {batch size} \
---learning_rate {learning rate} \
---num_epochs {epoch} \
---seed {seed}
-```
