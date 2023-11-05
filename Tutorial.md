@@ -194,12 +194,14 @@ Following the official BERT GitHub repository (https://github.com/google-researc
 |PAWS-X| https://github.com/google-research-datasets/paws/tree/master/pawsx | [Yang et al. (2019)](https://arxiv.org/abs/1908.11828)|
 
 ## 1) Convert TensorFlow model to PyTorch model  
-- Our pre-trained checkpoint is the TensorFlow-based model, and the fine-tuning framework is the PyTorch and Transformers. Therefore, it is necessary to convert the tenserflow model so that it can be used in pytorch and transformers framework. You can execute the following code.
+- Our pre-trained checkpoint is the TensorFlow-based model, and the fine-tuning framework is the PyTorch and Transformers. Therefore, it is necessary to convert the tenserflow model so that it can be used in pytorch and transformers framework. 
+- The output file should be located in `./resources/{tokenizer_name}`. 
+- For example, iIf you have a TensorFlow checkpoint file created using the MorWP-MD-64k tokenizer, You need to run below:
 ```
 transformers-cli convert --model_type bert\
-  --tf_checkpoint=./{checkpoint file path} \
-  --config=./resources/{tokenizer name}/config.json \
-  --pytorch_dump_output=./{output model file name}
+  --tf_checkpoint=./bert_model_morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000.ckpt-1000000 \
+  --config=./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000/config.json \
+  --pytorch_dump_output=./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000/pytorch_model.bin
 ```
 
 - *Note*: The name of the output model file should be ***'pytorch_model.bin'***.
@@ -209,79 +211,88 @@ transformers-cli convert --model_type bert\
 ## 2) KLUE-tasks
 Fine-tuning of KLUE-tasks is performed according to the [KLUE_baseline repository](https://github.com/KLUE-benchmark/KLUE-baseline).
 
-- Run the file `run_klue.py`` as follows. The location of the model and hyperparameters can be customized.
+- Run the file `run_klue.py` as follows.
+- The arguments `model_name_or_path` and `tokenizer_name` should be directory paths. The directory path for both are set to combination of `./resources` and the name of tokenzier.
+- For example, if you run fine-tuning with MorWP-64k model, run code below:
+- The hyperparameters listed below are the ones that produced the best scores in our research.
+
 1. KLUE-DP
-```
+```bash
 python run_klue.py train \
 --task klue-dp \
---output_dir {output dir}  \
+--output_dir ./run_outputs \
 --data_dir ./KLUE-baseline/data/klue_benchmark/klue-dp-1.1 \
---model_name_or_path {model path} \
---tokenizer_name {tokenizer path} \
---learning_rate {learning rate} 
---train_batch_size {batch size} 
---num_train_epochs {epoch} \
+--model_name_or_path ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
+--tokenizer_name ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
+--learning_rate 5e-5
+--train_batch_size 32 
+--num_train_epochs 10 \
 --metric_key uas_macro_f1 --gpus 0 --num_workers 8 \
---seed {seed}
+--seed 42
 ```
 
 2. KLUE-NLI
-```
+```bash
 python run_klue.py train \
 --task klue-nli \
---output_dir {output dir}  \
+--output_dir ./run_outputs \
 --data_dir ./KLUE-baseline/data/klue_benchmark/klue-nli-1.1 \
---model_name_or_path {model path} \
---tokenizer_name {tokenizer path} \
---learning_rate {learning rate} 
---train_batch_size {batch size} 
---num_train_epochs {epoch} 
+--model_name_or_path ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
+--tokenizer_name ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000\
+--learning_rate 3e-5
+--train_batch_size 32 
+--num_train_epochs 5 
 --metric_key accuracy --gpus 0 --num_workers 8 \
---seed {seed}
+--seed 42
 ```
 
 ## 3) HSD, NSMC, NIKL-CoLA, PAWS-X
-Run the file `tasks/{task}/run_train.py`.
+- Run the file `tasks/{task}/run_train.py`.
+- The argument `resource_dir` should be directory path. The directory path for `resource_dir` is set to combination of `./resources` and each tokenizer name.
+- The argument `tokenizer` should be tokenizer name.
+- For example, if you run fine-tuning with MorWP-64k model, run code below:
+- The hyperparameters listed below are the ones that produced the best scores in our research.
+
 1. HSD
-```
+```bash
 python ./tasks/hsd/run_train.py \
---tokenizer {tokenizer} \
---resource_dir {resource dir} \
---batch_size {batch size} \
---learning_rate {learning rate} \
---num_epochs {epoch} \
---seed {seed}
+--tokenizer morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
+--resource_dir ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
+--batch_size 32 \
+--learning_rate 5e-4 \
+--num_epochs 4 \
+--seed 42
 ```
 
-2. NSMC
-```
+1. NSMC
+```bash
 python ./tasks/nsmc/run_train.py \
---tokenizer {tokenizer} \
---resource_dir {resource dir} \
---batch_size {batch size} \
---learning_rate {learning rate} \
---num_epochs {epoch} \
---seed {seed}
+--tokenizer morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
+--resource_dir ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
+--batch_size 64 \
+--learning_rate 2e-5 \
+--num_epochs 2 \
+--seed 42
 ```
 
-3. NIKL-CoLA
-```
+1. NIKL-CoLA
+```bash
 python ./tasks/cola/run_train.py \
---tokenizer {tokenizer} \
---resource_dir {resource dir} \
---batch_size {batch size} \
---learning_rate {learning rate} \
---num_epochs {epoch} \
---seed {seed}
+--tokenizer morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
+--resource_dir ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
+--batch_size 64 \
+--learning_rate 1e-5 \
+--num_epochs 3 \
+--seed 42
 ```
 
-4. PAWS-X
-```
+1. PAWS-X
+```bash
 python ./tasks/paws/run_train.py \
---tokenizer {tokenizer} \
---resource_dir {resource dir} \
---batch_size {batch size} \
---learning_rate {learning rate} \
---num_epochs {epoch} \
---seed {seed}
+--tokenizer morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
+--resource_dir ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
+--batch_size 64 \
+--learning_rate 5e-5 \
+--num_epochs 5 \
+--seed 42
 ```
