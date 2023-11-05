@@ -221,7 +221,7 @@ Fine-tuning of KLUE-tasks is performed according to the [KLUE_baseline repositor
 python run_klue.py train \
 --task klue-dp \
 --output_dir ./run_outputs \
---data_dir ./KLUE-baseline/data/klue_benchmark/klue-dp-1.1 \
+--data_dir ./KLUE-baseline/data/klue_benchmark/klue-dp-v1.1 \
 --model_name_or_path ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
 --tokenizer_name ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
 --config_name ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
@@ -237,7 +237,7 @@ python run_klue.py train \
 python run_klue.py train \
 --task klue-nli \
 --output_dir ./run_outputs \
---data_dir ./KLUE-baseline/data/klue_benchmark/klue-nli-1.1 \
+--data_dir ./KLUE-baseline/data/klue_benchmark/klue-nli-v1.1 \
 --model_name_or_path ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
 --tokenizer_name ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
 --config_name ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
