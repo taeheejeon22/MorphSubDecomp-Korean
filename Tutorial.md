@@ -3,6 +3,14 @@
 # tokenization stratagies
 - WP (WordPiece): Subword Tokenization
 - WP-SD: Subword Tokenization with Simple Sub-character Decomposition
+    * We utilize NFD (Normalize Form D) for sub-character decomposition.
+      + Example 
+        ```python
+        print(len("제임스"))
+        >>> 8
+        ```
+        In this example, '제' consists of 'ㅈ+ㅔ', '임' consists of 'ㅇ+ㅣ+ㅁ', consists of '스' is 'ㅅ+ㅡ', so the whole length of the string is 8.
+
 - MorWP: Morpheme-aware Subword Tokenization
 - MorWP-SD: Morpheme-aware Subword Tokenization with Simple Sub-character Decomposition
 - MorWP-MD: Morpheme-aware Subword Tokenization with Morphological Sub-character Decomposition  
@@ -267,7 +275,7 @@ python ./tasks/hsd/run_train.py \
 --summary_dir ./run_outputs/summary
 ```
 
-1. NSMC
+2. NSMC
 ```bash
 python ./tasks/nsmc/run_train.py \
 --tokenizer morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
@@ -279,7 +287,7 @@ python ./tasks/nsmc/run_train.py \
 --summary_dir ./run_outputs/summary
 ```
 
-1. NIKL-CoLA
+3. NIKL-CoLA
 ```bash
 python ./tasks/cola/run_train.py \
 --tokenizer morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
@@ -291,7 +299,7 @@ python ./tasks/cola/run_train.py \
 --summary_dir ./run_outputs/summary
 ```
 
-1. PAWS-X
+4. PAWS-X
 ```bash
 python ./tasks/paws/run_train.py \
 --tokenizer morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \

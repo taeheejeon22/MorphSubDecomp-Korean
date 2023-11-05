@@ -42,9 +42,11 @@ dataset_analysis/results/*
 dataset_analysis/tokenized/*
 
 
-# log
+
+# experiments
+./finding_hparam_v6
+.kortok*
 run_outputs/*
-output_sp/*
 
 # code
 ckpt_to_pytorch.txt
