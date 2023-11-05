@@ -239,7 +239,7 @@ python run_klue.py train \
 --output_dir ./run_outputs \
 --data_dir ./KLUE-baseline/data/klue_benchmark/klue-nli-1.1 \
 --model_name_or_path ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
---tokenizer_name ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000\
+--tokenizer_name ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
 --config_name ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
 --learning_rate 3e-5 \
 --train_batch_size 32 \
@@ -263,7 +263,7 @@ python ./tasks/hsd/run_train.py \
 --batch_size 32 \
 --learning_rate 5e-4 \
 --num_epochs 4 \
---seed 42
+--seed 42 \
 --summary_dir ./run_outputs/summary
 ```
 
@@ -275,7 +275,7 @@ python ./tasks/nsmc/run_train.py \
 --batch_size 64 \
 --learning_rate 2e-5 \
 --num_epochs 2 \
---seed 42
+--seed 42 \
 --summary_dir ./run_outputs/summary
 ```
 
@@ -287,7 +287,7 @@ python ./tasks/cola/run_train.py \
 --batch_size 64 \
 --learning_rate 1e-5 \
 --num_epochs 3 \
---seed 42
+--seed 42 \
 --summary_dir ./run_outputs/summary
 ```
 
@@ -299,6 +299,6 @@ python ./tasks/paws/run_train.py \
 --batch_size 64 \
 --learning_rate 5e-5 \
 --num_epochs 5 \
---seed 42
+--seed 42 \
 --summary_dir ./run_outputs/summary
 ```
