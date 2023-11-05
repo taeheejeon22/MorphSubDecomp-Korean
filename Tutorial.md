@@ -183,7 +183,7 @@ Following the official BERT GitHub repository (https://github.com/google-researc
 ## Dataset
 - Information on each dataset is presented in the following table.
 
-|Task|Link|Paper|
+|Dataset|Link|Paper|
 |---|---|---|
 |KLUE-DP, KLUE-NLI|https://github.com/KLUE-benchmark/KLUE/tree/1cc52e64c0e0b6915577244f7439c55a42199a64|[Park et al. (2021)](https://arxiv.org/abs/2105.09680)
 |HSD|https://github.com/kocohub/korean-hate-speech |[Moon et al. (2020)](https://aclanthology.org/2020.socialnlp-1.4/) |
