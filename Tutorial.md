@@ -137,7 +137,7 @@ To generate the necessary files for training a BERT model, you can use the follo
 ```bash
 python scripts/make_bert_files.py --root_path=resources --model_max_length=128
 ```
-- This command assumes that all the necessary resources, including the WordPiece vocabulary files and tokenized corpus, are stored under a resources directory. The --model_max_length argument specifies the maximum sequence length that the model will support. In this case, sequences will be padded or truncated to a length of 128 tokens.
+- This command assumes that all the necessary resources, including the WordPiece vocabulary files and tokenized corpus, are stored under the ***resources*** directory. The --model_max_length argument specifies the maximum sequence length that the model will support. In this case, sequences will be padded or truncated to a length of 128 tokens.
 
 
 
@@ -150,14 +150,14 @@ You have provided commands for splitting the tokenized corpus into smaller files
 
 - For WordPiece (WP):
   ```bash
-  split -d -l wikiko_20210901_eojeol_mecab_fixed_composed_dummy_F.txt wikiko_20210901_eojeol_mecab_fixed_composed_dummy_F_
-  split -d -l namuwiki_20200302_eojeol_mecab_fixed_composed_dummy_F.txt namuwiki_20200302_eojeol_mecab_fixed_composed_dummy_F_
+  split -d -l 1000000 wikiko_20210901_eojeol_mecab_fixed_composed_dummy_F.txt wikiko_20210901_eojeol_mecab_fixed_composed_dummy_F_
+  split -d -l 1000000 namuwiki_20200302_eojeol_mecab_fixed_composed_dummy_F.txt namuwiki_20200302_eojeol_mecab_fixed_composed_dummy_F_
   ```
 
 - For Morpheme WordPiece (MorWP):
   ```bash
-  split -d -l wikiko_20210901_morpheme_mecab_fixed_decomposed_lexical_dummy_F.txt wikiko_20210901_morpheme_mecab_fixed_decomposed_lexical_dummy_F_
-  split -d -l namuwiki_20200302_morpheme_mecab_fixed_decomposed_lexical_dummy_F.txt namuwiki_20200302_morpheme_mecab_fixed_decomposed_lexical_dummy_F_
+  split -d -l 1000000 wikiko_20210901_morpheme_mecab_fixed_decomposed_lexical_dummy_F.txt wikiko_20210901_morpheme_mecab_fixed_decomposed_lexical_dummy_F_
+  split -d -l 1000000 namuwiki_20200302_morpheme_mecab_fixed_decomposed_lexical_dummy_F.txt namuwiki_20200302_morpheme_mecab_fixed_decomposed_lexical_dummy_F_
   ```
 - Please note that the -l option in the split command dictates the number of lines each split file should contain. Adjust this number based on the size of your corpus and the memory limitations of your training environment.
 
@@ -176,6 +176,8 @@ Following the official BERT GitHub repository (https://github.com/google-researc
 - **bert_config.json**: Located in ./resources/**tokenization method & vocab size**/
 
 *It's essential that all input files (tfrecord files, tok.vocab, bert_config.json) are consistent in terms of the tokenization method and vocabulary size used. Inconsistencies could lead to errors or suboptimal training results.*
+
+
 
 # 6. Finetuning
 - We will now use the pre-trained BERT to perform downstream tasks. The excution methods of KLUE-NLI, KLUE-DP, and NIKL-CoLA, PAWS, NSMC, and HSD are different, respectively.
@@ -199,6 +201,10 @@ transformers-cli convert --model_type bert\
   --config=./resources/{tokenizer name}/config.json \
   --pytorch_dump_output=./{output model file name}
 ```
+
+- *Note*: The name of the output model file should be ***'pytorch_model.bin'***.
+
+
 
 ## 2) KLUE-tasks
 Fine-tuning of KLUE-tasks is performed according to the [KLUE_baseline repository](https://github.com/KLUE-benchmark/KLUE-baseline).

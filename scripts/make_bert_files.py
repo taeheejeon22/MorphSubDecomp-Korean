@@ -45,14 +45,16 @@ def main(root_path: str, model_max_length: int):
     regex_vocab_size = re.compile("(\d+)/$")
 
     for ix in range(len(tok_vocab_paths)):
-
+        # print(ix, tok_vocab_paths[ix],)
         # output path
         output_dir = tok_vocab_paths[ix].split("tok.vocab")[0]
+
+        print(f"output_dir: {output_dir}")
 
         # set vocab_size
         vocab_size = regex_vocab_size.search(output_dir).group(1)
         new_bert_config = copy.deepcopy(bert_config)
-        new_bert_config["vocab_size"] = vocab_size
+        new_bert_config["vocab_size"] = int(vocab_size) # convert str to int
 
         # make "bert_config.json"
         with open(os.path.join(output_dir, "config.json"), "w") as json_file:  # KLUE 양식에 맞추기

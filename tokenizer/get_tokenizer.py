@@ -19,7 +19,7 @@ from tokenizer import (
     # MeCabTokenizer_kortok,
     SentencePieceTokenizer,
     WordPieceTokenizer,
-    # Vocab,
+    Vocab,
     # WordTokenizer,
 )
 

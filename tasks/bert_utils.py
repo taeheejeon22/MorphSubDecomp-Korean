@@ -11,7 +11,8 @@ T = TypeVar("T", int, float)
 def load_pretrained_bert(config: BertConfig, model_path: str):
     if model_path.endswith(".index"):
         bert_model = BertForPreTraining.from_pretrained(model_path, config=config, from_tf=True).bert
-    elif model_path.endswith(".pth"):
+    # elif model_path.endswith(".pth"):
+    elif model_path.endswith(".pth") or model_path.endswith(".bin"):   # for KLUE compatibility
         bert_model = BertModel.from_pretrained(model_path, config=config)
     else:
         raise ValueError(f"Wrong model path ({model_path})")

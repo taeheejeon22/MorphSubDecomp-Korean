@@ -32,7 +32,7 @@ from tokenizer.mecab_all import MeCabTokenizer_all
 
 from tokenizer.sentencepiece import SentencePieceTokenizer
 from tokenizer.wordpiece import WordPieceTokenizer
-# from tokenizer.vocab import Vocab
+from tokenizer.vocab import Vocab
 # from tokenizer.word import WordTokenizer
 
 __all__ = [
@@ -55,6 +55,6 @@ __all__ = [
     "SentencePieceTokenizer",
     "WordPieceTokenizer",
 
-    # "Vocab",
+    "Vocab",
     # "WordTokenizer",
 ]
