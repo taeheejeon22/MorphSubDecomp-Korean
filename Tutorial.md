@@ -225,8 +225,8 @@ python run_klue.py train \
 --model_name_or_path ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
 --tokenizer_name ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
 --config_name ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
---learning_rate 5e-5
---train_batch_size 32 
+--learning_rate 5e-5 \
+--train_batch_size 32 \
 --num_train_epochs 10 \
 --metric_key uas_macro_f1 --gpus 0 --num_workers 8 \
 --seed 42
@@ -241,16 +241,16 @@ python run_klue.py train \
 --model_name_or_path ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
 --tokenizer_name ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000\
 --config_name ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
---learning_rate 3e-5
---train_batch_size 32 
---num_train_epochs 5 
+--learning_rate 3e-5 \
+--train_batch_size 32 \
+--num_train_epochs 5 \
 --metric_key accuracy --gpus 0 --num_workers 8 \
 --seed 42
 ```
 
 ## 3) HSD, NSMC, NIKL-CoLA, PAWS-X
 - Run the file `tasks/{task}/run_train.py`.
-- The argument `resource_dir` should be directory path. The directory path for `resource_dir` is set to combination of `./resources` and each tokenizer name.
+- The argument `resource_dir` should be directory path. The directory path for `resource_dir` is set to combination of `./resources`.
 - The argument `tokenizer` should be tokenizer name.
 - For example, if you run fine-tuning with MorWP-64k model, run code below:
 - The hyperparameters listed below are the ones that produced the best scores in our research.
@@ -259,7 +259,7 @@ python run_klue.py train \
 ```bash
 python ./tasks/hsd/run_train.py \
 --tokenizer morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
---resource_dir ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
+--resource_dir ./resources \
 --batch_size 32 \
 --learning_rate 5e-4 \
 --num_epochs 4 \
@@ -271,7 +271,7 @@ python ./tasks/hsd/run_train.py \
 ```bash
 python ./tasks/nsmc/run_train.py \
 --tokenizer morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
---resource_dir ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
+--resource_dir ./resources \
 --batch_size 64 \
 --learning_rate 2e-5 \
 --num_epochs 2 \
@@ -283,7 +283,7 @@ python ./tasks/nsmc/run_train.py \
 ```bash
 python ./tasks/cola/run_train.py \
 --tokenizer morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
---resource_dir ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
+--resource_dir ./resources \
 --batch_size 64 \
 --learning_rate 1e-5 \
 --num_epochs 3 \
@@ -295,7 +295,7 @@ python ./tasks/cola/run_train.py \
 ```bash
 python ./tasks/paws/run_train.py \
 --tokenizer morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
---resource_dir ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
+--resource_dir ./resources \
 --batch_size 64 \
 --learning_rate 5e-5 \
 --num_epochs 5 \
