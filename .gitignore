@@ -44,8 +44,11 @@ dataset_analysis/tokenized/*
 
 
 # experiments
-./finding_hparam_v6
-.kortok*
+finding_hparam_v6/*
+kortok*
+
+
+
 run_outputs/*
 
 # code
