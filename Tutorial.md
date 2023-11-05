@@ -212,7 +212,7 @@ transformers-cli convert --model_type bert\
 Fine-tuning of KLUE-tasks is performed according to the [KLUE_baseline repository](https://github.com/KLUE-benchmark/KLUE-baseline).
 
 - Run the file `run_klue.py` as follows.
-- The arguments `model_name_or_path` and `tokenizer_name` should be directory paths. The directory path for both are set to combination of `./resources` and the name of tokenzier.
+- The arguments `model_name_or_path` and `tokenizer_name` and `config_name` should be directory paths. The directory path for both are set to combination of `./resources` and the name of tokenzier.
 - For example, if you run fine-tuning with MorWP-64k model, run code below:
 - The hyperparameters listed below are the ones that produced the best scores in our research.
 
@@ -224,6 +224,7 @@ python run_klue.py train \
 --data_dir ./KLUE-baseline/data/klue_benchmark/klue-dp-1.1 \
 --model_name_or_path ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
 --tokenizer_name ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
+--config_name ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
 --learning_rate 5e-5
 --train_batch_size 32 
 --num_train_epochs 10 \
@@ -239,6 +240,7 @@ python run_klue.py train \
 --data_dir ./KLUE-baseline/data/klue_benchmark/klue-nli-1.1 \
 --model_name_or_path ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
 --tokenizer_name ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000\
+--config_name ./resources/morpheme_mecab_fixed_decomposed_lexical_grammatical_symbol_F_wp-64000 \
 --learning_rate 3e-5
 --train_batch_size 32 
 --num_train_epochs 5 
@@ -262,6 +264,7 @@ python ./tasks/hsd/run_train.py \
 --learning_rate 5e-4 \
 --num_epochs 4 \
 --seed 42
+--summary_dir ./run_outputs/summary
 ```
 
 1. NSMC
@@ -273,6 +276,7 @@ python ./tasks/nsmc/run_train.py \
 --learning_rate 2e-5 \
 --num_epochs 2 \
 --seed 42
+--summary_dir ./run_outputs/summary
 ```
 
 1. NIKL-CoLA
@@ -284,6 +288,7 @@ python ./tasks/cola/run_train.py \
 --learning_rate 1e-5 \
 --num_epochs 3 \
 --seed 42
+--summary_dir ./run_outputs/summary
 ```
 
 1. PAWS-X
@@ -295,4 +300,5 @@ python ./tasks/paws/run_train.py \
 --learning_rate 5e-5 \
 --num_epochs 5 \
 --seed 42
+--summary_dir ./run_outputs/summary
 ```
