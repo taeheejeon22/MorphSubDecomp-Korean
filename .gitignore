@@ -1,7 +1,6 @@
 # mac OS
 .DS_Store
-ee.py
-ee2.py
+
 
 # corpus
 *.pkl
@@ -31,6 +30,7 @@ corpus/tmp_for_tfrecord/*
 
 #model
 *.bin
+*.pth
 
 # analysis
 dataset_analysis/.ipynb_checkpoints/*

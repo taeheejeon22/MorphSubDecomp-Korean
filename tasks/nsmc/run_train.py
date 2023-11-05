@@ -58,7 +58,7 @@ def main(args):
 
     # bert 모델 경로 자동 지정
     tokenizer_dir = os.path.join(config.resource_dir, config.tokenizer)
-    pretrained_bert_files = [file for file in os.listdir(tokenizer_dir) if file.endswith("pth")]
+    pretrained_bert_files = [file for file in os.listdir(tokenizer_dir) if file.endswith(".bin")]
 
     assert (len(pretrained_bert_files) == 1), 'There are more than one bert model files!!!!!!!'
 

@@ -36,6 +36,12 @@ class KlueTask:
             use_fast=False ### our: transformers 4
         )
 
+
+
+        ### our ###
+        # print(args)
+        # tok_name = args.tokenizer_name
+
         print(f"\n\n\ntokenizer_name: {args.tokenizer_name}")
         path_rsc = args.config_name   # mecab 이용하기 위해 resources 경로 지정
 
