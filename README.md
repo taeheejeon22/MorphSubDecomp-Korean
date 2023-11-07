@@ -1,7 +1,7 @@
 # Improving Korean NLP Tasks with Linguistically Informed Subword Tokenization and Sub-character Decomposition
 - [arXiv link]
 
-- Authors: Taehee Jeon*, Bongseok Yang*, Changxhwan Kim, Yoonseob Lim
+- Authors: Taehee Jeon*, Bongseok Yang*, Changhwan Kim, Yoonseob Lim
   <br> *: Equal contribution
 
 - Abstract <br>
