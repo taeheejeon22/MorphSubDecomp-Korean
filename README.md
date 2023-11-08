@@ -1,5 +1,5 @@
 # Improving Korean NLP Tasks with Linguistically Informed Subword Tokenization and Sub-character Decomposition
-- [arXiv link]
+- [arXiv link](https://arxiv.org/abs/2311.03928)
 
 - Authors: Taehee Jeon*, Bongseok Yang*, Changhwan Kim, Yoonseob Lim
   <br> *: Equal contribution
@@ -94,5 +94,11 @@ OOV Rate, WSR are caculated as:
 
 
 # Citation
-citation
-
+@misc{jeon2023improving,
+      title={Improving Korean NLP Tasks with Linguistically Informed Subword Tokenization and Sub-character Decomposition}, 
+      author={Taehee Jeon and Bongseok Yang and Changhwan Kim and Yoonseob Lim},
+      year={2023},
+      eprint={2311.03928},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
