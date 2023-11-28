@@ -4,9 +4,9 @@ torch==1.7.1    # https://pytorch.org/get-started/previous-versions/
 # mecab-python @ git+https://bitbucket.org/eunjeon/mecab-python-0.996.git@ac44c1e23785be09bb60f29b83f2463848314796
 
 
-# for konlpy & mecab compatibility
-setuptools==58.3.0
-urllib3==1.24.3
+# If you have encountered any problems regarding the compatibility of Konlpy and Mecab, try these solutions.
+# setuptools==58.3.0
+# urllib3==1.24.3
 
 
 # wiki extraction
